@@ -8,103 +8,206 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 15% 15%;
-    --foreground: 0 0% 95%;
+    /* Flourish Design System - Manager Light Mode (Office) */
+    --background: 164 25% 98%; /* #F8FAF9 */
+    --foreground: 0 0% 20%; /* #333333 */
 
-    --card: 220 10% 22%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 0 0% 20%;
 
-    --popover: 220 10% 22%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
 
-    --primary: 160 84% 39%;
+    /* Primary: #2D5016 olive green */
+    --primary: 94 55% 20%;
     --primary-foreground: 0 0% 100%;
+    
+    /* Primary Alt: #1B4D3E */
+    --primary-alt: 165 45% 20%;
 
-    --secondary: 220 10% 28%;
-    --secondary-foreground: 0 0% 95%;
+    /* Secondary: #8B4513 saddle brown */
+    --secondary: 25 67% 31%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 10% 28%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 164 14% 94%; /* #E9F2EB subtle highlight */
+    --muted-foreground: 0 0% 33%; /* #555555 */
 
-    --accent: 158 64% 52%;
-    --accent-foreground: 0 0% 100%;
+    /* Success: #0F7A3E */
+    --success: 149 79% 27%;
+    --success-foreground: 0 0% 100%;
 
-    --destructive: 0 84% 60%;
+    /* Accent (used sparingly) */
+    --accent: 164 14% 94%;
+    --accent-foreground: 94 55% 20%;
+
+    /* Error: #C1121F */
+    --destructive: 355 82% 42%;
     --destructive-foreground: 0 0% 100%;
+    
+    /* Warning: #FCD116 */
+    --warning: 48 97% 54%;
+    --warning-foreground: 0 0% 0%;
+    
+    /* Caution: #D55E00 */
+    --caution: 25 100% 42%;
+    --caution-foreground: 0 0% 100%;
+    
+    /* Info: #4A4A4A */
+    --info: 0 0% 29%;
+    --info-foreground: 0 0% 100%;
 
-    --border: 220 10% 30%;
-    --input: 220 10% 30%;
-    --ring: 160 84% 39%;
+    --border: 0 0% 88%; /* #E0E0E0 */
+    --input: 0 0% 26%; /* #424242 for borders */
+    --ring: 94 55% 20%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem; /* 8px for manager, 6px buttons */
     
-    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(158 64% 52%));
-    --gradient-hero: linear-gradient(180deg, hsl(220 15% 18%), hsl(220 15% 15%));
+    --gradient-primary: linear-gradient(135deg, hsl(94 55% 20%), hsl(149 79% 27%));
     
-    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.3);
-    --shadow-medium: 0 8px 30px -6px hsl(0 0% 0% / 0.4);
+    --shadow-soft: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.25);
     
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 0 0% 20%;
+    --sidebar-primary: 94 55% 20%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 164 14% 94%;
+    --sidebar-accent-foreground: 94 55% 20%;
+    --sidebar-border: 0 0% 88%;
+    --sidebar-ring: 94 55% 20%;
   }
 
   .dark {
-    --background: 220 15% 10%;
-    --foreground: 0 0% 98%;
+    /* Flourish Design System - Manager Dark Mode */
+    --background: 0 0% 9%; /* #181818 */
+    --foreground: 0 0% 95%; /* #F1F1F1 */
 
-    --card: 220 10% 18%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 13%; /* #222222 */
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 10% 18%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 160 84% 39%;
+    --primary: 94 55% 20%;
+    --primary-foreground: 0 0% 100%;
+    
+    --primary-alt: 165 45% 20%;
+
+    --secondary: 25 67% 31%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 94 15% 18%; /* #2D3A2D dark highlight */
+    --muted-foreground: 0 0% 72%; /* #B8B8B8 */
+
+    --success: 149 79% 27%;
+    --success-foreground: 0 0% 100%;
+
+    --accent: 94 15% 18%;
+    --accent-foreground: 0 0% 95%;
+
+    --destructive: 355 82% 42%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --warning: 48 97% 54%;
+    --warning-foreground: 0 0% 0%;
+    
+    --caution: 25 100% 42%;
+    --caution-foreground: 0 0% 100%;
+    
+    --info: 0 0% 29%;
+    --info-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%; /* #333333 */
+    --input: 0 0% 26%;
+    --ring: 94 55% 20%;
+    
+    --gradient-primary: linear-gradient(135deg, hsl(94 55% 20%), hsl(149 79% 27%));
+    
+    --shadow-soft: 0 2px 4px rgba(255, 255, 255, 0.1);
+    --shadow-medium: 0 4px 8px rgba(255, 255, 255, 0.15);
+    
+    --sidebar-background: 0 0% 9%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 94 55% 20%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 94 15% 18%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 94 55% 20%;
+  }
+  
+  /* Worker App Light Mode (Outdoor - Field First) */
+  .worker-light {
+    --background: 40 17% 94%; /* #F3F2ED off-white */
+    --foreground: 0 0% 12%; /* #1E1E1E charcoal */
+
+    --card: 40 14% 91%; /* #E8E6E1 */
+    --card-foreground: 0 0% 12%;
+
+    --popover: 40 14% 91%;
+    --popover-foreground: 0 0% 12%;
+
+    --primary: 94 55% 20%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 10% 24%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 25 67% 31%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 10% 24%;
-    --muted-foreground: 0 0% 75%;
+    --muted: 40 10% 82%; /* #D2D0CA borders */
+    --muted-foreground: 30 5% 26%; /* #45413D */
 
-    --accent: 158 64% 52%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 10% 26%;
-    --input: 220 10% 26%;
-    --ring: 160 84% 39%;
+    --success: 149 79% 27%;
+    --accent: 40 14% 91%;
     
-    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(158 64% 52%));
-    --gradient-hero: linear-gradient(180deg, hsl(220 15% 14%), hsl(220 15% 10%));
+    --destructive: 355 82% 42%;
+    --warning: 48 97% 54%;
+    --caution: 25 100% 42%;
+    --info: 0 0% 29%;
+
+    --border: 40 10% 82%;
+    --input: 0 0% 26%;
+    --ring: 94 55% 20%;
     
-    --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.5);
-    --shadow-medium: 0 8px 30px -6px hsl(0 0% 0% / 0.6);
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --shadow-soft: 0 3px 6px rgba(0, 0, 0, 0.25);
+    --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Worker App Dark Mode (Indoor/Evening) */
+  .worker-dark {
+    --background: 30 4% 12%; /* #1E1E1C */
+    --foreground: 0 0% 96%; /* #F5F5F5 */
+
+    --card: 30 4% 17%; /* #2C2B28 */
+    --card-foreground: 0 0% 96%;
+
+    --popover: 30 4% 17%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 94 55% 20%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 25 67% 31%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 30 4% 23%; /* #3C3B38 */
+    --muted-foreground: 0 0% 78%; /* #C6C6C6 */
+
+    --success: 149 79% 27%;
+    --accent: 30 4% 23%;
+    
+    --destructive: 355 82% 42%;
+    --warning: 48 97% 54%;
+    --caution: 25 100% 42%;
+    --info: 0 0% 29%;
+
+    --border: 30 4% 23%;
+    --input: 0 0% 26%;
+    --ring: 94 55% 20%;
+    
+    --shadow-soft: 0 2px 4px rgba(255, 255, 255, 0.1);
+    --shadow-medium: 0 4px 8px rgba(255, 255, 255, 0.15);
   }
 }
 
