@@ -1,5 +1,8 @@
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Users, MapPin, Sprout, Settings as SettingsIcon } from "lucide-react";
 
 export default function ManagerSettings() {
   return (
@@ -9,11 +12,61 @@ export default function ManagerSettings() {
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
-          <p className="text-muted-foreground">Manage users, locations, species, and integrations</p>
+          <p className="text-muted-foreground">Manage users, locations, species catalog, and system preferences</p>
         </div>
-        <div className="text-center py-20 text-muted-foreground">
-          <p>Settings interface coming soon</p>
-        </div>
+
+        <Tabs defaultValue="users" className="space-y-6">
+          <TabsList>
+            <TabsTrigger value="users"><Users className="w-4 h-4 mr-2" />Users</TabsTrigger>
+            <TabsTrigger value="locations"><MapPin className="w-4 h-4 mr-2" />Locations</TabsTrigger>
+            <TabsTrigger value="species"><Sprout className="w-4 h-4 mr-2" />Species</TabsTrigger>
+            <TabsTrigger value="system"><SettingsIcon className="w-4 h-4 mr-2" />System</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="users">
+            <Card>
+              <CardHeader>
+                <CardTitle>User Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">User roles and permissions configuration</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="locations">
+            <Card>
+              <CardHeader>
+                <CardTitle>Location Configuration</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Manage bays, houses, and facility settings</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="species">
+            <Card>
+              <CardHeader>
+                <CardTitle>Species Catalog</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">Configure plant species and growing requirements</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="system">
+            <Card>
+              <CardHeader>
+                <CardTitle>System Preferences</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">General settings and integrations</p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );
