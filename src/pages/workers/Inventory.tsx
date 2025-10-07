@@ -115,7 +115,7 @@ export default function WorkerInventory() {
       <main className="container mx-auto px-4 py-6">
         {/* Stage Summary */}
         {selectedStage !== "all" && (
-          <Card className="p-4 bg-white border-none shadow-sm mb-4">
+          <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
             <div className="flex items-center gap-3 mb-3">
               {(() => {
                 const stage = stages.find(s => s.id === selectedStage);
@@ -142,7 +142,7 @@ export default function WorkerInventory() {
         <div className="space-y-3">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-              <Card className={`p-4 bg-white border-none shadow-sm hover:shadow-md transition-shadow ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}>
+              <Card className={`p-4 bg-white border-2 shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">

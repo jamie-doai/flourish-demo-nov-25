@@ -24,7 +24,7 @@ export default function WorkerProfile() {
 
       <main className="container mx-auto px-4 -mt-6">
         {/* Stats Card */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-6">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-6">
           <h3 className="text-sm font-semibold text-[#37474F] mb-3">This Week</h3>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -43,7 +43,7 @@ export default function WorkerProfile() {
         </Card>
 
         {/* Sync Status */}
-        <Card className="p-4 bg-white border-none shadow-sm mb-6">
+        <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-green-600" />
@@ -59,7 +59,7 @@ export default function WorkerProfile() {
         <div className="space-y-3 mb-6">
           <h3 className="text-sm font-semibold text-[#37474F] px-1">Settings</h3>
           
-          <Card className="bg-white border-none shadow-sm divide-y divide-[#3B7A57]/5">
+          <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm divide-y divide-[#3B7A57]/5">
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Bell className="w-5 h-5 text-[#37474F]/60" />
@@ -80,7 +80,7 @@ export default function WorkerProfile() {
 
         {/* Menu Items */}
         <div className="space-y-3 mb-6">
-          <Card className="bg-white border-none shadow-sm divide-y divide-[#3B7A57]/5">
+          <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm divide-y divide-[#3B7A57]/5">
             <Link to="/workers/settings" className="p-4 flex items-center gap-3 hover:bg-[#3B7A57]/5 transition-colors">
               <Settings className="w-5 h-5 text-[#37474F]/60" />
               <span className="text-sm text-[#37474F]">Account Settings</span>

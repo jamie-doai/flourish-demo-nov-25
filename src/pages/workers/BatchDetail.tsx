@@ -113,7 +113,7 @@ export default function WorkerBatchDetail() {
 
       <main className="container mx-auto px-4 py-6">
         {/* Lifecycle Timeline */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>
           
           <div className="mb-4">
@@ -148,7 +148,7 @@ export default function WorkerBatchDetail() {
         </Card>
 
         {/* Batch Info */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-3">Batch Information</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
@@ -204,7 +204,7 @@ export default function WorkerBatchDetail() {
         </Card>
 
         {/* Environmental Data */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-3">Environmental Conditions</h3>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -229,7 +229,7 @@ export default function WorkerBatchDetail() {
         </Card>
 
         {/* Quick Actions */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-3">Quick Actions</h3>
           <div className="grid grid-cols-2 gap-3">
             <Button 
@@ -291,7 +291,7 @@ export default function WorkerBatchDetail() {
         </Card>
 
         {/* Activity Log */}
-        <Card className="p-5 bg-white border-none shadow-sm">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
           <div className="flex items-center gap-2 mb-4">
             <History className="w-4 h-4 text-[#37474F]/60" />
             <h3 className="text-sm font-semibold text-[#37474F]">Activity Log</h3>

@@ -48,7 +48,7 @@ export default function WorkerLocationDetail() {
 
       <main className="container mx-auto px-4 py-6">
         {/* Location Stats */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-3">Facility Overview</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
@@ -97,7 +97,7 @@ export default function WorkerLocationDetail() {
           <div className="space-y-3">
             {batchesInLocation.map((batch) => (
               <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-                <Card className="p-4 bg-white border-none shadow-sm hover:shadow-md transition-shadow">
+                <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[#37474F] mb-1">🌿 {batch.species}</h3>

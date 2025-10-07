@@ -70,7 +70,7 @@ export default function WorkerTasks() {
         <div className="space-y-3">
           {filteredTasks.map((task) => (
             <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-              <Card className="p-4 bg-white border-none shadow-sm hover:shadow-md transition-shadow">
+              <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">

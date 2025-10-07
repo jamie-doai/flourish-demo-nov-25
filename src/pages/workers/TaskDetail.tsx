@@ -53,7 +53,7 @@ export default function WorkerTaskDetail() {
 
       <main className="container mx-auto px-4 py-6">
         {/* Task Info Card */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-lg font-semibold text-[#37474F]">🌿 {mockTask.species}</span>
@@ -85,14 +85,14 @@ export default function WorkerTaskDetail() {
         </Card>
 
         {/* Instructions */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-2">Instructions</h3>
           <p className="text-sm text-[#37474F]/70 leading-relaxed">{mockTask.instructions}</p>
         </Card>
 
         {/* Notes Section */}
         {started && (
-          <Card className="p-5 bg-white border-none shadow-sm mb-4">
+          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
             <h3 className="text-sm font-semibold text-[#37474F] mb-3">Add Notes (Optional)</h3>
             <Textarea
               placeholder="Any observations or issues to note..."

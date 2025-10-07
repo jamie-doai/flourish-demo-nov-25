@@ -42,7 +42,7 @@ export default function WorkerLocations() {
         <div className="space-y-3">
           {mockLocations.map((location) => (
             <Link key={location.id} to={`/workers/locations/${location.id}`}>
-              <Card className="p-4 bg-white border-none shadow-sm hover:shadow-md transition-shadow">
+              <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-[#37474F] mb-1">📍 {location.name}</h3>

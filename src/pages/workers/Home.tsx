@@ -28,10 +28,10 @@ export default function WorkerHome() {
             {notifications.map((notification) => (
               <Card 
                 key={notification.id} 
-                className={`p-3 border-l-4 ${
+                className={`p-3 border-2 ${
                   notification.type === "urgent" 
-                    ? "border-l-orange-500 bg-orange-50" 
-                    : "border-l-[#3B7A57] bg-white"
+                    ? "border-orange-600 bg-orange-50" 
+                    : "border-[#3B7A57] bg-white"
                 }`}
               >
                 <div className="flex items-start gap-2">
@@ -85,7 +85,7 @@ export default function WorkerHome() {
           <h2 className="text-base font-semibold text-[#37474F] mb-3">Navigate</h2>
           <div className="grid grid-cols-2 gap-4">
             <Link to="/workers/tasks">
-              <Card className="bg-white border-none shadow-md hover:shadow-lg transition-shadow">
+              <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all">
                 <div className="aspect-square flex flex-col items-center justify-center p-6">
                   <div className="w-14 h-14 rounded-2xl bg-[#3B7A57]/10 flex items-center justify-center mb-3">
                     <ListTodo className="w-7 h-7 text-[#3B7A57]" />
@@ -97,7 +97,7 @@ export default function WorkerHome() {
             </Link>
 
             <Link to="/workers/locations">
-              <Card className="bg-white border-none shadow-md hover:shadow-lg transition-shadow">
+              <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all">
                 <div className="aspect-square flex flex-col items-center justify-center p-6">
                   <div className="w-14 h-14 rounded-2xl bg-[#81C784]/10 flex items-center justify-center mb-3">
                     <MapPin className="w-7 h-7 text-[#3B7A57]" />
@@ -109,7 +109,7 @@ export default function WorkerHome() {
             </Link>
 
             <Link to="/workers/inventory">
-              <Card className="bg-white border-none shadow-md hover:shadow-lg transition-shadow col-span-2">
+              <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all col-span-2">
                 <div className="flex items-center gap-4 p-6">
                   <div className="w-14 h-14 rounded-2xl bg-[#3B7A57]/10 flex items-center justify-center flex-shrink-0">
                     <Package className="w-7 h-7 text-[#3B7A57]" />
