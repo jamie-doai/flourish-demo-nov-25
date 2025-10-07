@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu } from "lucide-react";
+import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Navigation() {
@@ -52,7 +52,8 @@ export function Navigation() {
       {isMobile && (
         <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/95 backdrop-blur-sm pb-safe">
           <div className="grid grid-cols-5 h-16">
-            {navItems.slice(0, 4).map((item) => (
+            {/* Dashboard, Inventory, Operations - always visible */}
+            {navItems.slice(0, 3).map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
@@ -64,6 +65,17 @@ export function Navigation() {
                 <span className="text-xs">{item.label}</span>
               </Link>
             ))}
+            
+            {/* Scan button - prominent */}
+            <Link
+              to="/managers/scan"
+              className="flex flex-col items-center justify-center gap-1 text-primary"
+            >
+              <Scan className="w-5 h-5" />
+              <span className="text-xs">Scan</span>
+            </Link>
+            
+            {/* Menu with Sales, Planning, Settings */}
             <Sheet>
               <SheetTrigger asChild>
                 <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
