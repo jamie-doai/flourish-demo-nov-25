@@ -2,9 +2,14 @@ import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Users, MapPin, Sprout, Settings as SettingsIcon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Users, MapPin, Sprout, Settings as SettingsIcon, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function ManagerSettings() {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
@@ -61,8 +66,23 @@ export default function ManagerSettings() {
               <CardHeader>
                 <CardTitle>System Preferences</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">General settings and integrations</p>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="flex items-center gap-2">
+                      {isDark ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                      <span className="font-medium">Dark Mode</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">Toggle between light and dark theme</p>
+                  </div>
+                  <Switch 
+                    checked={isDark} 
+                    onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+                  />
+                </div>
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-muted-foreground">Additional system settings and integrations</p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
