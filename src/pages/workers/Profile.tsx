@@ -4,9 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff } from "lucide-react";
+import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function WorkerProfile() {
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
@@ -60,6 +64,17 @@ export default function WorkerProfile() {
           <h3 className="text-sm font-semibold text-[#37474F] px-1">Settings</h3>
           
           <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm divide-y divide-[#3B7A57]/5">
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                {isDark ? <Moon className="w-5 h-5 text-[#37474F]/60" /> : <Sun className="w-5 h-5 text-[#37474F]/60" />}
+                <span className="text-sm text-[#37474F]">Dark Mode</span>
+              </div>
+              <Switch 
+                checked={isDark} 
+                onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+              />
+            </div>
+
             <div className="p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Bell className="w-5 h-5 text-[#37474F]/60" />
