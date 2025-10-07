@@ -18,6 +18,15 @@ import ManagerOperations from "./pages/managers/Operations";
 import ManagerPlanning from "./pages/managers/Planning";
 import ManagerReporting from "./pages/managers/Reporting";
 import ManagerSettings from "./pages/managers/Settings";
+import WorkerHome from "./pages/workers/Home";
+import WorkerTasks from "./pages/workers/Tasks";
+import WorkerTaskDetail from "./pages/workers/TaskDetail";
+import WorkerInventory from "./pages/workers/Inventory";
+import WorkerBatchDetail from "./pages/workers/BatchDetail";
+import WorkerScan from "./pages/workers/Scan";
+import WorkerLocations from "./pages/workers/Locations";
+import WorkerLocationDetail from "./pages/workers/LocationDetail";
+import WorkerProfile from "./pages/workers/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,7 +44,8 @@ const App = () => (
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/sales" element={<Sales />} />
           <Route path="/planning" element={<Planning />} />
-          <Route path="/workers" element={<WorkersView />} />
+          
+          {/* Manager Routes */}
           <Route path="/managers" element={<ManagerDashboard />} />
           <Route path="/managers/inventory" element={<ManagerInventory />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
@@ -43,6 +53,18 @@ const App = () => (
           <Route path="/managers/planning" element={<ManagerPlanning />} />
           <Route path="/managers/reporting" element={<ManagerReporting />} />
           <Route path="/managers/settings" element={<ManagerSettings />} />
+          
+          {/* Worker Routes */}
+          <Route path="/workers" element={<WorkerHome />} />
+          <Route path="/workers/tasks" element={<WorkerTasks />} />
+          <Route path="/workers/tasks/:taskId" element={<WorkerTaskDetail />} />
+          <Route path="/workers/inventory" element={<WorkerInventory />} />
+          <Route path="/workers/batch/:batchId" element={<WorkerBatchDetail />} />
+          <Route path="/workers/scan" element={<WorkerScan />} />
+          <Route path="/workers/locations" element={<WorkerLocations />} />
+          <Route path="/workers/locations/:locationId" element={<WorkerLocationDetail />} />
+          <Route path="/workers/profile" element={<WorkerProfile />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
