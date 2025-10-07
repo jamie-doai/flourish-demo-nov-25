@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
+import { DevBar } from "@/components/DevBar";
 import { ArrowLeft } from "lucide-react";
 
 export default function WorkerLocationDetail() {
@@ -31,6 +32,7 @@ export default function WorkerLocationDetail() {
 
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
+      <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">

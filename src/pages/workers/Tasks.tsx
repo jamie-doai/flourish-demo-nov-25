@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WorkerNav } from "@/components/WorkerNav";
+import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Filter } from "lucide-react";
 
 const mockTasks = [
@@ -24,6 +25,7 @@ export default function WorkerTasks() {
 
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
+      <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3 mb-4">

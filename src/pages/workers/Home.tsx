@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Scan, Droplets, StickyNote, CheckCircle2, AlertCircle, Package, MapPin, ListTodo } from "lucide-react";
 import { WorkerNav } from "@/components/WorkerNav";
+import { DevBar } from "@/components/DevBar";
 
 export default function WorkerHome() {
   const notifications = [
@@ -12,6 +13,7 @@ export default function WorkerHome() {
 
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
+      <DevBar />
       {/* Intro Header */}
       <header className="bg-gradient-to-br from-[#3B7A57] to-[#81C784] text-white p-6 pb-8">
         <h1 className="text-2xl font-semibold mb-1">Kia ora, Alex 👋</h1>

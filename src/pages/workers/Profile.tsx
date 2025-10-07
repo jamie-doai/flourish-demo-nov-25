@@ -3,11 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { WorkerNav } from "@/components/WorkerNav";
+import { DevBar } from "@/components/DevBar";
 import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff } from "lucide-react";
 
 export default function WorkerProfile() {
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
+      <DevBar />
       <header className="bg-gradient-to-br from-[#3B7A57] to-[#81C784] text-white p-6 pb-12">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
