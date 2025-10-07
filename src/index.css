@@ -219,4 +219,23 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* High contrast borders for mobile/worker views */
+  @media (max-width: 768px) {
+    .card,
+    [class*="card"] {
+      @apply border-2;
+    }
+  }
+}
+
+@layer components {
+  /* Worker app specific high-contrast cards */
+  .worker-card {
+    @apply rounded-xl border-2 border-foreground/20 bg-card shadow-[var(--shadow-medium)] p-5;
+  }
+  
+  .worker-card:hover {
+    @apply shadow-[var(--shadow-soft)] border-foreground/30;
+  }
 }
