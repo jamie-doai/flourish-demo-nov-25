@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
+import { DevBar } from "@/components/DevBar";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-greenhouse.jpg";
 import { Sprout, CheckCircle, BarChart3, Users, Truck } from "lucide-react";
@@ -35,6 +36,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-secondary/30 to-background">
+      <DevBar />
       <Navigation />
 
       {/* Hero Section */}
