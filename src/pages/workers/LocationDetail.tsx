@@ -10,17 +10,23 @@ export default function WorkerLocationDetail() {
 
   const mockLocation = {
     id: locationId,
-    name: "Bay 01",
-    batches: 3,
-    capacity: 5,
-    percentage: 60,
-    totalPlants: 365,
+    name: "Propagation House 1",
+    type: "Climate Controlled",
+    batches: 4,
+    capacity: 6,
+    percentage: 67,
+    totalPlants: 470,
+    temperature: "18°C",
+    humidity: "65%",
+    lastMaintenance: "2025-09-28",
+    nextMaintenance: "2025-10-28",
   };
 
   const batchesInLocation = [
-    { id: "BATCH_MAN_WAI_01", species: "Mānuka", quantity: 120, stage: "Propagation" },
-    { id: "BATCH_KAN_SHA_02", species: "Kānuka", quantity: 150, stage: "Seedling" },
-    { id: "BATCH_PIT_POT_01", species: "Pittosporum", quantity: 95, stage: "Potting" },
+    { id: "MAN-2024-156", species: "Mānuka", scientificName: "Leptospermum scoparium", quantity: 120, stage: "Propagation", health: "Excellent" },
+    { id: "HAR-2024-142", species: "Harakeke", scientificName: "Phormium tenax", quantity: 85, stage: "Propagation", health: "Excellent" },
+    { id: "KAR-2024-123", species: "Karamū", scientificName: "Coprosma robusta", quantity: 60, stage: "Propagation", health: "Fair" },
+    { id: "KAH-2024-134", species: "Kahikatea", scientificName: "Dacrycarpus dacrydioides", quantity: 110, stage: "Propagation", health: "Good" },
   ];
 
   return (
@@ -40,8 +46,13 @@ export default function WorkerLocationDetail() {
 
       <main className="container mx-auto px-4 py-6">
         {/* Location Stats */}
-        <Card className="p-5 bg-white border-none shadow-sm mb-6">
+        <Card className="p-5 bg-white border-none shadow-sm mb-4">
+          <h3 className="text-sm font-semibold text-[#37474F] mb-3">Facility Overview</h3>
           <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Type</p>
+              <p className="text-sm text-[#37474F] font-semibold">{mockLocation.type}</p>
+            </div>
             <div>
               <p className="text-xs text-[#37474F]/60 mb-1">Batches</p>
               <p className="text-2xl text-[#37474F] font-semibold">{mockLocation.batches}/{mockLocation.capacity}</p>
@@ -50,14 +61,31 @@ export default function WorkerLocationDetail() {
               <p className="text-xs text-[#37474F]/60 mb-1">Total Plants</p>
               <p className="text-2xl text-[#37474F] font-semibold">{mockLocation.totalPlants}</p>
             </div>
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Capacity</p>
+              <p className="text-2xl text-[#37474F] font-semibold">{mockLocation.percentage}%</p>
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-[#37474F]/60">Capacity</span>
-              <span className="text-[#37474F] font-semibold">{mockLocation.percentage}%</span>
+          <Progress value={mockLocation.percentage} className="h-2 mb-4" />
+
+          <div className="pt-4 border-t border-[#3B7A57]/10 grid grid-cols-2 gap-4">
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Temperature</p>
+              <p className="text-sm text-[#37474F] font-semibold">🌡️ {mockLocation.temperature}</p>
             </div>
-            <Progress value={mockLocation.percentage} className="h-2" />
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Humidity</p>
+              <p className="text-sm text-[#37474F] font-semibold">💧 {mockLocation.humidity}</p>
+            </div>
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Last Maintenance</p>
+              <p className="text-sm text-[#37474F]">{mockLocation.lastMaintenance}</p>
+            </div>
+            <div>
+              <p className="text-xs text-[#37474F]/60 mb-1">Next Maintenance</p>
+              <p className="text-sm text-[#37474F]">{mockLocation.nextMaintenance}</p>
+            </div>
           </div>
         </Card>
 
@@ -68,18 +96,28 @@ export default function WorkerLocationDetail() {
             {batchesInLocation.map((batch) => (
               <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
                 <Card className="p-4 bg-white border-none shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className="text-base font-semibold text-[#37474F] mb-1">🌿 {batch.species}</h3>
-                      <p className="text-xs text-[#37474F]/40 mb-2">{batch.id}</p>
-                      <div className="flex items-center gap-4 text-sm">
-                        <span className="text-[#37474F]/60">
-                          <span className="font-medium text-[#37474F]">{batch.quantity}</span> trays
-                        </span>
-                        <span className="text-[#37474F]/60">
-                          Stage: <span className="font-medium text-[#37474F]">{batch.stage}</span>
-                        </span>
-                      </div>
+                      <p className="text-xs text-[#37474F]/60 mb-1">{batch.scientificName}</p>
+                      <p className="text-xs text-[#37474F]/40">{batch.id}</p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                      batch.health === "Excellent" ? "bg-green-100 text-green-700" :
+                      batch.health === "Good" ? "bg-blue-100 text-blue-700" :
+                      "bg-yellow-100 text-yellow-700"
+                    }`}>
+                      {batch.health}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <p className="text-[#37474F]/60 text-xs mb-1">Quantity</p>
+                      <p className="text-[#37474F] font-medium">{batch.quantity} plants</p>
+                    </div>
+                    <div>
+                      <p className="text-[#37474F]/60 text-xs mb-1">Stage</p>
+                      <p className="text-[#37474F] font-medium">{batch.stage}</p>
                     </div>
                   </div>
                 </Card>

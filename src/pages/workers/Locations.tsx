@@ -6,12 +6,12 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const mockLocations = [
-  { id: "bay-01", name: "Bay 01", batches: 3, capacity: 5, percentage: 60 },
-  { id: "bay-05", name: "Bay 05", batches: 4, capacity: 5, percentage: 80 },
-  { id: "shadehouse-a", name: "ShadeHouse A", batches: 2, capacity: 4, percentage: 50 },
-  { id: "potting-shed", name: "Potting Shed", batches: 1, capacity: 3, percentage: 33 },
-  { id: "block-12", name: "Block 12", batches: 5, capacity: 6, percentage: 83 },
-  { id: "dispatch-c", name: "Dispatch Pad C", batches: 0, capacity: 2, percentage: 0 },
+  { id: "prop-house-1", name: "Propagation House 1", batches: 4, capacity: 6, percentage: 67, type: "Climate Controlled", temperature: "18°C" },
+  { id: "prop-house-2", name: "Propagation House 2", batches: 3, capacity: 6, percentage: 50, type: "Climate Controlled", temperature: "19°C" },
+  { id: "shadehouse-a", name: "Shadehouse A", batches: 5, capacity: 6, percentage: 83, type: "Ambient", temperature: "21°C" },
+  { id: "shadehouse-b", name: "Shadehouse B", batches: 2, capacity: 6, percentage: 33, type: "Ambient", temperature: "20°C" },
+  { id: "potting-shed", name: "Potting Shed", batches: 2, capacity: 4, percentage: 50, type: "Work Area", temperature: "17°C" },
+  { id: "seed-store", name: "Seed Store", batches: 2, capacity: 3, percentage: 67, type: "Cold Storage", temperature: "12°C" },
 ];
 
 export default function WorkerLocations() {
@@ -44,9 +44,11 @@ export default function WorkerLocations() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <h3 className="text-base font-semibold text-[#37474F] mb-1">📍 {location.name}</h3>
-                    <p className="text-sm text-[#37474F]/60">
-                      {location.batches} of {location.capacity} batches
-                    </p>
+                    <p className="text-xs text-[#37474F]/60 mb-2">{location.type}</p>
+                    <div className="flex items-center gap-3 text-xs text-[#37474F]/70">
+                      <span>{location.batches} of {location.capacity} batches</span>
+                      <span>🌡️ {location.temperature}</span>
+                    </div>
                   </div>
                   <span className={`text-sm font-semibold ${getCapacityColor(location.percentage)}`}>
                     {location.percentage}%
