@@ -9,6 +9,8 @@ import Batches from "./pages/Batches";
 import Tasks from "./pages/Tasks";
 import Sales from "./pages/Sales";
 import Planning from "./pages/Planning";
+import WorkersView from "./pages/WorkersView";
+import ManagersView from "./pages/ManagersView";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/sales" element={<Sales />} />
           <Route path="/planning" element={<Planning />} />
+          <Route path="/workers" element={<WorkersView />} />
+          <Route path="/managers" element={<ManagersView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
