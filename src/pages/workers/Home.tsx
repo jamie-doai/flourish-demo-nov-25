@@ -22,7 +22,7 @@ export default function WorkerHome() {
 
       <main className="container mx-auto px-4 -mt-4">
         {/* Notifications/Alerts */}
-        <div className="mb-6">
+        <div className="mb-6 mt-8">
           <h2 className="text-xl font-semibold text-[#37474F] mb-3">Notifications</h2>
           <div className="space-y-2">
             {notifications.map((notification) => (
