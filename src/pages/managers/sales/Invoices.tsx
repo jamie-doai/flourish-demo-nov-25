@@ -33,15 +33,16 @@ export default function ManagerSalesInvoices() {
     <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
-      <SidebarProvider>
-        <div className="flex w-full">
-          <div className="hidden md:block">
-            <SalesSidebar />
-          </div>
-          <main className="flex-1 container mx-auto px-4 py-8">
-            <div className="mb-4">
-              <SidebarTrigger className="md:hidden" />
+      <div className="container mx-auto px-4 py-8">
+        <SidebarProvider>
+          <div className="flex gap-6">
+            <div className="hidden md:block">
+              <SalesSidebar />
             </div>
+            <main className="flex-1">
+              <div className="mb-4">
+                <SidebarTrigger className="md:hidden" />
+              </div>
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales">
             <Button variant="outline" size="sm">
@@ -158,9 +159,10 @@ export default function ManagerSalesInvoices() {
             </Card>
           ))}
         </div>
-          </main>
-        </div>
-      </SidebarProvider>
+            </main>
+          </div>
+        </SidebarProvider>
+      </div>
     </div>
   );
 }

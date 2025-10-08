@@ -16,15 +16,16 @@ export default function ManagerSettings() {
     <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
-      <SidebarProvider>
-        <div className="flex w-full">
-          <div className="hidden md:block">
-            <SettingsSidebar />
-          </div>
-          <main className="flex-1 container mx-auto px-4 py-8">
-            <div className="mb-4">
-              <SidebarTrigger className="md:hidden" />
+      <div className="container mx-auto px-4 py-8">
+        <SidebarProvider>
+          <div className="flex gap-6">
+            <div className="hidden md:block">
+              <SettingsSidebar />
             </div>
+            <main className="flex-1">
+              <div className="mb-4">
+                <SidebarTrigger className="md:hidden" />
+              </div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
           <p className="text-muted-foreground">Manage users, locations, species catalog, and system preferences</p>
@@ -97,9 +98,10 @@ export default function ManagerSettings() {
             </Card>
           </TabsContent>
         </Tabs>
-          </main>
-        </div>
-      </SidebarProvider>
+            </main>
+          </div>
+        </SidebarProvider>
+      </div>
     </div>
   );
 }
