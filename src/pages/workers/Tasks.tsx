@@ -9,13 +9,8 @@ import { Leaf, MapPin, Clock, Package } from "lucide-react";
 import { tasks } from "@/data";
 
 export default function WorkerTasks() {
-  const [filter, setFilter] = useState<"all" | "today" | "completed">("all");
 
-  const filteredTasks = tasks.filter(task => {
-    if (filter === "all") return task.status !== "completed";
-    if (filter === "today") return task.status === "today" || task.status === "overdue";
-    return task.status === "completed";
-  });
+  const filteredTasks = tasks.filter(task => task.status !== "completed");
 
   // Group tasks by location
   const groupedTasks = filteredTasks.reduce((acc, task) => {
@@ -32,34 +27,6 @@ export default function WorkerTasks() {
       <WorkerPageHeader 
         title="Tasks" 
         backTo="/workers"
-        actions={
-          <div className="flex gap-2">
-            <Button
-              variant={filter === "all" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter("all")}
-              className={filter === "all" ? "bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-base" : "text-base"}
-            >
-              All
-            </Button>
-            <Button
-              variant={filter === "today" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter("today")}
-              className={filter === "today" ? "bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-base" : "text-base"}
-            >
-              Today
-            </Button>
-            <Button
-              variant={filter === "completed" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilter("completed")}
-              className={filter === "completed" ? "bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-base" : "text-base"}
-            >
-              Completed
-            </Button>
-          </div>
-        }
       />
 
       <main className="container mx-auto px-4 py-6">
