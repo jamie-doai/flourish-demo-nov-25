@@ -30,11 +30,11 @@ export default function WorkerTasks() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3 mb-4">
             <Link to="/workers">
-              <Button variant="outline" size="icon" className="text-[#37474F]">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="outline" className="text-[#37474F]">
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Tasks
               </Button>
             </Link>
-            <h1 className="text-xl font-semibold text-[#37474F]">Tasks</h1>
           </div>
 
           <div className="flex gap-2">
