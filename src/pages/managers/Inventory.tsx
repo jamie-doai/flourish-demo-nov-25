@@ -5,12 +5,46 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf } from "lucide-react";
+import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout } from "lucide-react";
 import { useState } from "react";
 import { stages, batches, locations } from "@/data";
 
+interface SpeciesData {
+  species: string;
+  scientificName: string;
+  totalPlants: number;
+  batchCount: number;
+  health: string;
+  batches: typeof batches;
+}
+
 export default function ManagerInventory() {
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
+  const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
+
+  const getSpeciesData = (): SpeciesData[] => {
+    const speciesMap = new Map<string, SpeciesData>();
+    
+    batches.forEach(batch => {
+      if (!speciesMap.has(batch.species)) {
+        speciesMap.set(batch.species, {
+          species: batch.species,
+          scientificName: batch.scientificName,
+          totalPlants: 0,
+          batchCount: 0,
+          health: batch.health,
+          batches: []
+        });
+      }
+      
+      const speciesData = speciesMap.get(batch.species)!;
+      speciesData.totalPlants += batch.quantity;
+      speciesData.batchCount += 1;
+      speciesData.batches.push(batch);
+    });
+    
+    return Array.from(speciesMap.values()).sort((a, b) => a.species.localeCompare(b.species));
+  };
 
   const getStageStats = (stageId: string) => {
     const stageBatches = batches.filter(b => b.stage === stageId);
@@ -28,6 +62,109 @@ export default function ManagerInventory() {
       batchList: stageBatches
     };
   };
+
+  if (selectedSpecies) {
+    const speciesData = getSpeciesData().find(s => s.species === selectedSpecies);
+    
+    return (
+      <div className="min-h-screen bg-background">
+        <DevBar />
+        <Navigation />
+        <main className="container mx-auto px-4 py-8">
+          <div className="mb-6">
+            <Button 
+              variant="ghost" 
+              onClick={() => setSelectedSpecies(null)}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Species
+            </Button>
+            
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Sprout className="w-8 h-8 text-primary" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">{speciesData?.species}</h1>
+                <p className="text-muted-foreground">{speciesData?.scientificName}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Species Overview Stats */}
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <Card className="p-4">
+              <div className="text-sm text-muted-foreground mb-1">Total Plants</div>
+              <div className="text-2xl font-bold">{speciesData?.totalPlants.toLocaleString()}</div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-sm text-muted-foreground mb-1">Active Batches</div>
+              <div className="text-2xl font-bold">{speciesData?.batchCount}</div>
+            </Card>
+            <Card className="p-4">
+              <div className="text-sm text-muted-foreground mb-1">Overall Health</div>
+              <div className="text-2xl font-bold">{speciesData?.health}</div>
+            </Card>
+          </div>
+
+          {/* Batches for this Species */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Batches of {speciesData?.species}</h2>
+            <div className="space-y-4">
+              {speciesData?.batches.map((batch) => (
+                <Card 
+                  key={batch.id} 
+                  className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Leaf className="w-5 h-5 text-primary" />
+                        <h3 className="text-lg font-semibold">{batch.id}</h3>
+                        {batch.urgent && (
+                          <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                            Urgent
+                          </span>
+                        )}
+                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                          batch.health === "Excellent" ? "bg-green-100 text-green-700" :
+                          batch.health === "Good" ? "bg-blue-100 text-blue-700" :
+                          "bg-yellow-100 text-yellow-700"
+                        }`}>
+                          {batch.health}
+                        </span>
+                      </div>
+                      
+                      <div className="grid grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Stage: </span>
+                          <span className="font-medium capitalize">{batch.stage}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Location: </span>
+                          <span className="font-medium">📍 {batch.location}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Quantity: </span>
+                          <span className="font-medium">{batch.quantity} plants</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Started: </span>
+                          <span className="font-medium">{batch.started}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button variant="ghost" size="sm">View Details</Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   if (selectedStage) {
     const stage = stages.find(s => s.id === selectedStage);
@@ -159,10 +296,14 @@ export default function ManagerInventory() {
         </div>
 
         <Tabs defaultValue="stages" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="stages">
               <Layers className="w-4 h-4 mr-2" />
               Stages
+            </TabsTrigger>
+            <TabsTrigger value="species">
+              <Sprout className="w-4 h-4 mr-2" />
+              Species
             </TabsTrigger>
             <TabsTrigger value="batches">
               <Package className="w-4 h-4 mr-2" />
@@ -205,6 +346,43 @@ export default function ManagerInventory() {
                   </Card>
                 );
               })}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="species" className="space-y-4">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {getSpeciesData().map((species) => (
+                <Card 
+                  key={species.species} 
+                  className="p-6 hover:shadow-lg transition-all cursor-pointer group"
+                  onClick={() => setSelectedSpecies(species.species)}
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                      <Sprout className="w-6 h-6 text-primary" />
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold">{species.batchCount}</div>
+                      <div className="text-xs text-muted-foreground">Batches</div>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-1">{species.species}</h3>
+                  <p className="text-sm text-muted-foreground mb-3 italic">{species.scientificName}</p>
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    <p>{species.totalPlants.toLocaleString()} plants</p>
+                    <p className={`inline-block px-2 py-1 text-xs rounded-full font-medium ${
+                      species.health === "Excellent" ? "bg-green-100 text-green-700" :
+                      species.health === "Good" ? "bg-blue-100 text-blue-700" :
+                      "bg-yellow-100 text-yellow-700"
+                    }`}>
+                      {species.health}
+                    </p>
+                  </div>
+                  <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                    View details →
+                  </div>
+                </Card>
+              ))}
             </div>
           </TabsContent>
 
