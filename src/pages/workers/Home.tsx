@@ -23,7 +23,7 @@ export default function WorkerHome() {
       <main className="container mx-auto px-4 -mt-4">
         {/* Notifications/Alerts */}
         <div className="mb-6">
-          <h2 className="text-base font-semibold text-[#37474F] mb-3">Notifications</h2>
+          <h2 className="text-xl font-semibold text-[#37474F] mb-3">Notifications</h2>
           <div className="space-y-2">
             {notifications.map((notification) => (
               <Card 
@@ -39,8 +39,8 @@ export default function WorkerHome() {
                     notification.type === "urgent" ? "text-orange-600" : "text-[#3B7A57]"
                   }`} />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-[#37474F]">{notification.message}</p>
-                    <p className="text-xs text-[#37474F]/60 mt-1">{notification.time}</p>
+                    <p className="text-base font-medium text-[#37474F]">{notification.message}</p>
+                    <p className="text-base text-[#37474F]/60 mt-1">{notification.time}</p>
                   </div>
                 </div>
               </Card>
@@ -50,7 +50,7 @@ export default function WorkerHome() {
 
         {/* Quick Actions */}
         <div className="mb-6">
-          <h2 className="text-base font-semibold text-[#37474F] mb-3">Quick Actions</h2>
+          <h2 className="text-xl font-semibold text-[#37474F] mb-3">Quick Actions</h2>
           <div className="grid grid-cols-3 gap-3">
             <Link to="/workers/scan">
               <Button 
@@ -58,7 +58,7 @@ export default function WorkerHome() {
                 className="w-full h-auto flex flex-col items-center gap-2 p-4 bg-white border-[#3B7A57]/20 hover:bg-[#3B7A57]/5"
               >
                 <Scan className="w-6 h-6 text-[#3B7A57]" />
-                <span className="text-xs font-medium text-[#37474F]">Scan</span>
+                <span className="text-base font-medium text-[#37474F]">Scan</span>
               </Button>
             </Link>
 
@@ -67,7 +67,7 @@ export default function WorkerHome() {
               className="w-full h-auto flex flex-col items-center gap-2 p-4 bg-white border-[#3B7A57]/20 hover:bg-[#3B7A57]/5"
             >
               <Droplets className="w-6 h-6 text-[#3B7A57]" />
-              <span className="text-xs font-medium text-[#37474F]">Water</span>
+              <span className="text-base font-medium text-[#37474F]">Water</span>
             </Button>
 
             <Button 
@@ -75,14 +75,14 @@ export default function WorkerHome() {
               className="w-full h-auto flex flex-col items-center gap-2 p-4 bg-white border-[#3B7A57]/20 hover:bg-[#3B7A57]/5"
             >
               <StickyNote className="w-6 h-6 text-[#3B7A57]" />
-              <span className="text-xs font-medium text-[#37474F]">Note</span>
+              <span className="text-base font-medium text-[#37474F]">Note</span>
             </Button>
           </div>
         </div>
 
         {/* Square Styled Navigation Links */}
         <div>
-          <h2 className="text-base font-semibold text-[#37474F] mb-3">Navigate</h2>
+          <h2 className="text-xl font-semibold text-[#37474F] mb-3">Navigate</h2>
           <div className="grid grid-cols-2 gap-4">
             <Link to="/workers/tasks">
               <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all">
