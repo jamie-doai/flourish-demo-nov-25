@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Navigation() {
@@ -83,8 +83,8 @@ export function Navigation() {
                   <span className="text-xs">Menu</span>
                 </button>
               </SheetTrigger>
-              <SheetContent side="right">
-                <div className="flex flex-col gap-4 mt-8">
+              <SheetContent side="right" className="flex flex-col">
+                <div className="flex flex-col gap-4 mt-8 flex-1">
                   {navItems.map((item) => (
                     <Link
                       key={item.path}
@@ -97,6 +97,15 @@ export function Navigation() {
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   ))}
+                </div>
+                
+                <div className="pb-4">
+                  <SheetClose asChild>
+                    <Button variant="outline" className="w-full">
+                      <X className="w-4 h-4 mr-2" />
+                      Close Menu
+                    </Button>
+                  </SheetClose>
                 </div>
               </SheetContent>
             </Sheet>

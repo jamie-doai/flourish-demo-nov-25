@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, CheckSquare, Scan, Package, User, Menu, MapPin } from "lucide-react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Home, CheckSquare, Scan, Package, User, Menu, MapPin, X } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 
 export function WorkerNav() {
   const location = useLocation();
@@ -68,8 +69,8 @@ export function WorkerNav() {
               <span className="text-xs font-medium">Menu</span>
             </button>
           </SheetTrigger>
-          <SheetContent side="right">
-            <div className="flex flex-col gap-4 mt-8">
+          <SheetContent side="right" className="flex flex-col">
+            <div className="flex flex-col gap-4 mt-8 flex-1">
               {menuItems.map((item) => {
                 const active = isActive(item.path);
                 return (
@@ -85,6 +86,15 @@ export function WorkerNav() {
                   </Link>
                 );
               })}
+            </div>
+            
+            <div className="pb-4">
+              <SheetClose asChild>
+                <Button variant="outline" className="w-full">
+                  <X className="w-4 h-4 mr-2" />
+                  Close Menu
+                </Button>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
