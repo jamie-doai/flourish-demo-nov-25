@@ -51,8 +51,8 @@ export default function ManagerReporting() {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="font-semibold text-lg">{batch.species}</h3>
-                        <Badge variant="secondary">{batch.id}</Badge>
+                        <h3 className="font-semibold text-lg">{batch.id}</h3>
+                        <Badge variant="secondary">{batch.species}</Badge>
                         <Badge className="bg-primary/10 text-primary">{batch.status}</Badge>
                       </div>
                       <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">

@@ -231,7 +231,7 @@ export default function ManagerInventory() {
                        <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <Leaf className="w-5 h-5 text-primary" />
-                          <h3 className="text-lg font-semibold">{batch.species}</h3>
+                          <h3 className="text-lg font-semibold">{batch.id}</h3>
                           {batch.urgent && (
                             <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                               Urgent
@@ -245,8 +245,8 @@ export default function ManagerInventory() {
                             {batch.health}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
-                        <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
+                        <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
+                        <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
                         
                         <div className="grid grid-cols-4 gap-4 text-sm">
                           <div>
@@ -404,7 +404,7 @@ export default function ManagerInventory() {
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <Leaf className="w-5 h-5 text-primary" />
-                          <h3 className="text-lg font-semibold">{batch.species}</h3>
+                          <h3 className="text-lg font-semibold">{batch.id}</h3>
                           {batch.urgent && (
                             <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                               Urgent
@@ -418,8 +418,8 @@ export default function ManagerInventory() {
                             {batch.health}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
-                        <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
+                        <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
+                        <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
                         
                         <div className="grid grid-cols-4 gap-4 text-sm">
                           <div>

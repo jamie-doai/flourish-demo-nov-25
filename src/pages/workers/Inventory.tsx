@@ -125,15 +125,15 @@ export default function WorkerInventory() {
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <Leaf className="w-5 h-5 text-[#3B7A57]" />
-                      <h3 className="text-base font-semibold text-[#37474F]">{batch.species}</h3>
+                      <h3 className="text-base font-semibold text-[#37474F]">{batch.id}</h3>
                       {batch.urgent && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                           Urgent
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-[#37474F] mb-1">{batch.scientificName}</p>
-                    <p className="text-xs text-[#37474F]">{batch.id}</p>
+                    <p className="text-xs text-[#37474F] mb-1">{batch.species}</p>
+                    <p className="text-xs text-[#37474F]">{batch.scientificName}</p>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded-full font-medium ${getHealthColor(batch.health)}`}>
                     {batch.health}

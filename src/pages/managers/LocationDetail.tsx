@@ -124,7 +124,7 @@ export default function ManagerLocationDetail() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <Leaf className="w-5 h-5 text-primary" />
-                      <h3 className="text-lg font-semibold">{batch.species}</h3>
+                      <h3 className="text-lg font-semibold">{batch.id}</h3>
                       <span className={`px-2 py-1 text-xs rounded-full font-medium ${
                         batch.health === "Excellent" ? "bg-green-100 text-green-700" :
                         batch.health === "Good" ? "bg-blue-100 text-blue-700" :
@@ -133,8 +133,8 @@ export default function ManagerLocationDetail() {
                         {batch.health}
                       </span>
                     </div>
-                    <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
-                    <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
+                    <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
+                    <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
                     
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
