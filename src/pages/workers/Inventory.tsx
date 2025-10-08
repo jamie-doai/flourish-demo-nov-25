@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { Search, Scan, Sprout, Leaf, FlowerIcon, TreePine, Package, DollarSign } from "lucide-react";
+import { Search, Scan, Sprout, Leaf as LeafIcon, FlowerIcon, TreePine, Package, DollarSign, MapPin } from "lucide-react";
 
 const stages = [
   { id: "seed", name: "Seed", icon: Sprout, color: "bg-amber-100 text-amber-700" },
-  { id: "propagation", name: "Propagation", icon: Leaf, color: "bg-green-100 text-green-700" },
+  { id: "propagation", name: "Propagation", icon: LeafIcon, color: "bg-green-100 text-green-700" },
   { id: "potting", name: "Potting", icon: FlowerIcon, color: "bg-blue-100 text-blue-700" },
   { id: "hardening", name: "Hardening", icon: TreePine, color: "bg-purple-100 text-purple-700" },
   { id: "ready", name: "Ready", icon: Package, color: "bg-teal-100 text-teal-700" },
@@ -64,7 +64,7 @@ export default function WorkerInventory() {
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
-      <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
+      <header className="bg-white border-b border-[#3B7A57]/10">
         <div className="container mx-auto px-4 py-4">
           <h1 className="text-xl font-semibold text-[#37474F] mb-4">Inventory</h1>
           
@@ -139,22 +139,23 @@ export default function WorkerInventory() {
         )}
 
         {/* Batches List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
               <Card className={`p-4 bg-white border-2 shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-semibold text-[#37474F]">🌿 {batch.species}</h3>
+                      <LeafIcon className="w-5 h-5 text-[#3B7A57]" />
+                      <h3 className="text-base font-semibold text-[#37474F]">{batch.species}</h3>
                       {batch.urgent && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                           Urgent
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-[#37474F]/60 mb-1">{batch.scientificName}</p>
-                    <p className="text-xs text-[#37474F]/40">{batch.id}</p>
+                    <p className="text-xs text-[#37474F] mb-1">{batch.scientificName}</p>
+                    <p className="text-xs text-[#37474F]">{batch.id}</p>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded-full font-medium ${getHealthColor(batch.health)}`}>
                     {batch.health}
@@ -163,11 +164,14 @@ export default function WorkerInventory() {
 
                 <div className="grid grid-cols-2 gap-3 text-sm mb-3">
                   <div>
-                    <p className="text-[#37474F]/60 text-xs mb-1">Location</p>
-                    <p className="text-[#37474F] font-medium text-sm">📍 {batch.location}</p>
+                    <p className="text-[#37474F] text-xs mb-1">Location</p>
+                    <div className="flex items-center gap-1">
+                      <MapPin className="w-4 h-4 text-[#37474F]" />
+                      <p className="text-[#37474F] font-medium text-sm">{batch.location}</p>
+                    </div>
                   </div>
                   <div>
-                    <p className="text-[#37474F]/60 text-xs mb-1">Stage</p>
+                    <p className="text-[#37474F] text-xs mb-1">Stage</p>
                     <div className="flex items-center gap-1">
                       {(() => {
                         const stage = stages.find(s => s.id === batch.stage);
@@ -182,16 +186,16 @@ export default function WorkerInventory() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-[#37474F]/60 text-xs mb-1">Quantity</p>
+                    <p className="text-[#37474F] text-xs mb-1">Quantity</p>
                     <p className="text-[#37474F] font-medium text-sm">{batch.quantity} plants</p>
                   </div>
                   <div>
-                    <p className="text-[#37474F]/60 text-xs mb-1">Container</p>
+                    <p className="text-[#37474F] text-xs mb-1">Container</p>
                     <p className="text-[#37474F] font-medium text-sm">{batch.container}</p>
                   </div>
                 </div>
 
-                <div className="text-xs text-[#37474F]/50">
+                <div className="text-xs text-[#37474F]">
                   Last watered: {batch.lastWatered}
                 </div>
               </Card>
@@ -201,7 +205,7 @@ export default function WorkerInventory() {
 
         {filteredBatches.length === 0 && (
           <div className="text-center py-20">
-            <p className="text-[#37474F]/60">No batches found</p>
+            <p className="text-base text-[#37474F]">No batches found</p>
           </div>
         )}
       </main>

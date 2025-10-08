@@ -11,7 +11,7 @@ interface WorkerPageHeaderProps {
 
 export function WorkerPageHeader({ title, backTo, actions }: WorkerPageHeaderProps) {
   return (
-    <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
+    <header className="bg-white border-b border-[#3B7A57]/10">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">

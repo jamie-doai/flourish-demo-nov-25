@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
+import { MapPin, Thermometer } from "lucide-react";
 
 const mockLocations = [
   { id: "prop-house-1", name: "Propagation House 1", batches: 4, capacity: 6, percentage: 67, type: "Climate Controlled", temperature: "18°C" },
@@ -33,11 +34,17 @@ export default function WorkerLocations() {
               <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-[#37474F] mb-1">📍 {location.name}</h3>
-                    <p className="text-base text-[#37474F]/60 mb-2">{location.type}</p>
-                    <div className="flex items-center gap-3 text-base text-[#37474F]/70">
+                    <div className="flex items-center gap-2 mb-1">
+                      <MapPin className="w-5 h-5 text-[#3B7A57]" />
+                      <h3 className="text-xl font-semibold text-[#37474F]">{location.name}</h3>
+                    </div>
+                    <p className="text-base text-[#37474F] mb-2">{location.type}</p>
+                    <div className="flex items-center gap-3 text-base text-[#37474F]">
                       <span>{location.batches} of {location.capacity} batches</span>
-                      <span>🌡️ {location.temperature}</span>
+                      <div className="flex items-center gap-1">
+                        <Thermometer className="w-4 h-4" />
+                        <span>{location.temperature}</span>
+                      </div>
                     </div>
                   </div>
                   <span className={`text-base font-semibold ${getCapacityColor(location.percentage)}`}>
@@ -47,7 +54,7 @@ export default function WorkerLocations() {
 
                 <div className="space-y-2">
                   <Progress value={location.percentage} className="h-2" />
-                  <p className="text-base text-[#37474F]/50">
+                  <p className="text-base text-[#37474F]">
                     {location.percentage >= 80 ? "Near capacity" : location.percentage >= 60 ? "Moderate use" : "Available space"}
                   </p>
                 </div>
