@@ -33,18 +33,18 @@ export function SectionLandingPage({
           <p className="text-muted-foreground">{description}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sections.map((section) => (
             <Link key={section.path} to={section.path}>
-              <Card className="p-6 hover:shadow-lg transition-all cursor-pointer group">
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-card-foreground/5 flex items-center justify-center ${section.color || 'text-primary'}`}>
-                    <section.icon className="w-6 h-6" />
+              <Card className="p-4 hover:shadow-lg transition-all cursor-pointer group">
+                <div className="flex items-start justify-between mb-3">
+                  <div className={`w-10 h-10 rounded-lg bg-card-foreground/5 flex items-center justify-center ${section.color || 'text-primary'}`}>
+                    <section.icon className="w-5 h-5" />
                   </div>
-                  <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{section.title}</h3>
-                <p className="text-muted-foreground text-sm">{section.description}</p>
+                <h3 className="text-lg font-semibold mb-1">{section.title}</h3>
+                <p className="text-muted-foreground text-xs">{section.description}</p>
               </Card>
             </Link>
           ))}
