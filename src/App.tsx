@@ -60,6 +60,7 @@ const App = () => (
           {/* Manager Routes */}
           <Route path="/managers" element={<ManagerDashboard />} />
           <Route path="/managers/inventory" element={<ManagerInventory />} />
+          <Route path="/managers/batch/:batchId" element={<WorkerBatchDetail />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
           <Route path="/managers/sales/quotes" element={<ManagerSalesQuotes />} />
           <Route path="/managers/sales/quotes/new" element={<CreateQuote />} />

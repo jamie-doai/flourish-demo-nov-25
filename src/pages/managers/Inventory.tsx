@@ -113,51 +113,52 @@ export default function ManagerInventory() {
             <h2 className="text-xl font-semibold mb-4">Batches of {speciesData?.species}</h2>
             <div className="space-y-4">
               {speciesData?.batches.map((batch) => (
-                <Card 
-                  key={batch.id} 
-                  className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Leaf className="w-5 h-5 text-primary" />
-                        <h3 className="text-lg font-semibold">{batch.id}</h3>
-                        {batch.urgent && (
-                          <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
-                            Urgent
+                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
+                  <Card 
+                    className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Leaf className="w-5 h-5 text-primary" />
+                          <h3 className="text-lg font-semibold">{batch.id}</h3>
+                          {batch.urgent && (
+                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                              Urgent
+                            </span>
+                          )}
+                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
+                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
+                            "bg-yellow-100 text-yellow-700"
+                          }`}>
+                            {batch.health}
                           </span>
-                        )}
-                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                          batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                          "bg-yellow-100 text-yellow-700"
-                        }`}>
-                          {batch.health}
-                        </span>
-                      </div>
-                      
-                      <div className="grid grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Stage: </span>
-                          <span className="font-medium capitalize">{batch.stage}</span>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground">Location: </span>
-                          <span className="font-medium">📍 {batch.location}</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Quantity: </span>
-                          <span className="font-medium">{batch.quantity} plants</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Started: </span>
-                          <span className="font-medium">{batch.started}</span>
+                        
+                        <div className="grid grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Stage: </span>
+                            <span className="font-medium capitalize">{batch.stage}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Location: </span>
+                            <span className="font-medium">📍 {batch.location}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Quantity: </span>
+                            <span className="font-medium">{batch.quantity} plants</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Started: </span>
+                            <span className="font-medium">{batch.started}</span>
+                          </div>
                         </div>
                       </div>
+                      <Button variant="ghost" size="sm">View Details</Button>
                     </div>
-                    <Button variant="ghost" size="sm">View Details</Button>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -222,55 +223,56 @@ export default function ManagerInventory() {
             <h2 className="text-xl font-semibold mb-4">Batches in {stage?.name}</h2>
         <div className="space-y-4">
               {stats.batchList.map((batch) => (
-                <Card 
-                  key={batch.id} 
-                  className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? `border-l-4 ${stage?.borderColor}` : ''}`}
-                >
-                  <div className="flex items-start justify-between">
-                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Leaf className="w-5 h-5 text-primary" />
-                        <h3 className="text-lg font-semibold">{batch.species}</h3>
-                        {batch.urgent && (
-                          <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
-                            Urgent
+                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
+                  <Card 
+                    className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? `border-l-4 ${stage?.borderColor}` : ''}`}
+                  >
+                    <div className="flex items-start justify-between">
+                       <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Leaf className="w-5 h-5 text-primary" />
+                          <h3 className="text-lg font-semibold">{batch.species}</h3>
+                          {batch.urgent && (
+                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                              Urgent
+                            </span>
+                          )}
+                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
+                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
+                            "bg-yellow-100 text-yellow-700"
+                          }`}>
+                            {batch.health}
                           </span>
-                        )}
-                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                          batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                          "bg-yellow-100 text-yellow-700"
-                        }`}>
-                          {batch.health}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
-                      <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
-                      
-                      <div className="grid grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Location: </span>
-                          <span className="font-medium">📍 {batch.location}</span>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground">Quantity: </span>
-                          <span className="font-medium">{batch.quantity} plants</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Started: </span>
-                          <span className="font-medium">{batch.started}</span>
-                        </div>
-                         <div>
-                           <span className="text-muted-foreground">Age: </span>
-                           <span className="font-medium">
-                             {Math.floor((new Date().getTime() - new Date(batch.started!).getTime()) / (1000 * 60 * 60 * 24))} days
-                           </span>
+                        <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
+                        <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
+                        
+                        <div className="grid grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Location: </span>
+                            <span className="font-medium">📍 {batch.location}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Quantity: </span>
+                            <span className="font-medium">{batch.quantity} plants</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Started: </span>
+                            <span className="font-medium">{batch.started}</span>
+                          </div>
+                           <div>
+                             <span className="text-muted-foreground">Age: </span>
+                             <span className="font-medium">
+                               {Math.floor((new Date().getTime() - new Date(batch.started!).getTime()) / (1000 * 60 * 60 * 24))} days
+                             </span>
+                          </div>
                         </div>
                       </div>
+                      <Button variant="ghost" size="sm">View Details</Button>
                     </div>
-                    <Button variant="ghost" size="sm">View Details</Button>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -396,50 +398,52 @@ export default function ManagerInventory() {
 
             <div className="space-y-3">
               {batches.map((batch) => (
-                <Card key={batch.id} className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Leaf className="w-5 h-5 text-primary" />
-                        <h3 className="text-lg font-semibold">{batch.species}</h3>
-                        {batch.urgent && (
-                          <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
-                            Urgent
+                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
+                  <Card className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <Leaf className="w-5 h-5 text-primary" />
+                          <h3 className="text-lg font-semibold">{batch.species}</h3>
+                          {batch.urgent && (
+                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                              Urgent
+                            </span>
+                          )}
+                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
+                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
+                            "bg-yellow-100 text-yellow-700"
+                          }`}>
+                            {batch.health}
                           </span>
-                        )}
-                        <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                          batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                          batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                          "bg-yellow-100 text-yellow-700"
-                        }`}>
-                          {batch.health}
-                        </span>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
-                      <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
-                      
-                      <div className="grid grid-cols-4 gap-4 text-sm">
-                        <div>
-                          <span className="text-muted-foreground">Stage: </span>
-                          <span className="font-medium capitalize">{batch.stage}</span>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground">Location: </span>
-                          <span className="font-medium">📍 {batch.location}</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Quantity: </span>
-                          <span className="font-medium">{batch.quantity} plants</span>
-                        </div>
-                        <div>
-                          <span className="text-muted-foreground">Started: </span>
-                          <span className="font-medium">{batch.started}</span>
+                        <p className="text-sm text-muted-foreground mb-1">{batch.scientificName}</p>
+                        <p className="text-xs text-muted-foreground mb-3">{batch.id}</p>
+                        
+                        <div className="grid grid-cols-4 gap-4 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Stage: </span>
+                            <span className="font-medium capitalize">{batch.stage}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Location: </span>
+                            <span className="font-medium">📍 {batch.location}</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Quantity: </span>
+                            <span className="font-medium">{batch.quantity} plants</span>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Started: </span>
+                            <span className="font-medium">{batch.started}</span>
+                          </div>
                         </div>
                       </div>
+                      <Button variant="ghost" size="sm">View Details</Button>
                     </div>
-                    <Button variant="ghost" size="sm">View Details</Button>
-                  </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </TabsContent>
