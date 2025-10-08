@@ -87,11 +87,8 @@ export default function WorkerHome() {
             <Link to="/workers/tasks">
               <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all">
                 <div className="aspect-square flex flex-col items-center justify-center p-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#3B7A57]/10 flex items-center justify-center mb-3">
-                    <ListTodo className="w-7 h-7 text-[#3B7A57]" />
-                  </div>
-                  <h3 className="text-base font-semibold text-[#37474F]">Tasks</h3>
-                  <p className="text-xs text-[#37474F]/60 mt-1 text-center">View all tasks</p>
+                  <ListTodo className="w-12 h-12 text-[#3B7A57] mb-4" />
+                  <h3 className="text-lg font-semibold text-[#37474F]">Tasks</h3>
                 </div>
               </Card>
             </Link>
@@ -99,26 +96,17 @@ export default function WorkerHome() {
             <Link to="/workers/locations">
               <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all">
                 <div className="aspect-square flex flex-col items-center justify-center p-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#81C784]/10 flex items-center justify-center mb-3">
-                    <MapPin className="w-7 h-7 text-[#3B7A57]" />
-                  </div>
-                  <h3 className="text-base font-semibold text-[#37474F]">Locations</h3>
-                  <p className="text-xs text-[#37474F]/60 mt-1 text-center">Browse areas</p>
+                  <MapPin className="w-12 h-12 text-[#3B7A57] mb-4" />
+                  <h3 className="text-lg font-semibold text-[#37474F]">Locations</h3>
                 </div>
               </Card>
             </Link>
 
             <Link to="/workers/inventory">
               <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all col-span-2">
-                <div className="flex items-center gap-4 p-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#3B7A57]/10 flex items-center justify-center flex-shrink-0">
-                    <Package className="w-7 h-7 text-[#3B7A57]" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-base font-semibold text-[#37474F]">Inventory</h3>
-                    <p className="text-xs text-[#37474F]/60 mt-1">Search batches & plants</p>
-                  </div>
-                  <CheckCircle2 className="w-5 h-5 text-[#3B7A57]/40" />
+                <div className="flex items-center justify-center gap-4 p-6">
+                  <Package className="w-12 h-12 text-[#3B7A57]" />
+                  <h3 className="text-lg font-semibold text-[#37474F]">Inventory</h3>
                 </div>
               </Card>
             </Link>
