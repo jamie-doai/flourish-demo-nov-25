@@ -54,6 +54,42 @@ export const tasks: Task[] = [
     status: "upcoming", 
     batch: "BATCH_KAR_BAY_05" 
   },
+  { 
+    id: "6", 
+    species: "Pōhutukawa", 
+    action: "Water propagation trays", 
+    location: "Bay 01", 
+    due: "9:00 AM", 
+    status: "completed", 
+    batch: "BATCH_POH_BAY_01" 
+  },
+  { 
+    id: "7", 
+    species: "Mānuka", 
+    action: "Transplant to larger pots", 
+    location: "Potting Shed", 
+    due: "10:30 AM", 
+    status: "completed", 
+    batch: "BATCH_MAN_POT_02" 
+  },
+  { 
+    id: "8", 
+    species: "Kawakawa", 
+    action: "Prune and shape", 
+    location: "Block 12", 
+    due: "1:00 PM", 
+    status: "completed", 
+    batch: "BATCH_KAW_BLK_03" 
+  },
+  { 
+    id: "9", 
+    species: "Harakeke", 
+    action: "Apply pest treatment", 
+    location: "Bay 05", 
+    due: "11:00 AM", 
+    status: "completed", 
+    batch: "BATCH_HAR_BAY_04" 
+  },
 ];
 
 export const getTaskById = (id: string): Task | undefined => {
