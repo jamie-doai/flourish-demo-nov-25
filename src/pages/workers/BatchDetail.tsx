@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
+import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -74,13 +75,16 @@ export default function WorkerBatchDetail() {
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
-            <Link to="/workers/inventory">
+            <Link to="/managers/inventory">
               <Button variant="outline" className="text-[#37474F]">
                 <ArrowLeft className="w-5 h-5 mr-2" />
-                {batchId}
+                Batches
               </Button>
             </Link>
           </div>
@@ -88,6 +92,11 @@ export default function WorkerBatchDetail() {
       </header>
 
       <main className="container mx-auto px-4 py-6">
+        {/* Batch Title */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-[#37474F] mb-1">{mockBatch.species}</h1>
+          <p className="text-sm text-[#37474F]/60">Batch ID: {mockBatch.id}</p>
+        </div>
         {/* Sale Status Alert */}
         {mockBatch.saleStatus && (
           <Card className={`p-4 mb-4 border-2 ${
@@ -125,11 +134,6 @@ export default function WorkerBatchDetail() {
         {/* Lifecycle Timeline */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>
-          
-          <div className="mb-4">
-            <Progress value={progressPercentage} className="h-2 mb-2" />
-            <p className="text-xs text-[#37474F]/60 text-right">{Math.round(progressPercentage)}% Complete</p>
-          </div>
 
           <div className="grid grid-cols-6 gap-2">
             {lifecycleStages.map((stage, index) => {
