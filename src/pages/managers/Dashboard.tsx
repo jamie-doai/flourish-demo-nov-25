@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Link } from "react-router-dom";
 import { 
   Package, 
@@ -12,7 +10,6 @@ import {
   ShoppingCart, 
   Filter,
   Plus,
-  ChevronDown,
   TrendingUp,
   AlertCircle,
   CheckCircle,
@@ -24,7 +21,6 @@ import {
 import { batches, locations, tasks, alerts, activityLogs, salesData } from "@/data";
 
 export default function ManagerDashboard() {
-  const [forecastOpen, setForecastOpen] = useState(false);
 
   // Calculate KPIs
   const totalPlants = batches.reduce((sum, batch) => sum + batch.quantity, 0);
@@ -322,51 +318,6 @@ export default function ManagerDashboard() {
           </Card>
         </section>
 
-        {/* 8. FORECAST & PLANNING */}
-        <section>
-          <Collapsible open={forecastOpen} onOpenChange={setForecastOpen}>
-            <CollapsibleTrigger asChild>
-              <Button variant="outline" className="w-full justify-between">
-                <span className="font-semibold">Forecast & Planning</span>
-                <ChevronDown className={`w-4 h-4 transition-transform ${forecastOpen ? "rotate-180" : ""}`} />
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3">
-              <Card className="p-4">
-                <div className="space-y-3">
-                  <p className="text-sm">
-                    <strong>Next week:</strong> 3 batches ready for potting
-                  </p>
-                  <div className="space-y-2">
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className="text-muted-foreground">Propagation Target</span>
-                        <span className="font-medium">85%</span>
-                      </div>
-                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                        <div className="h-full bg-primary" style={{ width: "85%" }}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className="text-muted-foreground">Forecasted Space Utilization</span>
-                        <span className="font-medium">78%</span>
-                      </div>
-                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                        <div className="h-full bg-green-600" style={{ width: "78%" }}></div>
-                      </div>
-                    </div>
-                  </div>
-                  <Link to="/managers/planning">
-                    <Button variant="outline" size="sm" className="w-full mt-2">
-                      View Full Plan
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
-            </CollapsibleContent>
-          </Collapsible>
-        </section>
       </main>
     </div>
   );
