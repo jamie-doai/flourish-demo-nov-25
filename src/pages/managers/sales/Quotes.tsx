@@ -60,10 +60,12 @@ export default function ManagerSalesQuotes() {
                 </SelectContent>
               </Select>
             </div>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              New Quote
-            </Button>
+            <Link to="/managers/sales/quotes/new">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                New Quote
+              </Button>
+            </Link>
           </div>
         </div>
 

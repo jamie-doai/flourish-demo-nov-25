@@ -19,6 +19,7 @@ import ManagerSalesQuotes from "./pages/managers/sales/Quotes";
 import ManagerSalesOrders from "./pages/managers/sales/Orders";
 import ManagerSalesInvoices from "./pages/managers/sales/Invoices";
 import ManagerSalesClients from "./pages/managers/sales/Clients";
+import CreateQuote from "./pages/managers/sales/CreateQuote";
 import QuoteDetail from "./pages/managers/sales/QuoteDetail";
 import OrderDetail from "./pages/managers/sales/OrderDetail";
 import InvoiceDetail from "./pages/managers/sales/InvoiceDetail";
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/managers/inventory" element={<ManagerInventory />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
           <Route path="/managers/sales/quotes" element={<ManagerSalesQuotes />} />
+          <Route path="/managers/sales/quotes/new" element={<CreateQuote />} />
           <Route path="/managers/sales/quotes/:quoteId" element={<QuoteDetail />} />
           <Route path="/managers/sales/orders" element={<ManagerSalesOrders />} />
           <Route path="/managers/sales/orders/:orderId" element={<OrderDetail />} />
