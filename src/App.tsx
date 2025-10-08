@@ -22,6 +22,7 @@ import ManagerOperations from "./pages/managers/Operations";
 import ManagerPlanning from "./pages/managers/Planning";
 import ManagerReporting from "./pages/managers/Reporting";
 import ManagerSettings from "./pages/managers/Settings";
+import ManagerLocationDetail from "./pages/managers/LocationDetail";
 import WorkerHome from "./pages/workers/Home";
 import WorkerTasks from "./pages/workers/Tasks";
 import WorkerTaskDetail from "./pages/workers/TaskDetail";
@@ -61,6 +62,7 @@ const App = () => (
           <Route path="/managers/planning" element={<ManagerPlanning />} />
           <Route path="/managers/reporting" element={<ManagerReporting />} />
           <Route path="/managers/settings" element={<ManagerSettings />} />
+          <Route path="/managers/locations/:locationId" element={<ManagerLocationDetail />} />
           
           {/* Worker Routes */}
           <Route path="/workers" element={<WorkerHome />} />
