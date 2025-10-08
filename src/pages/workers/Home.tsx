@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Scan, Droplets, StickyNote, CheckCircle2, AlertCircle, Package, MapPin, ListTodo } from "lucide-react";
+import { Scan, Droplets, StickyNote, CheckCircle2, AlertCircle, Package, MapPin, ListTodo, Sprout } from "lucide-react";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
 
@@ -16,7 +16,10 @@ export default function WorkerHome() {
       <DevBar />
       {/* Intro Header */}
       <header className="bg-background p-6 pb-8">
-        <h1 className="text-2xl font-semibold mb-1 text-foreground">Kia ora, Alex 👋</h1>
+        <div className="flex items-center gap-3 mb-1">
+          <Sprout className="w-8 h-8 text-primary" />
+          <h1 className="text-2xl font-semibold text-foreground">Kia ora, Alex 👋</h1>
+        </div>
         <p className="text-muted-foreground text-sm">Let's get growing today</p>
       </header>
 
