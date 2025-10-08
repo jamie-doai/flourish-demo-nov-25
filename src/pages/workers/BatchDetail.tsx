@@ -103,6 +103,68 @@ export default function WorkerBatchDetail() {
           </div>
           <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
         </div>
+
+        {/* Quick Actions */}
+        <div className="mb-6">
+          <h3 className="text-base font-semibold text-[#37474F] mb-3">Quick Actions</h3>
+          <div className="flex flex-wrap md:flex-nowrap gap-3">
+            <Button 
+              variant="outline"
+              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => handleAction("Watering")}
+            >
+              <Droplets className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Record Watering</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => handleAction("Treatment")}
+            >
+              <Sprout className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Add Treatment</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => handleAction("Photo")}
+            >
+              <Camera className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Add Photo</span>
+            </Button>
+
+            <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
+              <DialogTrigger asChild>
+                <Button 
+                  variant="outline"
+                  className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+                >
+                  <Move className="w-6 h-6 text-[#3B7A57]" />
+                  <span className="text-sm">Move Batch</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Move to Location</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-2 py-4">
+                  {locations.filter(loc => loc !== mockBatch.location).map((location) => (
+                    <Button
+                      key={location}
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleMove(location)}
+                    >
+                      📍 {location}
+                    </Button>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
         {/* Sale Status Alert */}
         {mockBatch.saleStatus && (
           <Card className={`p-4 mb-4 border-2 ${
@@ -248,67 +310,6 @@ export default function WorkerBatchDetail() {
           </p>
         </Card>
 
-        {/* Quick Actions */}
-        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
-          <h3 className="text-sm font-semibold text-[#37474F] mb-3">Quick Actions</h3>
-          <div className="grid grid-cols-2 gap-3">
-            <Button 
-              variant="outline"
-              className="h-auto flex flex-col items-center gap-2 p-4"
-              onClick={() => handleAction("Watering")}
-            >
-              <Droplets className="w-6 h-6 text-[#3B7A57]" />
-              <span className="text-sm">Record Watering</span>
-            </Button>
-
-            <Button 
-              variant="outline"
-              className="h-auto flex flex-col items-center gap-2 p-4"
-              onClick={() => handleAction("Treatment")}
-            >
-              <Sprout className="w-6 h-6 text-[#3B7A57]" />
-              <span className="text-sm">Add Treatment</span>
-            </Button>
-
-            <Button 
-              variant="outline"
-              className="h-auto flex flex-col items-center gap-2 p-4"
-              onClick={() => handleAction("Photo")}
-            >
-              <Camera className="w-6 h-6 text-[#3B7A57]" />
-              <span className="text-sm">Add Photo</span>
-            </Button>
-
-            <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-              <DialogTrigger asChild>
-                <Button 
-                  variant="outline"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
-                >
-                  <Move className="w-6 h-6 text-[#3B7A57]" />
-                  <span className="text-sm">Move Batch</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Move to Location</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-2 py-4">
-                  {locations.filter(loc => loc !== mockBatch.location).map((location) => (
-                    <Button
-                      key={location}
-                      variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => handleMove(location)}
-                    >
-                      📍 {location}
-                    </Button>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </Card>
 
         {/* Activity Log */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
