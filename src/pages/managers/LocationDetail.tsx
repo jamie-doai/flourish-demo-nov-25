@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf } from "lucide-react";
 import { getLocationById, getBatchesByLocation } from "@/data";
@@ -19,7 +18,6 @@ export default function ManagerLocationDetail() {
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
-      <Navigation />
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6">

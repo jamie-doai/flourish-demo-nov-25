@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +12,6 @@ export default function ManagerSettings() {
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
-      <Navigation />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>

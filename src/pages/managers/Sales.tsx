@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { SectionLandingPage } from "@/components/SectionLandingPage";
 import { FileText, ShoppingCart, Users } from "lucide-react";
@@ -34,10 +33,7 @@ export default function ManagerSales() {
       description="Manage quotes, orders, and client relationships"
       sections={sections}
       header={
-        <>
-          <DevBar />
-          <Navigation />
-        </>
+        <DevBar />
       }
     />
   );

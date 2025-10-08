@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,7 +42,6 @@ export default function ManagerDashboard() {
   return (
     <div className="min-h-screen bg-background pb-6">
       <DevBar />
-      <Navigation />
 
       {/* 1. HEADER */}
       <header className="sticky top-0 bg-background border-b z-10">
