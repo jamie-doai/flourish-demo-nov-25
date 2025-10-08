@@ -29,7 +29,7 @@ export function SalesSidebar() {
       : "hover:bg-muted/50";
 
   return (
-    <Sidebar className={`${collapsed ? "w-14" : "w-60"} mt-16`} collapsible="icon">
+    <Sidebar className={`${collapsed ? "w-14" : "w-60"}`} collapsible="none">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>

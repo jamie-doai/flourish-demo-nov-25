@@ -23,7 +23,7 @@ export function SettingsSidebar() {
   const collapsed = state === "collapsed";
 
   return (
-    <Sidebar className={`${collapsed ? "w-14" : "w-60"} mt-16`} collapsible="icon">
+    <Sidebar className={`${collapsed ? "w-14" : "w-60"}`} collapsible="none">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>
