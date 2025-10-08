@@ -37,7 +37,7 @@ export default function WorkerLocationDetail() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
             <Link to="/workers/locations">
-              <Button variant="ghost" size="icon" className="text-[#37474F]">
+              <Button variant="outline" size="icon" className="text-[#37474F]">
                 <ArrowLeft className="w-5 h-5" />
               </Button>
             </Link>
