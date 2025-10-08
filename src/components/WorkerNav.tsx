@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, CheckSquare, Scan, Package, User } from "lucide-react";
+import { Home, CheckSquare, Scan, Package, User, Menu, MapPin } from "lucide-react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 export function WorkerNav() {
   const location = useLocation();
@@ -9,6 +10,10 @@ export function WorkerNav() {
     { path: "/workers", label: "Home", icon: Home, exact: true },
     { path: "/workers/tasks", label: "Tasks", icon: CheckSquare },
     { path: "/workers/scan", label: "Scan", icon: Scan, highlight: true },
+    { path: "/workers/locations", label: "Locations", icon: MapPin },
+  ];
+
+  const menuItems = [
     { path: "/workers/inventory", label: "Inventory", icon: Package },
     { path: "/workers/profile", label: "Profile", icon: User },
   ];
@@ -54,6 +59,35 @@ export function WorkerNav() {
             </Link>
           );
         })}
+        
+        {/* Menu with Inventory and Profile */}
+        <Sheet>
+          <SheetTrigger asChild>
+            <button className="flex flex-col items-center justify-center gap-1 text-[#37474F]/50">
+              <Menu className="w-6 h-6" />
+              <span className="text-xs font-medium">Menu</span>
+            </button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <div className="flex flex-col gap-4 mt-8">
+              {menuItems.map((item) => {
+                const active = isActive(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
+                      active ? "bg-[#3B7A57]/10 text-[#3B7A57]" : "text-[#37474F]"
+                    }`}
+                  >
+                    <item.icon className="w-5 h-5" />
+                    <span className="font-medium">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </SheetContent>
+        </Sheet>
       </div>
     </nav>
   );
