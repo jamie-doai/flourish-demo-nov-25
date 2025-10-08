@@ -88,6 +88,40 @@ export default function WorkerBatchDetail() {
       </header>
 
       <main className="container mx-auto px-4 py-6">
+        {/* Sale Status Alert */}
+        {mockBatch.saleStatus && (
+          <Card className={`p-4 mb-4 border-2 ${
+            mockBatch.saleStatus === "ready-for-sale" 
+              ? "border-green-500 bg-green-50" 
+              : mockBatch.saleStatus === "on-order"
+              ? "border-blue-500 bg-blue-50"
+              : "border-orange-500 bg-orange-50"
+          }`}>
+            <div className="flex items-start gap-3">
+              <CheckCircle2 className={`w-5 h-5 mt-0.5 ${
+                mockBatch.saleStatus === "ready-for-sale" 
+                  ? "text-green-600" 
+                  : mockBatch.saleStatus === "on-order"
+                  ? "text-blue-600"
+                  : "text-orange-600"
+              }`} />
+              <div className="flex-1">
+                <p className="font-semibold text-base text-[#37474F] mb-1">
+                  {mockBatch.saleStatus === "ready-for-sale" && "Ready for Sale"}
+                  {mockBatch.saleStatus === "on-order" && "On Order"}
+                  {mockBatch.saleStatus === "reserved" && "Reserved for Customer"}
+                </p>
+                {mockBatch.customerName && (
+                  <p className="text-sm text-[#37474F]">Customer: {mockBatch.customerName}</p>
+                )}
+                {mockBatch.orderNumber && (
+                  <p className="text-sm text-[#37474F]">Order: {mockBatch.orderNumber}</p>
+                )}
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Lifecycle Timeline */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>

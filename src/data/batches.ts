@@ -18,6 +18,9 @@ export interface Batch {
   lastTreatment?: string;
   expectedReadyDate?: string;
   ageInDays?: number;
+  saleStatus?: "ready-for-sale" | "reserved" | "on-order" | null;
+  orderNumber?: string;
+  customerName?: string;
 }
 
 export const batches: Batch[] = [
@@ -51,7 +54,9 @@ export const batches: Batch[] = [
     urgent: false, 
     started: "2024-07-20",
     lastWatered: "2025-10-05",
-    container: "Individual pots"
+    container: "Individual pots",
+    saleStatus: "reserved",
+    customerName: "Green Gardens Ltd"
   },
   { 
     id: "HAR-2024-142", 
@@ -90,7 +95,8 @@ export const batches: Batch[] = [
     urgent: false, 
     started: "2024-06-15",
     lastWatered: "2025-10-05",
-    container: "Individual pots"
+    container: "Individual pots",
+    saleStatus: "ready-for-sale"
   },
   { 
     id: "KAR-2024-123", 
@@ -142,7 +148,10 @@ export const batches: Batch[] = [
     urgent: false, 
     started: "2024-07-25",
     lastWatered: "2025-10-05",
-    container: "Individual pots"
+    container: "Individual pots",
+    saleStatus: "on-order",
+    orderNumber: "ORD-2025-043",
+    customerName: "Urban Landscapes"
   },
   { 
     id: "KAU-2024-045", 
