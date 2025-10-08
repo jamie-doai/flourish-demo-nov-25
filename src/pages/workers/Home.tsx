@@ -15,9 +15,9 @@ export default function WorkerHome() {
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
       {/* Intro Header */}
-      <header className="bg-gradient-to-br from-[#3B7A57] to-[#81C784] text-white p-6 pb-8">
-        <h1 className="text-2xl font-semibold mb-1">Kia ora, Alex 👋</h1>
-        <p className="text-white/90 text-sm">Let's get growing today</p>
+      <header className="bg-background p-6 pb-8">
+        <h1 className="text-2xl font-semibold mb-1 text-foreground">Kia ora, Alex 👋</h1>
+        <p className="text-muted-foreground text-sm">Let's get growing today</p>
       </header>
 
       <main className="container mx-auto px-4 -mt-4">
