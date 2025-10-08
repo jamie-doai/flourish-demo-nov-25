@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -51,9 +52,14 @@ export default function ManagerDashboard() {
   return (
     <div className="min-h-screen bg-background pb-6">
       <DevBar />
+      
+      {/* Desktop Navigation */}
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
 
-      {/* Header */}
-      <header className="sticky top-0 bg-background border-b z-10">
+      {/* Header - Mobile only */}
+      <header className="md:hidden sticky top-0 bg-background border-b z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between gap-3">
             <div>
