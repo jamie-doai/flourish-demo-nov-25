@@ -32,9 +32,9 @@ export function WorkerNav() {
               <Link
                 key={item.path}
                 to={item.path}
-                className="flex flex-col items-center justify-center gap-1"
+                className="flex flex-col items-center justify-start pt-1 gap-1"
               >
-                <div className={`w-16 h-16 rounded-full flex items-center justify-center shadow-[var(--shadow-medium)] transition-all ${
+                <div className={`w-16 h-16 -mt-8 rounded-full flex items-center justify-center shadow-[var(--shadow-medium)] transition-all ${
                   active 
                     ? "bg-primary-alt text-white scale-110" 
                     : "bg-primary text-white hover:scale-105"
