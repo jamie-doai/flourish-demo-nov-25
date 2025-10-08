@@ -15,11 +15,11 @@ export default function ManagerSalesClients() {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex w-full">
           <div className="hidden md:block">
             <SalesSidebar />
           </div>
@@ -142,6 +142,6 @@ export default function ManagerSalesClients() {
           </main>
         </div>
       </SidebarProvider>
-    </>
+    </div>
   );
 }

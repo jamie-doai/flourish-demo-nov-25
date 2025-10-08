@@ -152,11 +152,11 @@ export default function CreateQuote() {
   const { subtotal, tax, total } = calculateTotals();
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex w-full">
           <div className="hidden md:block">
             <SalesSidebar />
           </div>
@@ -371,6 +371,6 @@ export default function CreateQuote() {
           </main>
         </div>
       </SidebarProvider>
-    </>
+    </div>
   );
 }

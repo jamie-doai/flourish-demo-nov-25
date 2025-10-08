@@ -13,11 +13,11 @@ export default function ManagerSettings() {
   const isDark = theme === "dark";
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex w-full">
           <div className="hidden md:block">
             <SettingsSidebar />
           </div>
@@ -100,6 +100,6 @@ export default function ManagerSettings() {
           </main>
         </div>
       </SidebarProvider>
-    </>
+    </div>
   );
 }

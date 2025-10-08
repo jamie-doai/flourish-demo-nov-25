@@ -90,11 +90,11 @@ export default function ManagerPlanning() {
   ];
 
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
+        <div className="flex w-full">
           <div className="hidden md:block">
             <PlanningSidebar />
           </div>
@@ -456,6 +456,6 @@ export default function ManagerPlanning() {
           </main>
         </div>
       </SidebarProvider>
-    </>
+    </div>
   );
 }
