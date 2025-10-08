@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,9 @@ export default function ManagerPlanning() {
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
       <DevBar />
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">

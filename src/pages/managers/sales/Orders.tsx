@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,9 @@ export default function ManagerSalesOrders() {
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
+      <div className="hidden md:block">
+        <Navigation />
+      </div>
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales">
