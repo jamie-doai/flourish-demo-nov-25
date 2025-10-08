@@ -4,10 +4,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ManagerSalesOrders() {
+  const navigate = useNavigate();
   const orders = [
     { id: "ORD-2025-045", client: "Green Gardens Ltd", items: 12, total: "$4,500", status: "Processing", date: "2025-01-21" },
     { id: "ORD-2025-044", client: "City Botanicals", items: 8, total: "$2,100", status: "Ready", date: "2025-01-20" },
@@ -40,9 +42,21 @@ export default function ManagerSalesOrders() {
         </div>
 
         <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Orders</h1>
-            <p className="text-muted-foreground">Track and manage customer orders</p>
+          <div className="flex items-center gap-4">
+            <div>
+              <h1 className="text-3xl font-bold mb-2">Orders</h1>
+              <p className="text-muted-foreground">Track and manage customer orders</p>
+            </div>
+            <Select value="orders" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select section" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="quotes">Quotes</SelectItem>
+                <SelectItem value="orders">Orders</SelectItem>
+                <SelectItem value="clients">Clients</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
