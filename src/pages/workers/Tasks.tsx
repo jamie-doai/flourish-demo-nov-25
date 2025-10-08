@@ -25,7 +25,7 @@ export default function WorkerTasks() {
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
       <WorkerPageHeader 
-        title="Tasks" 
+        title="Home" 
         backTo="/workers"
       />
 
