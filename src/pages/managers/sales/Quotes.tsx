@@ -1,4 +1,3 @@
-import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,19 +27,18 @@ export default function ManagerSalesQuotes() {
   return (
     <div className="min-h-screen bg-background">
       <DevBar />
-      <Navigation />
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales">
-            <Button variant="ghost" size="sm">
+            <Button variant="outline" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Sales
             </Button>
           </Link>
         </div>
 
-        <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
+        <div className="mb-8">
+          <div className="flex items-center gap-4 mb-4">
             <div>
               <h1 className="text-3xl font-bold mb-2">Quotes</h1>
               <p className="text-muted-foreground">Manage and track sales quotes</p>
