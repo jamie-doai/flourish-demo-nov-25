@@ -5,15 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Camera, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Camera, CheckCircle2, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function WorkerTaskDetail() {
   const { taskId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [note, setNote] = useState("");
-  const [started, setStarted] = useState(false);
+  const [isComplete, setIsComplete] = useState(false);
+  const [showNotesDialog, setShowNotesDialog] = useState(false);
 
   const mockTask = {
     id: taskId,
@@ -24,7 +32,12 @@ export default function WorkerTaskDetail() {
     quantity: "120 trays",
     assignedTo: "Alex",
     priority: "High",
-    instructions: "Use overhead spray system. Ensure even coverage across all trays. Check soil moisture before and after watering."
+    instructions: [
+      "Use overhead spray system",
+      "Ensure even coverage across all trays",
+      "Check soil moisture before and after watering",
+      "Monitor for any signs of overwatering or dry spots"
+    ]
   };
 
   const handleComplete = () => {
@@ -52,18 +65,20 @@ export default function WorkerTaskDetail() {
       </header>
 
       <main className="container mx-auto px-4 py-6">
+        {/* Task Title */}
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-[#37474F] mb-2">{mockTask.action}</h1>
+          <div className="flex items-center gap-2">
+            <span className="text-base text-[#37474F]">🌿 {mockTask.species}</span>
+            <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm rounded-full font-medium">
+              High Priority
+            </span>
+          </div>
+        </div>
+
         {/* Task Info Card */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
-          <div className="mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-lg font-semibold text-[#37474F]">🌿 {mockTask.species}</span>
-              <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
-                High Priority
-              </span>
-            </div>
-            <p className="text-base text-[#37474F] font-medium mb-3">{mockTask.action}</p>
-          </div>
-
+          <h3 className="text-base font-semibold text-[#37474F] mb-3">Task Details</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-[#37474F]/60">Location</span>
@@ -86,45 +101,90 @@ export default function WorkerTaskDetail() {
 
         {/* Instructions */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
-          <h3 className="text-sm font-semibold text-[#37474F] mb-2">Instructions</h3>
-          <p className="text-sm text-[#37474F]/70 leading-relaxed">{mockTask.instructions}</p>
+          <h3 className="text-base font-semibold text-[#37474F] mb-4">Instructions</h3>
+          <ul className="space-y-3">
+            {mockTask.instructions.map((instruction, index) => (
+              <li key={index} className="flex gap-3">
+                <span className="text-[#37474F] font-medium">•</span>
+                <span className="text-base text-[#37474F] leading-relaxed">{instruction}</span>
+              </li>
+            ))}
+          </ul>
         </Card>
 
-        {/* Notes Section */}
-        {started && (
-          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
-            <h3 className="text-sm font-semibold text-[#37474F] mb-3">Add Notes (Optional)</h3>
-            <Textarea
-              placeholder="Any observations or issues to note..."
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              className="mb-3 min-h-[100px]"
-            />
-            <Button variant="outline" className="w-full">
-              <Camera className="w-4 h-4 mr-2" />
-              Add Photo
-            </Button>
-          </Card>
-        )}
 
         {/* Action Buttons */}
         <div className="space-y-3">
-          {!started ? (
-            <Button 
-              onClick={() => setStarted(true)}
-              className="w-full h-12 bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white font-semibold"
-            >
-              Start Task
-            </Button>
-          ) : (
-            <Button 
-              onClick={handleComplete}
-              className="w-full h-12 bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white font-semibold"
-            >
-              <CheckCircle2 className="w-5 h-5 mr-2" />
-              Complete Task
-            </Button>
-          )}
+          {/* Task Complete Slider Button */}
+          <div 
+            onClick={() => {
+              if (!isComplete) {
+                setIsComplete(true);
+                handleComplete();
+              }
+            }}
+            className={`relative w-full h-14 rounded-full border-2 transition-all cursor-pointer ${
+              isComplete 
+                ? "bg-[#3B7A57] border-[#3B7A57]" 
+                : "bg-white border-[#37474F]/30 hover:border-[#3B7A57]"
+            }`}
+          >
+            <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${
+              isComplete ? "opacity-100" : "opacity-0"
+            }`}>
+              <CheckCircle2 className="w-5 h-5 text-white mr-2" />
+              <span className="text-white font-semibold">Task Completed!</span>
+            </div>
+            <div className={`absolute inset-0 flex items-center transition-all ${
+              isComplete ? "opacity-0 translate-x-full" : "opacity-100 translate-x-0"
+            }`}>
+              <div className="absolute left-1 top-1 bottom-1 w-20 bg-[#3B7A57] rounded-full flex items-center justify-center">
+                <span className="text-white font-semibold text-sm">Slide</span>
+              </div>
+              <div className="flex-1 flex items-center justify-center">
+                <span className="text-[#37474F] font-semibold">Task Complete</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Add Notes Button */}
+          <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full h-12 border-2 border-[#37474F]/30 hover:border-[#3B7A57] text-[#37474F]">
+                <FileText className="w-5 h-5 mr-2" />
+                Add Notes
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-white">
+              <DialogHeader>
+                <DialogTitle>Add Notes</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <Textarea
+                  placeholder="Any observations or issues to note..."
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                  className="min-h-[120px]"
+                />
+                <Button variant="outline" className="w-full">
+                  <Camera className="w-4 h-4 mr-2" />
+                  Add Photo
+                </Button>
+                <Button 
+                  onClick={() => {
+                    toast({
+                      title: "Notes saved 📝",
+                      description: "Your notes have been recorded",
+                    });
+                    setShowNotesDialog(false);
+                  }}
+                  className="w-full bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white"
+                >
+                  Save Notes
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </main>
 
