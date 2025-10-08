@@ -43,9 +43,7 @@ export default function ManagerSales() {
       header={
         <>
           <DevBar />
-          <div className="hidden md:block">
-            <Navigation />
-          </div>
+          <Navigation />
         </>
       }
     />

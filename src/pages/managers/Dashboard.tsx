@@ -53,10 +53,7 @@ export default function ManagerDashboard() {
     <div className="min-h-screen bg-background pb-6">
       <DevBar />
       
-      {/* Desktop Navigation */}
-      <div className="hidden md:block">
-        <Navigation />
-      </div>
+      <Navigation />
 
       {/* Header - Mobile only */}
       <header className="md:hidden sticky top-0 bg-background border-b z-10">
