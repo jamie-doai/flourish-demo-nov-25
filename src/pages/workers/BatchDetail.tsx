@@ -94,8 +94,8 @@ export default function WorkerBatchDetail() {
       <main className="container mx-auto px-4 py-6">
         {/* Batch Title */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-[#37474F] mb-1">{mockBatch.species}</h1>
-          <p className="text-sm text-[#37474F]/60">Batch ID: {mockBatch.id}</p>
+          <h1 className="text-3xl font-bold text-[#37474F] mb-1">{mockBatch.id}</h1>
+          <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
         </div>
         {/* Sale Status Alert */}
         {mockBatch.saleStatus && (
