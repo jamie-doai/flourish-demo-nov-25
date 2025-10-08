@@ -336,7 +336,9 @@ export default function WorkerBatchDetail() {
         </Card>
       </main>
 
-      <WorkerNav />
+      <div className="md:hidden">
+        <WorkerNav />
+      </div>
     </div>
   );
 }
