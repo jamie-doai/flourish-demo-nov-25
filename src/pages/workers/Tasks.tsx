@@ -17,6 +17,15 @@ export default function WorkerTasks() {
     return task.status === "completed";
   });
 
+  // Group tasks by location
+  const groupedTasks = filteredTasks.reduce((acc, task) => {
+    if (!acc[task.location]) {
+      acc[task.location] = [];
+    }
+    acc[task.location].push(task);
+    return acc;
+  }, {} as Record<string, typeof tasks>);
+
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
@@ -54,44 +63,52 @@ export default function WorkerTasks() {
       />
 
       <main className="container mx-auto px-4 py-6">
-        <div className="space-y-4">
-          {filteredTasks.map((task) => (
-            <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-              <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Leaf className="w-5 h-5 text-[#3B7A57]" />
-                      <span className="text-xl font-semibold text-[#37474F]">{task.species}</span>
-                      <span className={`px-2 py-0.5 text-base rounded-full font-medium ${
-                        task.status === "overdue" 
-                          ? "bg-orange-100 text-orange-700"
-                          : task.status === "today"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}>
-                        {task.status === "overdue" ? "Overdue" : task.status === "today" ? "Today" : "Upcoming"}
-                      </span>
-                    </div>
-                    <p className="text-base text-[#37474F] mb-3 font-medium">{task.action}</p>
-                    <div className="flex items-center gap-3 text-base text-[#37474F] mb-2">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>{task.location}</span>
+        <div className="space-y-6">
+          {Object.entries(groupedTasks).map(([location, locationTasks]) => (
+            <div key={location} className="space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin className="w-5 h-5 text-[#3B7A57]" />
+                <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
+                <span className="text-sm text-[#37474F]/60">({locationTasks.length})</span>
+              </div>
+              
+              <div className="space-y-4">
+                {locationTasks.map((task) => (
+                  <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-xl font-semibold text-[#37474F]">
+                              {task.action} {task.batch}
+                            </span>
+                            <span className={`px-2 py-0.5 text-base rounded-full font-medium ${
+                              task.status === "overdue" 
+                                ? "bg-orange-100 text-orange-700"
+                                : task.status === "today"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-blue-100 text-blue-700"
+                            }`}>
+                              {task.status === "overdue" ? "Overdue" : task.status === "today" ? "Today" : "Upcoming"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-3 text-base text-[#37474F] mb-2">
+                            <div className="flex items-center gap-1">
+                              <Leaf className="w-4 h-4" />
+                              <span>{task.species}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              <span>{task.due}</span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{task.due}</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1 text-base text-[#37474F]">
-                      <Package className="w-4 h-4" />
-                      <p>{task.batch}</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </Link>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
 
