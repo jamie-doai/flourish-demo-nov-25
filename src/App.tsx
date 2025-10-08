@@ -29,11 +29,13 @@ import ManagerReporting from "./pages/managers/Reporting";
 import ManagerSettings from "./pages/managers/Settings";
 import ManagerLocationDetail from "./pages/managers/LocationDetail";
 import ManagerScan from "./pages/managers/Scan";
+import ManagerAddBatch from "./pages/managers/batches/AddBatch";
 import WorkerHome from "./pages/workers/Home";
 import WorkerTasks from "./pages/workers/Tasks";
 import WorkerTaskDetail from "./pages/workers/TaskDetail";
 import WorkerInventory from "./pages/workers/Inventory";
 import WorkerBatchDetail from "./pages/workers/BatchDetail";
+import WorkerAddBatch from "./pages/workers/AddBatch";
 import WorkerScan from "./pages/workers/Scan";
 import WorkerLocations from "./pages/workers/Locations";
 import WorkerLocationDetail from "./pages/workers/LocationDetail";
@@ -61,6 +63,7 @@ const App = () => (
           <Route path="/managers" element={<ManagerDashboard />} />
           <Route path="/managers/inventory" element={<ManagerInventory />} />
           <Route path="/managers/batch/:batchId" element={<WorkerBatchDetail />} />
+          <Route path="/managers/batches/add" element={<ManagerAddBatch />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
           <Route path="/managers/sales/quotes" element={<ManagerSalesQuotes />} />
           <Route path="/managers/sales/quotes/new" element={<CreateQuote />} />
@@ -83,6 +86,7 @@ const App = () => (
           <Route path="/workers/tasks/:taskId" element={<WorkerTaskDetail />} />
           <Route path="/workers/inventory" element={<WorkerInventory />} />
           <Route path="/workers/batch/:batchId" element={<WorkerBatchDetail />} />
+          <Route path="/workers/batches/add" element={<WorkerAddBatch />} />
           <Route path="/workers/scan" element={<WorkerScan />} />
           <Route path="/workers/locations" element={<WorkerLocations />} />
           <Route path="/workers/locations/:locationId" element={<WorkerLocationDetail />} />
