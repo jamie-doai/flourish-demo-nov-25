@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { SectionLandingPage } from "@/components/SectionLandingPage";
-import { FileText, ShoppingCart, Users } from "lucide-react";
+import { FileText, ShoppingCart, Users, Receipt } from "lucide-react";
 
 export default function ManagerSales() {
   const sections = [
@@ -18,6 +18,13 @@ export default function ManagerSales() {
       description: "Track and manage customer orders",
       path: "/managers/sales/orders",
       color: "text-blue-500"
+    },
+    {
+      title: "Invoices",
+      icon: Receipt,
+      description: "Generate and manage invoices from orders",
+      path: "/managers/sales/invoices",
+      color: "text-orange-500"
     },
     {
       title: "Clients",

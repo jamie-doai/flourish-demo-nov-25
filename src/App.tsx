@@ -17,7 +17,11 @@ import ManagerInventory from "./pages/managers/Inventory";
 import ManagerSales from "./pages/managers/Sales";
 import ManagerSalesQuotes from "./pages/managers/sales/Quotes";
 import ManagerSalesOrders from "./pages/managers/sales/Orders";
+import ManagerSalesInvoices from "./pages/managers/sales/Invoices";
 import ManagerSalesClients from "./pages/managers/sales/Clients";
+import QuoteDetail from "./pages/managers/sales/QuoteDetail";
+import OrderDetail from "./pages/managers/sales/OrderDetail";
+import InvoiceDetail from "./pages/managers/sales/InvoiceDetail";
 import ManagerOperations from "./pages/managers/Operations";
 import ManagerPlanning from "./pages/managers/Planning";
 import ManagerReporting from "./pages/managers/Reporting";
@@ -56,7 +60,11 @@ const App = () => (
           <Route path="/managers/inventory" element={<ManagerInventory />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
           <Route path="/managers/sales/quotes" element={<ManagerSalesQuotes />} />
+          <Route path="/managers/sales/quotes/:quoteId" element={<QuoteDetail />} />
           <Route path="/managers/sales/orders" element={<ManagerSalesOrders />} />
+          <Route path="/managers/sales/orders/:orderId" element={<OrderDetail />} />
+          <Route path="/managers/sales/invoices" element={<ManagerSalesInvoices />} />
+          <Route path="/managers/sales/invoices/:invoiceId" element={<InvoiceDetail />} />
           <Route path="/managers/sales/clients" element={<ManagerSalesClients />} />
           <Route path="/managers/operations" element={<ManagerOperations />} />
           <Route path="/managers/planning" element={<ManagerPlanning />} />

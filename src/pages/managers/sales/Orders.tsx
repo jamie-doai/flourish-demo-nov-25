@@ -56,6 +56,7 @@ export default function ManagerSalesOrders() {
               <SelectContent>
                 <SelectItem value="quotes">Quotes</SelectItem>
                 <SelectItem value="orders">Orders</SelectItem>
+                <SelectItem value="invoices">Invoices</SelectItem>
                 <SelectItem value="clients">Clients</SelectItem>
               </SelectContent>
             </Select>
