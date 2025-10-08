@@ -291,9 +291,11 @@ export default function ManagerInventory() {
             <h1 className="text-3xl font-bold mb-2">Inventory Management</h1>
             <p className="text-muted-foreground">Track batches across stages and locations</p>
           </div>
-          <Button variant="hero">
-            <Plus className="w-4 h-4" />
-            New Batch
+          <Button variant="hero" asChild>
+            <Link to="/managers/batches/add">
+              <Plus className="w-4 h-4" />
+              New Batch
+            </Link>
           </Button>
         </div>
 

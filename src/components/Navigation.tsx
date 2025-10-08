@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X } from "lucide-react";
+import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Navigation() {
@@ -29,6 +29,13 @@ export function Navigation() {
               </div>
               <span>Flourish</span>
             </Link>
+
+            <Button variant="hero" size="sm" asChild className="hidden lg:flex">
+              <Link to="/managers/batches/add">
+                <Plus className="w-4 h-4" />
+                Add Batch
+              </Link>
+            </Button>
 
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
