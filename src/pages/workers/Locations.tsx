@@ -25,7 +25,7 @@ export default function WorkerLocations() {
   return (
     <div className="min-h-screen bg-[#F8FAF9] pb-20">
       <DevBar />
-      <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
+      <header className="bg-white border-b border-[#3B7A57]/10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
             <Link to="/workers">
@@ -39,7 +39,7 @@ export default function WorkerLocations() {
       </header>
 
       <main className="container mx-auto px-4 py-6">
-        <div className="space-y-3">
+        <div className="space-y-4">
           {mockLocations.map((location) => (
             <Link key={location.id} to={`/workers/locations/${location.id}`}>
               <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
