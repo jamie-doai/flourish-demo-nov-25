@@ -6,36 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { Search, Scan, Sprout, Leaf as LeafIcon, FlowerIcon, TreePine, Package, DollarSign, MapPin } from "lucide-react";
-
-const stages = [
-  { id: "seed", name: "Seed", icon: Sprout, color: "bg-amber-100 text-amber-700" },
-  { id: "propagation", name: "Propagation", icon: LeafIcon, color: "bg-green-100 text-green-700" },
-  { id: "potting", name: "Potting", icon: FlowerIcon, color: "bg-blue-100 text-blue-700" },
-  { id: "hardening", name: "Hardening", icon: TreePine, color: "bg-purple-100 text-purple-700" },
-  { id: "ready", name: "Ready", icon: Package, color: "bg-teal-100 text-teal-700" },
-  { id: "sold", name: "Sold", icon: DollarSign, color: "bg-gray-100 text-gray-700" },
-];
-
-const mockBatches = [
-  { id: "MAN-2024-156", species: "Mānuka", scientificName: "Leptospermum scoparium", location: "Propagation House 1", stage: "propagation", quantity: 120, health: "Excellent", urgent: false, lastWatered: "2025-10-06", container: "Propagation trays" },
-  { id: "TOT-2024-089", species: "Tōtara", scientificName: "Podocarpus totara", location: "Shadehouse A", stage: "hardening", quantity: 200, health: "Good", urgent: false, lastWatered: "2025-10-05", container: "Individual pots" },
-  { id: "HAR-2024-142", species: "Harakeke", scientificName: "Phormium tenax", location: "Propagation House 2", stage: "propagation", quantity: 85, health: "Excellent", urgent: false, lastWatered: "2025-10-06", container: "Propagation trays" },
-  { id: "KOW-2024-201", species: "Kōwhai", scientificName: "Sophora microphylla", location: "Potting Shed", stage: "potting", quantity: 150, health: "Good", urgent: false, lastWatered: "2025-10-06", container: "Individual pots" },
-  { id: "POH-2024-178", species: "Pōhutukawa", scientificName: "Metrosideros excelsa", location: "Shadehouse B", stage: "ready", quantity: 95, health: "Excellent", urgent: false, lastWatered: "2025-10-05", container: "Individual pots" },
-  { id: "KAR-2024-123", species: "Karamū", scientificName: "Coprosma robusta", location: "Propagation House 1", stage: "propagation", quantity: 60, health: "Fair", urgent: true, lastWatered: "2025-10-04", container: "Propagation trays" },
-  { id: "RIM-2024-067", species: "Rimu", scientificName: "Dacrydium cupressinum", location: "Seed Store", stage: "seed", quantity: 300, health: "Good", urgent: false, lastWatered: "N/A", container: "Seed trays" },
-  { id: "KAH-2024-134", species: "Kahikatea", scientificName: "Dacrycarpus dacrydioides", location: "Propagation House 2", stage: "propagation", quantity: 110, health: "Good", urgent: false, lastWatered: "2025-10-06", container: "Propagation trays" },
-  { id: "PUR-2024-098", species: "Puriri", scientificName: "Vitex lucens", location: "Shadehouse A", stage: "hardening", quantity: 75, health: "Good", urgent: false, lastWatered: "2025-10-05", container: "Individual pots" },
-  { id: "KAU-2024-045", species: "Kauri", scientificName: "Agathis australis", location: "Seed Store", stage: "seed", quantity: 250, health: "Good", urgent: false, lastWatered: "N/A", container: "Seed trays" },
-  { id: "NGA-2024-187", species: "Ngaio", scientificName: "Myoporum laetum", location: "Potting Shed", stage: "potting", quantity: 130, health: "Good", urgent: false, lastWatered: "2025-10-06", container: "Individual pots" },
-];
+import { Search, Scan, MapPin, Leaf, Sprout } from "lucide-react";
+import { stages, batches } from "@/data";
 
 export default function WorkerInventory() {
   const [search, setSearch] = useState("");
   const [selectedStage, setSelectedStage] = useState("all");
 
-  const filteredBatches = mockBatches.filter(batch => {
+  const filteredBatches = batches.filter(batch => {
     const matchesSearch = batch.species.toLowerCase().includes(search.toLowerCase()) ||
       batch.id.toLowerCase().includes(search.toLowerCase()) ||
       batch.scientificName.toLowerCase().includes(search.toLowerCase()) ||
@@ -56,7 +34,7 @@ export default function WorkerInventory() {
   };
 
   const getStageStats = (stageId: string) => {
-    const stageBatches = mockBatches.filter(b => b.stage === stageId);
+    const stageBatches = batches.filter(b => b.stage === stageId);
     const totalPlants = stageBatches.reduce((sum, b) => sum + b.quantity, 0);
     return { batches: stageBatches.length, plants: totalPlants };
   };
@@ -145,8 +123,8 @@ export default function WorkerInventory() {
               <Card className={`p-4 bg-white border-2 shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <LeafIcon className="w-5 h-5 text-[#3B7A57]" />
+                      <div className="flex items-center gap-2 mb-1">
+                        <Leaf className="w-5 h-5 text-[#3B7A57]" />
                       <h3 className="text-base font-semibold text-[#37474F]">{batch.species}</h3>
                       {batch.urgent && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">

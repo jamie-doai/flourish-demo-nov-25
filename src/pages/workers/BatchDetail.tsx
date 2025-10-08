@@ -14,15 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-const lifecycleStages = [
-  { id: "seed", name: "Seed", icon: "🌱", completed: true },
-  { id: "propagation", name: "Propagation", icon: "🌿", completed: true },
-  { id: "potting", name: "Potting", icon: "🪴", completed: true },
-  { id: "hardening", name: "Hardening", icon: "🌳", completed: false },
-  { id: "ready", name: "Ready", icon: "📦", completed: false },
-  { id: "sold", name: "Sold", icon: "💰", completed: false },
-];
+import { lifecycleStages, getBatchById, getLocationNames } from "@/data";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -30,23 +22,20 @@ export default function WorkerBatchDetail() {
   const { toast } = useToast();
   const [showMoveDialog, setShowMoveDialog] = useState(false);
 
-  const mockBatch = {
-    id: batchId,
-    species: "Mānuka",
-    scientificName: "Leptospermum scoparium",
-    location: "Propagation House 1",
-    stage: "potting",
-    quantity: 120,
-    health: "Good",
-    plantedDate: "2024-08-15",
-    sourceLocation: "Coromandel Peninsula",
-    lastWatered: "2025-10-06 08:30 AM",
-    lastFertilized: "2025-10-01",
-    lastTreatment: "2025-09-28",
-    container: "Individual pots",
-    expectedReadyDate: "2025-11-15",
-    ageInDays: 52,
-  };
+  const mockBatch = getBatchById(batchId || "");
+  const locations = getLocationNames();
+
+  if (!mockBatch) {
+    return (
+      <div className="min-h-screen bg-[#F8FAF9] pb-20">
+        <DevBar />
+        <WorkerNav />
+        <div className="container mx-auto px-4 py-8">
+          <p>Batch not found</p>
+        </div>
+      </div>
+    );
+  }
 
   const environmentalData = {
     temperature: "18°C",
@@ -61,15 +50,6 @@ export default function WorkerBatchDetail() {
     { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
     { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
     { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
-  ];
-
-  const locations = [
-    "Propagation House 1",
-    "Propagation House 2", 
-    "Shadehouse A",
-    "Shadehouse B",
-    "Potting Shed",
-    "Seed Store"
   ];
 
   const handleAction = (action: string) => {

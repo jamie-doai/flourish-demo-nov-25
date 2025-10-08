@@ -5,15 +5,7 @@ import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { MapPin, Thermometer } from "lucide-react";
-
-const mockLocations = [
-  { id: "prop-house-1", name: "Propagation House 1", batches: 4, capacity: 6, percentage: 67, type: "Climate Controlled", temperature: "18°C" },
-  { id: "prop-house-2", name: "Propagation House 2", batches: 3, capacity: 6, percentage: 50, type: "Climate Controlled", temperature: "19°C" },
-  { id: "shadehouse-a", name: "Shadehouse A", batches: 5, capacity: 6, percentage: 83, type: "Ambient", temperature: "21°C" },
-  { id: "shadehouse-b", name: "Shadehouse B", batches: 2, capacity: 6, percentage: 33, type: "Ambient", temperature: "20°C" },
-  { id: "potting-shed", name: "Potting Shed", batches: 2, capacity: 4, percentage: 50, type: "Work Area", temperature: "17°C" },
-  { id: "seed-store", name: "Seed Store", batches: 2, capacity: 3, percentage: 67, type: "Cold Storage", temperature: "12°C" },
-];
+import { locations } from "@/data";
 
 export default function WorkerLocations() {
   const getCapacityColor = (percentage: number) => {
@@ -29,7 +21,7 @@ export default function WorkerLocations() {
 
       <main className="container mx-auto px-4 py-6">
         <div className="space-y-4">
-          {mockLocations.map((location) => (
+          {locations.map((location) => (
             <Link key={location.id} to={`/workers/locations/${location.id}`}>
               <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                 <div className="flex items-start justify-between mb-3">

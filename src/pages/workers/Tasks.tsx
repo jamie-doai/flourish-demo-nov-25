@@ -6,19 +6,12 @@ import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { Leaf, MapPin, Clock, Package } from "lucide-react";
-
-const mockTasks = [
-  { id: "1", species: "Mānuka", action: "Water Bay 01 batches", location: "Bay 01", due: "8:00 AM", status: "overdue", batch: "BATCH_MAN_WAI_01" },
-  { id: "2", species: "Harakeke", action: "Move to Bay 05", location: "Potting Shed", due: "2:00 PM", status: "today", batch: "BATCH_HAR_AKL_03" },
-  { id: "3", species: "Tōtara", action: "Apply fertilizer", location: "Block 12", due: "3:00 PM", status: "today", batch: "BATCH_TOT_FGR_04" },
-  { id: "4", species: "Kānuka", action: "Pot up seedlings", location: "ShadeHouse A", due: "Tomorrow", status: "upcoming", batch: "BATCH_KAN_SHA_02" },
-  { id: "5", species: "Karamū", action: "Check for pests", location: "Bay 05", due: "Tomorrow", status: "upcoming", batch: "BATCH_KAR_BAY_05" },
-];
+import { tasks } from "@/data";
 
 export default function WorkerTasks() {
   const [filter, setFilter] = useState<"all" | "today" | "completed">("all");
 
-  const filteredTasks = mockTasks.filter(task => {
+  const filteredTasks = tasks.filter(task => {
     if (filter === "all") return task.status !== "completed";
     if (filter === "today") return task.status === "today" || task.status === "overdue";
     return task.status === "completed";

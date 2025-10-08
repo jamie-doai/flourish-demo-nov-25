@@ -5,50 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Package, MapPin, Layers, Plus, Search, Sprout, Leaf, FlowerIcon, TreePine, DollarSign, ArrowLeft, Thermometer } from "lucide-react";
+import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf } from "lucide-react";
 import { useState } from "react";
-
-const stages = [
-  { id: "seed", name: "Seed", icon: Sprout, color: "bg-amber-100 text-amber-700", borderColor: "border-amber-500" },
-  { id: "propagation", name: "Propagation", icon: Leaf, color: "bg-green-100 text-green-700", borderColor: "border-green-500" },
-  { id: "potting", name: "Potting", icon: FlowerIcon, color: "bg-blue-100 text-blue-700", borderColor: "border-blue-500" },
-  { id: "hardening", name: "Hardening", icon: TreePine, color: "bg-purple-100 text-purple-700", borderColor: "border-purple-500" },
-  { id: "ready", name: "Ready", icon: Package, color: "bg-teal-100 text-teal-700", borderColor: "border-teal-500" },
-  { id: "sold", name: "Sold", icon: DollarSign, color: "bg-gray-100 text-gray-700", borderColor: "border-gray-500" },
-];
-
-const mockBatches = [
-  { id: "MAN-2024-156", species: "Mānuka", scientificName: "Leptospermum scoparium", location: "Propagation House 1", stage: "propagation", quantity: 120, health: "Excellent", urgent: false, started: "2024-08-15" },
-  { id: "TOT-2024-089", species: "Tōtara", scientificName: "Podocarpus totara", location: "Shadehouse A", stage: "hardening", quantity: 200, health: "Good", urgent: false, started: "2024-07-20" },
-  { id: "HAR-2024-142", species: "Harakeke", scientificName: "Phormium tenax", location: "Propagation House 2", stage: "propagation", quantity: 85, health: "Excellent", urgent: false, started: "2024-08-10" },
-  { id: "KOW-2024-201", species: "Kōwhai", scientificName: "Sophora microphylla", location: "Potting Shed", stage: "potting", quantity: 150, health: "Good", urgent: false, started: "2024-09-01" },
-  { id: "POH-2024-178", species: "Pōhutukawa", scientificName: "Metrosideros excelsa", location: "Shadehouse B", stage: "ready", quantity: 95, health: "Excellent", urgent: false, started: "2024-06-15" },
-  { id: "KAR-2024-123", species: "Karamū", scientificName: "Coprosma robusta", location: "Propagation House 1", stage: "propagation", quantity: 60, health: "Fair", urgent: true, started: "2024-08-25" },
-  { id: "RIM-2024-067", species: "Rimu", scientificName: "Dacrydium cupressinum", location: "Seed Store", stage: "seed", quantity: 300, health: "Good", urgent: false, started: "2024-09-10" },
-  { id: "KAH-2024-134", species: "Kahikatea", scientificName: "Dacrycarpus dacrydioides", location: "Propagation House 2", stage: "propagation", quantity: 110, health: "Good", urgent: false, started: "2024-08-18" },
-  { id: "PUR-2024-098", species: "Puriri", scientificName: "Vitex lucens", location: "Shadehouse A", stage: "hardening", quantity: 75, health: "Good", urgent: false, started: "2024-07-25" },
-  { id: "KAU-2024-045", species: "Kauri", scientificName: "Agathis australis", location: "Seed Store", stage: "seed", quantity: 250, health: "Good", urgent: false, started: "2024-09-15" },
-  { id: "NGA-2024-187", species: "Ngaio", scientificName: "Myoporum laetum", location: "Potting Shed", stage: "potting", quantity: 130, health: "Good", urgent: false, started: "2024-09-05" },
-];
-
-const locations = [
-  { id: "prop-house-1", name: "Propagation House 1", batches: 4, capacity: 67, plants: 470, type: "Climate Controlled", temperature: "18°C" },
-  { id: "prop-house-2", name: "Propagation House 2", batches: 3, capacity: 50, plants: 295, type: "Climate Controlled", temperature: "19°C" },
-  { id: "shadehouse-a", name: "Shadehouse A", batches: 5, capacity: 83, plants: 575, type: "Ambient", temperature: "21°C" },
-  { id: "shadehouse-b", name: "Shadehouse B", batches: 2, capacity: 33, plants: 195, type: "Ambient", temperature: "20°C" },
-  { id: "potting-shed", name: "Potting Shed", batches: 2, capacity: 50, plants: 280, type: "Work Area", temperature: "17°C" },
-  { id: "seed-store", name: "Seed Store", batches: 2, capacity: 67, plants: 550, type: "Cold Storage", temperature: "12°C" },
-];
+import { stages, batches, locations } from "@/data";
 
 export default function ManagerInventory() {
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
 
   const getStageStats = (stageId: string) => {
-    const stageBatches = mockBatches.filter(b => b.stage === stageId);
+    const stageBatches = batches.filter(b => b.stage === stageId);
     const totalPlants = stageBatches.reduce((sum, b) => sum + b.quantity, 0);
     const species = new Set(stageBatches.map(b => b.species)).size;
     const avgAge = Math.floor(stageBatches.reduce((sum, b) => {
-      const days = Math.floor((new Date().getTime() - new Date(b.started).getTime()) / (1000 * 60 * 60 * 24));
+      const days = Math.floor((new Date().getTime() - new Date(b.started!).getTime()) / (1000 * 60 * 60 * 24));
       return sum + days;
     }, 0) / stageBatches.length || 0);
     return { 
@@ -63,7 +32,7 @@ export default function ManagerInventory() {
   if (selectedStage) {
     const stage = stages.find(s => s.id === selectedStage);
     const stats = getStageStats(selectedStage);
-    const Icon = stage?.icon || Sprout;
+    const Icon = stage?.icon;
 
     return (
       <div className="min-h-screen bg-background">
@@ -121,9 +90,10 @@ export default function ManagerInventory() {
                   className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? `border-l-4 ${stage?.borderColor}` : ''}`}
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold">🌿 {batch.species}</h3>
+                        <Leaf className="w-5 h-5 text-primary" />
+                        <h3 className="text-lg font-semibold">{batch.species}</h3>
                         {batch.urgent && (
                           <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                             Urgent
@@ -153,11 +123,11 @@ export default function ManagerInventory() {
                           <span className="text-muted-foreground">Started: </span>
                           <span className="font-medium">{batch.started}</span>
                         </div>
-                        <div>
-                          <span className="text-muted-foreground">Age: </span>
-                          <span className="font-medium">
-                            {Math.floor((new Date().getTime() - new Date(batch.started).getTime()) / (1000 * 60 * 60 * 24))} days
-                          </span>
+                         <div>
+                           <span className="text-muted-foreground">Age: </span>
+                           <span className="font-medium">
+                             {Math.floor((new Date().getTime() - new Date(batch.started!).getTime()) / (1000 * 60 * 60 * 24))} days
+                           </span>
                         </div>
                       </div>
                     </div>
@@ -247,12 +217,13 @@ export default function ManagerInventory() {
             </div>
 
             <div className="space-y-3">
-              {mockBatches.map((batch) => (
+              {batches.map((batch) => (
                 <Card key={batch.id} className={`p-4 hover:shadow-md transition-shadow ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-semibold">🌿 {batch.species}</h3>
+                        <Leaf className="w-5 h-5 text-primary" />
+                        <h3 className="text-lg font-semibold">{batch.species}</h3>
                         {batch.urgent && (
                           <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
                             Urgent

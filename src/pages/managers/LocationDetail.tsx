@@ -5,29 +5,16 @@ import { Progress } from "@/components/ui/progress";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf } from "lucide-react";
+import { getLocationById, getBatchesByLocation } from "@/data";
 
 export default function ManagerLocationDetail() {
   const { locationId } = useParams();
+  const mockLocation = getLocationById(locationId || "");
+  const batchesInLocation = getBatchesByLocation(locationId || "");
 
-  const mockLocation = {
-    id: locationId,
-    name: "Propagation House 1",
-    type: "Climate Controlled",
-    batches: 4,
-    capacity: 67,
-    totalPlants: 470,
-    temperature: "18°C",
-    humidity: "65%",
-    lastMaintenance: "2025-09-28",
-    nextMaintenance: "2025-10-28",
-  };
-
-  const batchesInLocation = [
-    { id: "MAN-2024-156", species: "Mānuka", scientificName: "Leptospermum scoparium", quantity: 120, stage: "Propagation", health: "Excellent" },
-    { id: "HAR-2024-142", species: "Harakeke", scientificName: "Phormium tenax", quantity: 85, stage: "Propagation", health: "Excellent" },
-    { id: "KAR-2024-123", species: "Karamū", scientificName: "Coprosma robusta", quantity: 60, stage: "Propagation", health: "Fair" },
-    { id: "KAH-2024-134", species: "Kahikatea", scientificName: "Dacrycarpus dacrydioides", quantity: 110, stage: "Propagation", health: "Good" },
-  ];
+  if (!mockLocation) {
+    return <div>Location not found</div>;
+  }
 
   return (
     <div className="min-h-screen bg-background">
