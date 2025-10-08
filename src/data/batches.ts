@@ -1,3 +1,5 @@
+import { locations } from './locations';
+
 export interface Batch {
   id: string;
   species: string;
@@ -175,14 +177,15 @@ export const getBatchById = (id: string): Batch | undefined => {
 };
 
 export const getBatchesByLocation = (locationId: string): Batch[] => {
-  const locationName = locationId.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ');
+  // First, try to get the location name from the locations array
+  const location = locations.find(loc => loc.id === locationId);
   
-  return batches.filter(batch => 
-    batch.location.toLowerCase().replace(/\s+/g, '-') === locationId ||
-    batch.location === locationName
-  );
+  if (!location) {
+    return [];
+  }
+  
+  // Filter batches by matching location name
+  return batches.filter(batch => batch.location === location.name);
 };
 
 export const getBatchesByStage = (stage: string): Batch[] => {
