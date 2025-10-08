@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -94,7 +94,13 @@ export default function WorkerBatchDetail() {
       <main className="container mx-auto px-4 py-6">
         {/* Batch Title */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-[#37474F] mb-1">{mockBatch.id}</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-bold text-[#37474F]">{mockBatch.id}</h1>
+            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })}>
+              <Printer className="w-4 h-4 mr-2" />
+              Print Label
+            </Button>
+          </div>
           <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
         </div>
         {/* Sale Status Alert */}
