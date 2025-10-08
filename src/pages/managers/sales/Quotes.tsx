@@ -5,24 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Plus, ArrowLeft } from "lucide-react";
+import { Search, Plus, ArrowLeft, FileText } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { quotes } from "@/data";
 
 export default function ManagerSalesQuotes() {
   const navigate = useNavigate();
-  const quotes = [
-    { id: "Q-2025-012", client: "Green Gardens Ltd", total: "$2,450", status: "Pending", date: "2025-01-22" },
-    { id: "Q-2025-011", client: "Urban Landscapes", total: "$3,200", status: "Approved", date: "2025-01-20" },
-    { id: "Q-2025-010", client: "Fresh Herbs Co", total: "$1,850", status: "Sent", date: "2025-01-18" },
-  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Pending": return "bg-yellow-500/10 text-yellow-500";
-      case "Approved": return "bg-green-500/10 text-green-500";
-      case "Sent": return "bg-blue-500/10 text-blue-500";
+      case "draft": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+      case "sent": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+      case "accepted": return "bg-green-500/10 text-green-500 border-green-500/20";
+      case "declined": return "bg-red-500/10 text-red-500 border-red-500/20";
+      case "converted": return "bg-primary/10 text-primary border-primary/20";
       default: return "bg-muted text-muted-foreground";
     }
+  };
+
+  const getStatusLabel = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -40,34 +42,56 @@ export default function ManagerSalesQuotes() {
         </div>
 
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Quotes</h1>
-              <p className="text-muted-foreground">Manage and track sales quotes</p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Quotes</h1>
+                <p className="text-muted-foreground">Manage and track sales quotes</p>
+              </div>
+              <Select value="quotes" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="quotes">Quotes</SelectItem>
+                  <SelectItem value="orders">Orders</SelectItem>
+                  <SelectItem value="invoices">Invoices</SelectItem>
+                  <SelectItem value="clients">Clients</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <Select value="quotes" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="quotes">Quotes</SelectItem>
-                <SelectItem value="orders">Orders</SelectItem>
-                <SelectItem value="invoices">Invoices</SelectItem>
-                <SelectItem value="clients">Clients</SelectItem>
-              </SelectContent>
-            </Select>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              New Quote
+            </Button>
           </div>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            New Quote
-          </Button>
         </div>
 
         <div className="flex gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input placeholder="Search quotes..." className="pl-10" />
+            <Input placeholder="Search quotes by client, ID..." className="pl-10" />
           </div>
+        </div>
+
+        {/* Summary Stats */}
+        <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Quotes</div>
+            <div className="text-2xl font-bold">{quotes.length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Sent</div>
+            <div className="text-2xl font-bold">{quotes.filter(q => q.status === "sent").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Converted</div>
+            <div className="text-2xl font-bold">{quotes.filter(q => q.status === "converted").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Value</div>
+            <div className="text-2xl font-bold">${quotes.reduce((sum, q) => sum + q.total, 0).toLocaleString()}</div>
+          </Card>
         </div>
 
         <div className="space-y-4">
@@ -75,26 +99,40 @@ export default function ManagerSalesQuotes() {
             <Card key={quote.id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-4">
-                    <div className="font-semibold text-lg">{quote.id}</div>
-                    <Badge className={getStatusColor(quote.status)}>{quote.status}</Badge>
+                  <div className="flex items-center gap-4 mb-2">
+                    <FileText className="w-5 h-5 text-primary" />
+                    <div className="font-semibold text-lg">{quote.quoteNumber}</div>
+                    <Badge className={getStatusColor(quote.status)}>{getStatusLabel(quote.status)}</Badge>
+                    {quote.reserveStock && (
+                      <Badge variant="outline" className="text-xs">Stock Reserved</Badge>
+                    )}
                   </div>
-                  <div className="flex gap-6 mt-2 text-sm">
+                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
                     <div>
                       <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{quote.client}</span>
+                      <span className="font-medium">{quote.clientName}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Items: </span>
+                      <span className="font-medium">{quote.items.length}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">{quote.total}</span>
+                      <span className="font-medium text-primary">${quote.total.toLocaleString()}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Date: </span>
-                      <span>{quote.date}</span>
+                      <span className="text-muted-foreground">Created: </span>
+                      <span>{quote.dateCreated}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Expires: </span>
+                      <span>{quote.expiryDate}</span>
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">View Details</Button>
+                <Link to={`/managers/sales/quotes/${quote.id}`}>
+                  <Button variant="ghost" size="sm">View Details</Button>
+                </Link>
               </div>
             </Card>
           ))}

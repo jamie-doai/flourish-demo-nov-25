@@ -5,26 +5,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search, ArrowLeft, Receipt } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { invoices } from "@/data";
 
 export default function ManagerSalesInvoices() {
   const navigate = useNavigate();
-  const invoices = [
-    { id: "INV-2025-028", orderId: "ORD-2025-042", client: "Fresh Herbs Co", total: "$1,200", status: "Paid", date: "2025-01-19", dueDate: "2025-02-02" },
-    { id: "INV-2025-027", orderId: "ORD-2025-041", client: "Green Gardens Ltd", total: "$4,500", status: "Sent", date: "2025-01-18", dueDate: "2025-02-01" },
-    { id: "INV-2025-026", orderId: "ORD-2025-040", client: "Urban Landscapes", total: "$5,800", status: "Overdue", date: "2025-01-10", dueDate: "2025-01-24" },
-    { id: "INV-2025-025", orderId: "ORD-2025-039", client: "City Botanicals", total: "$2,100", status: "Draft", date: "2025-01-22", dueDate: "2025-02-05" },
-  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Paid": return "bg-green-500/10 text-green-500";
-      case "Sent": return "bg-blue-500/10 text-blue-500";
-      case "Overdue": return "bg-red-500/10 text-red-500";
-      case "Draft": return "bg-yellow-500/10 text-yellow-500";
+      case "draft": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+      case "sent": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+      case "paid": return "bg-green-500/10 text-green-500 border-green-500/20";
+      case "overdue": return "bg-red-500/10 text-red-500 border-red-500/20";
+      case "partial": return "bg-orange-500/10 text-orange-500 border-orange-500/20";
       default: return "bg-muted text-muted-foreground";
     }
+  };
+
+  const getStatusLabel = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
   };
 
   return (
@@ -42,30 +42,56 @@ export default function ManagerSalesInvoices() {
         </div>
 
         <div className="mb-8">
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Invoices</h1>
-              <p className="text-muted-foreground">Generate and manage invoices from approved orders</p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Invoices</h1>
+                <p className="text-muted-foreground">Generate and manage invoices from approved orders</p>
+              </div>
+              <Select value="invoices" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="quotes">Quotes</SelectItem>
+                  <SelectItem value="orders">Orders</SelectItem>
+                  <SelectItem value="invoices">Invoices</SelectItem>
+                  <SelectItem value="clients">Clients</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <Select value="invoices" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="quotes">Quotes</SelectItem>
-                <SelectItem value="orders">Orders</SelectItem>
-                <SelectItem value="invoices">Invoices</SelectItem>
-                <SelectItem value="clients">Clients</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
 
         <div className="flex gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input placeholder="Search invoices..." className="pl-10" />
+            <Input placeholder="Search invoices by client, ID..." className="pl-10" />
           </div>
+        </div>
+
+        {/* Summary Stats */}
+        <div className="grid md:grid-cols-5 gap-4 mb-6">
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Invoices</div>
+            <div className="text-2xl font-bold">{invoices.length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Paid</div>
+            <div className="text-2xl font-bold text-green-600">{invoices.filter(i => i.status === "paid").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Overdue</div>
+            <div className="text-2xl font-bold text-red-600">{invoices.filter(i => i.status === "overdue").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Invoiced</div>
+            <div className="text-2xl font-bold">${invoices.reduce((sum, i) => sum + i.total, 0).toLocaleString()}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Outstanding</div>
+            <div className="text-2xl font-bold">${invoices.reduce((sum, i) => sum + i.balanceDue, 0).toLocaleString()}</div>
+          </Card>
         </div>
 
         <div className="space-y-4">
@@ -73,30 +99,51 @@ export default function ManagerSalesInvoices() {
             <Card key={invoice.id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-4">
-                    <div className="font-semibold text-lg">{invoice.id}</div>
-                    <Badge className={getStatusColor(invoice.status)}>{invoice.status}</Badge>
+                  <div className="flex items-center gap-4 mb-2">
+                    <Receipt className="w-5 h-5 text-primary" />
+                    <div className="font-semibold text-lg">{invoice.invoiceNumber}</div>
+                    <Badge className={getStatusColor(invoice.status)}>{getStatusLabel(invoice.status)}</Badge>
+                    {invoice.linkedOrder && (
+                      <Badge variant="outline" className="text-xs">
+                        From {invoice.linkedOrder}
+                      </Badge>
+                    )}
+                    {invoice.xeroSync && (
+                      <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                        Xero Synced
+                      </Badge>
+                    )}
                   </div>
-                  <div className="flex gap-6 mt-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Order: </span>
-                      <span className="font-medium">{invoice.orderId}</span>
-                    </div>
+                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
                     <div>
                       <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{invoice.client}</span>
+                      <span className="font-medium">{invoice.clientName}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">{invoice.total}</span>
+                      <span className="font-medium text-primary">${invoice.total.toLocaleString()}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Balance Due: </span>
+                      <span className={`font-medium ${invoice.balanceDue > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+                        ${invoice.balanceDue.toLocaleString()}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Issued: </span>
+                      <span>{invoice.dateIssued}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Due: </span>
-                      <span>{invoice.dueDate}</span>
+                      <span className={invoice.status === "overdue" ? "text-red-600 font-medium" : ""}>
+                        {invoice.dueDate}
+                      </span>
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">View Details</Button>
+                <Link to={`/managers/sales/invoices/${invoice.id}`}>
+                  <Button variant="ghost" size="sm">View Details</Button>
+                </Link>
               </div>
             </Card>
           ))}

@@ -6,3 +6,7 @@ export * from './stages';
 export * from './alerts';
 export * from './activity';
 export * from './sales';
+export * from './quotes';
+export * from './orders';
+export * from './invoices';
+export * from './clients';

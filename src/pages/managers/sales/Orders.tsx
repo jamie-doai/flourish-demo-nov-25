@@ -5,25 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search, ArrowLeft, Package } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { orders } from "@/data";
 
 export default function ManagerSalesOrders() {
   const navigate = useNavigate();
-  const orders = [
-    { id: "ORD-2025-045", client: "Green Gardens Ltd", items: 12, total: "$4,500", status: "Processing", date: "2025-01-21" },
-    { id: "ORD-2025-044", client: "City Botanicals", items: 8, total: "$2,100", status: "Ready", date: "2025-01-20" },
-    { id: "ORD-2025-043", client: "Urban Landscapes", items: 15, total: "$5,800", status: "Dispatched", date: "2025-01-19" },
-    { id: "ORD-2025-042", client: "Fresh Herbs Co", items: 6, total: "$1,200", status: "Completed", date: "2025-01-18" },
-  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Processing": return "bg-yellow-500/10 text-yellow-500";
-      case "Ready": return "bg-green-500/10 text-green-500";
-      case "Dispatched": return "bg-blue-500/10 text-blue-500";
-      case "Completed": return "bg-primary/10 text-primary";
+      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
+      case "confirmed": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
+      case "dispatched": return "bg-green-500/10 text-green-500 border-green-500/20";
+      case "completed": return "bg-primary/10 text-primary border-primary/20";
       default: return "bg-muted text-muted-foreground";
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
+
+  const getDeliveryTypeLabel = (type: string) => {
+    switch (type) {
+      case "pickup": return "Pickup";
+      case "courier": return "Courier";
+      case "in-house": return "In-house";
+      default: return type;
     }
   };
 
@@ -42,30 +50,52 @@ export default function ManagerSalesOrders() {
         </div>
 
         <div className="mb-8">
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold mb-2">Orders</h1>
-              <p className="text-muted-foreground">Track and manage customer orders</p>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">Orders</h1>
+                <p className="text-muted-foreground">Track and manage customer orders</p>
+              </div>
+              <Select value="orders" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select section" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="quotes">Quotes</SelectItem>
+                  <SelectItem value="orders">Orders</SelectItem>
+                  <SelectItem value="invoices">Invoices</SelectItem>
+                  <SelectItem value="clients">Clients</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <Select value="orders" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Select section" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="quotes">Quotes</SelectItem>
-                <SelectItem value="orders">Orders</SelectItem>
-                <SelectItem value="invoices">Invoices</SelectItem>
-                <SelectItem value="clients">Clients</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
 
         <div className="flex gap-4 mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input placeholder="Search orders..." className="pl-10" />
+            <Input placeholder="Search orders by client, ID..." className="pl-10" />
           </div>
+        </div>
+
+        {/* Summary Stats */}
+        <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Orders</div>
+            <div className="text-2xl font-bold">{orders.length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Pending</div>
+            <div className="text-2xl font-bold">{orders.filter(o => o.status === "pending").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Dispatched</div>
+            <div className="text-2xl font-bold">{orders.filter(o => o.status === "dispatched").length}</div>
+          </Card>
+          <Card className="p-4">
+            <div className="text-sm text-muted-foreground mb-1">Total Value</div>
+            <div className="text-2xl font-bold">${orders.reduce((sum, o) => sum + o.total, 0).toLocaleString()}</div>
+          </Card>
         </div>
 
         <div className="space-y-4">
@@ -73,30 +103,42 @@ export default function ManagerSalesOrders() {
             <Card key={order.id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center gap-4">
-                    <div className="font-semibold text-lg">{order.id}</div>
-                    <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                  <div className="flex items-center gap-4 mb-2">
+                    <Package className="w-5 h-5 text-primary" />
+                    <div className="font-semibold text-lg">{order.orderNumber}</div>
+                    <Badge className={getStatusColor(order.status)}>{getStatusLabel(order.status)}</Badge>
+                    {order.linkedQuote && (
+                      <Badge variant="outline" className="text-xs">
+                        From {order.linkedQuote}
+                      </Badge>
+                    )}
                   </div>
-                  <div className="flex gap-6 mt-2 text-sm">
+                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
                     <div>
                       <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{order.client}</span>
+                      <span className="font-medium">{order.clientName}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Items: </span>
-                      <span className="font-medium">{order.items}</span>
+                      <span className="font-medium">{order.items.length}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Delivery: </span>
+                      <span className="font-medium">{getDeliveryTypeLabel(order.deliveryType)}</span>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">{order.total}</span>
+                      <span className="font-medium text-primary">${order.total.toLocaleString()}</span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Date: </span>
-                      <span>{order.date}</span>
+                      <span className="text-muted-foreground">Due: </span>
+                      <span>{order.deliveryDate || "TBC"}</span>
                     </div>
                   </div>
                 </div>
-                <Button variant="ghost" size="sm">View Details</Button>
+                <Link to={`/managers/sales/orders/${order.id}`}>
+                  <Button variant="ghost" size="sm">View Details</Button>
+                </Link>
               </div>
             </Card>
           ))}
