@@ -83,7 +83,7 @@ export default function WorkerTasks() {
                             <span className="text-xl font-semibold text-[#37474F]">
                               {task.action} {task.batch}
                             </span>
-                            <span className={`px-2 py-0.5 text-base rounded-full font-medium ${
+                            <span className={`px-4 py-1 text-base rounded-full font-medium ${
                               task.status === "overdue" 
                                 ? "bg-orange-100 text-orange-700"
                                 : task.status === "completed"
