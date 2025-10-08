@@ -1,5 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
+import { SalesSidebar } from "@/components/SalesSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -150,10 +152,18 @@ export default function CreateQuote() {
   const { subtotal, tax, total } = calculateTotals();
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <>
       <DevBar />
       <Navigation />
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          <div className="hidden md:block">
+            <SalesSidebar />
+          </div>
+          <main className="flex-1 container mx-auto px-4 py-8 max-w-6xl pb-20">
+            <div className="mb-4">
+              <SidebarTrigger className="md:hidden" />
+            </div>
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/quotes">
             <Button variant="outline" size="sm">
@@ -358,7 +368,9 @@ export default function CreateQuote() {
             Send to Client
           </Button>
         </div>
-      </main>
-    </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }

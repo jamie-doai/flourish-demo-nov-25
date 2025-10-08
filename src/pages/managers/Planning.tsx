@@ -1,5 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
+import { PlanningSidebar } from "@/components/PlanningSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -88,11 +90,18 @@ export default function ManagerPlanning() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <DevBar />
       <Navigation />
-      <DevBar />
-      <main className="container mx-auto px-4 py-8">
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          <div className="hidden md:block">
+            <PlanningSidebar />
+          </div>
+          <main className="flex-1 container mx-auto px-4 py-8">
+            <div className="mb-4">
+              <SidebarTrigger className="md:hidden" />
+            </div>
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Planning & Forecasting</h1>
@@ -444,7 +453,9 @@ export default function ManagerPlanning() {
             </div>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }

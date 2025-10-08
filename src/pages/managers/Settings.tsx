@@ -1,5 +1,7 @@
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
+import { SettingsSidebar } from "@/components/SettingsSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
@@ -11,10 +13,18 @@ export default function ManagerSettings() {
   const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
       <DevBar />
       <Navigation />
-      <main className="container mx-auto px-4 py-8">
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full">
+          <div className="hidden md:block">
+            <SettingsSidebar />
+          </div>
+          <main className="flex-1 container mx-auto px-4 py-8">
+            <div className="mb-4">
+              <SidebarTrigger className="md:hidden" />
+            </div>
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
           <p className="text-muted-foreground">Manage users, locations, species catalog, and system preferences</p>
@@ -87,7 +97,9 @@ export default function ManagerSettings() {
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
-    </div>
+          </main>
+        </div>
+      </SidebarProvider>
+    </>
   );
 }
