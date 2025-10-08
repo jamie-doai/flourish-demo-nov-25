@@ -83,7 +83,7 @@ export default function ManagerInventory() {
           {/* Batches in Stage */}
           <div>
             <h2 className="text-xl font-semibold mb-4">Batches in {stage?.name}</h2>
-            <div className="space-y-3">
+        <div className="space-y-4">
               {stats.batchList.map((batch) => (
                 <Card 
                   key={batch.id} 
