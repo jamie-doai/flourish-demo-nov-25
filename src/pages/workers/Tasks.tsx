@@ -58,9 +58,9 @@ export default function WorkerTasks() {
           {filteredTasks.map((task) => (
             <Link key={task.id} to={`/workers/tasks/${task.id}`}>
               <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                <div className="flex items-start justify-between mb-2">
+                <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
                       <Leaf className="w-5 h-5 text-[#3B7A57]" />
                       <span className="text-xl font-semibold text-[#37474F]">{task.species}</span>
                       <span className={`px-2 py-0.5 text-base rounded-full font-medium ${
@@ -73,8 +73,8 @@ export default function WorkerTasks() {
                         {task.status === "overdue" ? "Overdue" : task.status === "today" ? "Today" : "Upcoming"}
                       </span>
                     </div>
-                    <p className="text-base text-[#37474F] mb-2 font-medium">{task.action}</p>
-                    <div className="flex items-center gap-3 text-base text-[#37474F]">
+                    <p className="text-base text-[#37474F] mb-3 font-medium">{task.action}</p>
+                    <div className="flex items-center gap-3 text-base text-[#37474F] mb-2">
                       <div className="flex items-center gap-1">
                         <MapPin className="w-4 h-4" />
                         <span>{task.location}</span>
@@ -84,7 +84,7 @@ export default function WorkerTasks() {
                         <span>{task.due}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-base text-[#37474F] mt-1">
+                    <div className="flex items-center gap-1 text-base text-[#37474F]">
                       <Package className="w-4 h-4" />
                       <p>{task.batch}</p>
                     </div>
