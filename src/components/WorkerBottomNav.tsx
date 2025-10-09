@@ -61,7 +61,7 @@ export function WorkerBottomNav() {
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            className="w-full mt-4 text-white border-white/20 hover:bg-white/10 text-lg"
+            className="w-full mt-4 bg-[#1C2A21] text-white border-white/20 hover:bg-[#25352A] text-lg"
           >
             Close <X className="w-5 h-5 ml-2" />
           </Button>
