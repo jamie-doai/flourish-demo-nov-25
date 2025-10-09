@@ -46,7 +46,7 @@ export function WorkerBottomNav() {
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
                   item.highlight
-                    ? "bg-primary text-white hover:bg-primary/90"
+                    ? "bg-[#FFB84D] text-[#2C3E35] hover:bg-[#FFA726]"
                     : active
                     ? "bg-muted text-foreground"
                     : "bg-muted text-foreground hover:bg-muted/80"
@@ -59,9 +59,9 @@ export function WorkerBottomNav() {
           })}
 
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={() => setIsOpen(false)}
-            className="w-full mt-4 text-white hover:bg-white/10 text-lg"
+            className="w-full mt-4 text-white border-white/20 hover:bg-white/10 text-lg"
           >
             Close <X className="w-5 h-5 ml-2" />
           </Button>
