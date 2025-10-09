@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
-import Home from "./pages/Home";
+import Home from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Batches from "./pages/Batches";
 import Tasks from "./pages/Tasks";
