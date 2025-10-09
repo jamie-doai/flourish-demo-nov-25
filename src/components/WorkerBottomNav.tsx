@@ -68,14 +68,14 @@ export function WorkerBottomNav() {
         </div>
       </div>
 
-      {/* Menu Button - Sticky at bottom */}
+      {/* Menu Button - Full width at bottom */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#2C3E35] text-white px-8 py-4 rounded-full shadow-lg flex items-center gap-3 hover:bg-[#3B4F42] transition-colors"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-6 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors"
         >
-          <Menu className="w-6 h-6" />
-          <span className="text-lg font-semibold">Menu</span>
+          <Menu className="w-8 h-8" />
+          <span className="text-2xl font-semibold">Menu</span>
         </button>
       )}
     </>
