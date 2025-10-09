@@ -112,7 +112,7 @@ export default function WorkerHome() {
         </div>
         </main>
 
-        <WorkerNav />
+        {useBottomNav ? <WorkerBottomNav /> : <WorkerNav />}
       </div>
     </div>
   );
