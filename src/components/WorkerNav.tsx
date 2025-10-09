@@ -68,7 +68,7 @@ export function WorkerNav() {
               <span className="text-xs font-medium">Menu</span>
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="flex flex-col">
+          <SheetContent side="right" className="flex flex-col max-w-[500px] right-0 left-auto">
             <div className="flex flex-col gap-4 mt-8 flex-1">
               {menuItems.map((item) => {
                 const active = isActive(item.path);
