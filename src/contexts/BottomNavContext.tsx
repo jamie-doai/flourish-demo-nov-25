@@ -8,7 +8,7 @@ interface BottomNavContextType {
 const BottomNavContext = createContext<BottomNavContextType | undefined>(undefined);
 
 export function BottomNavProvider({ children }: { children: ReactNode }) {
-  const [useBottomNav, setUseBottomNav] = useState(false);
+  const [useBottomNav, setUseBottomNav] = useState(true);
 
   const toggleBottomNav = () => {
     setUseBottomNav((prev) => !prev);
