@@ -103,357 +103,363 @@ export default function ManagerPlanning() {
               <div className="mb-4">
                 <SidebarTrigger className="md:hidden" />
               </div>
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Planning & Forecasting</h1>
-            <p className="text-muted-foreground">Production plans, capacity management, and resource allocation</p>
-          </div>
-          <Button variant="hero">
-            <Plus className="w-4 h-4" />
-            New Production Plan
-          </Button>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Planning & Forecasting</h1>
+          <p className="text-muted-foreground">Production plans, capacity management, and resource allocation</p>
         </div>
 
-        <Tabs defaultValue="plans" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="plans">Production Plans</TabsTrigger>
-            <TabsTrigger value="forecast">Forecasting</TabsTrigger>
-            <TabsTrigger value="capacity">Capacity</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
-          </TabsList>
+        {/* Content temporarily hidden - Full planning interface preserved in code */}
+        {false && (
+          <>
+            <div className="flex justify-between items-center mb-8">
+              <Button variant="hero">
+                <Plus className="w-4 h-4" />
+                New Production Plan
+              </Button>
+            </div>
 
-          <TabsContent value="plans" className="space-y-6">
-            {productionPlans.map((plan) => (
-              <Card key={plan.id}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-xl mb-2">{plan.name}</CardTitle>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          {plan.startDate} to {plan.endDate}
-                        </div>
-                        <Badge className={
-                          plan.status === "Active" 
-                            ? "bg-primary/10 text-primary" 
-                            : "bg-muted text-muted-foreground"
-                        }>
-                          {plan.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    <Button variant="ghost" size="sm">View Details</Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div>
-                      <div className="text-sm text-muted-foreground mb-1">Target Quantity</div>
-                      <div className="text-2xl font-bold">{plan.targetQuantity.toLocaleString()}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground mb-1">Current Production</div>
-                      <div className="text-2xl font-bold text-primary">{plan.currentQuantity.toLocaleString()}</div>
-                    </div>
-                    <div>
-                      <div className="text-sm text-muted-foreground mb-1">Progress</div>
-                      <div className="text-2xl font-bold">{plan.progress}%</div>
-                    </div>
-                  </div>
+            <Tabs defaultValue="plans" className="space-y-6">
+              <TabsList>
+                <TabsTrigger value="plans">Production Plans</TabsTrigger>
+                <TabsTrigger value="forecast">Forecasting</TabsTrigger>
+                <TabsTrigger value="capacity">Capacity</TabsTrigger>
+                <TabsTrigger value="resources">Resources</TabsTrigger>
+              </TabsList>
 
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium">Overall Progress</span>
-                      <span className="text-sm text-muted-foreground">
-                        {plan.currentQuantity.toLocaleString()} / {plan.targetQuantity.toLocaleString()}
-                      </span>
-                    </div>
-                    <Progress value={plan.progress} className="h-3" />
-                  </div>
-
-                  <div>
-                    <div className="text-sm font-medium mb-3">Species Breakdown</div>
-                    <div className="flex flex-wrap gap-2">
-                      {plan.species.map((species) => (
-                        <Badge key={species} variant="secondary" className="px-3 py-1">
-                          <Sprout className="w-3 h-3 mr-1" />
-                          {species}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-
-          <TabsContent value="forecast" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Species Production Forecast</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {forecasts.map((item) => (
-                    <div key={item.species} className="p-4 rounded-lg border">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                            <Sprout className="w-5 h-5 text-primary" />
-                          </div>
-                          <div>
-                            <h3 className="font-semibold">{item.species}</h3>
+              <TabsContent value="plans" className="space-y-6">
+                {productionPlans.map((plan) => (
+                  <Card key={plan.id}>
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <CardTitle className="text-xl mb-2">{plan.name}</CardTitle>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-4 h-4" />
+                              {plan.startDate} to {plan.endDate}
+                            </div>
                             <Badge className={
-                              item.timeline === "Ahead" 
-                                ? "bg-primary/10 text-primary"
-                                : item.timeline === "On track"
-                                ? "bg-blue-500/10 text-blue-500"
-                                : "bg-destructive/10 text-destructive"
-                            } variant="outline">
-                              {item.timeline}
+                              plan.status === "Active" 
+                                ? "bg-primary/10 text-primary" 
+                                : "bg-muted text-muted-foreground"
+                            }>
+                              {plan.status}
                             </Badge>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-sm text-muted-foreground">Success Rate</div>
-                          <div className={`text-xl font-bold ${
-                            item.successRate >= 90 ? "text-primary" :
-                            item.successRate >= 70 ? "text-accent" :
-                            "text-destructive"
-                          }`}>
-                            {item.successRate}%
-                          </div>
+                        <Button variant="ghost" size="sm">View Details</Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                      <div className="grid md:grid-cols-3 gap-6">
+                        <div>
+                          <div className="text-sm text-muted-foreground mb-1">Target Quantity</div>
+                          <div className="text-2xl font-bold">{plan.targetQuantity.toLocaleString()}</div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-muted-foreground mb-1">Current Production</div>
+                          <div className="text-2xl font-bold text-primary">{plan.currentQuantity.toLocaleString()}</div>
+                        </div>
+                        <div>
+                          <div className="text-sm text-muted-foreground mb-1">Progress</div>
+                          <div className="text-2xl font-bold">{plan.progress}%</div>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-3 gap-4">
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Projected</div>
-                          <div className="font-semibold">{item.projected.toLocaleString()}</div>
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium">Overall Progress</span>
+                          <span className="text-sm text-muted-foreground">
+                            {plan.currentQuantity.toLocaleString()} / {plan.targetQuantity.toLocaleString()}
+                          </span>
                         </div>
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Actual</div>
-                          <div className="font-semibold">{item.actual.toLocaleString()}</div>
-                        </div>
-                        <div>
-                          <div className="text-xs text-muted-foreground mb-1">Variance</div>
-                          <div className={`font-semibold ${
-                            item.variance >= 0 ? "text-primary" : "text-destructive"
-                          }`}>
-                            {item.variance > 0 ? "+" : ""}{item.variance.toLocaleString()}
-                          </div>
+                        <Progress value={plan.progress} className="h-3" />
+                      </div>
+
+                      <div>
+                        <div className="text-sm font-medium mb-3">Species Breakdown</div>
+                        <div className="flex flex-wrap gap-2">
+                          {plan.species.map((species) => (
+                            <Badge key={species} variant="secondary" className="px-3 py-1">
+                              <Sprout className="w-3 h-3 mr-1" />
+                              {species}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </TabsContent>
+
+              <TabsContent value="forecast" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Species Production Forecast</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {forecasts.map((item) => (
+                        <div key={item.species} className="p-4 rounded-lg border">
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                                <Sprout className="w-5 h-5 text-primary" />
+                              </div>
+                              <div>
+                                <h3 className="font-semibold">{item.species}</h3>
+                                <Badge className={
+                                  item.timeline === "Ahead" 
+                                    ? "bg-primary/10 text-primary"
+                                    : item.timeline === "On track"
+                                    ? "bg-blue-500/10 text-blue-500"
+                                    : "bg-destructive/10 text-destructive"
+                                } variant="outline">
+                                  {item.timeline}
+                                </Badge>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-sm text-muted-foreground">Success Rate</div>
+                              <div className={`text-xl font-bold ${
+                                item.successRate >= 90 ? "text-primary" :
+                                item.successRate >= 70 ? "text-accent" :
+                                "text-destructive"
+                              }`}>
+                                {item.successRate}%
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4">
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1">Projected</div>
+                              <div className="font-semibold">{item.projected.toLocaleString()}</div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1">Actual</div>
+                              <div className="font-semibold">{item.actual.toLocaleString()}</div>
+                            </div>
+                            <div>
+                              <div className="text-xs text-muted-foreground mb-1">Variance</div>
+                              <div className={`font-semibold ${
+                                item.variance >= 0 ? "text-primary" : "text-destructive"
+                              }`}>
+                                {item.variance > 0 ? "+" : ""}{item.variance.toLocaleString()}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </CardContent>
+                </Card>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <TrendingUp className="w-5 h-5" />
+                        Growth Trends
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
+                          <span className="font-medium">Overall Growth Rate</span>
+                          <span className="text-lg font-bold text-primary">+12.4%</span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
+                          <span className="font-medium">Best Performing</span>
+                          <span className="text-lg font-bold">Kōwhai (+20%)</span>
+                        </div>
+                        <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
+                          <span className="font-medium">Needs Attention</span>
+                          <span className="text-lg font-bold text-destructive">Harakeke (-45%)</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Target className="w-5 h-5" />
+                        Next Quarter Targets
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Total Production Target</span>
+                          <span className="font-semibold">22,000 plants</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">New Species Introduction</span>
+                          <span className="font-semibold">4 species</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Expected Revenue</span>
+                          <span className="font-semibold text-primary">$180,000</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm">Success Rate Goal</span>
+                          <span className="font-semibold">85%+</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
+              </TabsContent>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Growth Trends
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
-                      <span className="font-medium">Overall Growth Rate</span>
-                      <span className="text-lg font-bold text-primary">+12.4%</span>
+              <TabsContent value="capacity" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <MapPin className="w-5 h-5" />
+                      Location Capacity Overview
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {capacityData.map((location) => (
+                        <div key={location.location} className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h4 className="font-medium">{location.location}</h4>
+                              <p className="text-sm text-muted-foreground">
+                                {location.current.toLocaleString()} / {location.capacity.toLocaleString()} plants
+                              </p>
+                            </div>
+                            <Badge className={
+                              location.percentage >= 90 
+                                ? "bg-destructive/10 text-destructive"
+                                : location.percentage >= 75
+                                ? "bg-yellow-500/10 text-yellow-500"
+                                : "bg-primary/10 text-primary"
+                            }>
+                              {location.percentage}% Full
+                            </Badge>
+                          </div>
+                          <Progress value={location.percentage} className="h-2" />
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
-                      <span className="font-medium">Best Performing</span>
-                      <span className="text-lg font-bold">Kōwhai (+20%)</span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30">
-                      <span className="font-medium">Needs Attention</span>
-                      <span className="text-lg font-bold text-destructive">Harakeke (-45%)</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Target className="w-5 h-5" />
-                    Next Quarter Targets
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Total Production Target</span>
-                      <span className="font-semibold">22,000 plants</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">New Species Introduction</span>
-                      <span className="font-semibold">4 species</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Expected Revenue</span>
-                      <span className="font-semibold text-primary">$180,000</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm">Success Rate Goal</span>
-                      <span className="font-semibold">85%+</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Total Capacity</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold">15,000</div>
+                      <p className="text-sm text-muted-foreground mt-1">plants across all locations</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Current Occupancy</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold text-primary">11,920</div>
+                      <p className="text-sm text-muted-foreground mt-1">79% of total capacity</p>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Available Space</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold text-accent">3,080</div>
+                      <p className="text-sm text-muted-foreground mt-1">plants capacity remaining</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
 
-          <TabsContent value="capacity" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="w-5 h-5" />
-                  Location Capacity Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {capacityData.map((location) => (
-                    <div key={location.location} className="space-y-2">
+              <TabsContent value="resources" className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Users className="w-5 h-5" />
+                      Staff & Resource Planning
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      {resourcePlanning.map((week) => (
+                        <div key={week.week} className="p-4 rounded-lg border">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="font-semibold">{week.week}</h4>
+                            <Badge variant="secondary">{week.tasksPlanned} tasks planned</Badge>
+                          </div>
+                          <div className="grid grid-cols-3 gap-4 text-sm">
+                            <div>
+                              <div className="text-muted-foreground mb-1">Staff Assigned</div>
+                              <div className="font-semibold">{week.staff} workers</div>
+                            </div>
+                            <div>
+                              <div className="text-muted-foreground mb-1">Total Hours</div>
+                              <div className="font-semibold">{week.hours} hours</div>
+                            </div>
+                            <div>
+                              <div className="text-muted-foreground mb-1">Avg per Person</div>
+                              <div className="font-semibold">{(week.hours / week.staff).toFixed(1)} hrs</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Equipment Utilization</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-medium">{location.location}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {location.current.toLocaleString()} / {location.capacity.toLocaleString()} plants
-                          </p>
-                        </div>
-                        <Badge className={
-                          location.percentage >= 90 
-                            ? "bg-destructive/10 text-destructive"
-                            : location.percentage >= 75
-                            ? "bg-yellow-500/10 text-yellow-500"
-                            : "bg-primary/10 text-primary"
-                        }>
-                          {location.percentage}% Full
-                        </Badge>
+                        <span className="text-sm">Potting Equipment</span>
+                        <span className="font-semibold">92% utilization</span>
                       </div>
-                      <Progress value={location.percentage} className="h-2" />
-                    </div>
-                  ))}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Irrigation Systems</span>
+                        <span className="font-semibold">87% utilization</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Transport Vehicles</span>
+                        <span className="font-semibold">76% utilization</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Material Inventory</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Potting Mix</span>
+                        <span className="font-semibold">2,400 L</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Seed Trays</span>
+                        <span className="font-semibold">450 units</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm">Individual Pots</span>
+                        <span className="font-semibold">8,200 units</span>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
-              </CardContent>
-            </Card>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Total Capacity</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">15,000</div>
-                  <p className="text-sm text-muted-foreground mt-1">plants across all locations</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Current Occupancy</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-primary">11,920</div>
-                  <p className="text-sm text-muted-foreground mt-1">79% of total capacity</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Available Space</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-accent">3,080</div>
-                  <p className="text-sm text-muted-foreground mt-1">plants capacity remaining</p>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="resources" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  Staff & Resource Planning
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {resourcePlanning.map((week) => (
-                    <div key={week.week} className="p-4 rounded-lg border">
-                      <div className="flex items-center justify-between mb-3">
-                        <h4 className="font-semibold">{week.week}</h4>
-                        <Badge variant="secondary">{week.tasksPlanned} tasks planned</Badge>
-                      </div>
-                      <div className="grid grid-cols-3 gap-4 text-sm">
-                        <div>
-                          <div className="text-muted-foreground mb-1">Staff Assigned</div>
-                          <div className="font-semibold">{week.staff} workers</div>
-                        </div>
-                        <div>
-                          <div className="text-muted-foreground mb-1">Total Hours</div>
-                          <div className="font-semibold">{week.hours} hours</div>
-                        </div>
-                        <div>
-                          <div className="text-muted-foreground mb-1">Avg per Person</div>
-                          <div className="font-semibold">{(week.hours / week.staff).toFixed(1)} hrs</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Equipment Utilization</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Potting Equipment</span>
-                    <span className="font-semibold">92% utilization</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Irrigation Systems</span>
-                    <span className="font-semibold">87% utilization</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Transport Vehicles</span>
-                    <span className="font-semibold">76% utilization</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Material Inventory</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Potting Mix</span>
-                    <span className="font-semibold">2,400 L</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Seed Trays</span>
-                    <span className="font-semibold">450 units</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Individual Pots</span>
-                    <span className="font-semibold">8,200 units</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
+              </TabsContent>
+            </Tabs>
+          </>
+        )}
             </main>
           </div>
         </SidebarProvider>
