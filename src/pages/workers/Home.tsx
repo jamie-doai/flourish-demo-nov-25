@@ -15,18 +15,19 @@ export default function WorkerHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAF9] pb-20">
-      <DevBar />
-      {/* Intro Header */}
-      <header className="bg-background p-6 pb-8">
-        <div className="flex items-center gap-3 mb-1">
-          <Sprout className="w-8 h-8 text-primary" />
-          <h1 className="text-2xl font-semibold text-foreground">Kia ora, Alex 👋</h1>
-        </div>
-        <p className="text-muted-foreground text-sm">Let's get growing today</p>
-      </header>
+    <div className="min-h-screen bg-muted">
+      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <DevBar />
+        {/* Intro Header */}
+        <header className="bg-background p-6 pb-8">
+          <div className="flex items-center gap-3 mb-1">
+            <Sprout className="w-8 h-8 text-primary" />
+            <h1 className="text-2xl font-semibold text-foreground">Kia ora, Alex 👋</h1>
+          </div>
+          <p className="text-muted-foreground text-sm">Let's get growing today</p>
+        </header>
 
-      <main className="container mx-auto px-4 -mt-4">
+        <main className="container mx-auto px-4 -mt-4">
         {/* Notifications/Alerts */}
         <div className="mb-6 mt-8">
           <h2 className="text-xl font-semibold text-[#37474F] mb-3">Notifications</h2>
@@ -109,9 +110,10 @@ export default function WorkerHome() {
             </Link>
           </div>
         </div>
-      </main>
+        </main>
 
-      {useBottomNav ? <WorkerBottomNav /> : <WorkerNav />}
+        <WorkerNav />
+      </div>
     </div>
   );
 }
