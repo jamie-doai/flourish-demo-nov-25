@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
+import { BottomNavProvider } from "@/contexts/BottomNavContext";
 import Home from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Batches from "./pages/Batches";
@@ -47,9 +48,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
+      <BottomNavProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
         <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -96,7 +98,8 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-      </TooltipProvider>
+        </TooltipProvider>
+      </BottomNavProvider>
     </QueryClientProvider>
   </ThemeProvider>
 );

@@ -1,0 +1,83 @@
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Home, CheckSquare, Scan, Package, User, Menu, MapPin, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export function WorkerBottomNav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
+
+  const navItems = [
+    { path: "/workers", label: "Home", icon: Home, exact: true },
+    { path: "/workers/tasks", label: "Tasks", icon: CheckSquare },
+    { path: "/workers/locations", label: "Locations", icon: MapPin },
+    { path: "/workers/inventory", label: "Inventory", icon: Package },
+    { path: "/workers/profile", label: "Profile", icon: User },
+    { path: "/workers/scan", label: "Scan", icon: Scan, highlight: true },
+  ];
+
+  return (
+    <>
+      {/* Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 transition-opacity"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Bottom Drawer */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#2C3E35] rounded-t-3xl transition-transform duration-300 ${
+          isOpen ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="p-6 pb-8 space-y-3">
+          {navItems.map((item) => {
+            const active = item.exact 
+              ? location.pathname === item.path 
+              : isActive(item.path);
+
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
+                  item.highlight
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : active
+                    ? "bg-muted text-foreground"
+                    : "bg-muted text-foreground hover:bg-muted/80"
+                }`}
+              >
+                <item.icon className="w-7 h-7" strokeWidth={2} />
+                <span className="text-xl font-semibold">{item.label}</span>
+              </Link>
+            );
+          })}
+
+          <Button
+            variant="ghost"
+            onClick={() => setIsOpen(false)}
+            className="w-full mt-4 text-white hover:bg-white/10 text-lg"
+          >
+            Close <X className="w-5 h-5 ml-2" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Menu Button - Sticky at bottom */}
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-[#2C3E35] text-white px-8 py-4 rounded-full shadow-lg flex items-center gap-3 hover:bg-[#3B4F42] transition-colors"
+        >
+          <Menu className="w-6 h-6" />
+          <span className="text-lg font-semibold">Menu</span>
+        </button>
+      )}
+    </>
+  );
+}
