@@ -3,12 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Scan, Droplets, StickyNote, CheckCircle2, AlertCircle, Package, MapPin, ListTodo, Sprout } from "lucide-react";
 import { WorkerNav } from "@/components/WorkerNav";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
-import { useBottomNavContext } from "@/contexts/BottomNavContext";
 
 export default function WorkerHome() {
-  const { useBottomNav } = useBottomNavContext();
   const notifications = [
     { id: 1, type: "urgent", message: "Mānuka watering overdue - Bay 01", time: "8:00 AM" },
     { id: 2, type: "info", message: "Harakeke ready for dispatch - Pad C", time: "Today" },
@@ -111,7 +108,7 @@ export default function WorkerHome() {
         </div>
       </main>
 
-      {useBottomNav ? <WorkerBottomNav /> : <WorkerNav />}
+      <WorkerNav />
     </div>
   );
 }
