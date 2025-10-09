@@ -15,7 +15,7 @@ export default function WorkerHome() {
   ];
 
   return (
-    <div className="min-h-screen bg-muted">
+    <div className="min-h-screen bg-slate-800">
       <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
         {/* Intro Header */}

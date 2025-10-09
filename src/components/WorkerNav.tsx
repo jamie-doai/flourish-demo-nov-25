@@ -19,7 +19,7 @@ export function WorkerNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#3B7A57]/10 pb-safe shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#3B7A57]/10 pb-safe shadow-lg max-w-[500px] mx-auto">
       <div className="grid grid-cols-5 h-20">
         {navItems.map((item) => {
           const active = item.exact 
