@@ -12,7 +12,6 @@ export function WorkerBottomNav() {
     { path: "/workers", label: "Home", icon: Home, exact: true },
     { path: "/workers/tasks", label: "Tasks", icon: CheckSquare },
     { path: "/workers/locations", label: "Locations", icon: MapPin },
-    { path: "/workers/inventory", label: "Inventory", icon: Package },
     { path: "/workers/profile", label: "Profile", icon: User },
     { path: "/workers/scan", label: "Scan", icon: Scan, highlight: true },
   ];

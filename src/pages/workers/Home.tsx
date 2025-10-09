@@ -107,15 +107,6 @@ export default function WorkerHome() {
                 </div>
               </Card>
             </Link>
-
-            <Link to="/workers/inventory">
-              <Card className="bg-white border-2 border-[#37474F]/20 shadow-md hover:shadow-lg hover:border-[#37474F]/30 transition-all col-span-2">
-                <div className="flex items-center justify-center gap-4 p-6">
-                  <Package className="w-12 h-12 text-[#3B7A57]" />
-                  <h3 className="text-lg font-semibold text-[#37474F]">Inventory</h3>
-                </div>
-              </Card>
-            </Link>
           </div>
         </div>
       </main>

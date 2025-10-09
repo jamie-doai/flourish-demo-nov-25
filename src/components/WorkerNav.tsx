@@ -15,7 +15,6 @@ export function WorkerNav() {
   ];
 
   const menuItems = [
-    { path: "/workers/inventory", label: "Inventory", icon: Package },
     { path: "/workers/profile", label: "Profile", icon: User },
   ];
 
