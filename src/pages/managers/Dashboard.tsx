@@ -221,8 +221,9 @@ export default function ManagerDashboard() {
             </div>
             <div className="space-y-3">
               {tasks.slice(0, 5).map((task) => (
-                <Card key={task.id} className="p-4 hover-scale transition-all">
-                  <div className="flex items-start gap-3">
+                <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                  <Card className="p-4 hover-scale transition-all hover:shadow-md">
+                    <div className="flex items-start gap-3">
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
                       task.action.includes("Potting") ? "bg-blue-100 dark:bg-blue-950" :
                       task.action.includes("Watering") ? "bg-cyan-100 dark:bg-cyan-950" :
@@ -248,7 +249,8 @@ export default function ManagerDashboard() {
                       </div>
                     </div>
                   </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>

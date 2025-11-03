@@ -32,6 +32,7 @@ import ManagerSettings from "./pages/managers/Settings";
 import ManagerLocationDetail from "./pages/managers/LocationDetail";
 import ManagerScan from "./pages/managers/Scan";
 import ManagerAddBatch from "./pages/managers/batches/AddBatch";
+import ManagerBatchDetail from "./pages/managers/batches/BatchDetail";
 import WorkerHome from "./pages/workers/Home";
 import WorkerTasks from "./pages/workers/Tasks";
 import WorkerTaskDetail from "./pages/workers/TaskDetail";
@@ -65,7 +66,7 @@ const App = () => (
           {/* Manager Routes */}
           <Route path="/managers" element={<ManagerDashboard />} />
           <Route path="/managers/inventory" element={<ManagerInventory />} />
-          <Route path="/managers/batch/:batchId" element={<WorkerBatchDetail />} />
+          <Route path="/managers/batch/:batchId" element={<ManagerBatchDetail />} />
           <Route path="/managers/batches/add" element={<ManagerAddBatch />} />
           <Route path="/managers/sales" element={<ManagerSales />} />
           <Route path="/managers/sales/quotes" element={<ManagerSalesQuotes />} />

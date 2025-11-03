@@ -124,8 +124,9 @@ export default function ManagerLocationDetail() {
           {tasksForLocation.length > 0 ? (
             <div className="space-y-3">
               {tasksForLocation.map((task) => (
-                <Card key={task.id} className="p-4 hover:shadow-md transition-shadow">
-                  <div className="flex items-start justify-between">
+                <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                  <Card className="p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
                         <h3 className="text-lg font-semibold">{task.title || task.action}</h3>
@@ -164,7 +165,8 @@ export default function ManagerLocationDetail() {
                       )}
                     </div>
                   </div>
-                </Card>
+                  </Card>
+                </Link>
               ))}
             </div>
           ) : (

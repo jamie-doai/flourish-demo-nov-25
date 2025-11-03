@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -20,13 +20,9 @@ import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
   const [showMoveDialog, setShowMoveDialog] = useState(false);
 
-  // Detect if we're in manager or worker context
-  const isManagerView = location.pathname.startsWith('/managers');
-  
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
   const relatedTasks = getTasksByBatch(batchId || "");
@@ -326,7 +322,7 @@ export default function WorkerBatchDetail() {
             </h3>
             <div className="space-y-3">
               {relatedTasks.map((task) => (
-                <Link key={task.id} to={isManagerView ? `/managers/tasks/${task.id}` : `/workers/tasks/${task.id}`}>
+                <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                   <div className="p-3 bg-[#F8FAF9] rounded-lg hover:bg-[#3B7A57]/5 transition-colors">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
