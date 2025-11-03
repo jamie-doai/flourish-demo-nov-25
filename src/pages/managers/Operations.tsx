@@ -15,6 +15,7 @@ import {
   Sprout, ChevronRight
 } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { tasks as unifiedTasks } from "@/data";
 
 export default function ManagerOperations() {
@@ -212,34 +213,36 @@ export default function ManagerOperations() {
                   {tasksByStatus.pending.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
-                      <Card key={task.id} className="p-3 cursor-pointer hover:shadow-md transition-shadow">
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                              <span className="text-xs text-muted-foreground">{task.type}</span>
+                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="text-xs text-muted-foreground">{task.type}</span>
+                              </div>
+                              <Badge className={getPriorityColor(task.priority)} variant="outline">
+                                {task.priority}
+                              </Badge>
                             </div>
-                            <Badge className={getPriorityColor(task.priority)} variant="outline">
-                              {task.priority}
-                            </Badge>
+                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <User className="w-3 h-3" />
+                                {task.assignee}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {task.location}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {task.dueDate}
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              {task.assignee}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {task.location}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {task.dueDate}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </Link>
                     );
                   })}
                 </div>
@@ -255,34 +258,36 @@ export default function ManagerOperations() {
                   {tasksByStatus.inProgress.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
-                      <Card key={task.id} className="p-3 cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                              <span className="text-xs text-muted-foreground">{task.type}</span>
+                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="text-xs text-muted-foreground">{task.type}</span>
+                              </div>
+                              <Badge className={getPriorityColor(task.priority)} variant="outline">
+                                {task.priority}
+                              </Badge>
                             </div>
-                            <Badge className={getPriorityColor(task.priority)} variant="outline">
-                              {task.priority}
-                            </Badge>
+                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <User className="w-3 h-3" />
+                                {task.assignee}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {task.location}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {task.dueDate}
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              {task.assignee}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {task.location}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {task.dueDate}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </Link>
                     );
                   })}
                 </div>
@@ -298,34 +303,36 @@ export default function ManagerOperations() {
                   {tasksByStatus.scheduled.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
-                      <Card key={task.id} className="p-3 cursor-pointer hover:shadow-md transition-shadow">
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                              <span className="text-xs text-muted-foreground">{task.type}</span>
+                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="text-xs text-muted-foreground">{task.type}</span>
+                              </div>
+                              <Badge className={getPriorityColor(task.priority)} variant="outline">
+                                {task.priority}
+                              </Badge>
                             </div>
-                            <Badge className={getPriorityColor(task.priority)} variant="outline">
-                              {task.priority}
-                            </Badge>
+                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <User className="w-3 h-3" />
+                                {task.assignee}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {task.location}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {task.dueDate}
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              {task.assignee}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {task.location}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {task.dueDate}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </Link>
                     );
                   })}
                 </div>
@@ -341,28 +348,30 @@ export default function ManagerOperations() {
                   {tasksByStatus.completed.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
-                      <Card key={task.id} className="p-3 cursor-pointer hover:shadow-md transition-shadow opacity-75">
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-                              <span className="text-xs text-muted-foreground">{task.type}</span>
+                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow opacity-75">
+                          <div className="space-y-2">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex items-center gap-2">
+                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="text-xs text-muted-foreground">{task.type}</span>
+                              </div>
+                              <CheckSquare className="w-4 h-4 text-primary" />
                             </div>
-                            <CheckSquare className="w-4 h-4 text-primary" />
+                            <h4 className="font-medium text-sm leading-tight line-through">{task.title}</h4>
+                            <div className="space-y-1 text-xs text-muted-foreground">
+                              <div className="flex items-center gap-1">
+                                <User className="w-3 h-3" />
+                                {task.assignee}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {task.location}
+                              </div>
+                            </div>
                           </div>
-                          <h4 className="font-medium text-sm leading-tight line-through">{task.title}</h4>
-                          <div className="space-y-1 text-xs text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <User className="w-3 h-3" />
-                              {task.assignee}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {task.location}
-                            </div>
-                          </div>
-                        </div>
-                      </Card>
+                        </Card>
+                      </Link>
                     );
                   })}
                 </div>
@@ -394,48 +403,50 @@ export default function ManagerOperations() {
               {filteredTasks.map((task) => {
                 const Icon = getTypeIcon(task.type);
                 return (
-                  <Card key={task.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
-                    <div className="flex items-center gap-4">
-                      <div className="flex-shrink-0">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <Icon className="w-5 h-5 text-primary" />
+                  <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                    <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                      <div className="flex items-center gap-4">
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <Icon className="w-5 h-5 text-primary" />
+                          </div>
                         </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-1">
+                            <h3 className="font-semibold">{task.title}</h3>
+                            <Badge className={getStatusColor(task.status)} variant="outline">
+                              {task.status}
+                            </Badge>
+                            <Badge className={getPriorityColor(task.priority)} variant="outline">
+                              {task.priority}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs">{task.id}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <User className="w-3 h-3" />
+                              {task.assignee}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {task.location}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              Due: {task.dueDate}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Package className="w-3 h-3" />
+                              {task.batch}
+                            </div>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h3 className="font-semibold">{task.title}</h3>
-                          <Badge className={getStatusColor(task.status)} variant="outline">
-                            {task.status}
-                          </Badge>
-                          <Badge className={getPriorityColor(task.priority)} variant="outline">
-                            {task.priority}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                          <div className="flex items-center gap-1">
-                            <span className="text-xs">{task.id}</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <User className="w-3 h-3" />
-                            {task.assignee}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <MapPin className="w-3 h-3" />
-                            {task.location}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            Due: {task.dueDate}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Package className="w-3 h-3" />
-                            {task.batch}
-                          </div>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                  </Card>
+                    </Card>
+                  </Link>
                 );
               })}
             </div>

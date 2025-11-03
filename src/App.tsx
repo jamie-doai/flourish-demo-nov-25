@@ -25,6 +25,7 @@ import QuoteDetail from "./pages/managers/sales/QuoteDetail";
 import OrderDetail from "./pages/managers/sales/OrderDetail";
 import InvoiceDetail from "./pages/managers/sales/InvoiceDetail";
 import ManagerOperations from "./pages/managers/Operations";
+import ManagerTaskDetail from "./pages/managers/TaskDetail";
 import ManagerPlanning from "./pages/managers/Planning";
 import ManagerReporting from "./pages/managers/Reporting";
 import ManagerSettings from "./pages/managers/Settings";
@@ -76,6 +77,7 @@ const App = () => (
           <Route path="/managers/sales/invoices/:invoiceId" element={<InvoiceDetail />} />
           <Route path="/managers/sales/clients" element={<ManagerSalesClients />} />
           <Route path="/managers/operations" element={<ManagerOperations />} />
+          <Route path="/managers/tasks/:taskId" element={<ManagerTaskDetail />} />
           <Route path="/managers/planning" element={<ManagerPlanning />} />
           <Route path="/managers/reporting" element={<ManagerReporting />} />
           <Route path="/managers/settings" element={<ManagerSettings />} />
