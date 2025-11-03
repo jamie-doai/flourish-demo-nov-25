@@ -15,96 +15,27 @@ import {
   Sprout, ChevronRight
 } from "lucide-react";
 import { useState } from "react";
+import { tasks as unifiedTasks } from "@/data";
 
 export default function ManagerOperations() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
 
-  const tasks = [
-    { 
-      id: "T-2025-089", 
-      title: "Water ShadeHouse A - Mānuka hardening",
-      batch: "MAN-2024-156",
-      assignee: "Mereana",
-      dueDate: "2025-01-23",
-      priority: "High",
-      status: "In Progress",
-      location: "ShadeHouse A",
-      type: "Watering",
-      estimatedHours: 2
-    },
-    { 
-      id: "T-2025-090", 
-      title: "Pot up Batch TOT-2024-089",
-      batch: "TOT-2024-089",
-      assignee: "Liam",
-      dueDate: "2025-01-23",
-      priority: "High",
-      status: "Pending",
-      location: "Potting Shed",
-      type: "Potting",
-      estimatedHours: 4
-    },
-    { 
-      id: "T-2025-091", 
-      title: "Quality check - Harakeke ready for dispatch",
-      batch: "HAR-2025-012",
-      assignee: "Sofia",
-      dueDate: "2025-01-23",
-      priority: "Medium",
-      status: "Pending",
-      location: "Dispatch Pad C",
-      type: "Quality Check",
-      estimatedHours: 1
-    },
-    { 
-      id: "T-2025-088", 
-      title: "Move hardened Rimu to ready zone",
-      batch: "RIM-2024-203",
-      assignee: "Mereana",
-      dueDate: "2025-01-23",
-      priority: "Low",
-      status: "Pending",
-      location: "Bay 12",
-      type: "Movement",
-      estimatedHours: 1.5
-    },
-    { 
-      id: "T-2025-087", 
-      title: "Treatment - Fertilize Kōwhai propagation",
-      batch: "KOW-2024-234",
-      assignee: "Sofia",
-      dueDate: "2025-01-24",
-      priority: "Medium",
-      status: "Scheduled",
-      location: "PropHouse 1",
-      type: "Treatment",
-      estimatedHours: 3
-    },
-    { 
-      id: "T-2025-086", 
-      title: "Sow Kauri seeds - new batch",
-      batch: "New",
-      assignee: "Liam",
-      dueDate: "2025-01-24",
-      priority: "Medium",
-      status: "Scheduled",
-      location: "Seed Store",
-      type: "Sowing",
-      estimatedHours: 2
-    },
-    { 
-      id: "T-2025-082", 
-      title: "Weekly propagation check - All bays",
-      batch: "Multiple",
-      assignee: "Mereana",
-      dueDate: "2025-01-22",
-      priority: "High",
-      status: "Completed",
-      location: "All Bays",
-      type: "Quality Check",
-      estimatedHours: 4
-    },
-  ];
+  // Use unified tasks from data
+  const tasks = unifiedTasks.map(task => ({
+    id: task.id,
+    title: task.title || task.action,
+    batch: task.batch,
+    assignee: task.assignee || "Unassigned",
+    dueDate: task.dueDate || "TBD",
+    priority: task.priority || "Medium",
+    status: task.status === "overdue" ? "Pending" : 
+            task.status === "today" ? "In Progress" :
+            task.status === "upcoming" ? "Scheduled" :
+            task.status === "completed" ? "Completed" : task.status,
+    location: task.location,
+    type: task.type || "Quality Check",
+    estimatedHours: task.estimatedHours || 1
+  }));
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {

@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf } from "lucide-react";
-import { getLocationById, getBatchesByLocation } from "@/data";
+import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, CheckCircle2 } from "lucide-react";
+import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
 
 export default function WorkerLocationDetail() {
   const { locationId } = useParams();
   const mockLocation = getLocationById(locationId || "");
   const batchesInLocation = getBatchesByLocation(locationId || "");
+  const tasksForLocation = getTasksByLocation(mockLocation?.name || "");
 
   if (!mockLocation) {
     return <div>Location not found</div>;
@@ -85,6 +86,61 @@ export default function WorkerLocationDetail() {
             </div>
           </div>
         </Card>
+
+        {/* Tasks for this Location */}
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-[#37474F] mb-3">
+            Tasks for this Location ({tasksForLocation.length})
+          </h2>
+          {tasksForLocation.length > 0 ? (
+            <div className="space-y-3">
+              {tasksForLocation.map((task) => (
+                <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                  <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <span className="text-base font-semibold text-[#37474F]">
+                            {task.action}
+                          </span>
+                          <span className={`px-3 py-1 text-xs rounded-full font-medium ${
+                            task.status === "overdue" 
+                              ? "bg-orange-100 text-orange-700"
+                              : task.status === "completed" || task.status === "Completed"
+                              ? "bg-gray-100 text-gray-700"
+                              : task.status === "In Progress"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
+                          }`}>
+                            {task.status === "overdue" ? "Overdue" : 
+                             task.status === "completed" || task.status === "Completed" ? "Complete" :
+                             task.status === "In Progress" ? "In Progress" : 
+                             "To-Do"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 text-sm text-[#37474F] mb-1">
+                          <div className="flex items-center gap-1">
+                            <Leaf className="w-4 h-4" />
+                            <span>{task.species}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            <span>{task.due}</span>
+                          </div>
+                        </div>
+                        <p className="text-xs text-[#37474F]/60">Batch: {task.batch}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm text-center">
+              <p className="text-sm text-[#37474F]/60">No tasks scheduled for this location</p>
+            </Card>
+          )}
+        </div>
 
         {/* Batches in Location */}
         <div className="mb-6">

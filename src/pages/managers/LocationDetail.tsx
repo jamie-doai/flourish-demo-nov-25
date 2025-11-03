@@ -4,13 +4,15 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf } from "lucide-react";
-import { getLocationById, getBatchesByLocation } from "@/data";
+import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf, Clock, User, CheckSquare } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
 
 export default function ManagerLocationDetail() {
   const { locationId } = useParams();
   const mockLocation = getLocationById(locationId || "");
   const batchesInLocation = getBatchesByLocation(locationId || "");
+  const tasksForLocation = getTasksByLocation(mockLocation?.name || "");
 
   if (!mockLocation) {
     return <div>Location not found</div>;
@@ -113,6 +115,64 @@ export default function ManagerLocationDetail() {
             </div>
           </div>
         </Card>
+
+        {/* Tasks for this Location */}
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">
+            Tasks for this Location ({tasksForLocation.length})
+          </h2>
+          {tasksForLocation.length > 0 ? (
+            <div className="space-y-3">
+              {tasksForLocation.map((task) => (
+                <Card key={task.id} className="p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-lg font-semibold">{task.title || task.action}</h3>
+                        <Badge variant="outline" className={
+                          task.priority === "High" ? "bg-destructive/10 text-destructive" :
+                          task.priority === "Medium" ? "bg-accent/10 text-accent" :
+                          "bg-muted text-muted-foreground"
+                        }>
+                          {task.priority}
+                        </Badge>
+                        <Badge variant="outline" className={
+                          task.status === "Completed" || task.status === "completed" ? "bg-primary/10 text-primary" :
+                          task.status === "In Progress" ? "bg-blue-500/10 text-blue-500" :
+                          task.status === "Pending" || task.status === "today" ? "bg-yellow-500/10 text-yellow-500" :
+                          "bg-purple-500/10 text-purple-500"
+                        }>
+                          {task.status}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <User className="w-4 h-4" />
+                          <span>{task.assignee || "Unassigned"}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          <span>{task.dueDate || task.due}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <CheckSquare className="w-4 h-4" />
+                          <span>Batch: {task.batch}</span>
+                        </div>
+                      </div>
+                      {task.type && (
+                        <p className="text-xs text-muted-foreground mt-2">Type: {task.type}</p>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card className="p-6 text-center">
+              <p className="text-muted-foreground">No tasks scheduled for this location</p>
+            </Card>
+          )}
+        </div>
 
         {/* Batches in Location */}
         <div>

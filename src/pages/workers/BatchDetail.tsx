@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -15,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { lifecycleStages, getBatchById, getLocationNames } from "@/data";
+import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -25,6 +25,7 @@ export default function WorkerBatchDetail() {
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
+  const relatedTasks = getTasksByBatch(batchId || "");
 
   if (!mockBatch) {
     return (
@@ -310,6 +311,55 @@ export default function WorkerBatchDetail() {
           </p>
         </Card>
 
+        {/* Related Tasks */}
+        {relatedTasks.length > 0 && (
+          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+            <h3 className="text-sm font-semibold text-[#37474F] mb-3">
+              Related Tasks ({relatedTasks.length})
+            </h3>
+            <div className="space-y-3">
+              {relatedTasks.map((task) => (
+                <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                  <div className="p-3 bg-[#F8FAF9] rounded-lg hover:bg-[#3B7A57]/5 transition-colors">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <span className="text-sm font-semibold text-[#37474F]">
+                            {task.action}
+                          </span>
+                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                            task.status === "overdue" 
+                              ? "bg-orange-100 text-orange-700"
+                              : task.status === "completed" || task.status === "Completed"
+                              ? "bg-gray-100 text-gray-700"
+                              : task.status === "In Progress"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-green-100 text-green-700"
+                          }`}>
+                            {task.status === "overdue" ? "Overdue" : 
+                             task.status === "completed" || task.status === "Completed" ? "Complete" :
+                             task.status === "In Progress" ? "In Progress" : 
+                             "To-Do"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-[#37474F]/60">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{task.due}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Leaf className="w-3 h-3" />
+                            <span>{task.location}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </Card>
+        )}
 
         {/* Activity Log */}
         <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">

@@ -7,7 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout } from "lucide-react";
 import { useState } from "react";
-import { stages, batches, locations } from "@/data";
+import { stages, batches, locations, getTasksByLocation } from "@/data";
+import { Badge } from "@/components/ui/badge";
 
 interface SpeciesData {
   species: string;
@@ -452,41 +453,58 @@ export default function ManagerInventory() {
 
           <TabsContent value="locations" className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
-              {locations.map((location) => (
-                <Link key={location.id} to={`/managers/locations/${location.id}`}>
-                  <Card className="p-6 hover:shadow-lg transition-all cursor-pointer group">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <MapPin className="w-5 h-5 text-primary" />
-                          <h3 className="text-xl font-semibold">{location.name}</h3>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-3">{location.type}</p>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-muted-foreground">{location.batches} batches</span>
-                          <div className="flex items-center gap-1">
-                            <Thermometer className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-muted-foreground">{location.temperature}</span>
+              {locations.map((location) => {
+                const locationTasks = getTasksByLocation(location.name);
+                const pendingTasks = locationTasks.filter(t => 
+                  t.status === "Pending" || t.status === "today" || t.status === "overdue" || t.status === "In Progress"
+                );
+                return (
+                  <Link key={location.id} to={`/managers/locations/${location.id}`}>
+                    <Card className="p-6 hover:shadow-lg transition-all cursor-pointer group">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <MapPin className="w-5 h-5 text-primary" />
+                            <h3 className="text-xl font-semibold">{location.name}</h3>
+                            {pendingTasks.length > 0 && (
+                              <Badge variant="secondary" className="ml-2">
+                                {pendingTasks.length} {pendingTasks.length === 1 ? 'task' : 'tasks'}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">{location.type}</p>
+                          <div className="flex items-center gap-4 text-sm">
+                            <span className="text-muted-foreground">{location.batches} batches</span>
+                            <div className="flex items-center gap-1">
+                              <Thermometer className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-muted-foreground">{location.temperature}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Capacity</span>
-                        <span className="font-medium">{location.capacity}%</span>
+                      <div className="space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Capacity</span>
+                          <span className="font-medium">{location.capacity}%</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Total Plants</span>
+                          <span className="font-medium">{location.plants.toLocaleString()}</span>
+                        </div>
+                        {locationTasks.length > 0 && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Tasks</span>
+                            <span className="font-medium">{locationTasks.length} total</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Total Plants</span>
-                        <span className="font-medium">{location.plants.toLocaleString()}</span>
+                      <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                        View details →
                       </div>
-                    </div>
-                    <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                      View details →
-                    </div>
-                  </Card>
-                </Link>
-              ))}
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </TabsContent>
         </Tabs>
