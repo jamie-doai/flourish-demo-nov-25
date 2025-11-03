@@ -221,6 +221,21 @@ export default function ManagerTaskDetail() {
               </div>
             </Card>
 
+            {/* Instructions */}
+            {task.instructions && task.instructions.length > 0 && (
+              <Card className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Instructions</h2>
+                <ul className="space-y-3">
+                  {task.instructions.map((instruction, index) => (
+                    <li key={index} className="flex gap-3">
+                      <span className="text-primary font-medium">{index + 1}.</span>
+                      <span className="text-muted-foreground">{instruction}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
+
             {/* Notes Section */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">

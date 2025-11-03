@@ -12,6 +12,8 @@ export interface Task {
   priority?: "High" | "Medium" | "Low";
   type?: "Watering" | "Potting" | "Sowing" | "Movement" | "Quality Check" | "Treatment";
   estimatedHours?: number;
+  instructions?: string[];
+  quantity?: string;
 }
 
 // Location name mapping to handle variations
@@ -43,7 +45,14 @@ export const tasks: Task[] = [
     assignee: "Mereana",
     priority: "High",
     type: "Watering",
-    estimatedHours: 2
+    estimatedHours: 2,
+    quantity: "120 trays",
+    instructions: [
+      "Use overhead spray system",
+      "Ensure even coverage across all trays",
+      "Check soil moisture before and after watering",
+      "Monitor for any signs of overwatering or dry spots"
+    ]
   },
   { 
     id: "2", 

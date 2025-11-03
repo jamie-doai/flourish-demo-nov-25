@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkerNav } from "@/components/WorkerNav";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Camera, CheckCircle2, FileText } from "lucide-react";
+import { ArrowLeft, Camera, CheckCircle2, FileText, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { getTaskById } from "@/data/tasks";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -23,22 +25,28 @@ export default function WorkerTaskDetail() {
   const [isComplete, setIsComplete] = useState(false);
   const [showNotesDialog, setShowNotesDialog] = useState(false);
 
-  const mockTask = {
-    id: taskId,
-    species: "Mānuka",
-    action: "Water Bay 01 batches",
-    location: "Bay 01",
-    batch: "BATCH_MAN_WAI_01",
-    quantity: "120 trays",
-    assignedTo: "Alex",
-    priority: "High",
-    instructions: [
-      "Use overhead spray system",
-      "Ensure even coverage across all trays",
-      "Check soil moisture before and after watering",
-      "Monitor for any signs of overwatering or dry spots"
-    ]
-  };
+  const task = getTaskById(taskId || "");
+
+  if (!task) {
+    return (
+      <div className="min-h-screen bg-[#F8FAF9] pb-20">
+        <DevBar />
+        <WorkerNav />
+        <main className="container mx-auto px-4 py-6 max-w-[500px]">
+          <Card className="p-6 text-center bg-white">
+            <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
+            <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
+            <p className="text-[#37474F]/60 mb-4">The task you're looking for doesn't exist.</p>
+            <Link to="/workers/tasks">
+              <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white">
+                Back to Tasks
+              </Button>
+            </Link>
+          </Card>
+        </main>
+      </div>
+    );
+  }
 
   const handleComplete = () => {
     toast({
@@ -64,15 +72,26 @@ export default function WorkerTaskDetail() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 max-w-[500px]">
         {/* Task Title */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-[#37474F] mb-2">{mockTask.action}</h1>
-          <div className="flex items-center gap-2">
-            <span className="text-base text-[#37474F]">🌿 {mockTask.species}</span>
-            <span className="px-3 py-1 bg-orange-100 text-orange-700 text-sm rounded-full font-medium">
-              High Priority
-            </span>
+          <h1 className="text-2xl font-bold text-[#37474F] mb-2">{task.action}</h1>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-base text-[#37474F]">🌿 {task.species}</span>
+            {task.priority && (
+              <Badge 
+                variant="outline" 
+                className={
+                  task.priority === "High" 
+                    ? "bg-orange-100 text-orange-700 border-orange-300" 
+                    : task.priority === "Medium"
+                    ? "bg-blue-100 text-blue-700 border-blue-300"
+                    : "bg-gray-100 text-gray-700 border-gray-300"
+                }
+              >
+                {task.priority} Priority
+              </Badge>
+            )}
           </div>
         </div>
 
@@ -82,35 +101,45 @@ export default function WorkerTaskDetail() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-[#37474F]/60">Location</span>
-              <span className="text-[#37474F] font-medium">📍 {mockTask.location}</span>
+              <span className="text-[#37474F] font-medium">📍 {task.location}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-[#37474F]/60">Batch</span>
-              <span className="text-[#37474F] font-medium">{mockTask.batch}</span>
+              <span className="text-[#37474F] font-medium">{task.batch}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-[#37474F]/60">Quantity</span>
-              <span className="text-[#37474F] font-medium">{mockTask.quantity}</span>
-            </div>
+            {task.quantity && (
+              <div className="flex justify-between">
+                <span className="text-[#37474F]/60">Quantity</span>
+                <span className="text-[#37474F] font-medium">{task.quantity}</span>
+              </div>
+            )}
             <div className="flex justify-between">
               <span className="text-[#37474F]/60">Assigned to</span>
-              <span className="text-[#37474F] font-medium">{mockTask.assignedTo}</span>
+              <span className="text-[#37474F] font-medium">{task.assignee}</span>
             </div>
+            {task.dueDate && (
+              <div className="flex justify-between">
+                <span className="text-[#37474F]/60">Due Date</span>
+                <span className="text-[#37474F] font-medium">{task.dueDate}</span>
+              </div>
+            )}
           </div>
         </Card>
 
         {/* Instructions */}
-        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
-          <h3 className="text-base font-semibold text-[#37474F] mb-4">Instructions</h3>
-          <ul className="space-y-3">
-            {mockTask.instructions.map((instruction, index) => (
-              <li key={index} className="flex gap-3">
-                <span className="text-[#37474F] font-medium">•</span>
-                <span className="text-base text-[#37474F] leading-relaxed">{instruction}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+        {task.instructions && task.instructions.length > 0 && (
+          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+            <h3 className="text-base font-semibold text-[#37474F] mb-4">Instructions</h3>
+            <ul className="space-y-3">
+              {task.instructions.map((instruction, index) => (
+                <li key={index} className="flex gap-3">
+                  <span className="text-[#37474F] font-medium">•</span>
+                  <span className="text-base text-[#37474F] leading-relaxed">{instruction}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        )}
 
 
         {/* Action Buttons */}
