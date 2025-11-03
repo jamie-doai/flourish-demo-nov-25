@@ -29,11 +29,13 @@ export default function WorkerBatchDetail() {
 
   if (!mockBatch) {
     return (
-      <div className="min-h-screen bg-[#F8FAF9] pb-20">
-        <DevBar />
-        <WorkerNav />
-        <div className="container mx-auto px-4 py-8">
-          <p>Batch not found</p>
+      <div className="min-h-screen bg-slate-800">
+        <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+          <DevBar />
+          <WorkerNav />
+          <div className="container mx-auto px-4 py-8">
+            <p>Batch not found</p>
+          </div>
         </div>
       </div>
     );
@@ -74,8 +76,9 @@ export default function WorkerBatchDetail() {
   const progressPercentage = ((currentStageIndex + 1) / lifecycleStages.length) * 100;
 
   return (
-    <div className="min-h-screen bg-[#F8FAF9] pb-20">
-      <DevBar />
+    <div className="min-h-screen bg-slate-800">
+      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <DevBar />
       <div className="hidden md:block">
         <Navigation />
       </div>
@@ -395,6 +398,7 @@ export default function WorkerBatchDetail() {
 
       <div className="md:hidden">
         <WorkerNav />
+      </div>
       </div>
     </div>
   );

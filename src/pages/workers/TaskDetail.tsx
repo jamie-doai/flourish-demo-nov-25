@@ -29,21 +29,23 @@ export default function WorkerTaskDetail() {
 
   if (!task) {
     return (
-      <div className="min-h-screen bg-[#F8FAF9] pb-20">
-        <DevBar />
-        <WorkerNav />
-        <main className="container mx-auto px-4 py-6 max-w-[500px]">
-          <Card className="p-6 text-center bg-white">
-            <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
-            <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
-            <p className="text-[#37474F]/60 mb-4">The task you're looking for doesn't exist.</p>
-            <Link to="/workers/tasks">
-              <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white">
-                Back to Tasks
-              </Button>
-            </Link>
-          </Card>
-        </main>
+      <div className="min-h-screen bg-slate-800">
+        <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+          <DevBar />
+          <WorkerNav />
+          <main className="container mx-auto px-4 py-6 max-w-[500px]">
+            <Card className="p-6 text-center bg-white">
+              <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
+              <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
+              <p className="text-[#37474F]/60 mb-4">The task you're looking for doesn't exist.</p>
+              <Link to="/workers/tasks">
+                <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white">
+                  Back to Tasks
+                </Button>
+              </Link>
+            </Card>
+          </main>
+        </div>
       </div>
     );
   }
@@ -57,8 +59,9 @@ export default function WorkerTaskDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF9] pb-20">
-      <DevBar />
+    <div className="min-h-screen bg-slate-800">
+      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">
@@ -218,6 +221,7 @@ export default function WorkerTaskDetail() {
       </main>
 
       <WorkerNav />
+      </div>
     </div>
   );
 }

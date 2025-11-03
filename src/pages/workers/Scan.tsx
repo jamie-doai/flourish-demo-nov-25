@@ -19,8 +19,9 @@ export default function WorkerScan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#37474F] pb-20">
-      <DevBar />
+    <div className="min-h-screen bg-[#37474F]">
+      <div className="max-w-[500px] mx-auto bg-[#37474F] min-h-screen pb-20">
+        <DevBar />
       <header className="bg-[#37474F] text-white sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -95,6 +96,7 @@ export default function WorkerScan() {
       </main>
 
       <WorkerNav />
+      </div>
     </div>
   );
 }

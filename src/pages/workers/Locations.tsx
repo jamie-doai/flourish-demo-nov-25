@@ -16,8 +16,9 @@ export default function WorkerLocations() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF9] pb-20">
-      <DevBar />
+    <div className="min-h-screen bg-slate-800">
+      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <DevBar />
       <WorkerPageHeader title="Locations" backTo="/workers" />
 
       <main className="container mx-auto px-4 py-6">
@@ -69,6 +70,7 @@ export default function WorkerLocations() {
       </main>
 
       <WorkerNav />
+      </div>
     </div>
   );
 }

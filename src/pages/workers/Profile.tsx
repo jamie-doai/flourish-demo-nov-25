@@ -12,8 +12,9 @@ export default function WorkerProfile() {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen bg-background pb-20 ${isDark ? 'worker-dark' : 'worker-light'}`}>
-      <DevBar />
+    <div className="min-h-screen bg-slate-800">
+      <div className={`max-w-[500px] mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
+        <DevBar />
       <header className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 pb-12">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
@@ -123,6 +124,7 @@ export default function WorkerProfile() {
       </main>
 
       <WorkerNav />
+      </div>
     </div>
   );
 }
