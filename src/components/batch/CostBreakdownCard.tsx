@@ -1,12 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { DollarSign, TrendingUp, Eye } from 'lucide-react';
+import { DollarSign, TrendingUp, Eye, Plus } from 'lucide-react';
 import { getBatchCostSummary } from '@/data/batchCosts';
 
 interface CostBreakdownCardProps {
   batchId: string;
   onViewHistory: () => void;
+  onAddCost: () => void;
 }
 
 const categoryLabels: Record<string, string> = {
@@ -33,7 +33,7 @@ const categoryColors: Record<string, string> = {
   overhead: 'bg-slate-500',
 };
 
-export function CostBreakdownCard({ batchId, onViewHistory }: CostBreakdownCardProps) {
+export function CostBreakdownCard({ batchId, onViewHistory, onAddCost }: CostBreakdownCardProps) {
   const costSummary = getBatchCostSummary(batchId);
   
   if (!costSummary) {
@@ -57,10 +57,16 @@ export function CostBreakdownCard({ batchId, onViewHistory }: CostBreakdownCardP
               Cumulative costs through lifecycle stages
             </CardDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={onViewHistory}>
-            <Eye className="w-4 h-4 mr-2" />
-            View History
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={onAddCost}>
+              <Plus className="w-4 h-4 mr-2" />
+              Add Cost
+            </Button>
+            <Button variant="outline" size="sm" onClick={onViewHistory}>
+              <Eye className="w-4 h-4 mr-2" />
+              View History
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -90,23 +96,36 @@ export function CostBreakdownCard({ batchId, onViewHistory }: CostBreakdownCardP
         </div>
         
         {/* Cost by Category */}
-        <div className="space-y-3">
-          <p className="text-sm font-medium">Cost Breakdown</p>
-          {sortedCategories.map(([category, amount]) => {
-            const percentage = (amount / costSummary.totalCost) * 100;
-            return (
-              <div key={category} className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-3 h-3 rounded ${categoryColors[category] || 'bg-gray-500'}`} />
-                    <span>{categoryLabels[category] || category}</span>
-                  </div>
-                  <span className="font-medium">${amount.toFixed(2)}</span>
-                </div>
-                <Progress value={percentage} className="h-2" />
-              </div>
-            );
-          })}
+        <div className="space-y-2">
+          <p className="text-sm font-medium mb-3">Cost Breakdown</p>
+          <div className="border rounded-lg overflow-hidden">
+            <table className="w-full">
+              <thead className="bg-muted/50">
+                <tr>
+                  <th className="text-left text-xs font-medium px-3 py-2">Category</th>
+                  <th className="text-right text-xs font-medium px-3 py-2">Amount</th>
+                  <th className="text-right text-xs font-medium px-3 py-2">% of Total</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y">
+                {sortedCategories.map(([category, amount]) => {
+                  const percentage = (amount / costSummary.totalCost) * 100;
+                  return (
+                    <tr key={category} className="hover:bg-muted/30">
+                      <td className="px-3 py-2">
+                        <div className="flex items-center gap-2">
+                          <div className={`w-2 h-2 rounded-full ${categoryColors[category] || 'bg-gray-500'}`} />
+                          <span className="text-sm">{categoryLabels[category] || category}</span>
+                        </div>
+                      </td>
+                      <td className="text-right px-3 py-2 text-sm font-medium">${amount.toFixed(2)}</td>
+                      <td className="text-right px-3 py-2 text-sm text-muted-foreground">{percentage.toFixed(1)}%</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
         
         {/* Last Updated */}

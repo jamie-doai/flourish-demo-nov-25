@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf } from "lucide-react";
@@ -24,6 +25,7 @@ export default function ManagerBatchDetail() {
   const { toast } = useToast();
   const [showMoveDialog, setShowMoveDialog] = useState(false);
   const [showCostHistory, setShowCostHistory] = useState(false);
+  const [showAddCost, setShowAddCost] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -71,6 +73,18 @@ export default function ManagerBatchDetail() {
     setShowMoveDialog(false);
   };
 
+  const handleAddCost = () => {
+    setShowAddCost(true);
+  };
+
+  const handleSaveCustomCost = () => {
+    toast({
+      title: "Cost added successfully",
+      description: "Custom cost has been added to this batch",
+    });
+    setShowAddCost(false);
+  };
+
   // Calculate lifecycle progress
   const currentStageIndex = lifecycleStages.findIndex(s => s.id === mockBatch.stage);
   const progressPercentage = ((currentStageIndex + 1) / lifecycleStages.length) * 100;
@@ -100,16 +114,18 @@ export default function ManagerBatchDetail() {
           <p className="text-sm text-muted-foreground">{mockBatch.species}</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Main Content - Left Column */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Cost Breakdown - Manager Only */}
-            {mockBatch.totalCost && (
-              <CostBreakdownCard 
-                batchId={mockBatch.id}
-                onViewHistory={() => setShowCostHistory(true)}
-              />
-            )}
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="costs">Cost of Production</TabsTrigger>
+            <TabsTrigger value="activity">Activity Log</TabsTrigger>
+          </TabsList>
+
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid lg:grid-cols-3 gap-6">
+              {/* Main Content */}
+              <div className="lg:col-span-2 space-y-6">
             {/* Quick Actions */}
             <Card className="p-6">
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
@@ -288,94 +304,114 @@ export default function ManagerBatchDetail() {
                   <span className="text-muted-foreground">Last Fertilized</span>
                   <span>{mockBatch.lastFertilized}</span>
                 </div>
-              </div>
-            </Card>
+                </div>
+              </Card>
 
-            {/* Environmental Data */}
-            <Card className="p-6">
-              <h3 className="text-base font-semibold mb-4">Environmental Conditions</h3>
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <Thermometer className="w-6 h-6 text-primary mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{environmentalData.temperature}</p>
-                  <p className="text-xs text-muted-foreground">Temperature</p>
-                </div>
-                <div>
-                  <Wind className="w-6 h-6 text-primary mx-auto mb-2" />
-                  <p className="text-lg font-semibold">{environmentalData.humidity}</p>
-                  <p className="text-xs text-muted-foreground">Humidity</p>
-                </div>
-                <div>
-                  <CheckCircle2 className="w-6 h-6 text-green-600 mx-auto mb-2" />
-                  <p className="text-xs font-semibold">Optimal</p>
-                  <p className="text-xs text-muted-foreground">Conditions</p>
-                </div>
-              </div>
-              <p className="text-xs text-muted-foreground text-center mt-3">
-                Last measured: {environmentalData.lastMeasured}
-              </p>
-            </Card>
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="space-y-6">
-            {/* Related Tasks */}
-            {relatedTasks.length > 0 && (
+              {/* Environmental Data */}
               <Card className="p-6">
-                <h3 className="text-base font-semibold mb-4">
-                  Related Tasks ({relatedTasks.length})
-                </h3>
-                <div className="space-y-3">
-                  {relatedTasks.map((task) => (
-                    <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                      <div className="p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <span className="text-sm font-semibold">
-                                {task.action}
-                              </span>
-                              <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                                task.status === "overdue" 
-                                  ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                                  : task.status === "completed" || task.status === "Completed"
-                                  ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                                  : task.status === "In Progress"
-                                  ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                                  : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
-                              }`}>
-                                {task.status === "overdue" ? "Overdue" : 
-                                 task.status === "completed" || task.status === "Completed" ? "Complete" :
-                                 task.status === "In Progress" ? "In Progress" : 
-                                 "To-Do"}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                              <div className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                <span>{task.due}</span>
+                <h3 className="text-base font-semibold mb-4">Environmental Conditions</h3>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <Thermometer className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <p className="text-lg font-semibold">{environmentalData.temperature}</p>
+                    <p className="text-xs text-muted-foreground">Temperature</p>
+                  </div>
+                  <div>
+                    <Wind className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <p className="text-lg font-semibold">{environmentalData.humidity}</p>
+                    <p className="text-xs text-muted-foreground">Humidity</p>
+                  </div>
+                  <div>
+                    <CheckCircle2 className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                    <p className="text-xs font-semibold">Optimal</p>
+                    <p className="text-xs text-muted-foreground">Conditions</p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground text-center mt-3">
+                  Last measured: {environmentalData.lastMeasured}
+                </p>
+              </Card>
+            </div>
+
+            {/* Right Sidebar */}
+            <div className="space-y-6">
+              {/* Related Tasks */}
+              {relatedTasks.length > 0 && (
+                <Card className="p-6">
+                  <h3 className="text-base font-semibold mb-4">
+                    Related Tasks ({relatedTasks.length})
+                  </h3>
+                  <div className="space-y-3">
+                    {relatedTasks.map((task) => (
+                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                        <div className="p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <span className="text-sm font-semibold">
+                                  {task.action}
+                                </span>
+                                <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                                  task.status === "overdue" 
+                                    ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
+                                    : task.status === "completed" || task.status === "Completed"
+                                    ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                                    : task.status === "In Progress"
+                                    ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                                    : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                                }`}>
+                                  {task.status === "overdue" ? "Overdue" : 
+                                   task.status === "completed" || task.status === "Completed" ? "Complete" :
+                                   task.status === "In Progress" ? "In Progress" : 
+                                   "To-Do"}
+                                </span>
                               </div>
-                              <div className="flex items-center gap-1">
-                                <Leaf className="w-3 h-3" />
-                                <span>{task.location}</span>
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <div className="flex items-center gap-1">
+                                  <Clock className="w-3 h-3" />
+                                  <span>{task.due}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Leaf className="w-3 h-3" />
+                                  <span>{task.location}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </Card>
-            )}
+                      </Link>
+                    ))}
+                  </div>
+                </Card>
+              )}
+            </div>
+          </div>
+        </TabsContent>
 
-            {/* Activity Log */}
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <History className="w-4 h-4 text-muted-foreground" />
-                <h3 className="text-base font-semibold">Activity Log</h3>
-              </div>
-              <div className="space-y-4">
+        {/* Cost of Production Tab */}
+        <TabsContent value="costs" className="space-y-6">
+          {mockBatch.totalCost ? (
+            <CostBreakdownCard 
+              batchId={mockBatch.id}
+              onViewHistory={() => setShowCostHistory(true)}
+              onAddCost={handleAddCost}
+            />
+          ) : (
+            <Card className="p-8 text-center">
+              <p className="text-muted-foreground mb-4">No cost data available for this batch</p>
+              <Button onClick={handleAddCost}>Add Initial Costs</Button>
+            </Card>
+          )}
+        </TabsContent>
+
+        {/* Activity Log Tab */}
+        <TabsContent value="activity">
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <History className="w-4 h-4 text-muted-foreground" />
+              <h3 className="text-base font-semibold">Activity Log</h3>
+            </div>
+            <div className="space-y-4">
                 {activityLog.map((log, index) => (
                   <div key={index} className="flex gap-3 pb-4 border-b last:border-0 last:pb-0">
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
@@ -399,8 +435,8 @@ export default function ManagerBatchDetail() {
                 ))}
               </div>
             </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </main>
       
       {/* Cost History Drawer */}
@@ -409,6 +445,65 @@ export default function ManagerBatchDetail() {
         isOpen={showCostHistory}
         onClose={() => setShowCostHistory(false)}
       />
+      
+      {/* Add Cost Dialog */}
+      <Dialog open={showAddCost} onOpenChange={setShowAddCost}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Add Custom Cost</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Cost Name</label>
+              <input 
+                type="text" 
+                className="w-full px-3 py-2 border rounded-md bg-background"
+                placeholder="e.g., Special Treatment"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Category</label>
+              <select className="w-full px-3 py-2 border rounded-md bg-background">
+                <option value="">Select category</option>
+                <option value="seed">Seeds & Seedlings</option>
+                <option value="soil">Growing Media</option>
+                <option value="pot">Containers</option>
+                <option value="tray">Trays</option>
+                <option value="labour">Labour</option>
+                <option value="spray">Spraying</option>
+                <option value="maintenance">Maintenance</option>
+                <option value="freight">Freight</option>
+                <option value="overhead">Overhead</option>
+              </select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Amount ($)</label>
+              <input 
+                type="number" 
+                step="0.01"
+                className="w-full px-3 py-2 border rounded-md bg-background"
+                placeholder="0.00"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Reason (Optional)</label>
+              <textarea 
+                className="w-full px-3 py-2 border rounded-md bg-background resize-none"
+                rows={3}
+                placeholder="Why is this cost being added?"
+              />
+            </div>
+            <div className="flex gap-2 justify-end pt-4">
+              <Button variant="outline" onClick={() => setShowAddCost(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveCustomCost}>
+                Add Cost
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
