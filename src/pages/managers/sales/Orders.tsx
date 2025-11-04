@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ArrowLeft, Package } from "lucide-react";
+import { Search, ArrowLeft, Package, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { orders } from "@/data";
 
@@ -79,6 +79,12 @@ export default function ManagerSalesOrders() {
                 </SelectContent>
               </Select>
             </div>
+            <Link to="/managers/sales/orders/create">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Create Order
+              </Button>
+            </Link>
           </div>
         </div>
 
