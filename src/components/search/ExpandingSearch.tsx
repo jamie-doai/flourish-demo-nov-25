@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useSearch } from '@/hooks/useSearch';
 import { SearchResultGroup } from './SearchResultGroup';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { QuickFilterDropdown } from './QuickFilterDropdown';
 
 interface ExpandingSearchProps {
   isExpanded: boolean;
@@ -22,6 +23,8 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
     suggestions,
     recentSearches,
     executeSearch,
+    quickFilter,
+    setQuickFilter,
   } = useSearch();
   
   // Focus input when expanded
@@ -134,8 +137,18 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
       </div>
       
       {showDropdown && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-popover border rounded-lg shadow-lg z-50 max-h-[calc(100vh-200px)] overflow-hidden">
-          <ScrollArea className="max-h-[calc(100vh-200px)]">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-popover border rounded-lg shadow-lg z-50 flex flex-col max-h-[calc(100vh-200px)]">
+          {/* Fixed Header - Quick Filter */}
+          <div className="p-3 border-b bg-background/95 backdrop-blur-sm flex items-center justify-between shrink-0">
+            <span className="text-xs text-muted-foreground font-medium">Filter by:</span>
+            <QuickFilterDropdown 
+              value={quickFilter}
+              onValueChange={setQuickFilter}
+            />
+          </div>
+
+          {/* Scrollable Results Area */}
+          <ScrollArea className="flex-1">
             <div className="p-2">
               {showRecent && (
                 <div className="space-y-1 mb-4">
@@ -174,7 +187,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
               {showEmpty && (
                 <div className="text-center py-8 px-4">
                   <p className="text-muted-foreground mb-2">No results found for "{query}"</p>
-                  <p className="text-sm text-muted-foreground">Try a different search term</p>
+                  <p className="text-sm text-muted-foreground">Try a different search term or filter</p>
                 </div>
               )}
               
@@ -189,15 +202,16 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
             </div>
           </ScrollArea>
           
-          {query.trim() && hasResults && (
-            <div className="p-3 border-t bg-muted/30">
+          {/* Sticky Footer - Show More Button */}
+          {query.trim() && (
+            <div className="sticky bottom-0 p-3 border-t bg-background/95 backdrop-blur-sm shrink-0">
               <Button
                 onClick={handleViewMore}
-                variant="ghost"
-                className="w-full justify-between"
+                variant="default"
+                className="w-full"
               >
-                <span>View all results</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Show more results</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           )}

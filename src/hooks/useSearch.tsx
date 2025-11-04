@@ -15,6 +15,7 @@ export function useSearch() {
   const [filters, setFilters] = useState<SearchFilters>({});
   const [isOpen, setIsOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [quickFilter, setQuickFilter] = useState<EntityType | 'all'>('all');
   
   // Build index once and cache
   const searchIndexData = useMemo(() => buildSearchIndex(), []);
@@ -38,8 +39,19 @@ export function useSearch() {
   // Get suggestions for dropdown (grouped by type, limited)
   const suggestions = useMemo(() => {
     if (!debouncedQuery.trim()) return new Map<EntityType, SearchIndexItem[]>();
-    return getSuggestions(searchIndexData, debouncedQuery, 5);
+    return getSuggestions(searchIndexData, debouncedQuery, 8);
   }, [searchIndexData, debouncedQuery]);
+  
+  // Filter suggestions based on quick filter
+  const filteredSuggestions = useMemo(() => {
+    if (quickFilter === 'all') return suggestions;
+    
+    const filtered = new Map<EntityType, SearchIndexItem[]>();
+    if (suggestions.has(quickFilter as EntityType)) {
+      filtered.set(quickFilter as EntityType, suggestions.get(quickFilter as EntityType)!);
+    }
+    return filtered;
+  }, [suggestions, quickFilter]);
   
   // Get full results for results page
   const results = useMemo(() => {
@@ -67,11 +79,13 @@ export function useSearch() {
     setFilters,
     isOpen,
     setIsOpen,
-    suggestions,
+    suggestions: filteredSuggestions,
     results,
     recentSearches,
     executeSearch,
     clearSearch,
+    quickFilter,
+    setQuickFilter,
     hasResults: results.length > 0,
     isEmpty: debouncedQuery.trim() !== '' && results.length === 0,
   };
