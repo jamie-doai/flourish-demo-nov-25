@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -15,9 +15,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
+import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch, Batch } from "@/data";
 import { CostBreakdownCard } from "@/components/batch/CostBreakdownCard";
 import { CostHistoryDrawer } from "@/components/batch/CostHistoryDrawer";
+import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
 
 export default function ManagerBatchDetail() {
   const { batchId } = useParams();
@@ -26,6 +27,7 @@ export default function ManagerBatchDetail() {
   const [showMoveDialog, setShowMoveDialog] = useState(false);
   const [showCostHistory, setShowCostHistory] = useState(false);
   const [showAddCost, setShowAddCost] = useState(false);
+  const [showDirectEdit, setShowDirectEdit] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -106,26 +108,24 @@ export default function ManagerBatchDetail() {
           
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-3xl font-bold">{mockBatch.id}</h1>
-            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })}>
-              <Printer className="w-4 h-4 mr-2" />
-              Print Label
+            <Button variant="outline" onClick={() => setShowDirectEdit(true)}>
+              <Edit3 className="w-4 h-4 mr-2" />
+              Edit Batch
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">{mockBatch.species}</p>
         </div>
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="costs">Cost of Production</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="activity">Activity Log</TabsTrigger>
+            <TabsTrigger value="costs">Cost of Production</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Main Content */}
-              <div className="lg:col-span-2 space-y-6">
             {/* Quick Actions */}
             <Card className="p-6">
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
@@ -155,6 +155,15 @@ export default function ManagerBatchDetail() {
                 >
                   <Camera className="w-6 h-6 text-primary" />
                   <span className="text-sm">Add Photo</span>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  onClick={() => toast({ title: "Label sent to printer 🖨️" })}
+                >
+                  <Printer className="w-6 h-6 text-primary" />
+                  <span className="text-sm">Print Label</span>
                 </Button>
 
                 <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
@@ -331,62 +340,55 @@ export default function ManagerBatchDetail() {
                   Last measured: {environmentalData.lastMeasured}
                 </p>
               </Card>
-            </div>
+          </TabsContent>
 
-            {/* Right Sidebar */}
-            <div className="space-y-6">
-              {/* Related Tasks */}
-              {relatedTasks.length > 0 && (
-                <Card className="p-6">
-                  <h3 className="text-base font-semibold mb-4">
-                    Related Tasks ({relatedTasks.length})
-                  </h3>
-                  <div className="space-y-3">
-                    {relatedTasks.map((task) => (
-                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                        <div className="p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                <span className="text-sm font-semibold">
-                                  {task.action}
-                                </span>
-                                <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                                  task.status === "overdue" 
-                                    ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
-                                    : task.status === "completed" || task.status === "Completed"
-                                    ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                                    : task.status === "In Progress"
-                                    ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                                    : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
-                                }`}>
-                                  {task.status === "overdue" ? "Overdue" : 
-                                   task.status === "completed" || task.status === "Completed" ? "Complete" :
-                                   task.status === "In Progress" ? "In Progress" : 
-                                   "To-Do"}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                <div className="flex items-center gap-1">
-                                  <Clock className="w-3 h-3" />
-                                  <span>{task.due}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Leaf className="w-3 h-3" />
-                                  <span>{task.location}</span>
-                                </div>
-                              </div>
-                            </div>
+          {/* Tasks Tab */}
+          <TabsContent value="tasks" className="space-y-6">
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Related Tasks</h3>
+                <Button size="sm">Add Task</Button>
+              </div>
+              {relatedTasks.length > 0 ? (
+                <div className="space-y-3">
+                  {relatedTasks.map((task) => (
+                    <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                      <Card className="p-4 hover:shadow-md transition-shadow">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <h4 className="font-semibold">{task.action}</h4>
+                            <p className="text-sm text-muted-foreground">{task.location}</p>
+                          </div>
+                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                            task.status === "overdue" 
+                              ? "bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300"
+                              : task.status === "completed" || task.status === "Completed"
+                              ? "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                              : task.status === "In Progress"
+                              ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                              : "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
+                          }`}>
+                            {task.status === "overdue" ? "Overdue" : 
+                             task.status === "completed" || task.status === "Completed" ? "Complete" :
+                             task.status === "In Progress" ? "In Progress" : 
+                             "To-Do"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            <span>Due: {task.due}</span>
                           </div>
                         </div>
-                      </Link>
-                    ))}
-                  </div>
-                </Card>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-8">No tasks assigned to this batch</p>
               )}
-            </div>
-          </div>
-        </TabsContent>
+            </Card>
+          </TabsContent>
 
         {/* Cost of Production Tab */}
         <TabsContent value="costs" className="space-y-6">
@@ -504,6 +506,17 @@ export default function ManagerBatchDetail() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Direct Edit Dialog */}
+      <DirectEditDialog
+        open={showDirectEdit}
+        onOpenChange={setShowDirectEdit}
+        batch={mockBatch as Batch}
+        onConfirm={(updates) => {
+          toast({ title: "Batch updated", description: "Changes saved successfully" });
+          setShowDirectEdit(false);
+        }}
+      />
     </div>
   );
 }
