@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { GlobalSearchTrigger } from "@/components/GlobalSearchTrigger";
+import { ExpandingSearch } from "@/components/search/ExpandingSearch";
 
 export function Navigation() {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const [searchExpanded, setSearchExpanded] = useState(false);
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   const navItems = [
@@ -23,15 +25,24 @@ export function Navigation() {
     <>
       <nav className="border-b bg-card/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            <Link to="/managers" className="flex items-center gap-2 font-bold text-xl">
+          <div className="flex h-16 items-center justify-between gap-4">
+            <Link 
+              to="/managers" 
+              className={`flex items-center gap-2 font-bold text-xl transition-all ${
+                searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
+              }`}
+            >
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
                 <Sprout className="w-5 h-5 text-primary-foreground" />
               </div>
               <span>Flourish</span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
+            <div 
+              className={`hidden md:flex items-center gap-1 flex-1 justify-center transition-all ${
+                searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
+              }`}
+            >
               {navItems.map((item) => (
                 <Button
                   key={item.path}
@@ -47,10 +58,20 @@ export function Navigation() {
               ))}
             </div>
             
-            <div className="flex items-center gap-2">
-              <GlobalSearchTrigger />
+            <div className={`flex items-center gap-2 transition-all ${searchExpanded ? 'flex-1' : ''}`}>
+              <ExpandingSearch 
+                isExpanded={searchExpanded}
+                onExpandChange={setSearchExpanded}
+              />
               
-              <Button variant="hero" size="sm" asChild className="hidden lg:flex">
+              <Button 
+                variant="hero" 
+                size="sm" 
+                asChild 
+                className={`hidden lg:flex transition-all ${
+                  searchExpanded ? 'opacity-0 w-0 overflow-hidden p-0' : 'opacity-100'
+                }`}
+              >
                 <Link to="/managers/batches/add">
                   <Plus className="w-4 h-4" />
                   Add Batch
