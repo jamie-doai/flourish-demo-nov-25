@@ -6,6 +6,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -23,7 +32,8 @@ import {
 } from '@/components/ui/select';
 import { ArrowLeft, Plus, Edit, History, Download, DollarSign } from 'lucide-react';
 import { costCatalog, getCostCatalogByCategory } from '@/data/costCatalog';
-import { CostCategory } from '@/types/cost';
+import { CostCategory, CostCatalogItem } from '@/types/cost';
+import { useToast } from '@/hooks/use-toast';
 
 const categoryLabels: Record<CostCategory, string> = {
   seed: 'Seeds & Seedlings',
@@ -50,8 +60,20 @@ const categoryColors: Record<CostCategory, string> = {
 };
 
 export default function CostLibrary() {
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editingCost, setEditingCost] = useState<CostCatalogItem | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    category: 'seed' as CostCategory,
+    unit: '',
+    defaultValue: '',
+    notes: '',
+    supplierReference: '',
+  });
   
   const filteredCosts = costCatalog.filter(cost => {
     const matchesSearch = cost.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -62,6 +84,51 @@ export default function CostLibrary() {
   
   const totalItems = costCatalog.length;
   const averageValue = costCatalog.reduce((sum, c) => sum + c.defaultValue, 0) / totalItems;
+
+  const handleAddCost = () => {
+    setFormData({
+      name: '',
+      category: 'seed',
+      unit: '',
+      defaultValue: '',
+      notes: '',
+      supplierReference: '',
+    });
+    setShowAddDialog(true);
+  };
+
+  const handleEditCost = (cost: CostCatalogItem) => {
+    setEditingCost(cost);
+    setFormData({
+      name: cost.name,
+      category: cost.category,
+      unit: cost.unit,
+      defaultValue: cost.defaultValue.toString(),
+      notes: cost.notes || '',
+      supplierReference: cost.supplierReference || '',
+    });
+    setShowEditDialog(true);
+  };
+
+  const handleSaveCost = () => {
+    if (!formData.name || !formData.unit || !formData.defaultValue) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: showEditDialog ? "Cost Updated" : "Cost Added",
+      description: `${formData.name} has been ${showEditDialog ? 'updated' : 'added'} to the cost library`,
+    });
+
+    setShowAddDialog(false);
+    setShowEditDialog(false);
+    setEditingCost(null);
+  };
   
   return (
     <div className="min-h-screen bg-background">
@@ -93,7 +160,7 @@ export default function CostLibrary() {
                 <Download className="w-4 h-4 mr-2" />
                 Export
               </Button>
-              <Button disabled>
+              <Button onClick={handleAddCost}>
                 <Plus className="w-4 h-4 mr-2" />
                 Add Cost Item
               </Button>
@@ -196,7 +263,7 @@ export default function CostLibrary() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Button variant="ghost" size="sm" disabled>
+                        <Button variant="ghost" size="sm" onClick={() => handleEditCost(cost)}>
                           <Edit className="w-3 h-3" />
                         </Button>
                         <Button variant="ghost" size="sm" disabled>
@@ -229,6 +296,133 @@ export default function CostLibrary() {
           </CardContent>
         </Card>
       </main>
+
+      {/* Add/Edit Cost Dialog */}
+      <Dialog open={showAddDialog || showEditDialog} onOpenChange={(open) => {
+        if (!open) {
+          setShowAddDialog(false);
+          setShowEditDialog(false);
+          setEditingCost(null);
+        }
+      }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>{showEditDialog ? 'Edit Cost Item' : 'Add New Cost Item'}</DialogTitle>
+            <DialogDescription>
+              {showEditDialog 
+                ? 'Update the cost item details. Changes will create a new version.'
+                : 'Add a new cost item to the library for use in batch costing.'}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Cost Name *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="e.g., PB3 Pot"
+                  maxLength={100}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="category">Category *</Label>
+                <Select 
+                  value={formData.category} 
+                  onValueChange={(value) => setFormData({ ...formData, category: value as CostCategory })}
+                >
+                  <SelectTrigger id="category">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(categoryLabels).map(([key, label]) => (
+                      <SelectItem key={key} value={key}>{label}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="unit">Unit *</Label>
+                <Input
+                  id="unit"
+                  value={formData.unit}
+                  onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                  placeholder="e.g., per pot, per hour"
+                  maxLength={50}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="defaultValue">Default Value ($) *</Label>
+                <Input
+                  id="defaultValue"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.defaultValue}
+                  onChange={(e) => setFormData({ ...formData, defaultValue: e.target.value })}
+                  placeholder="0.00"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="supplierReference">Supplier Reference</Label>
+              <Input
+                id="supplierReference"
+                value={formData.supplierReference}
+                onChange={(e) => setFormData({ ...formData, supplierReference: e.target.value })}
+                placeholder="Supplier name or product code"
+                maxLength={100}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="notes">Notes</Label>
+              <Textarea
+                id="notes"
+                value={formData.notes}
+                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                placeholder="Additional information about this cost item"
+                className="resize-none"
+                rows={3}
+                maxLength={500}
+              />
+            </div>
+
+            {showEditDialog && (
+              <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <p className="text-sm text-yellow-900 dark:text-yellow-100">
+                  <strong>Note:</strong> Editing this cost will create a new version effective from today.
+                  Existing batches will continue using the previous cost values.
+                </p>
+              </div>
+            )}
+
+            <div className="flex gap-2 justify-end pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setShowAddDialog(false);
+                  setShowEditDialog(false);
+                  setEditingCost(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleSaveCost}>
+                {showEditDialog ? 'Update Cost' : 'Add Cost'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
