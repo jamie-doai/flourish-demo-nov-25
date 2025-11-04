@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,11 +49,7 @@ export default function ManagerDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-background pb-6">
-      <DevBar />
-      
-      <Navigation />
-
+    <ManagerLayout>
       {/* Header - Mobile only */}
       <header className="md:hidden sticky top-0 bg-background border-b z-10">
         <div className="container mx-auto px-4 py-4">
@@ -571,6 +566,6 @@ export default function ManagerDashboard() {
           </section>
         </div>
       </main>
-    </div>
+    </ManagerLayout>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Navigation } from '@/components/Navigation';
-import { DevBar } from '@/components/DevBar';
+import { ManagerLayout } from '@/components/layouts/ManagerLayout';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -58,9 +57,7 @@ export default function ManagerSearchResults() {
   );
   
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
+    <ManagerLayout>
       
       <div className="container mx-auto px-4 py-6">
         {/* Header */}
@@ -168,6 +165,6 @@ export default function ManagerSearchResults() {
           </div>
         </div>
       </div>
-    </div>
+    </ManagerLayout>
   );
 }

@@ -1,5 +1,4 @@
-import { DevBar } from "@/components/DevBar";
-import { Navigation } from "@/components/Navigation";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -67,10 +66,8 @@ export default function ManagerInventory() {
   if (selectedSpecies) {
     const speciesData = getSpeciesData().find(s => s.species === selectedSpecies);
     
-    return (
-      <div className="min-h-screen bg-background">
-        <DevBar />
-        <Navigation />
+  return (
+    <ManagerLayout>
         <main className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <Button 
@@ -164,7 +161,7 @@ export default function ManagerInventory() {
             </div>
           </div>
         </main>
-      </div>
+      </ManagerLayout>
     );
   }
 
@@ -174,9 +171,7 @@ export default function ManagerInventory() {
     const Icon = stage?.icon;
 
     return (
-      <div className="min-h-screen bg-background">
-        <DevBar />
-        <Navigation />
+      <ManagerLayout>
         <main className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <Button 
@@ -278,14 +273,12 @@ export default function ManagerInventory() {
             </div>
           </div>
         </main>
-      </div>
+      </ManagerLayout>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
+    <ManagerLayout>
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -509,6 +502,6 @@ export default function ManagerInventory() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+    </ManagerLayout>
   );
 }

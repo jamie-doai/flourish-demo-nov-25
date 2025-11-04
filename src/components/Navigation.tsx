@@ -31,18 +31,7 @@ export function Navigation() {
               <span>Flourish</span>
             </Link>
 
-            <div className="flex items-center gap-2">
-              <GlobalSearchTrigger />
-              
-              <Button variant="hero" size="sm" asChild className="hidden lg:flex">
-                <Link to="/managers/batches/add">
-                  <Plus className="w-4 h-4" />
-                  Add Batch
-                </Link>
-              </Button>
-            </div>
-
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
               {navItems.map((item) => (
                 <Button
                   key={item.path}
@@ -56,6 +45,17 @@ export function Navigation() {
                   </Link>
                 </Button>
               ))}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <GlobalSearchTrigger />
+              
+              <Button variant="hero" size="sm" asChild className="hidden lg:flex">
+                <Link to="/managers/batches/add">
+                  <Plus className="w-4 h-4" />
+                  Add Batch
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

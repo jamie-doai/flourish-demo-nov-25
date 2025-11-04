@@ -1,5 +1,4 @@
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,9 +80,7 @@ export default function ManagerOperations() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
+    <ManagerLayout>
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -463,6 +460,6 @@ export default function ManagerOperations() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+    </ManagerLayout>
   );
 }
