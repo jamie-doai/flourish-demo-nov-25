@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3 } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3, Split, Merge } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -19,6 +19,8 @@ import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch, Batch
 import { CostBreakdownCard } from "@/components/batch/CostBreakdownCard";
 import { CostHistoryDrawer } from "@/components/batch/CostHistoryDrawer";
 import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
+import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
+import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 
 export default function ManagerBatchDetail() {
   const { batchId } = useParams();
@@ -28,6 +30,8 @@ export default function ManagerBatchDetail() {
   const [showCostHistory, setShowCostHistory] = useState(false);
   const [showAddCost, setShowAddCost] = useState(false);
   const [showDirectEdit, setShowDirectEdit] = useState(false);
+  const [showSplitDialog, setShowSplitDialog] = useState(false);
+  const [showMergeDialog, setShowMergeDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -194,6 +198,24 @@ export default function ManagerBatchDetail() {
                     </div>
                   </DialogContent>
                 </Dialog>
+
+                <Button 
+                  variant="outline"
+                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  onClick={() => setShowSplitDialog(true)}
+                >
+                  <Split className="w-6 h-6 text-primary" />
+                  <span className="text-sm">Split Batch</span>
+                </Button>
+
+                <Button 
+                  variant="outline"
+                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  onClick={() => setShowMergeDialog(true)}
+                >
+                  <Merge className="w-6 h-6 text-primary" />
+                  <span className="text-sm">Merge Batch</span>
+                </Button>
               </div>
             </Card>
 
@@ -516,6 +538,32 @@ export default function ManagerBatchDetail() {
           toast({ title: "Batch updated", description: "Changes saved successfully" });
           setShowDirectEdit(false);
         }}
+      />
+
+      <SplitBatchDialog
+        batch={mockBatch}
+        open={showSplitDialog}
+        onOpenChange={setShowSplitDialog}
+        onConfirm={() => {
+          setShowSplitDialog(false);
+          toast({ title: "Batch split successfully", description: "The batch has been divided" });
+        }}
+      />
+
+      <MergeBatchDialog
+        batches={[mockBatch]}
+        open={showMergeDialog}
+        onOpenChange={setShowMergeDialog}
+        onConfirm={() => {
+          setShowMergeDialog(false);
+          toast({ title: "Batch merged successfully", description: "Batches have been combined" });
+        }}
+      />
+
+      <CostHistoryDrawer 
+        isOpen={showCostHistory}
+        onClose={() => setShowCostHistory(false)}
+        batchId={mockBatch.id}
       />
     </div>
   );

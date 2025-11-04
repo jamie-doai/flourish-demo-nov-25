@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -16,12 +16,16 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
+import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
+import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showMoveDialog, setShowMoveDialog] = useState(false);
+  const [showSplitDialog, setShowSplitDialog] = useState(false);
+  const [showMergeDialog, setShowMergeDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -111,10 +115,10 @@ export default function WorkerBatchDetail() {
         {/* Quick Actions */}
         <div className="mb-6">
           <h3 className="text-base font-semibold text-[#37474F] mb-3">Quick Actions</h3>
-          <div className="flex flex-wrap md:flex-nowrap gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <Button 
               variant="outline"
-              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              className="h-auto flex flex-col items-center gap-2 p-4"
               onClick={() => handleAction("Watering")}
             >
               <Droplets className="w-6 h-6 text-[#3B7A57]" />
@@ -123,7 +127,7 @@ export default function WorkerBatchDetail() {
 
             <Button 
               variant="outline"
-              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              className="h-auto flex flex-col items-center gap-2 p-4"
               onClick={() => handleAction("Treatment")}
             >
               <Sprout className="w-6 h-6 text-[#3B7A57]" />
@@ -132,18 +136,27 @@ export default function WorkerBatchDetail() {
 
             <Button 
               variant="outline"
-              className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+              className="h-auto flex flex-col items-center gap-2 p-4"
               onClick={() => handleAction("Photo")}
             >
               <Camera className="w-6 h-6 text-[#3B7A57]" />
               <span className="text-sm">Add Photo</span>
             </Button>
 
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => toast({ title: "Label sent to printer 🖨️" })}
+            >
+              <Printer className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Print Label</span>
+            </Button>
+
             <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
               <DialogTrigger asChild>
                 <Button 
                   variant="outline"
-                  className="flex-1 md:max-w-[200px] h-auto flex flex-col items-center gap-2 p-4"
+                  className="h-auto flex flex-col items-center gap-2 p-4"
                 >
                   <Move className="w-6 h-6 text-[#3B7A57]" />
                   <span className="text-sm">Move Batch</span>
@@ -167,6 +180,24 @@ export default function WorkerBatchDetail() {
                 </div>
               </DialogContent>
             </Dialog>
+
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => setShowSplitDialog(true)}
+            >
+              <Split className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Split Batch</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => setShowMergeDialog(true)}
+            >
+              <Merge className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Merge Batch</span>
+            </Button>
           </div>
         </div>
         {/* Sale Status Alert */}
@@ -395,6 +426,27 @@ export default function WorkerBatchDetail() {
           </div>
         </Card>
       </main>
+
+      {/* Dialogs */}
+      <SplitBatchDialog
+        batch={mockBatch}
+        open={showSplitDialog}
+        onOpenChange={setShowSplitDialog}
+        onConfirm={() => {
+          setShowSplitDialog(false);
+          toast({ title: "Batch split successfully", description: "The batch has been divided" });
+        }}
+      />
+
+      <MergeBatchDialog
+        batches={[mockBatch]}
+        open={showMergeDialog}
+        onOpenChange={setShowMergeDialog}
+        onConfirm={() => {
+          setShowMergeDialog(false);
+          toast({ title: "Batch merged successfully", description: "Batches have been combined" });
+        }}
+      />
 
       <div className="md:hidden">
         <WorkerNav />
