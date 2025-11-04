@@ -74,6 +74,68 @@ export const batchCostTemplates: BatchCostTemplate[] = [
     createdAt: "2024-08-15T08:00:00Z",
     createdBy: "ADMIN"
   },
+  
+  // RIM-2024-067 - Rimu
+  {
+    id: "BCT-201",
+    batchId: "RIM-2024-067",
+    costCatalogItemId: "CC-001",
+    costName: "Native Seed Mix",
+    category: "seed",
+    unit: "per 100g",
+    appliesAtStage: ["seed"],
+    isActive: true,
+    createdAt: "2024-09-10T14:00:00Z",
+    createdBy: "ADMIN"
+  },
+  {
+    id: "BCT-202",
+    batchId: "RIM-2024-067",
+    costCatalogItemId: "CC-002",
+    costName: "Propagation Tray",
+    category: "tray",
+    unit: "per tray",
+    appliesAtStage: ["seed"],
+    isActive: true,
+    createdAt: "2024-09-10T14:00:00Z",
+    createdBy: "ADMIN"
+  },
+  {
+    id: "BCT-203",
+    batchId: "RIM-2024-067",
+    costCatalogItemId: "CC-003",
+    costName: "Seed Raising Mix",
+    category: "soil",
+    unit: "per litre",
+    appliesAtStage: ["seed"],
+    isActive: true,
+    createdAt: "2024-09-10T14:00:00Z",
+    createdBy: "ADMIN"
+  },
+  {
+    id: "BCT-204",
+    batchId: "RIM-2024-067",
+    costCatalogItemId: "CC-007",
+    costName: "Propagation Labour",
+    category: "labour",
+    unit: "per hour",
+    appliesAtStage: ["seed"],
+    isActive: true,
+    createdAt: "2024-09-10T14:00:00Z",
+    createdBy: "ADMIN"
+  },
+  {
+    id: "BCT-205",
+    batchId: "RIM-2024-067",
+    costCatalogItemId: "CC-011",
+    costName: "Overhead Allocation",
+    category: "overhead",
+    unit: "per plant",
+    appliesAtStage: ["seed", "propagation", "potting", "hardening"],
+    isActive: true,
+    createdAt: "2024-09-10T14:00:00Z",
+    createdBy: "ADMIN"
+  },
 ];
 
 export const costHistory: CostHistory[] = [
@@ -161,6 +223,78 @@ export const costHistory: CostHistory[] = [
     appliedBy: "SYSTEM",
     actionType: "stage_change",
     metadata: { hours: 3 }
+  },
+  
+  // RIM-2024-067 cost history
+  {
+    id: "CH-301",
+    batchId: "RIM-2024-067",
+    costTemplateId: "BCT-201",
+    costName: "Native Seed Mix",
+    category: "seed",
+    stage: "seed",
+    amount: 37.50,
+    quantity: 300,
+    perUnitCost: 0.125,
+    appliedAt: "2024-09-10T14:30:00Z",
+    appliedBy: "SYSTEM",
+    actionType: "stage_change"
+  },
+  {
+    id: "CH-302",
+    batchId: "RIM-2024-067",
+    costTemplateId: "BCT-202",
+    costName: "Propagation Tray",
+    category: "tray",
+    stage: "seed",
+    amount: 25.50,
+    quantity: 300,
+    perUnitCost: 0.085,
+    appliedAt: "2024-09-10T14:30:00Z",
+    appliedBy: "SYSTEM",
+    actionType: "stage_change"
+  },
+  {
+    id: "CH-303",
+    batchId: "RIM-2024-067",
+    costTemplateId: "BCT-203",
+    costName: "Seed Raising Mix",
+    category: "soil",
+    stage: "seed",
+    amount: 27.00,
+    quantity: 300,
+    perUnitCost: 0.09,
+    appliedAt: "2024-09-10T14:30:00Z",
+    appliedBy: "SYSTEM",
+    actionType: "stage_change"
+  },
+  {
+    id: "CH-304",
+    batchId: "RIM-2024-067",
+    costTemplateId: "BCT-204",
+    costName: "Propagation Labour",
+    category: "labour",
+    stage: "seed",
+    amount: 24.50,
+    quantity: 300,
+    perUnitCost: 0.082,
+    appliedAt: "2024-09-10T14:30:00Z",
+    appliedBy: "SYSTEM",
+    actionType: "stage_change"
+  },
+  {
+    id: "CH-305",
+    batchId: "RIM-2024-067",
+    costTemplateId: "BCT-205",
+    costName: "Overhead Allocation",
+    category: "overhead",
+    stage: "seed",
+    amount: 75.00,
+    quantity: 300,
+    perUnitCost: 0.25,
+    appliedAt: "2024-09-10T14:30:00Z",
+    appliedBy: "SYSTEM",
+    actionType: "stage_change"
   },
 ];
 

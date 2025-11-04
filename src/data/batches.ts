@@ -128,7 +128,10 @@ export const batches: Batch[] = [
     urgent: false, 
     started: "2024-09-10",
     lastWatered: "N/A",
-    container: "Seed trays"
+    container: "Seed trays",
+    totalCost: 189.50,
+    perUnitCost: 0.63,
+    costLastUpdated: "2024-09-10T14:30:00Z"
   },
   { 
     id: "KAH-2024-134", 
