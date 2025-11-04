@@ -12,6 +12,7 @@ import { SpeciesStep } from "@/components/add-batch/SpeciesStep";
 import { SourceOriginStep } from "@/components/add-batch/SourceOriginStep";
 import { LocationStep } from "@/components/add-batch/LocationStep";
 import { BatchDetailsStep } from "@/components/add-batch/BatchDetailsStep";
+import { CostConfigurationStep } from "@/components/add-batch/CostConfigurationStep";
 import { AttachmentsStep } from "@/components/add-batch/AttachmentsStep";
 import { ReviewStep } from "@/components/add-batch/ReviewStep";
 import { useToast } from "@/hooks/use-toast";
@@ -22,6 +23,7 @@ const STEPS = [
   "Source/Origin",
   "Location",
   "Batch Details",
+  "Cost Config",
   "Attachments",
   "Review"
 ];
@@ -33,6 +35,8 @@ export default function AddBatch() {
   const [formData, setFormData] = useState<Partial<BatchFormData>>({
     trackMovements: true,
   });
+  const [selectedCosts, setSelectedCosts] = useState<string[]>([]);
+  const [costOverrides, setCostOverrides] = useState<Record<string, number>>({});
 
   const updateFormData = (data: Partial<BatchFormData>) => {
     setFormData(prev => ({ ...prev, ...data }));
@@ -143,15 +147,25 @@ export default function AddBatch() {
               <BatchDetailsStep formData={formData} updateFormData={updateFormData} />
             )}
             {currentStep === 5 && (
-              <AttachmentsStep formData={formData} updateFormData={updateFormData} />
+              <CostConfigurationStep 
+                selectedCosts={selectedCosts}
+                onCostsChange={setSelectedCosts}
+                costOverrides={costOverrides}
+                onCostOverrideChange={(costId, value) => 
+                  setCostOverrides(prev => ({ ...prev, [costId]: value }))
+                }
+              />
             )}
             {currentStep === 6 && (
+              <AttachmentsStep formData={formData} updateFormData={updateFormData} />
+            )}
+            {currentStep === 7 && (
               <ReviewStep formData={formData} onSave={handleSave} />
             )}
           </Card>
 
           {/* Navigation Buttons */}
-          {currentStep < 6 && (
+          {currentStep < 7 && (
             <div className="flex justify-between">
               <Button
                 variant="outline"

@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Download, Search, TrendingUp, BarChart3, FileCheck, Shield } from "lucide-react";
+import { FileText, Download, Search, TrendingUp, BarChart3, FileCheck, Shield, DollarSign } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function ManagerReporting() {
   const traceabilityReports = [
@@ -34,6 +35,7 @@ export default function ManagerReporting() {
           <TabsList>
             <TabsTrigger value="traceability"><FileCheck className="w-4 h-4 mr-2" />Traceability</TabsTrigger>
             <TabsTrigger value="analytics"><BarChart3 className="w-4 h-4 mr-2" />Analytics</TabsTrigger>
+            <TabsTrigger value="costs"><DollarSign className="w-4 h-4 mr-2" />Cost Analysis</TabsTrigger>
             <TabsTrigger value="biosecurity"><Shield className="w-4 h-4 mr-2" />Biosecurity</TabsTrigger>
           </TabsList>
 
@@ -107,6 +109,22 @@ export default function ManagerReporting() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="costs">
+            <Card className="p-6">
+              <div className="text-center py-12">
+                <DollarSign className="w-12 h-12 mx-auto text-primary mb-4" />
+                <h3 className="text-lg font-semibold mb-2">Cost Analysis & Margins</h3>
+                <p className="text-muted-foreground mb-6">Production costs and profitability insights</p>
+                <Link to="/managers/reporting/cost-analysis">
+                  <Button>
+                    View Cost Analysis
+                    <BarChart3 className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </Card>
           </TabsContent>
 
           <TabsContent value="biosecurity">

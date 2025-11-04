@@ -123,6 +123,8 @@ export default function QuoteDetail() {
                   <TableHead>Pot Size</TableHead>
                   <TableHead className="text-right">Quantity</TableHead>
                   <TableHead className="text-right">Unit Price</TableHead>
+                  <TableHead className="text-right">COP</TableHead>
+                  <TableHead className="text-right">Margin</TableHead>
                   <TableHead className="text-right">Discount %</TableHead>
                   <TableHead className="text-right">Total</TableHead>
                 </TableRow>
@@ -134,6 +136,34 @@ export default function QuoteDetail() {
                     <TableCell>{item.potSize}</TableCell>
                     <TableCell className="text-right">{item.quantity}</TableCell>
                     <TableCell className="text-right">${item.unitPrice.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">
+                      {item.batchCOP ? (
+                        <span className="text-muted-foreground">${item.batchCOP.toFixed(2)}</span>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {item.margin !== undefined ? (
+                        <div className="flex flex-col items-end">
+                          <span className={`font-medium ${
+                            item.margin >= 40 ? 'text-green-600 dark:text-green-400' :
+                            item.margin >= 20 ? 'text-blue-600 dark:text-blue-400' :
+                            item.margin > 0 ? 'text-yellow-600 dark:text-yellow-400' :
+                            'text-red-600 dark:text-red-400'
+                          }`}>
+                            {item.margin.toFixed(1)}%
+                          </span>
+                          {item.marginDollar !== undefined && (
+                            <span className="text-xs text-muted-foreground">
+                              ${item.marginDollar.toFixed(2)}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <span className="text-muted-foreground text-xs">-</span>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right">{item.discount}%</TableCell>
                     <TableCell className="text-right font-medium">${item.total.toFixed(2)}</TableCell>
                   </TableRow>

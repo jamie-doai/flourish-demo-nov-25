@@ -34,6 +34,8 @@ import ManagerScan from "./pages/managers/Scan";
 import ManagerAddBatch from "./pages/managers/batches/AddBatch";
 import ManagerBatchDetail from "./pages/managers/batches/BatchDetail";
 import ManagerSearchResults from "./pages/managers/SearchResults";
+import CostLibrary from "./pages/managers/settings/CostLibrary";
+import CostAnalysis from "./pages/managers/reporting/CostAnalysis";
 import WorkerHome from "./pages/workers/Home";
 import WorkerTasks from "./pages/workers/Tasks";
 import WorkerTaskDetail from "./pages/workers/TaskDetail";
@@ -82,7 +84,9 @@ const App = () => (
           <Route path="/managers/tasks/:taskId" element={<ManagerTaskDetail />} />
           <Route path="/managers/planning" element={<ManagerPlanning />} />
           <Route path="/managers/reporting" element={<ManagerReporting />} />
+          <Route path="/managers/reporting/cost-analysis" element={<CostAnalysis />} />
           <Route path="/managers/settings" element={<ManagerSettings />} />
+          <Route path="/managers/settings/cost-library" element={<CostLibrary />} />
           <Route path="/managers/locations/:locationId" element={<ManagerLocationDetail />} />
           <Route path="/managers/scan" element={<ManagerScan />} />
           <Route path="/managers/search" element={<ManagerSearchResults />} />

@@ -7,6 +7,9 @@ export interface QuoteLineItem {
   discount: number;
   total: number;
   batchId?: string;
+  batchCOP?: number;
+  margin?: number;
+  marginDollar?: number;
 }
 
 export interface Quote {
@@ -46,7 +49,10 @@ export const quotes: Quote[] = [
         unitPrice: 3.50,
         discount: 5,
         total: 3325,
-        batchId: "MAN-2024-156"
+        batchId: "MAN-2024-156",
+        batchCOP: 2.03,
+        margin: 42.0,
+        marginDollar: 1.47
       },
       {
         id: "QL-002",
@@ -56,7 +62,10 @@ export const quotes: Quote[] = [
         unitPrice: 2.80,
         discount: 0,
         total: 1400,
-        batchId: "HAR-2024-142"
+        batchId: "HAR-2024-142",
+        batchCOP: 1.85,
+        margin: 33.9,
+        marginDollar: 0.95
       },
       {
         id: "QL-003",
