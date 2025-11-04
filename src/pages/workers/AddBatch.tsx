@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { formatDateNZ } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -339,7 +340,7 @@ export default function WorkerAddBatch() {
                 <div className="flex justify-between py-2">
                   <span className="text-[#37474F]/60">Date:</span>
                   <span className="font-medium text-[#37474F]">
-                    {formData.dateCollected?.toLocaleDateString()}
+                    {formatDateNZ(formData.dateCollected)}
                   </span>
                 </div>
               </div>

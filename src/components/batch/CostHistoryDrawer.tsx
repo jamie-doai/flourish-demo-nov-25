@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { getCostHistoryByBatch } from '@/data/batchCosts';
 import { CostHistory, ActionType } from '@/types/cost';
+import { formatDateNZ } from '@/lib/utils';
 import { 
   ArrowRightLeft, 
   CheckCircle, 
@@ -149,7 +150,7 @@ function CostHistoryEntry({ entry, isLatest }: { entry: CostHistory; isLatest: b
           </div>
           <div className="flex items-center gap-1 text-muted-foreground">
             <Calendar className="w-3 h-3" />
-            <span>{new Date(entry.appliedAt).toLocaleDateString()}</span>
+            <span>{formatDateNZ(entry.appliedAt)}</span>
           </div>
         </div>
         

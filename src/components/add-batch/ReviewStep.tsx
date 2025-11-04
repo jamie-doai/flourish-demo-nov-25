@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Check, Printer, Plus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { formatDateNZ } from "@/lib/utils";
 
 interface ReviewStepProps {
   formData: Partial<BatchFormData>;
@@ -74,7 +75,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Date Collected:</span>
                   <span className="font-medium">
-                    {formData.dateCollected?.toLocaleDateString()}
+                    {formatDateNZ(formData.dateCollected)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -98,7 +99,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Date Taken:</span>
                   <span className="font-medium">
-                    {formData.dateTaken?.toLocaleDateString()}
+                    {formatDateNZ(formData.dateTaken)}
                   </span>
                 </div>
               </>
@@ -112,7 +113,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Date Received:</span>
                   <span className="font-medium">
-                    {formData.dateReceived?.toLocaleDateString()}
+                    {formatDateNZ(formData.dateReceived)}
                   </span>
                 </div>
                 {formData.invoiceReference && (
@@ -171,7 +172,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Expected Ready:</span>
                 <span className="font-medium">
-                  {formData.expectedGerminationDate.toLocaleDateString()}
+                  {formatDateNZ(formData.expectedGerminationDate)}
                 </span>
               </div>
             )}

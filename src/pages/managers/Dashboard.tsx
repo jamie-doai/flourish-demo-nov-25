@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
+import { formatDateTimeNZ } from "@/lib/utils";
 import { 
   Package, 
   Clipboard, 
@@ -41,12 +42,7 @@ export default function ManagerDashboard() {
 
   // Get today's date
   const today = new Date();
-  const dateString = today.toLocaleDateString('en-NZ', { 
-    weekday: 'short', 
-    day: 'numeric', 
-    month: 'short', 
-    year: 'numeric' 
-  });
+  const dateString = formatDateTimeNZ(today);
 
   return (
     <ManagerLayout>

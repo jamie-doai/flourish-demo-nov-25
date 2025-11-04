@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
+import { formatDateNZ } from '@/lib/utils';
 import {
   Dialog,
   DialogContent,
@@ -295,7 +296,7 @@ export default function CostLibrary() {
                       </div>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(cost.effectiveFrom).toLocaleDateString()}
+                      {formatDateNZ(cost.effectiveFrom)}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
