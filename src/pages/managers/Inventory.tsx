@@ -4,10 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout } from "lucide-react";
+import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout, Edit3, ClipboardList } from "lucide-react";
 import { useState } from "react";
 import { stages, batches, locations, getTasksByLocation } from "@/data";
 import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { BulkActionToolbar } from "@/components/inventory/BulkActionToolbar";
+import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
+import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
+import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
+import { StocktakeManager } from "@/components/inventory/StocktakeManager";
+import { LossAdjustmentDialog } from "@/components/inventory/LossAdjustmentDialog";
+import { useToast } from "@/hooks/use-toast";
+import { Batch } from "@/data/batches";
 
 interface SpeciesData {
   species: string;
@@ -19,8 +28,63 @@ interface SpeciesData {
 }
 
 export default function ManagerInventory() {
+  const { toast } = useToast();
   const [selectedStage, setSelectedStage] = useState<string | null>(null);
   const [selectedSpecies, setSelectedSpecies] = useState<string | null>(null);
+  const [selectedBatches, setSelectedBatches] = useState<Set<string>>(new Set());
+  const [splitDialogOpen, setSplitDialogOpen] = useState(false);
+  const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
+  const [directEditDialogOpen, setDirectEditDialogOpen] = useState(false);
+  const [lossAdjustmentDialogOpen, setLossAdjustmentDialogOpen] = useState(false);
+  const [activeView, setActiveView] = useState<"inventory" | "stocktake">("inventory");
+
+  const handleBatchSelect = (batchId: string, checked: boolean) => {
+    setSelectedBatches(prev => {
+      const newSet = new Set(prev);
+      if (checked) {
+        newSet.add(batchId);
+      } else {
+        newSet.delete(batchId);
+      }
+      return newSet;
+    });
+  };
+
+  const getSelectedBatchData = () => {
+    return batches.filter(b => selectedBatches.has(b.id));
+  };
+
+  const totalSelectedPlants = getSelectedBatchData().reduce((sum, b) => sum + b.quantity, 0);
+
+  const handleSplitConfirm = (splits: number[]) => {
+    toast({
+      title: "Batch split successful",
+      description: `Created ${splits.length} new batches`,
+    });
+  };
+
+  const handleMergeConfirm = (newBatchCode: string) => {
+    toast({
+      title: "Batches merged",
+      description: `Created new batch: ${newBatchCode}`,
+    });
+    setSelectedBatches(new Set());
+  };
+
+  const handleDirectEditConfirm = (updates: Partial<Batch>) => {
+    toast({
+      title: "Batch updated",
+      description: "Changes saved successfully",
+    });
+  };
+
+  const handleLossAdjustmentConfirm = (adjustments: any[]) => {
+    toast({
+      title: "Quantities adjusted",
+      description: `Updated ${adjustments.length} batch(es)`,
+    });
+    setSelectedBatches(new Set());
+  };
 
   const getSpeciesData = (): SpeciesData[] => {
     const speciesMap = new Map<string, SpeciesData>();
@@ -285,15 +349,37 @@ export default function ManagerInventory() {
             <h1 className="text-3xl font-bold mb-2">Inventory Management</h1>
             <p className="text-muted-foreground">Track batches across stages and locations</p>
           </div>
-          <Button variant="hero" asChild>
-            <Link to="/managers/batches/add">
-              <Plus className="w-4 h-4" />
-              New Batch
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant={activeView === "stocktake" ? "default" : "outline"}
+              onClick={() => setActiveView("stocktake")}
+            >
+              <ClipboardList className="w-4 h-4 mr-2" />
+              Stocktake
+            </Button>
+            <Button variant="hero" asChild>
+              <Link to="/managers/batches/add">
+                <Plus className="w-4 h-4" />
+                New Batch
+              </Link>
+            </Button>
+          </div>
         </div>
 
-        <Tabs defaultValue="stages" className="space-y-6">
+        {activeView === "stocktake" ? (
+          <>
+            <Button
+              variant="ghost"
+              onClick={() => setActiveView("inventory")}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Inventory
+            </Button>
+            <StocktakeManager />
+          </>
+        ) : (
+          <Tabs defaultValue="batches" className="space-y-6">
           <TabsList className="grid w-full max-w-2xl grid-cols-4">
             <TabsTrigger value="stages">
               <Layers className="w-4 h-4 mr-2" />
@@ -394,52 +480,70 @@ export default function ManagerInventory() {
 
             <div className="space-y-3">
               {batches.map((batch) => (
-                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
-                  <Card className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Leaf className="w-5 h-5 text-primary" />
-                          <h3 className="text-lg font-semibold">{batch.id}</h3>
-                          {batch.urgent && (
-                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
-                              Urgent
-                            </span>
-                          )}
-                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                            "bg-yellow-100 text-yellow-700"
-                          }`}>
-                            {batch.health}
-                          </span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
-                        <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
-                        
-                        <div className="grid grid-cols-4 gap-4 text-sm">
-                          <div>
-                            <span className="text-muted-foreground">Stage: </span>
-                            <span className="font-medium capitalize">{batch.stage}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Location: </span>
-                            <span className="font-medium">📍 {batch.location}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Quantity: </span>
-                            <span className="font-medium">{batch.quantity} plants</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Started: </span>
-                            <span className="font-medium">{batch.started}</span>
-                          </div>
-                        </div>
+                <div key={batch.id} className="relative">
+                  <Card className="p-4 hover:shadow-md transition-shadow">
+                    <div className="flex items-start gap-4">
+                      <div className="pt-1">
+                        <Checkbox
+                          checked={selectedBatches.has(batch.id)}
+                          onCheckedChange={(checked) => handleBatchSelect(batch.id, checked as boolean)}
+                        />
                       </div>
-                      <Button variant="ghost" size="sm">View Details</Button>
+                      <Link to={`/managers/batch/${batch.id}`} className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-2">
+                              <Leaf className="w-5 h-5 text-primary" />
+                              <h3 className="text-lg font-semibold">{batch.id}</h3>
+                              {batch.urgent && (
+                                <Badge variant="destructive">Urgent</Badge>
+                              )}
+                              <Badge variant={
+                                batch.health === "Excellent" ? "default" :
+                                batch.health === "Good" ? "secondary" :
+                                "outline"
+                              }>
+                                {batch.health}
+                              </Badge>
+                            </div>
+                            
+                            <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
+                            <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
+                            
+                            <div className="grid grid-cols-4 gap-4 text-sm">
+                              <div>
+                                <span className="text-muted-foreground">Stage: </span>
+                                <span className="font-medium capitalize">{batch.stage}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Location: </span>
+                                <span className="font-medium">📍 {batch.location}</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Quantity: </span>
+                                <span className="font-medium">{batch.quantity} plants</span>
+                              </div>
+                              <div>
+                                <span className="text-muted-foreground">Started: </span>
+                                <span className="font-medium">{batch.started}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          setSelectedBatches(new Set([batch.id]));
+                          setDirectEditDialogOpen(true);
+                        }}
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </Button>
                     </div>
                   </Card>
-                </Link>
+                </div>
               ))}
             </div>
           </TabsContent>
@@ -501,6 +605,50 @@ export default function ManagerInventory() {
             </div>
           </TabsContent>
         </Tabs>
+        )}
+
+        {/* Bulk Action Toolbar */}
+        <BulkActionToolbar
+          selectedCount={selectedBatches.size}
+          totalPlants={totalSelectedPlants}
+          onClearSelection={() => setSelectedBatches(new Set())}
+          onMoveLocation={() => toast({ title: "Move location", description: "Feature coming soon" })}
+          onChangeStatus={() => toast({ title: "Change status", description: "Feature coming soon" })}
+          onSplit={() => setSplitDialogOpen(true)}
+          onMerge={() => setMergeDialogOpen(true)}
+          onAdjustQuantity={() => setLossAdjustmentDialogOpen(true)}
+          onPrintLabels={() => toast({ title: "Print labels", description: "Feature coming soon" })}
+          onApplyHold={() => toast({ title: "Apply hold", description: "Feature coming soon" })}
+        />
+
+        {/* Dialogs */}
+        <SplitBatchDialog
+          open={splitDialogOpen}
+          onOpenChange={setSplitDialogOpen}
+          batch={getSelectedBatchData()[0] || null}
+          onConfirm={handleSplitConfirm}
+        />
+
+        <MergeBatchDialog
+          open={mergeDialogOpen}
+          onOpenChange={setMergeDialogOpen}
+          batches={getSelectedBatchData()}
+          onConfirm={handleMergeConfirm}
+        />
+
+        <DirectEditDialog
+          open={directEditDialogOpen}
+          onOpenChange={setDirectEditDialogOpen}
+          batch={getSelectedBatchData()[0] || null}
+          onConfirm={handleDirectEditConfirm}
+        />
+
+        <LossAdjustmentDialog
+          open={lossAdjustmentDialogOpen}
+          onOpenChange={setLossAdjustmentDialogOpen}
+          batches={getSelectedBatchData()}
+          onConfirm={handleLossAdjustmentConfirm}
+        />
       </main>
     </ManagerLayout>
   );
