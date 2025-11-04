@@ -10,3 +10,5 @@ export * from './quotes';
 export * from './orders';
 export * from './invoices';
 export * from './clients';
+export * from './costCatalog';
+export * from './batchCosts';

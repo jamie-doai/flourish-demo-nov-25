@@ -21,6 +21,9 @@ export interface Batch {
   saleStatus?: "ready-for-sale" | "reserved" | "on-order" | null;
   orderNumber?: string;
   customerName?: string;
+  totalCost?: number;
+  perUnitCost?: number;
+  costLastUpdated?: string;
 }
 
 export const batches: Batch[] = [
@@ -41,7 +44,10 @@ export const batches: Batch[] = [
     lastFertilized: "2025-10-01",
     lastTreatment: "2025-09-28",
     expectedReadyDate: "2025-11-15",
-    ageInDays: 52
+    ageInDays: 52,
+    totalCost: 243.40,
+    perUnitCost: 2.03,
+    costLastUpdated: "2024-09-20T10:15:00Z"
   },
   { 
     id: "TOT-2024-089", 

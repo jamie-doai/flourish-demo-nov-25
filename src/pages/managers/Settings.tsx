@@ -5,7 +5,9 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
-import { Users, MapPin, Sprout, Settings as SettingsIcon, Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Users, MapPin, Sprout, Settings as SettingsIcon, Moon, Sun, DollarSign, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useTheme } from "next-themes";
 
 export default function ManagerSettings() {
@@ -30,6 +32,29 @@ export default function ManagerSettings() {
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
           <p className="text-muted-foreground">Manage users, locations, species catalog, and system preferences</p>
         </div>
+
+        {/* Cost Library Quick Access */}
+        <Card className="mb-6 border-primary/20 bg-primary/5">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                  <DollarSign className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Cost Library</h3>
+                  <p className="text-sm text-muted-foreground">Manage cost items and pricing for batches</p>
+                </div>
+              </div>
+              <Link to="/managers/settings/cost-library">
+                <Button>
+                  Open Cost Library
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
 
         <Tabs defaultValue="users" className="space-y-6">
           <TabsList>

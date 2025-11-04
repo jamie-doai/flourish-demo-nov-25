@@ -15,12 +15,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
+import { CostBreakdownCard } from "@/components/batch/CostBreakdownCard";
+import { CostHistoryDrawer } from "@/components/batch/CostHistoryDrawer";
 
 export default function ManagerBatchDetail() {
   const { batchId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [showMoveDialog, setShowMoveDialog] = useState(false);
+  const [showCostHistory, setShowCostHistory] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -100,6 +103,13 @@ export default function ManagerBatchDetail() {
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Main Content - Left Column */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Cost Breakdown - Manager Only */}
+            {mockBatch.totalCost && (
+              <CostBreakdownCard 
+                batchId={mockBatch.id}
+                onViewHistory={() => setShowCostHistory(true)}
+              />
+            )}
             {/* Quick Actions */}
             <Card className="p-6">
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
@@ -392,6 +402,13 @@ export default function ManagerBatchDetail() {
           </div>
         </div>
       </main>
+      
+      {/* Cost History Drawer */}
+      <CostHistoryDrawer 
+        batchId={mockBatch.id}
+        isOpen={showCostHistory}
+        onClose={() => setShowCostHistory(false)}
+      />
     </div>
   );
 }
