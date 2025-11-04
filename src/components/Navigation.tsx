@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
 import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X, Plus } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { GlobalSearchTrigger } from "@/components/GlobalSearchTrigger";
 
 export function Navigation() {
   const location = useLocation();
@@ -30,12 +31,16 @@ export function Navigation() {
               <span>Flourish</span>
             </Link>
 
-            <Button variant="hero" size="sm" asChild className="hidden lg:flex">
-              <Link to="/managers/batches/add">
-                <Plus className="w-4 h-4" />
-                Add Batch
-              </Link>
-            </Button>
+            <div className="flex items-center gap-2">
+              <GlobalSearchTrigger />
+              
+              <Button variant="hero" size="sm" asChild className="hidden lg:flex">
+                <Link to="/managers/batches/add">
+                  <Plus className="w-4 h-4" />
+                  Add Batch
+                </Link>
+              </Button>
+            </div>
 
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
