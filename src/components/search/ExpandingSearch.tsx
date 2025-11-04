@@ -34,10 +34,15 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
     }
   }, [isExpanded]);
   
-  // Close on outside click
+  // Close on outside click (but not when clicking select dropdown)
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      // Check if click is on a select dropdown (Radix Portals)
+      const isSelectDropdown = (target as Element).closest('[role="listbox"]') || 
+                               (target as Element).closest('[data-radix-select-content]');
+      
+      if (containerRef.current && !containerRef.current.contains(target) && !isSelectDropdown) {
         onExpandChange(false);
       }
     };
@@ -116,37 +121,34 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
   
   return (
     <div ref={containerRef} className="relative flex-1 max-w-2xl">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
-        <Input
-          ref={inputRef}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={handleKeyDownInput}
-          placeholder="Search everything..."
-          className="pl-9 pr-10 h-10"
+      <div className="relative flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
+          <Input
+            ref={inputRef}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDownInput}
+            placeholder="Search everything..."
+            className="pl-9 pr-10 h-10"
+          />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleClose}
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+          >
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+        <QuickFilterDropdown 
+          value={quickFilter}
+          onValueChange={setQuickFilter}
         />
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleClose}
-          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
-        >
-          <X className="w-4 h-4" />
-        </Button>
       </div>
       
       {showDropdown && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-popover border rounded-lg shadow-lg z-50 flex flex-col max-h-[calc(100vh-200px)]">
-          {/* Fixed Header - Quick Filter */}
-          <div className="p-3 border-b bg-background/95 backdrop-blur-sm flex items-center justify-between shrink-0">
-            <span className="text-xs text-muted-foreground font-medium">Filter by:</span>
-            <QuickFilterDropdown 
-              value={quickFilter}
-              onValueChange={setQuickFilter}
-            />
-          </div>
-
           {/* Scrollable Results Area */}
           <ScrollArea className="flex-1">
             <div className="p-2">
