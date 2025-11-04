@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -32,8 +33,17 @@ import {
 } from '@/components/ui/select';
 import { ArrowLeft, Plus, Edit, History, Download, DollarSign } from 'lucide-react';
 import { costCatalog, getCostCatalogByCategory } from '@/data/costCatalog';
-import { CostCategory, CostCatalogItem } from '@/types/cost';
+import { CostCategory, CostCatalogItem, BatchStage } from '@/types/cost';
 import { useToast } from '@/hooks/use-toast';
+
+const stageLabels: Record<BatchStage, string> = {
+  seed: 'Seed',
+  propagation: 'Propagation',
+  potting: 'Potting',
+  hardening: 'Hardening',
+  ready: 'Ready',
+  sold: 'Sold',
+};
 
 const categoryLabels: Record<CostCategory, string> = {
   seed: 'Seeds & Seedlings',
@@ -71,6 +81,7 @@ export default function CostLibrary() {
     category: 'seed' as CostCategory,
     unit: '',
     defaultValue: '',
+    defaultStages: [] as BatchStage[],
     notes: '',
     supplierReference: '',
   });
@@ -91,6 +102,7 @@ export default function CostLibrary() {
       category: 'seed',
       unit: '',
       defaultValue: '',
+      defaultStages: [],
       notes: '',
       supplierReference: '',
     });
@@ -104,10 +116,20 @@ export default function CostLibrary() {
       category: cost.category,
       unit: cost.unit,
       defaultValue: cost.defaultValue.toString(),
+      defaultStages: cost.defaultStages || [],
       notes: cost.notes || '',
       supplierReference: cost.supplierReference || '',
     });
     setShowEditDialog(true);
+  };
+
+  const toggleStage = (stage: BatchStage) => {
+    setFormData(prev => ({
+      ...prev,
+      defaultStages: prev.defaultStages.includes(stage)
+        ? prev.defaultStages.filter(s => s !== stage)
+        : [...prev.defaultStages, stage]
+    }));
   };
 
   const handleSaveCost = () => {
@@ -233,6 +255,7 @@ export default function CostLibrary() {
                   <TableHead>Category</TableHead>
                   <TableHead>Unit</TableHead>
                   <TableHead className="text-right">Default Value</TableHead>
+                  <TableHead>Applied At Stages</TableHead>
                   <TableHead>Effective From</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -257,6 +280,19 @@ export default function CostLibrary() {
                     <TableCell className="text-sm text-muted-foreground">{cost.unit}</TableCell>
                     <TableCell className="text-right font-medium">
                       ${cost.defaultValue.toFixed(2)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {cost.defaultStages && cost.defaultStages.length > 0 ? (
+                          cost.defaultStages.map(stage => (
+                            <Badge key={stage} variant="secondary" className="text-xs">
+                              {stageLabels[stage]}
+                            </Badge>
+                          ))
+                        ) : (
+                          <span className="text-xs text-muted-foreground">No stages</span>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {new Date(cost.effectiveFrom).toLocaleDateString()}
@@ -369,6 +405,30 @@ export default function CostLibrary() {
                   onChange={(e) => setFormData({ ...formData, defaultValue: e.target.value })}
                   placeholder="0.00"
                 />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Applied At Stages</Label>
+              <p className="text-xs text-muted-foreground mb-2">
+                Select which lifecycle stages this cost automatically applies to
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4 border rounded-lg bg-muted/20">
+                {Object.entries(stageLabels).map(([key, label]) => (
+                  <div key={key} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={`stage-${key}`}
+                      checked={formData.defaultStages.includes(key as BatchStage)}
+                      onCheckedChange={() => toggleStage(key as BatchStage)}
+                    />
+                    <label
+                      htmlFor={`stage-${key}`}
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      {label}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
 

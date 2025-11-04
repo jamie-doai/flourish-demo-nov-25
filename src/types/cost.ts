@@ -29,6 +29,7 @@ export interface CostCatalogItem {
   category: CostCategory;
   unit: string;
   defaultValue: number;
+  defaultStages?: BatchStage[]; // Default stages where this cost applies
   effectiveFrom: string;
   effectiveTo?: string;
   notes?: string;

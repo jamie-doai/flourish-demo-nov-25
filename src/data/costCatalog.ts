@@ -1,13 +1,14 @@
 import { CostCatalogItem } from '@/types/cost';
 
 export const costCatalog: CostCatalogItem[] = [
-  // Seed stage
+  // Seed stage costs
   { 
     id: "CC-001", 
     name: "Native Seed Mix", 
     category: "seed", 
     unit: "per 100g", 
-    defaultValue: 12.50, 
+    defaultValue: 12.50,
+    defaultStages: ["seed"],
     effectiveFrom: "2025-01-01",
     notes: "Premium native seed mix for propagation"
   },
@@ -16,7 +17,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Propagation Tray", 
     category: "tray", 
     unit: "per tray", 
-    defaultValue: 0.85, 
+    defaultValue: 0.85,
+    defaultStages: ["seed"],
     effectiveFrom: "2025-01-01",
     notes: "Standard 128-cell propagation tray"
   },
@@ -25,18 +27,20 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Seed Raising Mix", 
     category: "soil", 
     unit: "per litre", 
-    defaultValue: 0.45, 
+    defaultValue: 0.45,
+    defaultStages: ["seed"],
     effectiveFrom: "2025-01-01",
     supplierReference: "SUP-SRM-2024"
   },
   
-  // Potting stage
+  // Potting stage costs
   { 
     id: "CC-004", 
     name: "PB3 Pot", 
     category: "pot", 
     unit: "per pot", 
-    defaultValue: 0.22, 
+    defaultValue: 0.22,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     notes: "Standard PB3 planter bag"
   },
@@ -45,7 +49,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "PB5 Pot", 
     category: "pot", 
     unit: "per pot", 
-    defaultValue: 0.35, 
+    defaultValue: 0.35,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     notes: "Large PB5 planter bag"
   },
@@ -54,7 +59,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "PB8 Pot", 
     category: "pot", 
     unit: "per pot", 
-    defaultValue: 0.55, 
+    defaultValue: 0.55,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     notes: "Extra large PB8 planter bag"
   },
@@ -63,18 +69,20 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Potting Mix Premium", 
     category: "soil", 
     unit: "per litre", 
-    defaultValue: 0.65, 
+    defaultValue: 0.65,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     supplierReference: "SUP-PMP-2024"
   },
   
-  // Labour
+  // Labour costs (can apply to multiple stages)
   { 
     id: "CC-008", 
     name: "Propagation Labour", 
     category: "labour", 
     unit: "per hour", 
-    defaultValue: 28.50, 
+    defaultValue: 28.50,
+    defaultStages: ["seed", "propagation"],
     effectiveFrom: "2025-01-01",
     notes: "Skilled propagation work"
   },
@@ -83,7 +91,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Potting Labour", 
     category: "labour", 
     unit: "per hour", 
-    defaultValue: 28.50, 
+    defaultValue: 28.50,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     notes: "Potting and transplanting"
   },
@@ -92,18 +101,20 @@ export const costCatalog: CostCatalogItem[] = [
     name: "General Labour", 
     category: "labour", 
     unit: "per hour", 
-    defaultValue: 25.00, 
+    defaultValue: 25.00,
+    defaultStages: ["hardening", "ready"],
     effectiveFrom: "2025-01-01",
     notes: "Maintenance and general work"
   },
   
-  // Maintenance
+  // Maintenance (applies to growing stages)
   { 
     id: "CC-011", 
     name: "Fungicide Spray", 
     category: "spray", 
     unit: "per application", 
-    defaultValue: 0.08, 
+    defaultValue: 0.08,
+    defaultStages: ["propagation", "hardening"],
     effectiveFrom: "2025-01-01",
     notes: "Per plant application cost"
   },
@@ -112,7 +123,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Insecticide Treatment", 
     category: "spray", 
     unit: "per application", 
-    defaultValue: 0.12, 
+    defaultValue: 0.12,
+    defaultStages: ["propagation", "potting", "hardening"],
     effectiveFrom: "2025-01-01"
   },
   { 
@@ -120,7 +132,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Fertiliser Slow Release", 
     category: "maintenance", 
     unit: "per plant", 
-    defaultValue: 0.15, 
+    defaultValue: 0.15,
+    defaultStages: ["potting"],
     effectiveFrom: "2025-01-01",
     notes: "3-month slow release fertiliser"
   },
@@ -129,17 +142,19 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Liquid Feed", 
     category: "maintenance", 
     unit: "per application", 
-    defaultValue: 0.05, 
+    defaultValue: 0.05,
+    defaultStages: ["propagation", "hardening"],
     effectiveFrom: "2025-01-01"
   },
   
-  // Overhead
+  // Overhead (typically applies to all stages)
   { 
     id: "CC-015", 
     name: "Overhead Allocation", 
     category: "overhead", 
     unit: "per plant", 
-    defaultValue: 0.25, 
+    defaultValue: 0.25,
+    defaultStages: ["seed", "propagation", "potting", "hardening"],
     effectiveFrom: "2025-01-01",
     notes: "Covers utilities, facilities, administration"
   },
@@ -148,7 +163,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Freight Regional", 
     category: "freight", 
     unit: "per delivery", 
-    defaultValue: 120.00, 
+    defaultValue: 120.00,
+    defaultStages: ["sold"],
     effectiveFrom: "2025-01-01",
     notes: "Standard regional delivery"
   },
@@ -157,7 +173,8 @@ export const costCatalog: CostCatalogItem[] = [
     name: "Freight Metro", 
     category: "freight", 
     unit: "per delivery", 
-    defaultValue: 85.00, 
+    defaultValue: 85.00,
+    defaultStages: ["sold"],
     effectiveFrom: "2025-01-01",
     notes: "Metropolitan area delivery"
   },
