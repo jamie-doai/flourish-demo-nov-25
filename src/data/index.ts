@@ -1,6 +1,7 @@
 // Central export point for all data
 export * from './batches';
 export * from './locations';
+export * from './batchLocations';
 export * from './tasks';
 export * from './stages';
 export * from './alerts';
