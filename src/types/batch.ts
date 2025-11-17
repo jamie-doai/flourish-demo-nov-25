@@ -48,6 +48,21 @@ export interface BatchFormData {
   // Step 6 - Attachments
   photos?: File[];
   documents?: File[];
+  
+  // Multi-batch creation fields
+  createMultiple?: boolean;
+  numberOfBatches?: number;
+  batchConfigs?: Array<{
+    batchId: string;
+    quantity: number;
+    initialLocation: string;
+    currentStatus: BatchStatus;
+  }>;
+  
+  // Duplication fields
+  isDuplicate?: boolean;
+  originalBatchId?: string;
+  duplicationReason?: string;
 }
 
 export interface Species {

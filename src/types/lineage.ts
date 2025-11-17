@@ -1,4 +1,4 @@
-export type LineageRelation = 'split' | 'merge' | 'transfer';
+export type LineageRelation = 'split' | 'merge' | 'transfer' | 'duplicate';
 
 export interface BatchLineage {
   id: string;
