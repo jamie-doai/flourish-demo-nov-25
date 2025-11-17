@@ -550,7 +550,9 @@ export default function ManagerInventory() {
 
           <TabsContent value="locations" className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
-              {locations.map((location) => {
+              {locations
+                .filter(location => location.type === 'BUILDING')
+                .map((location) => {
                 const locationTasks = getTasksByLocation(location.name);
                 const pendingTasks = locationTasks.filter(t => 
                   t.status === "Pending" || t.status === "today" || t.status === "overdue" || t.status === "In Progress"
@@ -569,24 +571,28 @@ export default function ManagerInventory() {
                               </Badge>
                             )}
                           </div>
-                          <p className="text-sm text-muted-foreground mb-3">{location.type}</p>
+                          <p className="text-sm text-muted-foreground mb-3">{location.climateControl || location.type}</p>
                           <div className="flex items-center gap-4 text-sm">
-                            <span className="text-muted-foreground">{location.batches} batches</span>
-                            <div className="flex items-center gap-1">
-                              <Thermometer className="w-4 h-4 text-muted-foreground" />
-                              <span className="text-muted-foreground">{location.temperature}</span>
-                            </div>
+                            <span className="text-muted-foreground">{location.batches || 0} batches</span>
+                            {location.temperature && (
+                              <div className="flex items-center gap-1">
+                                <Thermometer className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-muted-foreground">{location.temperature}</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Capacity</span>
-                          <span className="font-medium">{location.capacity}%</span>
-                        </div>
+                        {location.capacity !== undefined && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Capacity</span>
+                            <span className="font-medium">{location.capacity}%</span>
+                          </div>
+                        )}
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Total Plants</span>
-                          <span className="font-medium">{location.plants.toLocaleString()}</span>
+                          <span className="font-medium">{(location.plants || location.totalPlants || 0).toLocaleString()}</span>
                         </div>
                         {locationTasks.length > 0 && (
                           <div className="flex justify-between text-sm">
