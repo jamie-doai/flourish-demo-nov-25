@@ -11,21 +11,28 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Plus, Trash2, Save, Send } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Plus, Trash2, Save, Send, Edit3, Package } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { clients } from "@/data";
+import { InventorySelectionSheet } from "@/components/sales/InventorySelectionSheet";
+import { PendingLineItem } from "@/types/sales";
+import { calculateMargin, getMarginColor } from "@/lib/salesUtils";
 
 interface LineItem {
   id: string;
   species: string;
+  scientificName?: string;
+  stage?: string;
   potSize: string;
   quantity: number;
   unitPrice: number;
   discount: number;
   total: number;
-  batchId?: string;
+  batchIds?: string[];
+  costPerUnit?: number;
 }
 
 export default function CreateQuote() {
@@ -37,6 +44,7 @@ export default function CreateQuote() {
   const [reserveStock, setReserveStock] = useState(false);
   const [clientNotes, setClientNotes] = useState("");
   const [internalNotes, setInternalNotes] = useState("");
+  const [showInventorySheet, setShowInventorySheet] = useState(false);
   const [lineItems, setLineItems] = useState<LineItem[]>([
     {
       id: "1",
@@ -93,11 +101,35 @@ export default function CreateQuote() {
     }));
   };
 
+  const handleAddFromInventory = (items: PendingLineItem[]) => {
+    const newItems: LineItem[] = items.map(item => ({
+      id: `${Date.now()}-${Math.random()}`,
+      species: item.species,
+      scientificName: item.scientificName,
+      stage: item.stageName,
+      potSize: item.containerType,
+      quantity: item.quantity,
+      unitPrice: 0,
+      discount: 0,
+      total: 0,
+      batchIds: item.batchIds,
+      costPerUnit: item.costPerUnit
+    }));
+    
+    setLineItems([...lineItems, ...newItems]);
+  };
+
   const calculateTotals = () => {
     const subtotal = lineItems.reduce((sum, item) => sum + item.total, 0);
     const tax = subtotal * 0.15; // NZ GST 15%
     const total = subtotal + tax;
     return { subtotal, tax, total };
+  };
+
+  const calculateMarginPercent = (price: number, cost: number): number => {
+    if (!cost || price <= 0) return 0;
+    const { marginPercent } = calculateMargin(price, cost);
+    return marginPercent;
   };
 
   const handleSaveDraft = () => {
@@ -213,41 +245,70 @@ export default function CreateQuote() {
         <Card className="p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Line Items</h2>
-            <Button onClick={addLineItem} size="sm">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Item
-            </Button>
+            <div className="flex gap-2">
+              <Button onClick={() => setShowInventorySheet(true)} size="sm">
+                <Package className="w-4 h-4 mr-2" />
+                Add from Inventory
+              </Button>
+              <Button onClick={addLineItem} variant="outline" size="sm">
+                <Edit3 className="w-4 h-4 mr-2" />
+                Add Custom Item
+              </Button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[200px]">Species *</TableHead>
-                  <TableHead className="w-[120px]">Pot Size *</TableHead>
-                  <TableHead className="w-[100px]">Quantity *</TableHead>
-                  <TableHead className="w-[120px]">Unit Price *</TableHead>
-                  <TableHead className="w-[100px]">Discount %</TableHead>
-                  <TableHead className="w-[120px]">Total</TableHead>
-                  <TableHead className="w-[60px]"></TableHead>
+                  <TableHead>Species</TableHead>
+                  <TableHead>Stage</TableHead>
+                  <TableHead>Container</TableHead>
+                  <TableHead>Quantity</TableHead>
+                  <TableHead>Cost/Unit</TableHead>
+                  <TableHead>Unit Price</TableHead>
+                  <TableHead>Margin %</TableHead>
+                  <TableHead>Discount %</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {lineItems.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>
-                      <Input
-                        placeholder="e.g. Mānuka"
-                        value={item.species}
-                        onChange={(e) => updateLineItem(item.id, 'species', e.target.value)}
-                      />
+                      {item.scientificName ? (
+                        <div>
+                          <div className="font-medium">{item.species}</div>
+                          <div className="text-xs text-muted-foreground italic">
+                            {item.scientificName}
+                          </div>
+                        </div>
+                      ) : (
+                        <Input
+                          placeholder="e.g. Mānuka"
+                          value={item.species}
+                          onChange={(e) => updateLineItem(item.id, 'species', e.target.value)}
+                        />
+                      )}
                     </TableCell>
                     <TableCell>
-                      <Input
-                        placeholder="e.g. 1L"
-                        value={item.potSize}
-                        onChange={(e) => updateLineItem(item.id, 'potSize', e.target.value)}
-                      />
+                      {item.stage ? (
+                        <Badge variant="secondary">{item.stage}</Badge>
+                      ) : (
+                        <span className="text-muted-foreground text-sm">-</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {item.batchIds ? (
+                        <span className="text-sm">{item.potSize}</span>
+                      ) : (
+                        <Input
+                          placeholder="e.g. 1L"
+                          value={item.potSize}
+                          onChange={(e) => updateLineItem(item.id, 'potSize', e.target.value)}
+                        />
+                      )}
                     </TableCell>
                     <TableCell>
                       <Input
@@ -255,7 +316,11 @@ export default function CreateQuote() {
                         min="0"
                         value={item.quantity || ''}
                         onChange={(e) => updateLineItem(item.id, 'quantity', e.target.value)}
+                        className="w-20"
                       />
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {item.costPerUnit ? `$${item.costPerUnit.toFixed(2)}` : '-'}
                     </TableCell>
                     <TableCell>
                       <Input
@@ -265,7 +330,17 @@ export default function CreateQuote() {
                         placeholder="0.00"
                         value={item.unitPrice || ''}
                         onChange={(e) => updateLineItem(item.id, 'unitPrice', e.target.value)}
+                        className="w-24"
                       />
+                    </TableCell>
+                    <TableCell>
+                      {item.unitPrice > 0 && item.costPerUnit ? (
+                        <span className={getMarginColor(calculateMarginPercent(item.unitPrice, item.costPerUnit))}>
+                          {calculateMarginPercent(item.unitPrice, item.costPerUnit).toFixed(1)}%
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">-</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Input
@@ -274,6 +349,7 @@ export default function CreateQuote() {
                         max="100"
                         value={item.discount || ''}
                         onChange={(e) => updateLineItem(item.id, 'discount', e.target.value)}
+                        className="w-16"
                       />
                     </TableCell>
                     <TableCell className="font-medium">
