@@ -20,7 +20,12 @@ export function InventorySelectionSheet({ open, onOpenChange, onAddItems }: Inve
   const [expandedSpecies, setExpandedSpecies] = useState<Set<string>>(new Set());
   const [pendingItems, setPendingItems] = useState<PendingLineItem[]>([]);
 
-  const inventorySummary = useMemo(() => getSpeciesInventorySummary(batches), []);
+  const inventorySummary = useMemo(() => {
+    const summary = getSpeciesInventorySummary(batches);
+    console.log("Inventory Summary:", summary);
+    console.log("Total batches:", batches.length);
+    return summary;
+  }, []);
   
   const filteredInventory = useMemo(() => 
     searchSpecies(searchQuery, inventorySummary),

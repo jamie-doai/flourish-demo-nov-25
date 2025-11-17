@@ -246,7 +246,10 @@ export default function CreateQuote() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Line Items</h2>
             <div className="flex gap-2">
-              <Button onClick={() => setShowInventorySheet(true)} size="sm">
+              <Button onClick={() => {
+                console.log("Opening inventory sheet");
+                setShowInventorySheet(true);
+              }} size="sm">
                 <Package className="w-4 h-4 mr-2" />
                 Add from Inventory
               </Button>
