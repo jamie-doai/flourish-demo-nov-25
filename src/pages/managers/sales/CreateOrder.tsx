@@ -463,6 +463,12 @@ export default function CreateOrder() {
         </div>
             </main>
           </div>
+
+        <InventorySelectionSheet
+          open={showInventorySheet}
+          onOpenChange={setShowInventorySheet}
+          onAddItems={handleAddFromInventory}
+        />
         </SidebarProvider>
       </div>
     </div>

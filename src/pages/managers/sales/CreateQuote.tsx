@@ -450,6 +450,12 @@ export default function CreateQuote() {
         </div>
             </main>
           </div>
+
+        <InventorySelectionSheet
+          open={showInventorySheet}
+          onOpenChange={setShowInventorySheet}
+          onAddItems={handleAddFromInventory}
+        />
         </SidebarProvider>
       </div>
     </div>
