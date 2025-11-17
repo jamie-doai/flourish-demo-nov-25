@@ -1,8 +1,12 @@
 import { batches } from './batches';
 import { tasks } from './tasks';
 import { locations } from './locations';
+import { orders } from './orders';
+import { quotes } from './quotes';
+import { invoices } from './invoices';
+import { clients } from './clients';
 
-export type EntityType = 'species' | 'batch' | 'task' | 'location' | 'person';
+export type EntityType = 'species' | 'batch' | 'task' | 'location' | 'person' | 'order' | 'quote' | 'invoice' | 'client';
 
 export interface SearchIndexItem {
   id: string;
@@ -131,6 +135,103 @@ function indexLocations(): SearchIndexItem[] {
   }));
 }
 
+// Index orders
+function indexOrders(): SearchIndexItem[] {
+  return orders.map(order => ({
+    id: order.id,
+    type: 'order' as EntityType,
+    title: `Order ${order.orderNumber} - ${order.clientName}`,
+    aliases: [order.orderNumber, order.clientName, order.id],
+    description: `${order.status} order for ${order.clientName} - $${order.total.toFixed(2)}`,
+    tags: [order.status, order.deliveryType, ...order.items.map(i => i.species)],
+    status: order.status,
+    metadata: {
+      clientName: order.clientName,
+      total: order.total,
+      deliveryType: order.deliveryType,
+      itemCount: order.items.length,
+      linkedQuote: order.linkedQuote,
+    },
+    dates: {
+      created: order.dateCreated,
+    },
+    popularity: order.total / 1000,
+  }));
+}
+
+// Index quotes
+function indexQuotes(): SearchIndexItem[] {
+  return quotes.map(quote => ({
+    id: quote.id,
+    type: 'quote' as EntityType,
+    title: `Quote ${quote.quoteNumber} - ${quote.clientName}`,
+    aliases: [quote.quoteNumber, quote.clientName, quote.id],
+    description: `${quote.status} quote for ${quote.clientName} - $${quote.total.toFixed(2)}`,
+    tags: [quote.status, ...quote.items.map(i => i.species)],
+    status: quote.status,
+    metadata: {
+      clientName: quote.clientName,
+      total: quote.total,
+      expiryDate: quote.expiryDate,
+      itemCount: quote.items.length,
+      convertedToOrder: quote.convertedToOrder,
+    },
+    dates: {
+      created: quote.dateCreated,
+    },
+    popularity: quote.total / 1000,
+  }));
+}
+
+// Index invoices
+function indexInvoices(): SearchIndexItem[] {
+  return invoices.map(invoice => ({
+    id: invoice.id,
+    type: 'invoice' as EntityType,
+    title: `Invoice ${invoice.invoiceNumber} - ${invoice.clientName}`,
+    aliases: [invoice.invoiceNumber, invoice.clientName, invoice.id],
+    description: `${invoice.status} invoice for ${invoice.clientName} - $${invoice.total.toFixed(2)} (Balance: $${invoice.balanceDue.toFixed(2)})`,
+    tags: [invoice.status, ...invoice.items.map(i => i.species)],
+    status: invoice.status,
+    metadata: {
+      clientName: invoice.clientName,
+      total: invoice.total,
+      balanceDue: invoice.balanceDue,
+      dueDate: invoice.dueDate,
+      linkedOrder: invoice.linkedOrder,
+    },
+    dates: {
+      created: invoice.dateIssued,
+    },
+    popularity: invoice.total / 1000,
+  }));
+}
+
+// Index clients
+function indexClients(): SearchIndexItem[] {
+  return clients.map(client => ({
+    id: client.id,
+    type: 'client' as EntityType,
+    title: client.name,
+    aliases: [client.name, client.contactPerson, client.email, client.id],
+    description: `${client.contactPerson} - ${client.city} - ${client.totalOrders} orders ($${client.totalRevenue.toFixed(2)})`,
+    tags: [client.status, client.city],
+    status: client.status,
+    metadata: {
+      contactPerson: client.contactPerson,
+      email: client.email,
+      phone: client.phone,
+      city: client.city,
+      totalOrders: client.totalOrders,
+      totalRevenue: client.totalRevenue,
+    },
+    dates: {
+      created: client.dateAdded,
+    },
+    popularity: client.totalRevenue / 10000,
+  }));
+}
+
 // Build full search index
 export function buildSearchIndex(): SearchIndexItem[] {
   return [
@@ -138,6 +239,10 @@ export function buildSearchIndex(): SearchIndexItem[] {
     ...indexBatches(),
     ...indexTasks(),
     ...indexLocations(),
+    ...indexOrders(),
+    ...indexQuotes(),
+    ...indexInvoices(),
+    ...indexClients(),
   ];
 }
 

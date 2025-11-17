@@ -14,6 +14,10 @@ const typeLabels: Record<EntityType, string> = {
   task: 'Tasks',
   location: 'Locations',
   person: 'People',
+  order: 'Orders',
+  quote: 'Quotes',
+  invoice: 'Invoices',
+  client: 'Clients',
 };
 
 export function SearchResultGroup({ type, items, query, onSelect }: SearchResultGroupProps) {
