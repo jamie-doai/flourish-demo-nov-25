@@ -31,4 +31,7 @@ export interface SpeciesInventorySummary {
   totalQuantity: number;
   batchCount: number;
   stages: StageInventoryData[];
+  avgCostPerUnit: number;
+  minCostPerUnit: number;
+  maxCostPerUnit: number;
 }

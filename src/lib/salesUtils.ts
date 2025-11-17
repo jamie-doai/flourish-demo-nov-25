@@ -59,12 +59,23 @@ export function getSpeciesInventorySummary(batches: Batch[]): SpeciesInventorySu
       };
     });
 
+    const totalQuantity = group.batches.reduce((sum, b) => sum + b.quantity, 0);
+    const totalCost = group.batches.reduce((sum, b) => sum + (b.totalCost || 0), 0);
+    const avgCostPerUnit = totalQuantity > 0 ? totalCost / totalQuantity : 0;
+    
+    const stageCosts = stageData.map(s => s.avgCostPerUnit).filter(c => c > 0);
+    const minCostPerUnit = stageCosts.length > 0 ? Math.min(...stageCosts) : 0;
+    const maxCostPerUnit = stageCosts.length > 0 ? Math.max(...stageCosts) : 0;
+
     return {
       species: group.species,
       scientificName: group.scientificName,
-      totalQuantity: group.batches.reduce((sum, b) => sum + b.quantity, 0),
+      totalQuantity,
       batchCount: group.batches.length,
-      stages: stageData
+      stages: stageData,
+      avgCostPerUnit,
+      minCostPerUnit,
+      maxCostPerUnit
     };
   }).sort((a, b) => a.species.localeCompare(b.species));
 }

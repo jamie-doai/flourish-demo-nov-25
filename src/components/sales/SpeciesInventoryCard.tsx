@@ -25,6 +25,9 @@ export function SpeciesInventoryCard({ summary, isExpanded, onToggle, onAddItem 
           <div className="text-sm text-muted-foreground mt-1">
             {summary.totalQuantity} plants • {summary.batchCount} {summary.batchCount === 1 ? 'batch' : 'batches'}
           </div>
+          <div className="text-sm font-medium mt-1">
+            Cost: ${summary.minCostPerUnit.toFixed(2)} - ${summary.maxCostPerUnit.toFixed(2)} per unit
+          </div>
         </div>
         <div className="ml-2">
           {isExpanded ? (
