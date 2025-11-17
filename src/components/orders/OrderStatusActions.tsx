@@ -1,5 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { 
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Order } from "@/data/orders";
 import { OrderStatus, getNextStatus } from "@/lib/orderLifecycle";
 import { OrderStageDialog } from "./OrderStageDialog";
@@ -10,7 +16,8 @@ import {
   Truck, 
   Download, 
   Receipt, 
-  XCircle 
+  XCircle,
+  MoreVertical
 } from "lucide-react";
 
 interface OrderStatusActionsProps {
@@ -89,44 +96,58 @@ export function OrderStatusActions({
     );
   };
 
+  const showCancelOption = order.status !== "completed" && order.status !== "cancelled";
+  const showPackingSlip = onDownloadPackingSlip && 
+    (order.status === "in_progress" || 
+     order.status === "ready_to_dispatch" || 
+     order.status === "dispatched");
+  const showInvoiceOption = onGenerateInvoice && 
+    (order.status === "dispatched" || order.status === "completed");
+  
+  const hasSecondaryActions = showCancelOption || showPackingSlip || showInvoiceOption;
+
   return (
     <div className="flex items-center gap-2">
-      {/* Cancel button - always available except for completed orders */}
-      {order.status !== "completed" && order.status !== "cancelled" && (
-        <Button
-          variant="outline"
-          onClick={() => handleStatusClick("cancelled")}
-          className="text-destructive hover:text-destructive"
-        >
-          <XCircle className="w-4 h-4 mr-2" />
-          Cancel
-        </Button>
+      {/* Secondary actions in dropdown */}
+      {hasSecondaryActions && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon">
+              <MoreVertical className="w-4 h-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            {/* Cancel option */}
+            {showCancelOption && (
+              <DropdownMenuItem
+                onClick={() => handleStatusClick("cancelled")}
+                className="text-destructive focus:text-destructive"
+              >
+                <XCircle className="w-4 h-4 mr-2" />
+                Cancel Order
+              </DropdownMenuItem>
+            )}
+
+            {/* Packing slip option */}
+            {showPackingSlip && (
+              <DropdownMenuItem onClick={onDownloadPackingSlip}>
+                <Download className="w-4 h-4 mr-2" />
+                Download Packing Slip
+              </DropdownMenuItem>
+            )}
+
+            {/* Invoice option */}
+            {showInvoiceOption && (
+              <DropdownMenuItem onClick={onGenerateInvoice}>
+                <Receipt className="w-4 h-4 mr-2" />
+                {order.convertedToInvoice ? "View Invoice" : "Generate Invoice"}
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       )}
 
-      {/* Additional action buttons based on status */}
-      {onDownloadPackingSlip && 
-        (order.status === "in_progress" || 
-         order.status === "ready_to_dispatch" || 
-         order.status === "dispatched") && (
-        <Button variant="outline" onClick={onDownloadPackingSlip}>
-          <Download className="w-4 h-4 mr-2" />
-          Packing Slip
-        </Button>
-      )}
-
-      {/* Invoice button for dispatched/completed orders */}
-      {onGenerateInvoice && 
-        (order.status === "dispatched" || order.status === "completed") && (
-        <Button
-          variant="outline"
-          onClick={onGenerateInvoice}
-        >
-          <Receipt className="w-4 h-4 mr-2" />
-          {order.convertedToInvoice ? "View Invoice" : "Generate Invoice"}
-        </Button>
-      )}
-
-      {/* Primary next action button */}
+      {/* Primary next action button - always visible when available */}
       {getNextActionButton()}
 
       {/* Confirmation Dialog */}
