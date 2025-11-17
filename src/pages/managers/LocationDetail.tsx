@@ -72,7 +72,7 @@ export default function ManagerLocationDetail() {
                   <MapPin className="w-4 h-4 text-muted-foreground" />
                   <div className="text-sm text-muted-foreground">Batches</div>
                 </div>
-                <div className="text-2xl font-bold">{mockLocation.batches}</div>
+                <div className="text-2xl font-bold">{mockLocation.batches || batchesInLocation.length}</div>
               </Card>
               
               <Card className="p-4">
@@ -80,24 +80,28 @@ export default function ManagerLocationDetail() {
                   <Leaf className="w-4 h-4 text-muted-foreground" />
                   <div className="text-sm text-muted-foreground">Total Plants</div>
                 </div>
-                <div className="text-2xl font-bold">{mockLocation.totalPlants.toLocaleString()}</div>
+                <div className="text-2xl font-bold">{(mockLocation.totalPlants || mockLocation.plants || 0).toLocaleString()}</div>
               </Card>
 
-              <Card className="p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Thermometer className="w-4 h-4 text-muted-foreground" />
-                  <div className="text-sm text-muted-foreground">Temperature</div>
-                </div>
-                <div className="text-2xl font-bold">{mockLocation.temperature}</div>
-              </Card>
+              {mockLocation.temperature && (
+                <Card className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Thermometer className="w-4 h-4 text-muted-foreground" />
+                    <div className="text-sm text-muted-foreground">Temperature</div>
+                  </div>
+                  <div className="text-2xl font-bold">{mockLocation.temperature}</div>
+                </Card>
+              )}
 
-              <Card className="p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Droplet className="w-4 h-4 text-muted-foreground" />
-                  <div className="text-sm text-muted-foreground">Humidity</div>
-                </div>
-                <div className="text-2xl font-bold">{mockLocation.humidity}</div>
-              </Card>
+              {mockLocation.humidity && (
+                <Card className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Droplet className="w-4 h-4 text-muted-foreground" />
+                    <div className="text-sm text-muted-foreground">Humidity</div>
+                  </div>
+                  <div className="text-2xl font-bold">{mockLocation.humidity}</div>
+                </Card>
+              )}
             </div>
 
             {/* Capacity */}
