@@ -143,10 +143,6 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
             <p className="text-sm text-muted-foreground">
               Total quantity across all batches: <span className="font-semibold text-foreground">{totalQuantity}</span>
             </p>
-            <Button onClick={addBatch} size="sm" variant="outline">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Batch
-            </Button>
           </div>
 
           {batchConfigs.map((config, index) => (
@@ -226,6 +222,11 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
               </div>
             </Card>
           ))}
+
+          <Button onClick={addBatch} variant="outline" className="w-full">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Another Batch
+          </Button>
         </div>
       )}
 
