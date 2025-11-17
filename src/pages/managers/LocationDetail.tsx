@@ -8,7 +8,7 @@ import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf, Clock, User, C
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
+import { getLocationById, getBatchesByLocation, getTasksByLocation, getTotalQuantityAtLocation, getUniqueBatchesAtLocation } from "@/data";
 import { getChildLocations } from "@/lib/locationUtils";
 import { useState } from "react";
 
@@ -150,23 +150,19 @@ export default function ManagerLocationDetail() {
                 </h3>
                 <div className="space-y-2">
                   {childLocations.map((child) => {
-                    const childBatches = getChildLocations(child.id);
-                    const directBatchCount = getBatchesByLocation(child.id).length;
-                    
-                    // Calculate total batches including child locations (e.g., tables under a bay)
-                    const childLocationBatchCount = childBatches.reduce((acc, table) => 
-                      acc + getBatchesByLocation(table.id).length, 0
-                    );
-                    const totalBatchCount = directBatchCount + childLocationBatchCount;
-                    
-                    // Calculate total plants in all batches
-                    const directBatches = getBatchesByLocation(child.id);
-                    const directPlantCount = directBatches.reduce((acc, batch) => acc + (batch.quantity || 0), 0);
-                    const childPlantCount = childBatches.reduce((acc, table) => {
-                      const tableBatches = getBatchesByLocation(table.id);
-                      return acc + tableBatches.reduce((sum, batch) => sum + (batch.quantity || 0), 0);
-                    }, 0);
-                    const totalPlantCount = directPlantCount + childPlantCount;
+                    const childTables = getChildLocations(child.id);
+                    // Build list of location IDs to aggregate (child tables plus the location itself)
+                    const locationIds = childTables.length > 0 
+                      ? [child.id, ...childTables.map(t => t.id)] 
+                      : [child.id];
+
+                    // Aggregate plants and unique batches across all relevant locations
+                    const totalPlantCount = locationIds.reduce((sum, id) => sum + getTotalQuantityAtLocation(id), 0);
+                    const uniqueBatchIds = new Set<string>();
+                    locationIds.forEach(id => {
+                      getUniqueBatchesAtLocation(id).forEach(b => uniqueBatchIds.add(b));
+                    });
+                    const totalBatchCount = uniqueBatchIds.size;
                     
                     const isExpanded = expandedLocations.includes(child.id);
 
@@ -179,7 +175,7 @@ export default function ManagerLocationDetail() {
                               className="w-full justify-between p-4 h-auto hover:bg-accent"
                             >
                               <div className="flex items-center gap-3">
-                                {childBatches.length > 0 ? (
+                                {childTables.length > 0 ? (
                                   isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />
                                 ) : (
                                   <div className="w-4" />
@@ -207,11 +203,11 @@ export default function ManagerLocationDetail() {
                             </Button>
                           </CollapsibleTrigger>
                           
-                          {childBatches.length > 0 && (
+                          {childTables.length > 0 && (
                             <CollapsibleContent>
                               <div className="px-4 pb-4 pl-11 space-y-2">
-                                {childBatches.map((table) => {
-                                  const tableBatchCount = getBatchesByLocation(table.id).length;
+                                {childTables.map((table) => {
+                                  const tableBatchCount = getUniqueBatchesAtLocation(table.id).length;
                                   return (
                                     <Link
                                       key={table.id}
