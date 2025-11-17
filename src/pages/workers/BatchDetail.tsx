@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { WorkerNav } from "@/components/WorkerNav";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import {
 import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
 import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
+import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -26,6 +27,7 @@ export default function WorkerBatchDetail() {
   const [showMoveDialog, setShowMoveDialog] = useState(false);
   const [showSplitDialog, setShowSplitDialog] = useState(false);
   const [showMergeDialog, setShowMergeDialog] = useState(false);
+  const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
   const locations = getLocationNames();
@@ -150,6 +152,33 @@ export default function WorkerBatchDetail() {
             >
               <Printer className="w-6 h-6 text-[#3B7A57]" />
               <span className="text-sm">Print Label</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => setShowSplitDialog(true)}
+            >
+              <Split className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Split Batch</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => setShowMergeDialog(true)}
+            >
+              <Merge className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Merge Batch</span>
+            </Button>
+
+            <Button 
+              variant="outline"
+              className="h-auto flex flex-col items-center gap-2 p-4"
+              onClick={() => setShowDuplicateDialog(true)}
+            >
+              <Copy className="w-6 h-6 text-[#3B7A57]" />
+              <span className="text-sm">Duplicate</span>
             </Button>
 
             <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
@@ -445,6 +474,19 @@ export default function WorkerBatchDetail() {
         onConfirm={() => {
           setShowMergeDialog(false);
           toast({ title: "Batch merged successfully", description: "Batches have been combined" });
+        }}
+      />
+
+      <DuplicateBatchDialog
+        batch={mockBatch}
+        open={showDuplicateDialog}
+        onOpenChange={setShowDuplicateDialog}
+        onConfirm={(newBatch) => {
+          setShowDuplicateDialog(false);
+          toast({ 
+            title: "Batch duplicated successfully", 
+            description: `Created new batch ${newBatch.id}` 
+          });
         }}
       />
 

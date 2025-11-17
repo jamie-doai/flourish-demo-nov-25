@@ -24,6 +24,10 @@ export interface Batch {
   totalCost?: number;
   perUnitCost?: number;
   costLastUpdated?: string;
+  batchGroupId?: string;
+  isDuplicate?: boolean;
+  originalBatchId?: string;
+  duplicateCount?: number;
 }
 
 export const batches: Batch[] = [

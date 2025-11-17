@@ -189,6 +189,35 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
 
         <Separator />
 
+        {/* Multi-Batch Summary */}
+        {formData.createMultiple && formData.batchConfigs && formData.batchConfigs.length > 0 && (
+          <Card className="p-4 bg-muted">
+            <h3 className="font-semibold text-sm text-muted-foreground mb-3">
+              Multiple Batches Summary
+            </h3>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Number of Batches:</span>
+                <span className="font-semibold">{formData.batchConfigs.length}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Total Quantity:</span>
+                <span className="font-semibold">
+                  {formData.batchConfigs.reduce((sum, config) => sum + config.quantity, 0)}
+                </span>
+              </div>
+              <div className="mt-4 space-y-2">
+                {formData.batchConfigs.map((config, index) => (
+                  <div key={index} className="text-sm flex justify-between border-t pt-2">
+                    <span className="font-mono text-xs">{config.batchId}</span>
+                    <span>{config.quantity} @ {config.initialLocation}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Card>
+        )}
+
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
@@ -197,7 +226,10 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
             size="lg"
           >
             <Check className="w-4 h-4 mr-2" />
-            Save & Exit
+            {formData.createMultiple && formData.batchConfigs && formData.batchConfigs.length > 0
+              ? `Create ${formData.batchConfigs.length} Batches`
+              : "Save & Exit"
+            }
           </Button>
           
           <Button

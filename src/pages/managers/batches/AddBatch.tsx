@@ -15,6 +15,7 @@ import { BatchDetailsStep } from "@/components/add-batch/BatchDetailsStep";
 import { CostConfigurationStep } from "@/components/add-batch/CostConfigurationStep";
 import { AttachmentsStep } from "@/components/add-batch/AttachmentsStep";
 import { ReviewStep } from "@/components/add-batch/ReviewStep";
+import { BatchQuantitiesStep } from "@/components/add-batch/BatchQuantitiesStep";
 import { useToast } from "@/hooks/use-toast";
 
 const STEPS = [
@@ -23,6 +24,7 @@ const STEPS = [
   "Source/Origin",
   "Location",
   "Batch Details",
+  "Batch Quantities",
   "Cost Config",
   "Attachments",
   "Review"
@@ -55,10 +57,19 @@ export default function AddBatch() {
   };
 
   const handleSave = (addAnother: boolean = false) => {
-    toast({
-      title: "🌿 Batch added successfully!",
-      description: `Batch ${formData.batchId} has been created.`,
-    });
+    if (formData.createMultiple && formData.batchConfigs && formData.batchConfigs.length > 0) {
+      // Multi-batch creation
+      toast({
+        title: "🌿 Batches created successfully!",
+        description: `Successfully created ${formData.batchConfigs.length} batches.`,
+      });
+    } else {
+      // Single batch creation
+      toast({
+        title: "🌿 Batch added successfully!",
+        description: `Batch ${formData.batchId} has been created.`,
+      });
+    }
     
     if (addAnother) {
       setFormData({ trackMovements: true });
@@ -147,7 +158,10 @@ export default function AddBatch() {
               <BatchDetailsStep formData={formData} updateFormData={updateFormData} />
             )}
             {currentStep === 5 && (
-              <CostConfigurationStep 
+              <BatchQuantitiesStep formData={formData} updateFormData={updateFormData} />
+            )}
+            {currentStep === 6 && (
+              <CostConfigurationStep
                 selectedCosts={selectedCosts}
                 onCostsChange={setSelectedCosts}
                 costOverrides={costOverrides}
@@ -156,16 +170,16 @@ export default function AddBatch() {
                 }
               />
             )}
-            {currentStep === 6 && (
+            {currentStep === 7 && (
               <AttachmentsStep formData={formData} updateFormData={updateFormData} />
             )}
-            {currentStep === 7 && (
+            {currentStep === 8 && (
               <ReviewStep formData={formData} onSave={handleSave} />
             )}
           </Card>
 
           {/* Navigation Buttons */}
-          {currentStep < 7 && (
+          {currentStep < 8 && (
             <div className="flex justify-between">
               <Button
                 variant="outline"
