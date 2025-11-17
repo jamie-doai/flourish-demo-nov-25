@@ -4,16 +4,28 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf, Clock, User, CheckSquare } from "lucide-react";
+import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
+import { getChildLocations } from "@/lib/locationUtils";
+import { useState } from "react";
 
 export default function ManagerLocationDetail() {
   const { locationId } = useParams();
   const mockLocation = getLocationById(locationId || "");
   const batchesInLocation = getBatchesByLocation(locationId || "");
   const tasksForLocation = getTasksByLocation(mockLocation?.name || "");
+  const [expandedLocations, setExpandedLocations] = useState<string[]>([]);
+  
+  const childLocations = getChildLocations(locationId || "");
+
+  const toggleLocation = (locId: string) => {
+    setExpandedLocations(prev => 
+      prev.includes(locId) ? prev.filter(id => id !== locId) : [...prev, locId]
+    );
+  };
 
   if (!mockLocation) {
     return <div>Location not found</div>;
@@ -125,6 +137,97 @@ export default function ManagerLocationDetail() {
                 </div>
               </div>
             </Card>
+
+            {/* Child Locations */}
+            {childLocations.length > 0 && (
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold mb-4">
+                  {mockLocation.type === 'BUILDING' ? 'Bays' : mockLocation.type === 'BAY' ? 'Tables' : 'Child Locations'}
+                </h3>
+                <div className="space-y-2">
+                  {childLocations.map((child) => {
+                    const childBatches = getChildLocations(child.id);
+                    const batchCount = getBatchesByLocation(child.id).length;
+                    const isExpanded = expandedLocations.includes(child.id);
+
+                    return (
+                      <Collapsible key={child.id} open={isExpanded} onOpenChange={() => toggleLocation(child.id)}>
+                        <div className="border rounded-lg">
+                          <CollapsibleTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              className="w-full justify-between p-4 h-auto hover:bg-accent"
+                            >
+                              <div className="flex items-center gap-3">
+                                {childBatches.length > 0 ? (
+                                  isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />
+                                ) : (
+                                  <div className="w-4" />
+                                )}
+                                <MapPin className="w-5 h-5 text-primary" />
+                                <div className="text-left">
+                                  <div className="font-medium">{child.name}</div>
+                                  <div className="text-sm text-muted-foreground">{child.type}</div>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-4">
+                                {child.capacity && (
+                                  <div className="text-sm text-muted-foreground">
+                                    {child.currentCapacity || 0}/{child.capacity}
+                                  </div>
+                                )}
+                                <Badge variant="secondary">{batchCount} batches</Badge>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  asChild
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <Link to={`/managers/locations/${child.id}`}>View</Link>
+                                </Button>
+                              </div>
+                            </Button>
+                          </CollapsibleTrigger>
+                          
+                          {childBatches.length > 0 && (
+                            <CollapsibleContent>
+                              <div className="px-4 pb-4 pl-11 space-y-2">
+                                {childBatches.map((table) => {
+                                  const tableBatchCount = getBatchesByLocation(table.id).length;
+                                  return (
+                                    <Link
+                                      key={table.id}
+                                      to={`/managers/locations/${table.id}`}
+                                      className="flex items-center justify-between p-3 rounded-lg hover:bg-accent border"
+                                    >
+                                      <div className="flex items-center gap-3">
+                                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                                        <div>
+                                          <div className="font-medium text-sm">{table.name}</div>
+                                          <div className="text-xs text-muted-foreground">{table.type}</div>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center gap-3">
+                                        {table.capacity && (
+                                          <div className="text-xs text-muted-foreground">
+                                            {table.currentCapacity || 0}/{table.capacity}
+                                          </div>
+                                        )}
+                                        <Badge variant="outline" className="text-xs">{tableBatchCount} batches</Badge>
+                                      </div>
+                                    </Link>
+                                  );
+                                })}
+                              </div>
+                            </CollapsibleContent>
+                          )}
+                        </div>
+                      </Collapsible>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
 
             {/* Batches in Location */}
             <div>
