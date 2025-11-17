@@ -19,6 +19,10 @@ const filterOptions = [
   { value: 'batch', label: 'Batches' },
   { value: 'species', label: 'Species' },
   { value: 'location', label: 'Locations' },
+  { value: 'order', label: 'Orders' },
+  { value: 'quote', label: 'Quotes' },
+  { value: 'invoice', label: 'Invoices' },
+  { value: 'client', label: 'Clients' },
   { value: 'person', label: 'People' },
 ] as const;
 

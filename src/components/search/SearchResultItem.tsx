@@ -35,6 +35,14 @@ function getNavigationPath(item: SearchIndexItem): string {
       return `/managers/inventory?species=${encodeURIComponent(item.title)}`;
     case 'person':
       return `/managers/people/${item.id}`;
+    case 'order':
+      return `/managers/sales/orders/${item.id}`;
+    case 'quote':
+      return `/managers/sales/quotes/${item.id}`;
+    case 'invoice':
+      return `/managers/sales/invoices/${item.id}`;
+    case 'client':
+      return `/managers/sales/clients`;
     default:
       return '/managers';
   }
