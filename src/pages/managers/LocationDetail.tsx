@@ -151,7 +151,23 @@ export default function ManagerLocationDetail() {
                 <div className="space-y-2">
                   {childLocations.map((child) => {
                     const childBatches = getChildLocations(child.id);
-                    const batchCount = getBatchesByLocation(child.id).length;
+                    const directBatchCount = getBatchesByLocation(child.id).length;
+                    
+                    // Calculate total batches including child locations (e.g., tables under a bay)
+                    const childLocationBatchCount = childBatches.reduce((acc, table) => 
+                      acc + getBatchesByLocation(table.id).length, 0
+                    );
+                    const totalBatchCount = directBatchCount + childLocationBatchCount;
+                    
+                    // Calculate total plants in all batches
+                    const directBatches = getBatchesByLocation(child.id);
+                    const directPlantCount = directBatches.reduce((acc, batch) => acc + (batch.quantity || 0), 0);
+                    const childPlantCount = childBatches.reduce((acc, table) => {
+                      const tableBatches = getBatchesByLocation(table.id);
+                      return acc + tableBatches.reduce((sum, batch) => sum + (batch.quantity || 0), 0);
+                    }, 0);
+                    const totalPlantCount = directPlantCount + childPlantCount;
+                    
                     const isExpanded = expandedLocations.includes(child.id);
 
                     return (
@@ -175,12 +191,10 @@ export default function ManagerLocationDetail() {
                                 </div>
                               </div>
                               <div className="flex items-center gap-4">
-                                {child.capacity && (
-                                  <div className="text-sm text-muted-foreground">
-                                    {child.currentCapacity || 0}/{child.capacity}
-                                  </div>
-                                )}
-                                <Badge variant="secondary">{batchCount} batches</Badge>
+                                <div className="text-sm text-muted-foreground">
+                                  {totalPlantCount.toLocaleString()} plants
+                                </div>
+                                <Badge variant="secondary">{totalBatchCount} batches</Badge>
                                 <Button
                                   variant="ghost"
                                   size="sm"
