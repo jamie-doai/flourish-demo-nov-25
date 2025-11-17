@@ -4,9 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout, Edit3, ClipboardList } from "lucide-react";
+import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout, Edit3, ClipboardList, ChevronRight, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { stages, batches, locations, getTasksByLocation } from "@/data";
+import { getBaysByBuilding, getTablesByBay } from "@/data/locations";
+import { getBatchesAtLocation, getBatchCountAtLocation } from "@/lib/locationUtils";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BulkActionToolbar } from "@/components/inventory/BulkActionToolbar";
@@ -37,6 +40,32 @@ export default function ManagerInventory() {
   const [directEditDialogOpen, setDirectEditDialogOpen] = useState(false);
   const [lossAdjustmentDialogOpen, setLossAdjustmentDialogOpen] = useState(false);
   const [activeView, setActiveView] = useState<"inventory" | "stocktake">("inventory");
+  const [expandedBuildings, setExpandedBuildings] = useState<Set<string>>(new Set());
+  const [expandedBays, setExpandedBays] = useState<Set<string>>(new Set());
+
+  const toggleBuilding = (buildingId: string) => {
+    setExpandedBuildings(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(buildingId)) {
+        newSet.delete(buildingId);
+      } else {
+        newSet.add(buildingId);
+      }
+      return newSet;
+    });
+  };
+
+  const toggleBay = (bayId: string) => {
+    setExpandedBays(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(bayId)) {
+        newSet.delete(bayId);
+      } else {
+        newSet.add(bayId);
+      }
+      return newSet;
+    });
+  };
 
   const handleBatchSelect = (batchId: string, checked: boolean) => {
     setSelectedBatches(prev => {
@@ -549,63 +578,155 @@ export default function ManagerInventory() {
           </TabsContent>
 
           <TabsContent value="locations" className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-3">
               {locations
                 .filter(location => location.type === 'BUILDING')
-                .map((location) => {
-                const locationTasks = getTasksByLocation(location.name);
-                const pendingTasks = locationTasks.filter(t => 
+                .map((building) => {
+                const bays = getBaysByBuilding(building.id);
+                const isExpanded = expandedBuildings.has(building.id);
+                const buildingTasks = getTasksByLocation(building.name);
+                const pendingTasks = buildingTasks.filter(t => 
                   t.status === "Pending" || t.status === "today" || t.status === "overdue" || t.status === "In Progress"
                 );
+                
                 return (
-                  <Link key={location.id} to={`/managers/locations/${location.id}`}>
-                    <Card className="p-6 hover:shadow-lg transition-all cursor-pointer group">
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
+                  <Card key={building.id} className="overflow-hidden">
+                    <Collapsible open={isExpanded} onOpenChange={() => toggleBuilding(building.id)}>
+                      <div className="p-4 bg-muted/30">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3 flex-1">
+                            <CollapsibleTrigger asChild>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                {isExpanded ? (
+                                  <ChevronDown className="h-4 w-4" />
+                                ) : (
+                                  <ChevronRight className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </CollapsibleTrigger>
                             <MapPin className="w-5 h-5 text-primary" />
-                            <h3 className="text-xl font-semibold">{location.name}</h3>
-                            {pendingTasks.length > 0 && (
-                              <Badge variant="secondary" className="ml-2">
-                                {pendingTasks.length} {pendingTasks.length === 1 ? 'task' : 'tasks'}
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-3">{location.climateControl || location.type}</p>
-                          <div className="flex items-center gap-4 text-sm">
-                            <span className="text-muted-foreground">{location.batches || 0} batches</span>
-                            {location.temperature && (
-                              <div className="flex items-center gap-1">
-                                <Thermometer className="w-4 h-4 text-muted-foreground" />
-                                <span className="text-muted-foreground">{location.temperature}</span>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <h3 className="text-lg font-semibold">{building.name}</h3>
+                                <Badge variant="outline" className="text-xs">{building.code}</Badge>
+                                {pendingTasks.length > 0 && (
+                                  <Badge variant="secondary" className="text-xs">
+                                    {pendingTasks.length} tasks
+                                  </Badge>
+                                )}
                               </div>
-                            )}
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                                <span>{building.climateControl}</span>
+                                <span>{bays.length} bays</span>
+                                {building.temperature && (
+                                  <div className="flex items-center gap-1">
+                                    <Thermometer className="w-3 h-3" />
+                                    <span>{building.temperature}</span>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                            <Link to={`/managers/locations/${building.id}`}>
+                              <Button variant="ghost" size="sm">
+                                View Details
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        {location.capacity !== undefined && (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Capacity</span>
-                            <span className="font-medium">{location.capacity}%</span>
-                          </div>
-                        )}
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Total Plants</span>
-                          <span className="font-medium">{(location.plants || location.totalPlants || 0).toLocaleString()}</span>
+
+                      <CollapsibleContent>
+                        <div className="p-4 space-y-2 bg-background">
+                          {bays.length === 0 ? (
+                            <p className="text-sm text-muted-foreground italic px-4 py-2">No bays configured</p>
+                          ) : (
+                            bays.map((bay) => {
+                              const tables = getTablesByBay(bay.id);
+                              const isBayExpanded = expandedBays.has(bay.id);
+                              const bayBatchCount = getBatchCountAtLocation(bay.id, true);
+                              
+                              return (
+                                <Card key={bay.id} className="ml-8">
+                                  <Collapsible open={isBayExpanded} onOpenChange={() => toggleBay(bay.id)}>
+                                    <div className="p-3 bg-muted/20">
+                                      <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2 flex-1">
+                                          <CollapsibleTrigger asChild>
+                                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                              {isBayExpanded ? (
+                                                <ChevronDown className="h-3 w-3" />
+                                              ) : (
+                                                <ChevronRight className="h-3 w-3" />
+                                              )}
+                                            </Button>
+                                          </CollapsibleTrigger>
+                                          <Layers className="w-4 h-4 text-muted-foreground" />
+                                          <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <span className="font-medium text-sm">{bay.name}</span>
+                                              <Badge variant="outline" className="text-xs">{bay.code}</Badge>
+                                            </div>
+                                            <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
+                                              <span>{tables.length} tables</span>
+                                              <span>{bayBatchCount} batches</span>
+                                              {bay.maxCapacity && (
+                                                <span>{bay.maxCapacity} capacity</span>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <Link to={`/managers/locations/${bay.id}`}>
+                                            <Button variant="ghost" size="sm" className="h-7 text-xs">
+                                              View
+                                            </Button>
+                                          </Link>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <CollapsibleContent>
+                                      <div className="p-3 space-y-1.5 bg-background">
+                                        {tables.length === 0 ? (
+                                          <p className="text-xs text-muted-foreground italic px-3 py-2">No tables configured</p>
+                                        ) : (
+                                          tables.map((table) => {
+                                            const tableBatchCount = getBatchCountAtLocation(table.id, false);
+                                            
+                                            return (
+                                              <Link key={table.id} to={`/managers/locations/${table.id}`}>
+                                                <div className="flex items-center gap-2 p-2 rounded hover:bg-muted/50 transition-colors cursor-pointer ml-6">
+                                                  <Package className="w-3.5 h-3.5 text-muted-foreground" />
+                                                  <div className="flex-1">
+                                                    <div className="flex items-center gap-2">
+                                                      <span className="text-sm font-medium">{table.name}</span>
+                                                      <Badge variant="secondary" className="text-xs">{table.code}</Badge>
+                                                    </div>
+                                                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                                      <span>{tableBatchCount} batches</span>
+                                                      {table.maxCapacity && (
+                                                        <span>Max: {table.maxCapacity}</span>
+                                                      )}
+                                                      {table.dimensions && (
+                                                        <span>{table.dimensions}</span>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                                </div>
+                                              </Link>
+                                            );
+                                          })
+                                        )}
+                                      </div>
+                                    </CollapsibleContent>
+                                  </Collapsible>
+                                </Card>
+                              );
+                            })
+                          )}
                         </div>
-                        {locationTasks.length > 0 && (
-                          <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Tasks</span>
-                            <span className="font-medium">{locationTasks.length} total</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
-                        View details →
-                      </div>
-                    </Card>
-                  </Link>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </Card>
                 );
               })}
             </div>
