@@ -10,23 +10,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, ArrowLeft, Package, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { orders } from "@/data";
+import { getStatusColor, getStatusLabel } from "@/lib/orderLifecycle";
+import { useState } from "react";
 
 export default function ManagerSalesOrders() {
   const navigate = useNavigate();
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-      case "confirmed": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "dispatched": return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "completed": return "bg-primary/10 text-primary border-primary/20";
-      default: return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    return status.charAt(0).toUpperCase() + status.slice(1);
-  };
+  const filteredOrders = statusFilter === "all" 
+    ? orders 
+    : orders.filter(order => order.status === statusFilter);
 
   const getDeliveryTypeLabel = (type: string) => {
     switch (type) {
@@ -93,6 +86,20 @@ export default function ManagerSalesOrders() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input placeholder="Search orders by client, ID..." className="pl-10" />
           </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Orders</SelectItem>
+              <SelectItem value="pending">Pending</SelectItem>
+              <SelectItem value="approved">Approved</SelectItem>
+              <SelectItem value="in_progress">In Progress</SelectItem>
+              <SelectItem value="ready_to_dispatch">Ready to Dispatch</SelectItem>
+              <SelectItem value="dispatched">Dispatched</SelectItem>
+              <SelectItem value="completed">Completed</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Summary Stats */}
@@ -116,7 +123,12 @@ export default function ManagerSalesOrders() {
         </div>
 
         <div className="space-y-4">
-          {orders.map((order) => (
+          {filteredOrders.length === 0 ? (
+            <Card className="p-8 text-center">
+              <p className="text-muted-foreground">No orders found matching filter</p>
+            </Card>
+          ) : (
+            filteredOrders.map((order) => (
             <Card key={order.id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -158,7 +170,7 @@ export default function ManagerSalesOrders() {
                 </Link>
               </div>
             </Card>
-          ))}
+          )))}
         </div>
             </main>
           </div>

@@ -15,7 +15,7 @@ export interface Order {
   clientId: string;
   clientName: string;
   dateCreated: string;
-  status: "pending" | "confirmed" | "dispatched" | "completed";
+  status: "pending" | "approved" | "in_progress" | "ready_to_dispatch" | "dispatched" | "completed" | "cancelled";
   deliveryType: "pickup" | "courier" | "in-house";
   deliveryAddress?: string;
   deliveryDate?: string;
@@ -24,7 +24,29 @@ export interface Order {
   subtotal: number;
   tax: number;
   total: number;
+  
+  // Lifecycle tracking
+  approvedDate?: string;
+  approvedBy?: string;
+  approvalNotes?: string;
+  
+  startedDate?: string;
+  startedBy?: string;
+  
+  readyForDispatchDate?: string;
+  readyForDispatchBy?: string;
+  
   dispatchedDate?: string;
+  dispatchedBy?: string;
+  dispatchNotes?: string;
+  
+  completedDate?: string;
+  completedBy?: string;
+  
+  cancelledDate?: string;
+  cancelledBy?: string;
+  cancelledReason?: string;
+  
   convertedToInvoice?: string;
 }
 
@@ -40,7 +62,15 @@ export const orders: Order[] = [
     deliveryType: "courier",
     deliveryAddress: "45 Fernhill Road, Wellington 6012",
     deliveryDate: "2025-10-12",
+    approvedDate: "2025-10-06",
+    approvedBy: "Sarah Mitchell",
+    startedDate: "2025-10-08",
+    startedBy: "James Chen",
+    readyForDispatchDate: "2025-10-10",
+    readyForDispatchBy: "Maria Garcia",
     dispatchedDate: "2025-10-11",
+    dispatchedBy: "Tom Wilson",
+    dispatchNotes: "Courier: FastTrack Express, Tracking: FT123456789",
     convertedToInvoice: "I-2025-00124",
     items: [
       {
@@ -117,9 +147,11 @@ export const orders: Order[] = [
     clientId: "CLI-004",
     clientName: "Eco Plantings Ltd",
     dateCreated: "2025-10-03",
-    status: "confirmed",
+    status: "approved",
     deliveryType: "pickup",
     deliveryDate: "2025-10-10",
+    approvedDate: "2025-10-03",
+    approvedBy: "Sarah Mitchell",
     items: [
       {
         id: "OL-006",

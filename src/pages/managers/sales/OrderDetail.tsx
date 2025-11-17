@@ -8,10 +8,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Package, Download, Truck, Receipt, FileText, MapPin } from "lucide-react";
+import { ArrowLeft, Package, MapPin, Truck } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
+import { OrderLifecycleProgress } from "@/components/orders/OrderLifecycleProgress";
+import { OrderStatusActions } from "@/components/orders/OrderStatusActions";
+import { OrderStatus } from "@/lib/orderLifecycle";
 
 export default function OrderDetail() {
   const { orderId } = useParams();
@@ -32,20 +35,13 @@ export default function OrderDetail() {
     );
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "pending": return "bg-yellow-500/10 text-yellow-500 border-yellow-500/20";
-      case "confirmed": return "bg-blue-500/10 text-blue-500 border-blue-500/20";
-      case "dispatched": return "bg-green-500/10 text-green-500 border-green-500/20";
-      case "completed": return "bg-primary/10 text-primary border-primary/20";
-      default: return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const handleMarkDispatched = () => {
+  const handleStatusChange = (newStatus: OrderStatus, notes?: string) => {
+    // In a real app, this would update the backend
+    console.log("Status change:", { newStatus, notes });
+    
     toast({
-      title: "Order Dispatched",
-      description: `Order ${order.orderNumber} marked as dispatched`,
+      title: "Order Status Updated",
+      description: `Order ${order.orderNumber} status changed to ${newStatus}`,
     });
   };
 
@@ -96,10 +92,16 @@ export default function OrderDetail() {
                 )}
               </div>
             </div>
-            <Badge className={getStatusColor(order.status)}>
-              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-            </Badge>
+            <OrderStatusActions
+              order={order}
+              onStatusChange={handleStatusChange}
+              onDownloadPackingSlip={handleDownloadPackingSlip}
+              onGenerateInvoice={handleGenerateInvoice}
+            />
           </div>
+
+          {/* Lifecycle Progress */}
+          <OrderLifecycleProgress order={order} />
 
           <div className="grid md:grid-cols-3 gap-6 mb-6">
             <div>
@@ -209,36 +211,6 @@ export default function OrderDetail() {
             </div>
           </div>
         </Card>
-
-        <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={handleDownloadPackingSlip}>
-            <Download className="w-4 h-4 mr-2" />
-            Packing Slip
-          </Button>
-
-          {order.status !== "dispatched" && order.status !== "completed" && (
-            <Button variant="outline" onClick={handleMarkDispatched}>
-              <Truck className="w-4 h-4 mr-2" />
-              Mark Dispatched
-            </Button>
-          )}
-
-          {(order.status === "dispatched" || order.status === "completed") && !order.convertedToInvoice && (
-            <Button onClick={handleGenerateInvoice}>
-              <Receipt className="w-4 h-4 mr-2" />
-              Generate Invoice
-            </Button>
-          )}
-
-          {order.convertedToInvoice && (
-            <Link to={`/managers/sales/invoices/${order.convertedToInvoice}`}>
-              <Button variant="outline">
-                <FileText className="w-4 h-4 mr-2" />
-                View Invoice
-              </Button>
-            </Link>
-          )}
-        </div>
       </main>
     </div>
   );
