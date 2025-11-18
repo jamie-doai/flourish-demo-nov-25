@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
-import { Leaf, MapPin, ChevronDown, Droplets, Move, Sprout, Flower2, Search } from "lucide-react";
+import { Leaf, MapPin, ChevronDown, ChevronUp, Droplets, Move, Sprout, Flower2, Search } from "lucide-react";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import { tasks, locations } from "@/data";
 import {
   DropdownMenu,
@@ -17,6 +22,7 @@ import {
 export default function WorkerTasks() {
   const [filter, setFilter] = useState<"all" | "overdue" | "todo" | "complete-this-week">("all");
   const [groupBy, setGroupBy] = useState<"location" | "task">("location");
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
   // Helper to get simplified action name for grouping
   const getSimplifiedAction = (action: string) => {
@@ -171,68 +177,132 @@ export default function WorkerTasks() {
                     </div>
                   )}
                   
-                  {Object.entries(tasksByType).map(([action, actionTasks]) => (
-                    <div key={`${location}-${action}`} className="space-y-2">
-                      {actionTasks.length > 1 && (
-                        <h3 className="text-lg font-medium text-[#37474F] ml-2">{action} ({actionTasks.length})</h3>
-                      )}
-                      <div className="space-y-3">
-                        {actionTasks.map((task) => {
-                          const TaskIcon = getTaskIcon(task.action);
-                          return (
-                          <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                            <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                              <div className="flex items-start gap-3">
-                                <div className="flex-shrink-0 mt-1">
-                                  <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                  {Object.entries(tasksByType).map(([action, actionTasks]) => {
+                    const groupKey = `${location}-${action}`;
+                    const isOpen = openGroups[groupKey] !== false; // Default to open
+                    
+                    if (actionTasks.length === 1) {
+                      // Single task - no grouping
+                      const task = actionTasks[0];
+                      const TaskIcon = getTaskIcon(task.action);
+                      return (
+                        <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                          <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                            <div className="flex items-start gap-3">
+                              <div className="flex-shrink-0 mt-1">
+                                <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <span className="text-2xl font-bold text-[#37474F]">
+                                    {task.action}
+                                  </span>
+                                  <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                                    task.status === "overdue" 
+                                      ? "bg-orange-100 text-orange-700"
+                                      : task.status === "completed"
+                                      ? "bg-gray-100 text-gray-700"
+                                      : "bg-blue-100 text-blue-700"
+                                  }`}>
+                                    {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                                  </span>
                                 </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <span className="text-2xl font-bold text-[#37474F]">
-                                      {task.action}
-                                    </span>
-                                    <span className={`px-4 py-1 text-base rounded-full font-medium ${
-                                      task.status === "overdue" 
-                                        ? "bg-orange-100 text-orange-700"
-                                        : task.status === "completed"
-                                        ? "bg-gray-100 text-gray-700"
-                                        : "bg-blue-100 text-blue-700"
-                                    }`}>
-                                      {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
-                                    </span>
-                                  </div>
-                                  <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
-                                    <Leaf className="w-4 h-4" />
-                                    <span>{task.species}</span>
-                                  </div>
-                                  <div className="text-sm text-[#37474F]/70">
-                                    {task.batch || "Multiple batches"}
-                                  </div>
+                                <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                                  <Leaf className="w-4 h-4" />
+                                  <span>{task.species}</span>
+                                </div>
+                                <div className="text-sm text-[#37474F]/70">
+                                  {task.batch || "Multiple batches"}
                                 </div>
                               </div>
-                            </Card>
-                          </Link>
-                        );
-                        })}
-                      </div>
-                    </div>
-                  ))}
+                            </div>
+                          </Card>
+                        </Link>
+                      );
+                    }
+                    
+                    // Multiple tasks - grouped in collapsible container
+                    const GroupIcon = getTaskIcon(action);
+                    return (
+                      <Collapsible
+                        key={groupKey}
+                        open={isOpen}
+                        onOpenChange={(open) => setOpenGroups(prev => ({ ...prev, [groupKey]: open }))}
+                      >
+                        <Card className="bg-[#3B7A57]/5 border-2 border-[#3B7A57]/20">
+                          <CollapsibleTrigger className="w-full p-4 flex items-center justify-between hover:bg-[#3B7A57]/10 transition-colors">
+                            <div className="flex items-center gap-3">
+                              <GroupIcon className="w-6 h-6 text-[#3B7A57]" />
+                              <h3 className="text-lg font-semibold text-[#37474F]">{action}</h3>
+                              <span className="text-sm text-[#37474F]/60">({actionTasks.length})</span>
+                            </div>
+                            {isOpen ? (
+                              <ChevronUp className="w-5 h-5 text-[#37474F]" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5 text-[#37474F]" />
+                            )}
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <div className="p-4 pt-0 space-y-3">
+                              {actionTasks.map((task) => {
+                                const TaskIcon = getTaskIcon(task.action);
+                                return (
+                                  <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                                      <div className="flex items-start gap-3">
+                                        <div className="flex-shrink-0 mt-1">
+                                          <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                                        </div>
+                                        <div className="flex-1">
+                                          <div className="flex items-center gap-2 mb-3">
+                                            <span className="text-2xl font-bold text-[#37474F]">
+                                              {task.action}
+                                            </span>
+                                            <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                                              task.status === "overdue" 
+                                                ? "bg-orange-100 text-orange-700"
+                                                : task.status === "completed"
+                                                ? "bg-gray-100 text-gray-700"
+                                                : "bg-blue-100 text-blue-700"
+                                            }`}>
+                                              {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                                            </span>
+                                          </div>
+                                          <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                                            <Leaf className="w-4 h-4" />
+                                            <span>{task.species}</span>
+                                          </div>
+                                          <div className="text-sm text-[#37474F]/70">
+                                            {task.batch || "Multiple batches"}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </Card>
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </CollapsibleContent>
+                        </Card>
+                      </Collapsible>
+                    );
+                  })}
                 </div>
               );
             })
           ) : (
             // Task view: group by task type only
-            Object.entries(groupedTasks as Record<string, typeof tasks>).map(([action, actionTasks]) => (
-              <div key={action} className="space-y-3 mb-6">
-                {actionTasks.length > 1 && (
-                  <h2 className="text-xl font-semibold text-[#37474F]">{action} ({actionTasks.length})</h2>
-                )}
-                <div className="space-y-3">
-                {actionTasks.map((task) => {
-                  const TaskIcon = getTaskIcon(task.action);
-                  return (
+            Object.entries(groupedTasks as Record<string, typeof tasks>).map(([action, actionTasks]) => {
+              const groupKey = `task-${action}`;
+              const isOpen = openGroups[groupKey] !== false; // Default to open
+              
+              if (actionTasks.length === 1) {
+                // Single task - no grouping
+                const task = actionTasks[0];
+                const TaskIcon = getTaskIcon(task.action);
+                return (
                   <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all mb-6">
                       <div className="flex items-start gap-3">
                         <div className="flex-shrink-0 mt-1">
                           <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
@@ -242,36 +312,105 @@ export default function WorkerTasks() {
                             <span className="text-2xl font-bold text-[#37474F]">
                               {task.action}
                             </span>
-                              <span className={`px-4 py-1 text-base rounded-full font-medium ${
-                                task.status === "overdue" 
-                                  ? "bg-orange-100 text-orange-700"
-                                  : task.status === "completed"
-                                  ? "bg-gray-100 text-gray-700"
-                                  : "bg-blue-100 text-blue-700"
-                              }`}>
-                                {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
-                              <Leaf className="w-4 h-4" />
-                              <span>{task.species}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-[#37474F]/70">
-                              <MapPin className="w-4 h-4" />
-                              <span>{task.location}</span>
-                            </div>
-                            <div className="text-sm text-[#37474F]/70 mt-1">
-                              {task.batch || "Multiple batches"}
+                            <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                              task.status === "overdue" 
+                                ? "bg-orange-100 text-orange-700"
+                                : task.status === "completed"
+                                ? "bg-gray-100 text-gray-700"
+                                : "bg-blue-100 text-blue-700"
+                            }`}>
+                              {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                            <Leaf className="w-4 h-4" />
+                            <span>{task.species}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-[#37474F]/70">
+                            <MapPin className="w-4 h-4" />
+                            <span>{task.location}</span>
+                          </div>
+                          <div className="text-sm text-[#37474F]/70 mt-1">
+                            {task.batch || "Multiple batches"}
                           </div>
                         </div>
                       </div>
                     </Card>
                   </Link>
                 );
-                })}
-                </div>
-              </div>
-            ))
+              }
+              
+              // Multiple tasks - grouped in collapsible container
+              const GroupIcon = getTaskIcon(action);
+              return (
+                <Collapsible
+                  key={groupKey}
+                  open={isOpen}
+                  onOpenChange={(open) => setOpenGroups(prev => ({ ...prev, [groupKey]: open }))}
+                  className="mb-6"
+                >
+                  <Card className="bg-[#3B7A57]/5 border-2 border-[#3B7A57]/20">
+                    <CollapsibleTrigger className="w-full p-4 flex items-center justify-between hover:bg-[#3B7A57]/10 transition-colors">
+                      <div className="flex items-center gap-3">
+                        <GroupIcon className="w-6 h-6 text-[#3B7A57]" />
+                        <h2 className="text-xl font-semibold text-[#37474F]">{action}</h2>
+                        <span className="text-sm text-[#37474F]/60">({actionTasks.length})</span>
+                      </div>
+                      {isOpen ? (
+                        <ChevronUp className="w-5 h-5 text-[#37474F]" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-[#37474F]" />
+                      )}
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <div className="p-4 pt-0 space-y-3">
+                        {actionTasks.map((task) => {
+                          const TaskIcon = getTaskIcon(task.action);
+                          return (
+                            <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                              <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                                <div className="flex items-start gap-3">
+                                  <div className="flex-shrink-0 mt-1">
+                                    <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <span className="text-2xl font-bold text-[#37474F]">
+                                        {task.action}
+                                      </span>
+                                      <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                                        task.status === "overdue" 
+                                          ? "bg-orange-100 text-orange-700"
+                                          : task.status === "completed"
+                                          ? "bg-gray-100 text-gray-700"
+                                          : "bg-blue-100 text-blue-700"
+                                      }`}>
+                                        {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                                      </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                                      <Leaf className="w-4 h-4" />
+                                      <span>{task.species}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-sm text-[#37474F]/70">
+                                      <MapPin className="w-4 h-4" />
+                                      <span>{task.location}</span>
+                                    </div>
+                                    <div className="text-sm text-[#37474F]/70 mt-1">
+                                      {task.batch || "Multiple batches"}
+                                    </div>
+                                  </div>
+                                </div>
+                              </Card>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </CollapsibleContent>
+                  </Card>
+                </Collapsible>
+              );
+            })
           )}
         </div>
 
