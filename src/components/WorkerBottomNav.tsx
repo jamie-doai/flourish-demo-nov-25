@@ -8,12 +8,15 @@ export function WorkerBottomNav() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
-  const navItems = [
-    { path: "/workers", label: "Home", icon: Home, exact: true },
+  const gridNavItems = [
     { path: "/workers/tasks", label: "Tasks", icon: CheckSquare },
     { path: "/workers/locations", label: "Locations", icon: MapPin },
-    { path: "/workers/profile", label: "Profile", icon: User },
+    { path: "/workers", label: "Home", icon: Home, exact: true },
     { path: "/workers/scan", label: "Scan", icon: Scan, highlight: true },
+  ];
+
+  const fullWidthNavItems = [
+    { path: "/workers/profile", label: "Profile", icon: User },
   ];
 
   return (
@@ -33,10 +36,9 @@ export function WorkerBottomNav() {
         }`}
       >
         <div className="p-6 pb-8 space-y-3">
-          {navItems.map((item) => {
-            const active = item.exact 
-              ? location.pathname === item.path 
-              : isActive(item.path);
+          {/* Full width items */}
+          {fullWidthNavItems.map((item) => {
+            const active = isActive(item.path);
 
             return (
               <Link
@@ -44,9 +46,7 @@ export function WorkerBottomNav() {
                 to={item.path}
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
-                  item.highlight
-                    ? "bg-[#FFB84D] text-[#2C3E35] hover:bg-[#FFA726]"
-                    : active
+                  active
                     ? "bg-muted text-foreground"
                     : "bg-muted text-foreground hover:bg-muted/80"
                 }`}
@@ -56,6 +56,33 @@ export function WorkerBottomNav() {
               </Link>
             );
           })}
+
+          {/* 2x2 Grid items */}
+          <div className="grid grid-cols-2 gap-3">
+            {gridNavItems.map((item) => {
+              const active = 'exact' in item && item.exact
+                ? location.pathname === item.path 
+                : isActive(item.path);
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl transition-all aspect-square ${
+                    'highlight' in item && item.highlight
+                      ? "bg-[#FFB84D] text-[#2C3E35] hover:bg-[#FFA726]"
+                      : active
+                      ? "bg-muted text-foreground"
+                      : "bg-muted text-foreground hover:bg-muted/80"
+                  }`}
+                >
+                  <item.icon className="w-7 h-7" strokeWidth={2} />
+                  <span className="text-lg font-semibold">{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
 
           <Button
             variant="outline"
