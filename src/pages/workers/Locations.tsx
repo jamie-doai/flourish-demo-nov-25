@@ -9,9 +9,11 @@ import { locations, getTasksByLocation, batches } from "@/data";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export default function WorkerLocations() {
   const [openLocations, setOpenLocations] = useState<Set<string>>(new Set());
+  const [sortBy, setSortBy] = useState<"tasks-most" | "tasks-least" | "name-asc" | "name-desc">("tasks-most");
 
   const toggleLocation = (locationId: string) => {
     setOpenLocations(prev => {
@@ -35,15 +37,66 @@ export default function WorkerLocations() {
 
   const topLevelLocations = locations.filter(loc => !loc.parentLocationId);
 
+  // Sort locations
+  const sortedLocations = [...topLevelLocations].sort((a, b) => {
+    const aTaskCount = getTasksByLocation(a.name).filter(t => 
+      t.status === "overdue" || t.status === "today" || t.status === "upcoming"
+    ).length;
+    const bTaskCount = getTasksByLocation(b.name).filter(t => 
+      t.status === "overdue" || t.status === "today" || t.status === "upcoming"
+    ).length;
+
+    switch (sortBy) {
+      case "tasks-most":
+        return bTaskCount - aTaskCount;
+      case "tasks-least":
+        return aTaskCount - bTaskCount;
+      case "name-asc":
+        return a.name.localeCompare(b.name);
+      case "name-desc":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
+    }
+  });
+
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
         <WorkerPageHeader title="Locations" backTo="/workers" />
 
-        <main className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 pt-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="text-[#37474F]">
+                Sort by: {sortBy === "tasks-most" && "Tasks (Most)"}
+                {sortBy === "tasks-least" && "Tasks (Least)"}
+                {sortBy === "name-asc" && "Name (A-Z)"}
+                {sortBy === "name-desc" && "Name (Z-A)"}
+                <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="bg-white z-50">
+              <DropdownMenuItem onClick={() => setSortBy("tasks-most")}>
+                Tasks (Most)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("tasks-least")}>
+                Tasks (Least)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("name-asc")}>
+                Name (A-Z)
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("name-desc")}>
+                Name (Z-A)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <main className="container mx-auto px-4 py-4">
           <div className="space-y-2">
-            {topLevelLocations.map((location) => {
+            {sortedLocations.map((location) => {
               const locationTasks = getTasksByLocation(location.name);
               const urgentTasks = locationTasks.filter(t => t.status === "overdue");
               const totalTasks = locationTasks.filter(t => 
@@ -56,11 +109,11 @@ export default function WorkerLocations() {
               return (
                 <Collapsible key={location.id} open={isOpen} onOpenChange={() => toggleLocation(location.id)}>
                   <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm overflow-hidden">
-                    <div className="flex items-center">
-                      <Link 
-                        to={`/workers/locations/${location.id}`}
-                        className="flex-1 p-3 flex items-center gap-2 hover:bg-[#3B7A57]/5 transition-colors"
-                      >
+                    <Link 
+                      to={`/workers/locations/${location.id}`}
+                      className="block p-3 hover:bg-[#3B7A57]/5 transition-colors"
+                    >
+                      <div className="flex items-center gap-2">
                         <MapPin className="w-5 h-5 text-[#3B7A57] flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <h3 className="text-base font-semibold text-[#37474F]">{location.name}</h3>
@@ -75,20 +128,22 @@ export default function WorkerLocations() {
                             )}
                           </div>
                         </div>
-                      </Link>
-                      {childLocations.length > 0 && (
-                        <CollapsibleTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            className="h-full px-3 rounded-none hover:bg-[#3B7A57]/10"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            {isOpen ? <ChevronDown className="w-5 h-5 text-[#37474F]" /> : <ChevronRight className="w-5 h-5 text-[#37474F]" />}
-                          </Button>
-                        </CollapsibleTrigger>
-                      )}
-                    </div>
+                      </div>
+                    </Link>
+                    
+                    {childLocations.length > 0 && (
+                      <CollapsibleTrigger asChild>
+                        <Button 
+                          variant="ghost" 
+                          size="sm"
+                          className="w-full py-1.5 px-3 rounded-none hover:bg-[#3B7A57]/10 flex items-center justify-center gap-2 border-t border-[#37474F]/10"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <span className="text-sm text-[#37474F]">Show Tables/Bays</span>
+                          <ChevronDown className={`w-4 h-4 text-[#37474F] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                        </Button>
+                      </CollapsibleTrigger>
+                    )}
                     
                     {childLocations.length > 0 && (
                       <CollapsibleContent className="px-3 pb-2">
