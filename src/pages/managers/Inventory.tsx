@@ -227,7 +227,7 @@ export default function ManagerInventory() {
                           </span>
                         </div>
                         
-                        <div className="grid grid-cols-4 gap-4 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
                           <div>
                             <span className="text-muted-foreground">Stage: </span>
                             <span className="font-medium capitalize">{batch.stage}</span>
@@ -288,7 +288,7 @@ export default function ManagerInventory() {
           </div>
 
           {/* Stage Overview Stats */}
-          <div className="grid md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <Card className="p-4">
               <div className="text-sm text-muted-foreground mb-1">Total Plants</div>
               <div className="text-2xl font-bold">{stats.plants.toLocaleString()}</div>
@@ -337,7 +337,7 @@ export default function ManagerInventory() {
                         <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
                         <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
                         
-                        <div className="grid grid-cols-4 gap-4 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
                           <div>
                             <span className="text-muted-foreground">Location: </span>
                             <span className="font-medium">📍 {batch.location}</span>
@@ -373,20 +373,21 @@ export default function ManagerInventory() {
   return (
     <ManagerLayout>
       <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">Inventory Management</h1>
             <p className="text-muted-foreground">Track batches across stages and locations</p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button
               variant={activeView === "stocktake" ? "default" : "outline"}
               onClick={() => setActiveView("stocktake")}
+              className="flex-1 sm:flex-none"
             >
               <ClipboardList className="w-4 h-4 mr-2" />
               Stocktake
             </Button>
-            <Button variant="hero" asChild>
+            <Button variant="hero" asChild className="flex-1 sm:flex-none">
               <Link to="/managers/batches/add">
                 <Plus className="w-4 h-4" />
                 New Batch
@@ -409,22 +410,26 @@ export default function ManagerInventory() {
           </>
         ) : (
           <Tabs defaultValue="batches" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-4">
-            <TabsTrigger value="stages">
-              <Layers className="w-4 h-4 mr-2" />
-              Stages
+          <TabsList className="grid w-full max-w-2xl grid-cols-2 sm:grid-cols-4 gap-2">
+            <TabsTrigger value="stages" className="text-xs sm:text-sm">
+              <Layers className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Stages</span>
+              <span className="sm:hidden">Stages</span>
             </TabsTrigger>
-            <TabsTrigger value="species">
-              <Sprout className="w-4 h-4 mr-2" />
-              Species
+            <TabsTrigger value="species" className="text-xs sm:text-sm">
+              <Sprout className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Species</span>
+              <span className="sm:hidden">Species</span>
             </TabsTrigger>
-            <TabsTrigger value="batches">
-              <Package className="w-4 h-4 mr-2" />
-              All Batches
+            <TabsTrigger value="batches" className="text-xs sm:text-sm">
+              <Package className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">All Batches</span>
+              <span className="sm:hidden">Batches</span>
             </TabsTrigger>
-            <TabsTrigger value="locations">
-              <MapPin className="w-4 h-4 mr-2" />
-              Locations
+            <TabsTrigger value="locations" className="text-xs sm:text-sm">
+              <MapPin className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Locations</span>
+              <span className="sm:hidden">Locations</span>
             </TabsTrigger>
           </TabsList>
 
@@ -539,7 +544,7 @@ export default function ManagerInventory() {
                             <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
                             <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
                             
-                            <div className="grid grid-cols-4 gap-4 text-sm">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
                               <div>
                                 <span className="text-muted-foreground">Stage: </span>
                                 <span className="font-medium capitalize">{batch.stage}</span>
