@@ -96,7 +96,7 @@ export default function WorkerHome() {
             <h2 className="text-xl font-semibold text-[#37474F] mb-3">Continue</h2>
             <div className="space-y-2">
               {displayedContinue.map((item) => (
-                <Link key={item.id} to="/workers/tasks">
+                <Link key={item.id} to={`/workers/tasks/${item.id}`}>
                   <Card className="p-3 bg-white border-2 border-[#37474F]/20 hover:border-[#3B7A57]/30 hover:bg-[#3B7A57]/5 transition-all">
                     <div className="flex items-center gap-3">
                       <item.icon className="w-5 h-5 text-[#3B7A57] flex-shrink-0" />
