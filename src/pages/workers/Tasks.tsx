@@ -186,38 +186,40 @@ export default function WorkerTasks() {
                       const task = actionTasks[0];
                       const TaskIcon = getTaskIcon(task.action);
                       return (
-                        <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                          <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                            <div className="flex items-start gap-3">
-                              <div className="flex-shrink-0 mt-1">
-                                <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                        <div key={`${location}-${action}`} className="px-4">
+                          <Link to={`/workers/tasks/${task.id}`}>
+                            <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 mt-1">
+                                  <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-2xl font-bold text-[#37474F]">
+                                      {task.action}
+                                    </span>
+                                    <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                                      task.status === "overdue" 
+                                        ? "bg-orange-100 text-orange-700"
+                                        : task.status === "completed"
+                                        ? "bg-gray-100 text-gray-700"
+                                        : "bg-blue-100 text-blue-700"
+                                    }`}>
+                                      {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                                    <Leaf className="w-4 h-4" />
+                                    <span>{task.species}</span>
+                                  </div>
+                                  <div className="text-sm text-[#37474F]/70">
+                                    {task.batch || "Multiple batches"}
+                                  </div>
+                                </div>
                               </div>
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-3">
-                                  <span className="text-2xl font-bold text-[#37474F]">
-                                    {task.action}
-                                  </span>
-                                  <span className={`px-4 py-1 text-base rounded-full font-medium ${
-                                    task.status === "overdue" 
-                                      ? "bg-orange-100 text-orange-700"
-                                      : task.status === "completed"
-                                      ? "bg-gray-100 text-gray-700"
-                                      : "bg-blue-100 text-blue-700"
-                                  }`}>
-                                    {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
-                                  <Leaf className="w-4 h-4" />
-                                  <span>{task.species}</span>
-                                </div>
-                                <div className="text-sm text-[#37474F]/70">
-                                  {task.batch || "Multiple batches"}
-                                </div>
-                              </div>
-                            </div>
-                          </Card>
-                        </Link>
+                            </Card>
+                          </Link>
+                        </div>
                       );
                     }
                     
@@ -301,42 +303,44 @@ export default function WorkerTasks() {
                 const task = actionTasks[0];
                 const TaskIcon = getTaskIcon(task.action);
                 return (
-                  <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all mb-6">
-                      <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 mt-1">
-                          <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                  <div key={`task-${action}`} className="px-4 mb-6">
+                    <Link to={`/workers/tasks/${task.id}`}>
+                      <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 mt-1">
+                            <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-3">
+                              <span className="text-2xl font-bold text-[#37474F]">
+                                {task.action}
+                              </span>
+                              <span className={`px-4 py-1 text-base rounded-full font-medium ${
+                                task.status === "overdue" 
+                                  ? "bg-orange-100 text-orange-700"
+                                  : task.status === "completed"
+                                  ? "bg-gray-100 text-gray-700"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}>
+                                {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                              <Leaf className="w-4 h-4" />
+                              <span>{task.species}</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-sm text-[#37474F]/70">
+                              <MapPin className="w-4 h-4" />
+                              <span>{task.location}</span>
+                            </div>
+                            <div className="text-sm text-[#37474F]/70 mt-1">
+                              {task.batch || "Multiple batches"}
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
-                            <span className="text-2xl font-bold text-[#37474F]">
-                              {task.action}
-                            </span>
-                            <span className={`px-4 py-1 text-base rounded-full font-medium ${
-                              task.status === "overdue" 
-                                ? "bg-orange-100 text-orange-700"
-                                : task.status === "completed"
-                                ? "bg-gray-100 text-gray-700"
-                                : "bg-blue-100 text-blue-700"
-                            }`}>
-                              {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
-                            <Leaf className="w-4 h-4" />
-                            <span>{task.species}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-sm text-[#37474F]/70">
-                            <MapPin className="w-4 h-4" />
-                            <span>{task.location}</span>
-                          </div>
-                          <div className="text-sm text-[#37474F]/70 mt-1">
-                            {task.batch || "Multiple batches"}
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </Link>
+                      </Card>
+                    </Link>
+                  </div>
                 );
               }
               
