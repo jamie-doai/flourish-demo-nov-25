@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
-import { Leaf, MapPin, ChevronDown } from "lucide-react";
+import { Leaf, MapPin, ChevronDown, Droplets, Move, Sprout, Flower2, Search } from "lucide-react";
 import { tasks, locations } from "@/data";
 import {
   DropdownMenu,
@@ -17,6 +17,18 @@ import {
 export default function WorkerTasks() {
   const [filter, setFilter] = useState<"all" | "overdue" | "todo" | "complete-this-week">("all");
   const [groupBy, setGroupBy] = useState<"location" | "task">("location");
+
+  // Helper to get icon for task action
+  const getTaskIcon = (action: string) => {
+    const lowerAction = action.toLowerCase();
+    if (lowerAction.includes("water")) return Droplets;
+    if (lowerAction.includes("move") || lowerAction.includes("transport")) return Move;
+    if (lowerAction.includes("fertilize") || lowerAction.includes("apply") || lowerAction.includes("treat")) return Sprout;
+    if (lowerAction.includes("pot") || lowerAction.includes("transplant")) return Flower2;
+    if (lowerAction.includes("check") || lowerAction.includes("inspect") || lowerAction.includes("pest")) return Search;
+    if (lowerAction.includes("sow") || lowerAction.includes("seed")) return Sprout;
+    return Leaf; // Default icon
+  };
 
   // Filter tasks based on status
   const filteredTasks = tasks.filter(task => {
@@ -147,10 +159,15 @@ export default function WorkerTasks() {
                     <div key={`${location}-${action}`} className="space-y-2">
                       <h3 className="text-lg font-medium text-[#37474F] ml-2">{action} ({actionTasks.length})</h3>
                       <div className="space-y-3">
-                        {actionTasks.map((task) => (
+                        {actionTasks.map((task) => {
+                          const TaskIcon = getTaskIcon(task.action);
+                          return (
                           <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                             <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                              <div className="flex items-start justify-between mb-3">
+                              <div className="flex items-start gap-3">
+                                <div className="flex-shrink-0 mt-1">
+                                  <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                                </div>
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-3">
                                     <span className="text-2xl font-bold text-[#37474F]">
@@ -177,7 +194,8 @@ export default function WorkerTasks() {
                               </div>
                             </Card>
                           </Link>
-                        ))}
+                        );
+                        })}
                       </div>
                     </div>
                   ))}
@@ -190,15 +208,20 @@ export default function WorkerTasks() {
               <div key={action} className="space-y-3">
                 <h2 className="text-xl font-semibold text-[#37474F]">{action} ({actionTasks.length})</h2>
                 <div className="space-y-3">
-                  {actionTasks.map((task) => (
-                    <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                      <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
-                        <div className="flex items-start justify-between mb-3">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-3">
-                              <span className="text-2xl font-bold text-[#37474F]">
-                                {task.action}
-                              </span>
+                {actionTasks.map((task) => {
+                  const TaskIcon = getTaskIcon(task.action);
+                  return (
+                  <Link key={task.id} to={`/workers/tasks/${task.id}`}>
+                    <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 mt-1">
+                          <TaskIcon className="w-8 h-8 text-[#3B7A57]" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl font-bold text-[#37474F]">
+                              {task.action}
+                            </span>
                               <span className={`px-4 py-1 text-base rounded-full font-medium ${
                                 task.status === "overdue" 
                                   ? "bg-orange-100 text-orange-700"
@@ -219,12 +242,13 @@ export default function WorkerTasks() {
                             </div>
                             <div className="text-sm text-[#37474F]/70 mt-1">
                               {task.batch || "Multiple batches"}
-                            </div>
                           </div>
                         </div>
-                      </Card>
-                    </Link>
-                  ))}
+                      </div>
+                    </Card>
+                  </Link>
+                );
+                })}
                 </div>
               </div>
             ))
