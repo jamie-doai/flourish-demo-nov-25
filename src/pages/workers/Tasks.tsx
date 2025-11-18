@@ -18,15 +18,29 @@ export default function WorkerTasks() {
   const [filter, setFilter] = useState<"all" | "overdue" | "todo" | "complete-this-week">("all");
   const [groupBy, setGroupBy] = useState<"location" | "task">("location");
 
+  // Helper to get simplified action name for grouping
+  const getSimplifiedAction = (action: string) => {
+    const lowerAction = action.toLowerCase();
+    if (lowerAction.includes("water")) return "Water";
+    if (lowerAction.includes("move") || lowerAction.includes("transport")) return "Move";
+    if (lowerAction.includes("fertilize") || lowerAction.includes("apply fertilizer") || lowerAction.includes("treat")) return "Apply fertilizer";
+    if (lowerAction.includes("pot") || lowerAction.includes("transplant")) return "Pot up";
+    if (lowerAction.includes("check") || lowerAction.includes("inspect") || lowerAction.includes("pest")) return "Check";
+    if (lowerAction.includes("sow") || lowerAction.includes("seed")) return "Sow";
+    if (lowerAction.includes("prune")) return "Prune";
+    return action; // Return original if no match
+  };
+
   // Helper to get icon for task action
   const getTaskIcon = (action: string) => {
-    const lowerAction = action.toLowerCase();
+    const simplifiedAction = getSimplifiedAction(action);
+    const lowerAction = simplifiedAction.toLowerCase();
     if (lowerAction.includes("water")) return Droplets;
-    if (lowerAction.includes("move") || lowerAction.includes("transport")) return Move;
-    if (lowerAction.includes("fertilize") || lowerAction.includes("apply") || lowerAction.includes("treat")) return Sprout;
-    if (lowerAction.includes("pot") || lowerAction.includes("transplant")) return Flower2;
-    if (lowerAction.includes("check") || lowerAction.includes("inspect") || lowerAction.includes("pest")) return Search;
-    if (lowerAction.includes("sow") || lowerAction.includes("seed")) return Sprout;
+    if (lowerAction.includes("move")) return Move;
+    if (lowerAction.includes("fertilize") || lowerAction.includes("apply")) return Sprout;
+    if (lowerAction.includes("pot")) return Flower2;
+    if (lowerAction.includes("check")) return Search;
+    if (lowerAction.includes("sow")) return Sprout;
     return Leaf; // Default icon
   };
 
@@ -47,23 +61,25 @@ export default function WorkerTasks() {
 
   // Group tasks based on selected view
   const groupedTasks = groupBy === "location" 
-    ? // Group by location, then by task type within each location
+    ? // Group by location, then by simplified task type within each location
       filteredTasks.reduce((acc, task) => {
+        const simplifiedAction = getSimplifiedAction(task.action);
         if (!acc[task.location]) {
           acc[task.location] = {};
         }
-        if (!acc[task.location][task.action]) {
-          acc[task.location][task.action] = [];
+        if (!acc[task.location][simplifiedAction]) {
+          acc[task.location][simplifiedAction] = [];
         }
-        acc[task.location][task.action].push(task);
+        acc[task.location][simplifiedAction].push(task);
         return acc;
       }, {} as Record<string, Record<string, typeof tasks>>)
-    : // Group by task type only
+    : // Group by simplified task type only
       filteredTasks.reduce((acc, task) => {
-        if (!acc[task.action]) {
-          acc[task.action] = [];
+        const simplifiedAction = getSimplifiedAction(task.action);
+        if (!acc[simplifiedAction]) {
+          acc[simplifiedAction] = [];
         }
-        acc[task.action].push(task);
+        acc[simplifiedAction].push(task);
         return acc;
       }, {} as Record<string, typeof tasks>);
 
