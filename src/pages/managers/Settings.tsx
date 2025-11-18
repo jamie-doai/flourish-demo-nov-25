@@ -1,6 +1,6 @@
-import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SettingsLayout } from "@/components/layouts/SettingsLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Sprout, Settings as SettingsIcon, DollarSign, UserCircle } from "lucide-react";
+import { Users, MapPin, Sprout, Settings as SettingsIcon, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function ManagerSettings() {
@@ -44,19 +44,11 @@ export default function ManagerSettings() {
       path: "/managers/settings/system",
       iconBg: "bg-slate-100 dark:bg-slate-900/30",
       iconColor: "text-slate-600 dark:text-slate-400"
-    },
-    {
-      title: "Profile",
-      description: "View and manage your profile information",
-      icon: UserCircle,
-      path: "/managers/profile",
-      iconBg: "bg-purple-100 dark:bg-purple-900/30",
-      iconColor: "text-purple-600 dark:text-purple-400"
     }
   ];
 
   return (
-    <ManagerLayout>
+    <SettingsLayout>
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Settings</h1>
@@ -87,6 +79,6 @@ export default function ManagerSettings() {
           })}
         </div>
       </main>
-    </ManagerLayout>
+    </SettingsLayout>
   );
 }
