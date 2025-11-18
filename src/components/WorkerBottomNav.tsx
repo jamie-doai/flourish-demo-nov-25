@@ -69,7 +69,7 @@ export function WorkerBottomNav() {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl transition-all aspect-square ${
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all max-h-24 ${
                     'highlight' in item && item.highlight
                       ? "bg-[#FFB84D] text-[#2C3E35] hover:bg-[#FFA726]"
                       : active
@@ -77,8 +77,8 @@ export function WorkerBottomNav() {
                       : "bg-muted text-foreground hover:bg-muted/80"
                   }`}
                 >
-                  <item.icon className="w-7 h-7" strokeWidth={2} />
-                  <span className="text-lg font-semibold">{item.label}</span>
+                  <item.icon className="w-6 h-6" strokeWidth={2} />
+                  <span className="text-base font-semibold">{item.label}</span>
                 </Link>
               );
             })}
