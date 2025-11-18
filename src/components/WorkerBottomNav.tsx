@@ -31,7 +31,7 @@ export function WorkerBottomNav() {
 
       {/* Bottom Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#2C3E35] rounded-t-3xl transition-transform duration-300 max-w-[500px] mx-auto ${
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#2C3E35] rounded-t-3xl transition-transform duration-150 max-w-[500px] mx-auto ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
