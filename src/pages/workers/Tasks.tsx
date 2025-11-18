@@ -159,15 +159,15 @@ export default function WorkerTasks() {
                 <div key={location} className="space-y-3 mb-8">
                   {locationId ? (
                     <Link to={`/workers/locations/${locationId}`} className="flex items-center gap-2 mb-3 hover:opacity-70 transition-opacity">
-                      <MapPin className="w-5 h-5 text-[#3B7A57]" />
-                      <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
-                      <span className="text-sm text-[#37474F]/60">({totalTasks})</span>
+                      <MapPin className="w-6 h-6 text-[#3B7A57]" />
+                      <h2 className="text-2xl font-bold text-[#37474F]">{location}</h2>
+                      <span className="text-base text-[#37474F]/60">({totalTasks})</span>
                     </Link>
                   ) : (
                     <div className="flex items-center gap-2 mb-3">
-                      <MapPin className="w-5 h-5 text-[#3B7A57]" />
-                      <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
-                      <span className="text-sm text-[#37474F]/60">({totalTasks})</span>
+                      <MapPin className="w-6 h-6 text-[#3B7A57]" />
+                      <h2 className="text-2xl font-bold text-[#37474F]">{location}</h2>
+                      <span className="text-base text-[#37474F]/60">({totalTasks})</span>
                     </div>
                   )}
                   
