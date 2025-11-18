@@ -207,55 +207,29 @@ export default function ManagerBatchDetail() {
                   <Copy className="w-6 h-6 text-primary" />
                   <span className="text-sm">Duplicate</span>
                 </Button>
-
-                <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      variant="outline"
-                      className="h-auto flex flex-col items-center gap-2 p-4"
-                    >
-                      <Move className="w-6 h-6 text-primary" />
-                      <span className="text-sm">Move Batch</span>
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Move to Location</DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-2 py-4">
-                      {locations.filter(loc => loc !== mockBatch.location).map((location) => (
-                        <Button
-                          key={location}
-                          variant="outline"
-                          className="w-full justify-start"
-                          onClick={() => handleMove(location)}
-                        >
-                          📍 {location}
-                        </Button>
-                      ))}
-                    </div>
-                  </DialogContent>
-                </Dialog>
-
-                <Button 
-                  variant="outline"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
-                  onClick={() => setShowSplitDialog(true)}
-                >
-                  <Split className="w-6 h-6 text-primary" />
-                  <span className="text-sm">Split Batch</span>
-                </Button>
-
-                <Button 
-                  variant="outline"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
-                  onClick={() => setShowMergeDialog(true)}
-                >
-                  <Merge className="w-6 h-6 text-primary" />
-                  <span className="text-sm">Merge Batch</span>
-                </Button>
               </div>
             </Card>
+
+            {/* Move Dialog (kept separate, not in grid) */}
+            <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Move to Location</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-2 py-4">
+                  {locations.filter(loc => loc !== mockBatch.location).map((location) => (
+                    <Button
+                      key={location}
+                      variant="outline"
+                      className="w-full justify-start"
+                      onClick={() => handleMove(location)}
+                    >
+                      📍 {location}
+                    </Button>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
 
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
