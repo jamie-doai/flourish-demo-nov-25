@@ -156,7 +156,7 @@ export default function WorkerTasks() {
               const totalTasks = Object.values(tasksByType).flat().length;
               
               return (
-                <div key={location} className="space-y-3 mb-8">
+                <div key={location} className="space-y-3 mb-12">
                   {locationId ? (
                     <Link to={`/workers/locations/${locationId}`} className="flex items-center gap-2 mb-3 hover:opacity-70 transition-opacity">
                       <MapPin className="w-6 h-6 text-[#3B7A57]" />
