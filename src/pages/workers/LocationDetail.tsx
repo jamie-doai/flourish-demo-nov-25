@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, CheckCircle2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -187,7 +187,7 @@ export default function WorkerLocationDetail() {
           </Tabs>
         </main>
 
-        <WorkerNav />
+        <WorkerBottomNav />
       </div>
     </div>
   );

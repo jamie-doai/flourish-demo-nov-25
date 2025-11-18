@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { Search, Scan, MapPin, Leaf, Sprout } from "lucide-react";
 import { stages, batches } from "@/data";
@@ -189,7 +189,7 @@ export default function WorkerInventory() {
         )}
       </main>
 
-      <WorkerNav />
+      <WorkerBottomNav />
       </div>
     </div>
   );

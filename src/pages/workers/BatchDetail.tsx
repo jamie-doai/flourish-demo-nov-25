@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
@@ -46,7 +46,7 @@ export default function WorkerBatchDetail() {
       <div className="min-h-screen bg-slate-800">
         <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
           <DevBar />
-          <WorkerNav />
+          <WorkerBottomNav />
           <div className="container mx-auto px-4 py-8">
             <p>Batch not found</p>
           </div>
@@ -466,7 +466,7 @@ export default function WorkerBatchDetail() {
       />
 
       <div className="md:hidden">
-        <WorkerNav />
+      <WorkerBottomNav />
       </div>
       </div>
     </div>

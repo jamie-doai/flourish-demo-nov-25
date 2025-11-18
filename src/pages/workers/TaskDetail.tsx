@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Camera, CheckCircle2, FileText, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -32,7 +32,7 @@ export default function WorkerTaskDetail() {
       <div className="min-h-screen bg-slate-800">
         <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
           <DevBar />
-          <WorkerNav />
+          <WorkerBottomNav />
           <main className="container mx-auto px-4 py-6 max-w-[500px]">
             <Card className="p-6 text-center bg-white">
               <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
@@ -220,7 +220,7 @@ export default function WorkerTaskDetail() {
         </div>
       </main>
 
-      <WorkerNav />
+      <WorkerBottomNav />
       </div>
     </div>
   );

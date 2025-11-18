@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DevBar } from "@/components/DevBar";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -388,7 +388,7 @@ export default function WorkerAddBatch() {
         )}
       </main>
 
-      <WorkerNav />
+      <WorkerBottomNav />
       </div>
     </div>
   );
