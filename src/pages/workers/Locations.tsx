@@ -55,37 +55,44 @@ export default function WorkerLocations() {
 
               return (
                 <Collapsible key={location.id} open={isOpen} onOpenChange={() => toggleLocation(location.id)}>
-                  <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm">
-                    <CollapsibleTrigger asChild>
-                      <Button 
-                        variant="ghost" 
-                        className="w-full p-4 h-auto flex items-center justify-between hover:bg-[#3B7A57]/5"
+                  <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm overflow-hidden">
+                    <div className="flex items-center">
+                      <Link 
+                        to={`/workers/locations/${location.id}`}
+                        className="flex-1 p-3 flex items-center gap-2 hover:bg-[#3B7A57]/5 transition-colors"
                       >
-                        <div className="flex items-center gap-3">
-                          <MapPin className="w-5 h-5 text-[#3B7A57]" />
-                          <div className="text-left">
-                            <h3 className="text-lg font-semibold text-[#37474F]">{location.name}</h3>
-                            <div className="flex items-center gap-3 mt-1 text-sm text-[#37474F]">
-                              <span>{batchCount} batches</span>
-                              <span>{totalTasks} tasks</span>
-                              {urgentTasks.length > 0 && (
-                                <Badge variant="destructive" className="flex items-center gap-1">
-                                  <AlertCircle className="w-3 h-3" />
-                                  {urgentTasks.length} urgent
-                                </Badge>
-                              )}
-                            </div>
+                        <MapPin className="w-5 h-5 text-[#3B7A57] flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-base font-semibold text-[#37474F]">{location.name}</h3>
+                          <div className="flex items-center gap-2 mt-0.5 text-sm text-[#37474F]">
+                            <span>{batchCount} batches</span>
+                            <span>{totalTasks} tasks</span>
+                            {urgentTasks.length > 0 && (
+                              <Badge variant="destructive" className="flex items-center gap-1 text-xs py-0">
+                                <AlertCircle className="w-3 h-3" />
+                                {urgentTasks.length}
+                              </Badge>
+                            )}
                           </div>
                         </div>
-                        {childLocations.length > 0 && (
-                          isOpen ? <ChevronDown className="w-5 h-5 text-[#37474F]" /> : <ChevronRight className="w-5 h-5 text-[#37474F]" />
-                        )}
-                      </Button>
-                    </CollapsibleTrigger>
+                      </Link>
+                      {childLocations.length > 0 && (
+                        <CollapsibleTrigger asChild>
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            className="h-full px-3 rounded-none hover:bg-[#3B7A57]/10"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            {isOpen ? <ChevronDown className="w-5 h-5 text-[#37474F]" /> : <ChevronRight className="w-5 h-5 text-[#37474F]" />}
+                          </Button>
+                        </CollapsibleTrigger>
+                      )}
+                    </div>
                     
                     {childLocations.length > 0 && (
-                      <CollapsibleContent className="px-4 pb-4">
-                        <div className="space-y-2 mt-2 pl-8">
+                      <CollapsibleContent className="px-3 pb-2">
+                        <div className="space-y-1 mt-1 pl-6 border-l-2 border-[#3B7A57]/20">
                           {childLocations.map((child) => {
                             const childTasks = getTasksByLocation(child.name);
                             const childUrgent = childTasks.filter(t => t.status === "overdue");
@@ -96,15 +103,15 @@ export default function WorkerLocations() {
 
                             return (
                               <Link key={child.id} to={`/workers/locations/${child.id}`}>
-                                <Card className="p-3 bg-[#F8FAF9] border border-[#37474F]/10 hover:border-[#37474F]/30 hover:bg-white transition-all">
-                                  <div className="flex items-center justify-between">
-                                    <div>
-                                      <h4 className="text-base font-medium text-[#37474F]">{child.name}</h4>
-                                      <div className="flex items-center gap-2 mt-1 text-sm text-[#37474F]">
+                                <Card className="p-2 bg-[#F8FAF9] border border-[#37474F]/10 hover:border-[#37474F]/30 hover:bg-white transition-all">
+                                  <div className="flex items-center gap-2">
+                                    <div className="flex-1 min-w-0">
+                                      <h4 className="text-sm font-medium text-[#37474F]">{child.name}</h4>
+                                      <div className="flex items-center gap-2 mt-0.5 text-xs text-[#37474F]">
                                         <span>{childBatches} batches</span>
                                         <span>{childTotal} tasks</span>
                                         {childUrgent.length > 0 && (
-                                          <Badge variant="destructive" className="flex items-center gap-1 text-xs">
+                                          <Badge variant="destructive" className="flex items-center gap-1 text-xs py-0 px-1">
                                             <AlertCircle className="w-3 h-3" />
                                             {childUrgent.length}
                                           </Badge>
