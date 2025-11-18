@@ -1,9 +1,7 @@
-import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SettingsLayout } from "@/components/layouts/SettingsLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Settings, Moon, Sun, Bell } from "lucide-react";
+import { Settings, Moon, Sun, Bell } from "lucide-react";
 import { useTheme } from "next-themes";
 
 export default function ManagerSystemSettings() {
@@ -11,19 +9,8 @@ export default function ManagerSystemSettings() {
   const isDark = theme === "dark";
 
   return (
-    <ManagerLayout>
+    <SettingsLayout>
       <main className="container mx-auto px-4 py-8">
-        <Button 
-          variant="ghost" 
-          asChild
-          className="mb-4"
-        >
-          <Link to="/managers/settings">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Settings
-          </Link>
-        </Button>
-
         <div className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center">
             <Settings className="w-6 h-6 text-slate-600 dark:text-slate-400" />
@@ -88,6 +75,6 @@ export default function ManagerSystemSettings() {
           </Card>
         </div>
       </main>
-    </ManagerLayout>
+    </SettingsLayout>
   );
 }

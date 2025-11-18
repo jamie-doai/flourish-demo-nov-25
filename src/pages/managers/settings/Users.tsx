@@ -1,24 +1,12 @@
-import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SettingsLayout } from "@/components/layouts/SettingsLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Users, Plus } from "lucide-react";
+import { Users, Plus } from "lucide-react";
 
 export default function ManagerUsersSettings() {
   return (
-    <ManagerLayout>
+    <SettingsLayout>
       <main className="container mx-auto px-4 py-8">
-        <Button 
-          variant="ghost" 
-          asChild
-          className="mb-4"
-        >
-          <Link to="/managers/settings">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Settings
-          </Link>
-        </Button>
-
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
@@ -44,6 +32,6 @@ export default function ManagerUsersSettings() {
           </CardContent>
         </Card>
       </main>
-    </ManagerLayout>
+    </SettingsLayout>
   );
 }
