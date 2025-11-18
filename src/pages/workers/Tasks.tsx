@@ -140,7 +140,7 @@ export default function WorkerTasks() {
               const totalTasks = Object.values(tasksByType).flat().length;
               
               return (
-                <div key={location} className="space-y-3">
+                <div key={location} className="space-y-3 mb-8">
                   {locationId ? (
                     <Link to={`/workers/locations/${locationId}`} className="flex items-center gap-2 mb-3 hover:opacity-70 transition-opacity">
                       <MapPin className="w-5 h-5 text-[#3B7A57]" />
@@ -157,7 +157,9 @@ export default function WorkerTasks() {
                   
                   {Object.entries(tasksByType).map(([action, actionTasks]) => (
                     <div key={`${location}-${action}`} className="space-y-2">
-                      <h3 className="text-lg font-medium text-[#37474F] ml-2">{action} ({actionTasks.length})</h3>
+                      {actionTasks.length > 1 && (
+                        <h3 className="text-lg font-medium text-[#37474F] ml-2">{action} ({actionTasks.length})</h3>
+                      )}
                       <div className="space-y-3">
                         {actionTasks.map((task) => {
                           const TaskIcon = getTaskIcon(task.action);
@@ -205,8 +207,10 @@ export default function WorkerTasks() {
           ) : (
             // Task view: group by task type only
             Object.entries(groupedTasks as Record<string, typeof tasks>).map(([action, actionTasks]) => (
-              <div key={action} className="space-y-3">
-                <h2 className="text-xl font-semibold text-[#37474F]">{action} ({actionTasks.length})</h2>
+              <div key={action} className="space-y-3 mb-6">
+                {actionTasks.length > 1 && (
+                  <h2 className="text-xl font-semibold text-[#37474F]">{action} ({actionTasks.length})</h2>
+                )}
                 <div className="space-y-3">
                 {actionTasks.map((task) => {
                   const TaskIcon = getTaskIcon(task.action);
