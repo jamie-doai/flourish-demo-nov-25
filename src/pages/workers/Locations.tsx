@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { MapPin, Thermometer } from "lucide-react";
@@ -69,7 +69,7 @@ export default function WorkerLocations() {
         </div>
       </main>
 
-      <WorkerNav />
+      <WorkerBottomNav />
       </div>
     </div>
   );

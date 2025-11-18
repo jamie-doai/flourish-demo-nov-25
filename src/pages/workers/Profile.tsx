@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { WorkerNav } from "@/components/WorkerNav";
+import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -123,7 +123,7 @@ export default function WorkerProfile() {
         </p>
       </main>
 
-      <WorkerNav />
+      <WorkerBottomNav />
       </div>
     </div>
   );
