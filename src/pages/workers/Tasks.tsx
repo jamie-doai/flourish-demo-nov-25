@@ -107,9 +107,9 @@ export default function WorkerTasks() {
                     <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-xl font-semibold text-[#37474F]">
-                              {task.action} {task.batch}
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-2xl font-bold text-[#37474F]">
+                              {task.action}
                             </span>
                             <span className={`px-4 py-1 text-base rounded-full font-medium ${
                               task.status === "overdue" 
@@ -121,15 +121,12 @@ export default function WorkerTasks() {
                               {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
                             </span>
                           </div>
-                          <div className="flex items-center gap-3 text-base text-[#37474F] mb-2">
-                            <div className="flex items-center gap-1">
-                              <Leaf className="w-4 h-4" />
-                              <span>{task.species}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              <span>{task.due}</span>
-                            </div>
+                          <div className="flex items-center gap-2 text-base text-[#37474F] mb-2">
+                            <Leaf className="w-4 h-4" />
+                            <span>{task.species}</span>
+                          </div>
+                          <div className="text-sm text-[#37474F]/70">
+                            {task.batch || "Multiple batches"}
                           </div>
                         </div>
                       </div>
