@@ -6,7 +6,7 @@ import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { Leaf, MapPin, Clock, ChevronDown } from "lucide-react";
-import { tasks } from "@/data";
+import { tasks, locations } from "@/data";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,14 +15,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function WorkerTasks() {
-  const [timeFilter, setTimeFilter] = useState<"today" | "this-week" | "past-week">("today");
+  const [filter, setFilter] = useState<"all" | "overdue" | "todo" | "complete-this-week">("all");
 
-  // Filter tasks based on time period (including completed tasks from that period)
+  // Filter tasks based on status
   const filteredTasks = tasks.filter(task => {
-    // For demo purposes, showing all tasks for the selected time period
-    // In a real app, you would filter by actual dates
+    if (filter === "all") return true;
+    if (filter === "overdue") return task.status === "overdue";
+    if (filter === "todo") return task.status === "today" || task.status === "upcoming";
+    if (filter === "complete-this-week") return task.status === "completed";
     return true;
   });
+
+  // Helper to get location ID from location name
+  const getLocationId = (locationName: string) => {
+    const location = locations.find(loc => loc.name === locationName);
+    return location?.id;
+  };
 
   // Group tasks by location
   const groupedTasks = filteredTasks.reduce((acc, task) => {
@@ -48,21 +56,25 @@ export default function WorkerTasks() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="text-[#37474F]">
-                {timeFilter === "today" && "Today"}
-                {timeFilter === "this-week" && "This Week"}
-                {timeFilter === "past-week" && "Past Week"}
+                {filter === "all" && "All"}
+                {filter === "overdue" && "Overdue"}
+                {filter === "todo" && "Todo"}
+                {filter === "complete-this-week" && "Complete this week"}
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="bg-white z-50">
-              <DropdownMenuItem onClick={() => setTimeFilter("today")}>
-                Today
+              <DropdownMenuItem onClick={() => setFilter("all")}>
+                All
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTimeFilter("this-week")}>
-                This Week
+              <DropdownMenuItem onClick={() => setFilter("overdue")}>
+                Overdue
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTimeFilter("past-week")}>
-                Past Week
+              <DropdownMenuItem onClick={() => setFilter("todo")}>
+                Todo
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilter("complete-this-week")}>
+                Complete this week
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -71,13 +83,23 @@ export default function WorkerTasks() {
 
       <main className="container mx-auto px-4 py-6">
         <div className="space-y-6">
-          {Object.entries(groupedTasks).map(([location, locationTasks]) => (
+          {Object.entries(groupedTasks).map(([location, locationTasks]) => {
+            const locationId = getLocationId(location);
+            return (
             <div key={location} className="space-y-3">
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin className="w-5 h-5 text-[#3B7A57]" />
-                <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
-                <span className="text-sm text-[#37474F]/60">({locationTasks.length})</span>
-              </div>
+              {locationId ? (
+                <Link to={`/workers/locations/${locationId}`} className="flex items-center gap-2 mb-3 hover:opacity-70 transition-opacity">
+                  <MapPin className="w-5 h-5 text-[#3B7A57]" />
+                  <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
+                  <span className="text-sm text-[#37474F]/60">({locationTasks.length})</span>
+                </Link>
+              ) : (
+                <div className="flex items-center gap-2 mb-3">
+                  <MapPin className="w-5 h-5 text-[#3B7A57]" />
+                  <h2 className="text-xl font-semibold text-[#37474F]">{location}</h2>
+                  <span className="text-sm text-[#37474F]/60">({locationTasks.length})</span>
+                </div>
+              )}
               
               <div className="space-y-4">
                 {locationTasks.map((task) => (
@@ -116,7 +138,8 @@ export default function WorkerTasks() {
                 ))}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredTasks.length === 0 && (
