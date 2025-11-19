@@ -89,7 +89,7 @@ export function WorkerBottomNav() {
             onClick={() => setIsOpen(false)}
             className="w-full mt-4 bg-[#1C2A21] text-white border-white/20 hover:bg-[#25352A] text-lg"
           >
-            Close <X className="w-5 h-5 ml-2" />
+            Close <X className="w-6 h-6 ml-2" />
           </Button>
         </div>
       </div>

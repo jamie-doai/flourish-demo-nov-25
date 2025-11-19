@@ -35,53 +35,53 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-secondary/30 to-background">
+    <div className="min-h-screen bg-white">
       <DevBar />
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="container mx-auto px-4 py-20 md:py-32">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                <Sprout className="w-4 h-4" />
+      <section className="relative overflow-hidden bg-lime-green border-b-2 border-forest-green">
+        <div className="container mx-auto px-4 py-8 md:py-6">
+          <div className="grid lg:grid-cols-2 gap-6 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-forest-green text-white text-body-small font-heading font-bold">
+                <Sprout className="w-6 h-6" />
                 Purpose-built for production nurseries
               </div>
 
-              <h1 className="text-5xl md:text-6xl font-bold leading-tight">
+              <h1 className="font-display text-display text-forest-green leading-[72px]">
                 Grow with{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <span className="text-forest-green">
                   clarity & control
                 </span>
               </h1>
 
-              <p className="text-xl text-muted-foreground max-w-xl">
+              <p className="text-body-large text-forest-green max-w-xl">
                 Flourish replaces spreadsheets with a complete platform for managing your plant
                 lifecycle — from seed to sale. Built for the teams who grow.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="hero" size="lg" asChild>
+                <Button variant="default" size="lg" asChild>
                   <Link to="/dashboard">Get Started</Link>
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button variant="primary-outline" size="lg">
                   Watch Demo
                 </Button>
               </div>
 
               <div className="flex items-center gap-8 pt-4">
                 <div>
-                  <div className="text-3xl font-bold">100%</div>
-                  <div className="text-sm text-muted-foreground">Traceability</div>
+                  <div className="text-heading-1 font-heading font-bold text-forest-green">100%</div>
+                  <div className="text-body-small text-forest-green/70">Traceability</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold">50+</div>
-                  <div className="text-sm text-muted-foreground">Nurseries</div>
+                  <div className="text-heading-1 font-heading font-bold text-forest-green">50+</div>
+                  <div className="text-body-small text-forest-green/70">Nurseries</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold">24/7</div>
-                  <div className="text-sm text-muted-foreground">Access</div>
+                  <div className="text-heading-1 font-heading font-bold text-forest-green">24/7</div>
+                  <div className="text-body-small text-forest-green/70">Access</div>
                 </div>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2 font-bold text-lg">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Sprout className="w-5 h-5 text-primary-foreground" />
+                <Sprout className="w-6 h-6 text-primary-foreground" />
               </div>
               <span>Flourish</span>
             </div>

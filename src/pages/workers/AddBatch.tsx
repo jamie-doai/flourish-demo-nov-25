@@ -236,7 +236,7 @@ export default function WorkerAddBatch() {
                   </div>
 
                   <Button variant="outline" className="w-full h-12">
-                    <Camera className="w-5 h-5 mr-2" />
+                    <Camera className="w-6 h-6 mr-2" />
                     Add Photo
                   </Button>
                 </>

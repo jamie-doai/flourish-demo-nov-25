@@ -156,7 +156,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
                     variant="ghost"
                     className="h-8 w-8 p-0"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-6 h-6" />
                   </Button>
                 )}
               </div>
@@ -224,7 +224,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
           ))}
 
           <Button onClick={addBatch} variant="outline" className="w-full">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-6 h-6 mr-2" />
             Add Another Batch
           </Button>
         </div>

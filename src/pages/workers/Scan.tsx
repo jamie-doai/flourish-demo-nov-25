@@ -28,13 +28,13 @@ export default function WorkerScan() {
             <div className="flex items-center gap-3">
               <Link to="/workers">
                 <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-                  <ArrowLeft className="w-5 h-5" />
+                  <ArrowLeft className="w-6 h-6" />
                 </Button>
               </Link>
               <h1 className="text-xl font-semibold">Scan Batch</h1>
             </div>
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <Maximize2 className="w-5 h-5" />
+              <Maximize2 className="w-6 h-6" />
             </Button>
           </div>
         </div>

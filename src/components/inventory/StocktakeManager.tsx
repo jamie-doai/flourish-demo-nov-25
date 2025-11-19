@@ -49,7 +49,7 @@ export function StocktakeManager() {
           <p className="text-muted-foreground">Create and manage inventory counts</p>
         </div>
         <Button>
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-6 h-6 mr-2" />
           New Stocktake
         </Button>
       </div>
@@ -111,7 +111,7 @@ export function StocktakeManager() {
                 {session.status === "completed" && (
                   <>
                     <Button variant="outline" size="sm">
-                      <Download className="w-4 h-4 mr-2" />
+                      <Download className="w-6 h-6 mr-2" />
                       Export Report
                     </Button>
                     <Button size="sm">Post Adjustments</Button>

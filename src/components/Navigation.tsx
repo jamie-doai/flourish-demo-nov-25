@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from "@/components/ui/sheet";
-import { Sprout, LayoutDashboard, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X, Plus, UserCircle } from "lucide-react";
+import { Sprout, Package, ClipboardList, ShoppingCart, Calendar, Settings, Menu, Scan, X, Plus, UserCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ExpandingSearch } from "@/components/search/ExpandingSearch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -15,7 +15,6 @@ export function Navigation() {
   const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   const navItems = [
-    { path: "/managers", label: "Dashboard", icon: LayoutDashboard },
     { path: "/managers/inventory", label: "Inventory", icon: Package },
     { path: "/managers/operations", label: "Operations", icon: ClipboardList },
     { path: "/managers/sales", label: "Sales", icon: ShoppingCart },
@@ -30,13 +29,11 @@ export function Navigation() {
           <div className="flex h-16 items-center justify-between gap-4">
             <Link 
               to="/managers" 
-              className={`flex items-center gap-2 font-bold text-xl transition-all ${
+              className={`flex items-center gap-2 font-display text-heading-4 text-forest-green transition-all ${
                 searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
               }`}
             >
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <Sprout className="w-5 h-5 text-primary-foreground" />
-              </div>
+              <Sprout className="w-6 h-6 text-forest-green" />
               <span>Flourish</span>
             </Link>
 
@@ -48,12 +45,13 @@ export function Navigation() {
               {navItems.map((item) => (
                 <Button
                   key={item.path}
-                  variant={isActive(item.path) ? "secondary" : "ghost"}
+                  variant="primary-ghost"
                   asChild
                   size="sm"
+                  className={isActive(item.path) ? "" : "hover:bg-lime-green/20"}
                 >
                   <Link to={item.path}>
-                    <item.icon className="w-4 h-4" />
+                    <item.icon className="w-6 h-6" />
                     {item.label}
                   </Link>
                 </Button>
@@ -67,7 +65,7 @@ export function Navigation() {
               />
               
               <Button 
-                variant="hero" 
+                variant="default" 
                 size="sm" 
                 asChild 
                 className={`hidden lg:flex transition-all ${
@@ -75,7 +73,7 @@ export function Navigation() {
                 }`}
               >
                 <Link to="/managers/batches/add">
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-6 h-6" />
                   Add Batch
                 </Link>
               </Button>
@@ -99,13 +97,13 @@ export function Navigation() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/managers/profile" className="cursor-pointer">
-                      <UserCircle className="w-4 h-4 mr-2" />
+                      <UserCircle className="w-6 h-6 mr-2" />
                       Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/managers/settings" className="cursor-pointer">
-                      <Settings className="w-4 h-4 mr-2" />
+                      <Settings className="w-6 h-6 mr-2" />
                       Settings
                     </Link>
                   </DropdownMenuItem>
@@ -124,11 +122,11 @@ export function Navigation() {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex flex-col items-center justify-center gap-1 ${
-                  isActive(item.path) ? "text-primary" : "text-muted-foreground"
+                className={`flex flex-col items-center justify-center gap-1 transition-colors ${
+                  isActive(item.path) ? "text-forest-green" : "text-foreground/60 hover:text-forest-green hover:bg-lime-green/20"
                 }`}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-6 h-6" />
                 <span className="text-xs">{item.label}</span>
               </Link>
             ))}
@@ -136,9 +134,9 @@ export function Navigation() {
             {/* Scan button - prominent */}
             <Link
               to="/managers/scan"
-              className="flex flex-col items-center justify-center gap-1 text-primary"
+              className="flex flex-col items-center justify-center gap-1 text-forest-green"
             >
-              <Scan className="w-5 h-5" />
+              <Scan className="w-6 h-6" />
               <span className="text-xs">Scan</span>
             </Link>
             
@@ -146,7 +144,7 @@ export function Navigation() {
             <Sheet>
               <SheetTrigger asChild>
                 <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
-                  <Menu className="w-5 h-5" />
+                  <Menu className="w-6 h-6" />
                   <span className="text-xs">Menu</span>
                 </button>
               </SheetTrigger>
@@ -156,11 +154,11 @@ export function Navigation() {
                     <Link
                       key={item.path}
                       to={item.path}
-                      className={`flex items-center gap-3 px-4 py-3 rounded-lg ${
-                        isActive(item.path) ? "bg-secondary text-secondary-foreground" : "text-foreground"
+                      className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                        isActive(item.path) ? "bg-lime-green/20 text-forest-green" : "text-foreground hover:bg-lime-green/20"
                       }`}
                     >
-                      <item.icon className="w-5 h-5" />
+                      <item.icon className="w-6 h-6" />
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   ))}
@@ -169,7 +167,7 @@ export function Navigation() {
                 <div className="pb-4">
                   <SheetClose asChild>
                     <Button variant="outline" className="w-full">
-                      <X className="w-4 h-4 mr-2" />
+                      <X className="w-6 h-6 mr-2" />
                       Close Menu
                     </Button>
                   </SheetClose>

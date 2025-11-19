@@ -8,75 +8,93 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Flourish Design System - Manager Light Mode (Office) */
-    --background: 164 25% 98%; /* #F8FAF9 */
-    --foreground: 0 0% 20%; /* #333333 */
+    /* Flourish Brand Design System - White Background Theme */
+    --background: 0 0% 100%; /* #FFFFFF - White background */
+    --foreground: 130 13% 19%; /* #29372b - Forest Green text */
 
-    --card: 0 0% 100%; /* #FFFFFF */
-    --card-foreground: 0 0% 20%;
+    --card: 0 0% 100%; /* #FFFFFF - White cards */
+    --card-foreground: 130 13% 19%; /* #29372b - Forest Green text */
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover-foreground: 130 13% 19%;
 
-    /* Primary: #2D5016 olive green */
-    --primary: 94 55% 20%;
-    --primary-foreground: 0 0% 100%;
+    /* Brand Colors */
+    /* Primary: Forest Green #29372b - Primary buttons and text */
+    --primary: 130 13% 19%;
+    --primary-foreground: 0 0% 100%; /* White text on dark green */
     
-    /* Primary Alt: #1B4D3E */
-    --primary-alt: 165 45% 20%;
+    /* Lime Green #d7f99d - Primary brand color */
+    --lime-green: 78 92% 80%;
+    
+    /* Sage Green #b6d487 - Secondary accents */
+    --sage-green: 85 52% 68%;
+    
+    /* Neon Yellow #fafd8f - Primary CTAs */
+    --neon-yellow: 60 95% 78%;
+    
+    /* Forest Green #29372b - Primary buttons and text */
+    --forest-green: 130 13% 19%;
+    
+    /* Sage Gray #d4d9d5 - Borders/dividers */
+    --sage-gray: 140 6% 84%;
 
-    /* Secondary: #8B4513 saddle brown */
-    --secondary: 25 67% 31%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Neon Yellow for CTAs */
+    --secondary: 60 95% 78%; /* Neon Yellow */
+    --secondary-foreground: 130 13% 19%; /* Forest Green text on yellow */
 
-    --muted: 164 14% 94%; /* #E9F2EB subtle highlight */
-    --muted-foreground: 0 0% 33%; /* #555555 */
+    /* Tertiary: Sage Green */
+    --tertiary: 85 52% 68%; /* Sage Green */
+    --tertiary-foreground: 130 13% 19%; /* Forest Green text */
 
-    /* Success: #0F7A3E */
+    --muted: 140 6% 84%; /* Sage Gray */
+    --muted-foreground: 130 13% 19%;
+
+    /* Success: Keep existing */
     --success: 149 79% 27%;
     --success-foreground: 0 0% 100%;
 
-    /* Accent (used sparingly) */
-    --accent: 164 14% 94%;
-    --accent-foreground: 94 55% 20%;
+    /* Accent: Lime Green */
+    --accent: 78 92% 80%; /* Lime Green */
+    --accent-foreground: 130 13% 19%;
 
     /* Error: #C1121F */
     --destructive: 355 82% 42%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Warning: #FCD116 */
+    /* Warning: Keep existing */
     --warning: 48 97% 54%;
     --warning-foreground: 0 0% 0%;
     
-    /* Caution: #D55E00 */
+    /* Caution: Keep existing */
     --caution: 25 100% 42%;
     --caution-foreground: 0 0% 100%;
     
-    /* Info: #4A4A4A */
+    /* Info: Keep existing */
     --info: 0 0% 29%;
     --info-foreground: 0 0% 100%;
 
-    --border: 0 0% 88%; /* #E0E0E0 */
-    --input: 0 0% 26%; /* #424242 for borders */
-    --ring: 94 55% 20%;
+    /* Borders */
+    --border: 140 6% 84%; /* Sage Gray for subtle borders */
+    --input: 130 13% 19%; /* Forest Green for input borders */
+    --ring: 130 13% 19%; /* Forest Green for focus rings */
 
-    --radius: 0.5rem; /* 8px for manager, 6px buttons */
+    --radius: 0.5rem; /* 8px border radius */
     
-    --gradient-primary: linear-gradient(135deg, hsl(94 55% 20%), hsl(149 79% 27%));
-    
-    --shadow-soft: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.25);
+    /* Shadow: 0px 4px 24px 0px rgba(0,0,0,0.1) */
+    --shadow-soft: 0px 4px 24px 0px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0px 4px 24px 0px rgba(0, 0, 0, 0.15);
     
     --transition-smooth: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 20%;
-    --sidebar-primary: 94 55% 20%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 164 14% 94%;
-    --sidebar-accent-foreground: 94 55% 20%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 94 55% 20%;
+    /* Sidebar: Use brand colors */
+    --sidebar-background: 0 0% 100%; /* White */
+    --sidebar-foreground: 130 13% 19%; /* Forest Green */
+    --sidebar-primary: 130 13% 19%; /* Forest Green */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 78 92% 80%; /* Lime Green */
+    --sidebar-accent-foreground: 130 13% 19%; /* Forest Green */
+    --sidebar-border: 140 6% 84%; /* Sage Gray */
+    --sidebar-ring: 130 13% 19%; /* Forest Green */
   }
 
   .dark {
@@ -217,7 +235,21 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground;
+    font-family: 'DM Sans', sans-serif;
+  }
+  
+  /* Typography Scale - Flourish Brand */
+  h1, h2, h3, h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+  }
+  
+  /* Display - Carter One for logo only */
+  .font-display {
+    font-family: 'Carter One', sans-serif;
+    font-size: 64px;
+    line-height: 72px;
   }
   
   /* High contrast borders for mobile/worker views */
@@ -238,4 +270,70 @@ All colors MUST be HSL.
   .worker-card:hover {
     @apply shadow-[var(--shadow-soft)] border-foreground/30;
   }
+}
+
+@layer utilities {
+  /* Screen reader only - for accessibility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .sr-only:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+  }
+
+  /* ============================================
+     UNIVERSAL INTERACTION RULES
+     ============================================
+     
+     These rules define standard interaction states for all components.
+     All interactive elements should follow these patterns.
+     
+     HOVER STATES:
+     - Buttons (Solid): Darken background by 10% or use specific hover color
+     - Buttons (Outline/Ghost): Fill with background color, invert text
+     - Cards: Elevate shadow (hover:shadow-card), change border to lime-green
+     - Links: Underline on hover for text links, background color change for button-style links
+     - Navigation Items: Light background tint, smooth transitions
+     - Transition: All interactions use transition-[var(--transition-smooth)] (0.15s cubic-bezier)
+     
+     FOCUS STATES:
+     - All Interactive Elements: 2px outline with 2px offset
+     - Implementation: focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+     - Color: Forest green ring (--ring: 130 13% 19%)
+     
+     ACTIVE STATES:
+     - Buttons: 80% opacity or slight scale down (scale-95)
+     - Feedback: Immediate visual feedback on click/touch
+     
+     DISABLED STATES:
+     - All Interactive Elements: 40% opacity
+     - Pointer Events: disabled:pointer-events-none
+     - Cursor: not-allowed (handled by browser default)
+     
+     TOUCH INTERACTIONS (Mobile):
+     - Minimum Touch Target: 44px x 44px
+     - Active State Feedback: Visual feedback on touch
+     - Swipe Gestures: Where appropriate for mobile interactions
+     
+     TRANSITION STANDARDS:
+     - Property: transition-[var(--transition-smooth)]
+     - Duration: 0.15s
+     - Easing: cubic-bezier(0.4, 0, 0.2, 1)
+     ============================================ */
 }

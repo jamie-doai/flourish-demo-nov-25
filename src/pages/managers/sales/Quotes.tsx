@@ -45,7 +45,7 @@ export default function ManagerSalesQuotes() {
               </div>
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales">
-            <Button variant="outline" size="sm">
+            <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Sales
             </Button>

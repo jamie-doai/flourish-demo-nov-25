@@ -184,12 +184,12 @@ export default function CreateQuote() {
   const { subtotal, tax, total } = calculateTotals();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <DevBar />
       <Navigation />
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-6 max-w-7xl bg-white">
         <SidebarProvider>
-          <div className="flex gap-6">
+          <div className="flex gap-4">
             <div className="hidden md:block">
               <SalesSidebar />
             </div>
@@ -197,22 +197,22 @@ export default function CreateQuote() {
               <div className="mb-4">
                 <SidebarTrigger className="md:hidden" />
               </div>
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-1.5 mb-6">
           <Link to="/managers/sales/quotes">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+            <Button variant="primary-outline" size="sm">
+              <ArrowLeft className="w-6 h-6 mr-2" />
               Back to Quotes
             </Button>
           </Link>
         </div>
 
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Create New Quote</h1>
-          <p className="text-muted-foreground">Generate a quote for a client</p>
+          <h1 className="text-heading-1 font-heading font-bold mb-2">Create New Quote</h1>
+          <p className="text-body text-muted-foreground">Generate a quote for a client</p>
         </div>
 
-        <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">Client Details</h2>
+        <Card className="mb-6">
+          <h2 className="text-heading-4 font-heading font-bold mb-4">Client Details</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="client">Client *</Label>
@@ -242,19 +242,19 @@ export default function CreateQuote() {
           </div>
         </Card>
 
-        <Card className="p-6 mb-6">
+        <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Line Items</h2>
+            <h2 className="text-heading-4 font-heading font-bold">Line Items</h2>
             <div className="flex gap-2">
               <Button onClick={() => {
                 console.log("Opening inventory sheet");
                 setShowInventorySheet(true);
               }} size="sm">
-                <Package className="w-4 h-4 mr-2" />
+                <Package className="w-6 h-6 mr-2" />
                 Add from Inventory
               </Button>
-              <Button onClick={addLineItem} variant="outline" size="sm">
-                <Edit3 className="w-4 h-4 mr-2" />
+              <Button onClick={addLineItem} variant="tertiary" size="sm">
+                <Edit3 className="w-6 h-6 mr-2" />
                 Add Custom Item
               </Button>
             </div>
@@ -365,7 +365,7 @@ export default function CreateQuote() {
                           size="sm"
                           onClick={() => removeLineItem(item.id)}
                         >
-                          <Trash2 className="w-4 h-4 text-destructive" />
+                          <Trash2 className="w-6 h-6 text-destructive" />
                         </Button>
                       )}
                     </TableCell>
@@ -437,14 +437,14 @@ export default function CreateQuote() {
 
         <div className="flex gap-3 justify-end">
           <Link to="/managers/sales/quotes">
-            <Button variant="outline">Cancel</Button>
+            <Button variant="tertiary">Cancel</Button>
           </Link>
-          <Button variant="outline" onClick={handleSaveDraft}>
-            <Save className="w-4 h-4 mr-2" />
+          <Button variant="secondary" onClick={handleSaveDraft}>
+            <Save className="w-6 h-6 mr-2" />
             Save Draft
           </Button>
           <Button onClick={handleSendQuote}>
-            <Send className="w-4 h-4 mr-2" />
+            <Send className="w-6 h-6 mr-2" />
             Send to Client
           </Button>
         </div>

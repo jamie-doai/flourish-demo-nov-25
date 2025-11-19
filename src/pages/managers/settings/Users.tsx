@@ -18,7 +18,7 @@ export default function ManagerUsersSettings() {
             </div>
           </div>
           <Button variant="hero">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-6 h-6 mr-2" />
             Add User
           </Button>
         </div>

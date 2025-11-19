@@ -90,7 +90,7 @@ export default function ManagerTaskDetail() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-6">
           <Link to="/managers/operations">
-            <Button variant="outline">
+            <Button variant="tertiary">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
             </Button>
@@ -109,7 +109,7 @@ export default function ManagerTaskDetail() {
           <div className="flex gap-2">
             <Dialog open={showReassignDialog} onOpenChange={setShowReassignDialog}>
               <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="tertiary">
                   <User className="w-4 h-4 mr-2" />
                   Reassign
                 </Button>
@@ -242,7 +242,7 @@ export default function ManagerTaskDetail() {
                 <h2 className="text-xl font-semibold">Notes & Attachments</h2>
                 <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
                   <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
+                    <Button variant="tertiary" size="sm">
                       <FileText className="w-4 h-4 mr-2" />
                       Add Note
                     </Button>
@@ -258,7 +258,7 @@ export default function ManagerTaskDetail() {
                         onChange={(e) => setNote(e.target.value)}
                         className="min-h-[120px]"
                       />
-                      <Button variant="outline" className="w-full">
+                      <Button variant="tertiary" className="w-full">
                         <Camera className="w-4 h-4 mr-2" />
                         Add Photo
                       </Button>
@@ -289,15 +289,15 @@ export default function ManagerTaskDetail() {
             <Card className="p-6">
               <h3 className="font-semibold mb-4">Quick Actions</h3>
               <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="tertiary" className="w-full justify-start">
                   <Clock className="w-4 h-4 mr-2" />
                   Update Status
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="tertiary" className="w-full justify-start">
                   <Calendar className="w-4 h-4 mr-2" />
                   Change Due Date
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="tertiary" className="w-full justify-start">
                   <AlertCircle className="w-4 h-4 mr-2" />
                   Change Priority
                 </Button>

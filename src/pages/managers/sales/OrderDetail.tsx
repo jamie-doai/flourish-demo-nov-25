@@ -28,7 +28,7 @@ export default function OrderDetail() {
         <Card className="p-6">
           <p className="text-muted-foreground">Order not found</p>
           <Link to="/managers/sales/orders">
-            <Button variant="outline" className="mt-4">Back to Orders</Button>
+            <Button variant="tertiary" className="mt-4">Back to Orders</Button>
           </Link>
         </Card>
       </div>
@@ -69,7 +69,7 @@ export default function OrderDetail() {
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/orders">
-            <Button variant="outline" size="sm">
+            <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Orders
             </Button>

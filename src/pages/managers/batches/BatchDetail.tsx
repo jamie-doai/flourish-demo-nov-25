@@ -114,7 +114,7 @@ export default function ManagerBatchDetail() {
           
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-3xl font-bold">{mockBatch.id}</h1>
-            <Button variant="outline" onClick={() => setShowDirectEdit(true)}>
+            <Button variant="tertiary" onClick={() => setShowDirectEdit(true)}>
               <Edit3 className="w-4 h-4 mr-2" />
               Edit Batch
             </Button>
@@ -123,11 +123,11 @@ export default function ManagerBatchDetail() {
         </div>
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tasks">Tasks</TabsTrigger>
-            <TabsTrigger value="activity">Activity Log</TabsTrigger>
-            <TabsTrigger value="costs">Cost of Production</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 border-2 border-forest-green">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
+            <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity Log</TabsTrigger>
+            <TabsTrigger value="costs" className="text-xs sm:text-sm">Cost of Production</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -137,7 +137,7 @@ export default function ManagerBatchDetail() {
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Watering")}
                 >
@@ -146,7 +146,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Treatment")}
                 >
@@ -155,7 +155,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Photo")}
                 >
@@ -164,7 +164,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => toast({ title: "Label sent to printer 🖨️" })}
                 >
@@ -173,7 +173,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowMoveDialog(true)}
                 >
@@ -182,7 +182,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowSplitDialog(true)}
                 >
@@ -191,7 +191,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowMergeDialog(true)}
                 >
@@ -200,7 +200,7 @@ export default function ManagerBatchDetail() {
                 </Button>
 
                 <Button 
-                  variant="outline"
+                  variant="tertiary"
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowDuplicateDialog(true)}
                 >
@@ -220,7 +220,7 @@ export default function ManagerBatchDetail() {
                   {locations.filter(loc => loc !== mockBatch.location).map((location) => (
                     <Button
                       key={location}
-                      variant="outline"
+                      variant="tertiary"
                       className="w-full justify-start"
                       onClick={() => handleMove(location)}
                     >
@@ -530,7 +530,7 @@ export default function ManagerBatchDetail() {
               />
             </div>
             <div className="flex gap-2 justify-end pt-4">
-              <Button variant="outline" onClick={() => setShowAddCost(false)}>
+              <Button variant="tertiary" onClick={() => setShowAddCost(false)}>
                 Cancel
               </Button>
               <Button onClick={handleSaveCustomCost}>

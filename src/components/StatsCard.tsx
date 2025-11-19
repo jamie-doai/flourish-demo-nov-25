@@ -13,23 +13,23 @@ interface StatsCardProps {
 
 export function StatsCard({ title, value, icon: Icon, trend }: StatsCardProps) {
   return (
-    <Card className="p-6 hover:shadow-[var(--shadow-soft)] transition-[var(--transition-smooth)]">
+    <Card className="hover:shadow-card transition-[var(--transition-smooth)]">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-muted-foreground font-medium">{title}</p>
-          <p className="text-3xl font-bold mt-2">{value}</p>
+          <p className="text-body-small text-muted-foreground font-medium">{title}</p>
+          <p className="text-heading-1 font-heading font-bold mt-2">{value}</p>
           {trend && (
             <p
-              className={`text-sm mt-2 font-medium ${
-                trend.positive ? "text-primary" : "text-destructive"
+              className={`text-body mt-2 font-heading font-bold ${
+                trend.positive ? "text-forest-green" : "text-destructive"
               }`}
             >
               {trend.positive ? "↑" : "↓"} {trend.value}
             </p>
           )}
         </div>
-        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-          <Icon className="w-6 h-6 text-primary" />
+        <div className="w-12 h-12 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
+          <Icon className="w-6 h-6 text-forest-green" />
         </div>
       </div>
     </Card>

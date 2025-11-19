@@ -161,73 +161,72 @@ export default function ManagerInventory() {
     
   return (
     <ManagerLayout>
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-6 bg-white">
           <div className="mb-6">
             <Button 
-              variant="ghost" 
+              variant="primary-ghost" 
               onClick={() => setSelectedSpecies(null)}
               className="mb-4"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-6 h-6 mr-2" />
               Back to Species
             </Button>
             
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Sprout className="w-8 h-8 text-primary" />
+              <div className="w-16 h-16 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
+                <Sprout className="w-8 h-8 text-forest-green" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">{speciesData?.species}</h1>
-                <p className="text-muted-foreground">{speciesData?.scientificName}</p>
+                <h1 className="text-heading-1 font-heading font-bold">{speciesData?.species}</h1>
+                <p className="text-body text-muted-foreground">{speciesData?.scientificName}</p>
               </div>
             </div>
           </div>
 
           {/* Species Overview Stats */}
           <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Total Plants</div>
-              <div className="text-2xl font-bold">{speciesData?.totalPlants.toLocaleString()}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Total Plants</div>
+              <div className="text-heading-2 font-heading font-bold">{speciesData?.totalPlants.toLocaleString()}</div>
             </Card>
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Active Batches</div>
-              <div className="text-2xl font-bold">{speciesData?.batchCount}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Active Batches</div>
+              <div className="text-heading-2 font-heading font-bold">{speciesData?.batchCount}</div>
             </Card>
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Overall Health</div>
-              <div className="text-2xl font-bold">{speciesData?.health}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Overall Health</div>
+              <div className="text-heading-2 font-heading font-bold">{speciesData?.health}</div>
             </Card>
           </div>
 
           {/* Batches for this Species */}
           <div>
-            <h2 className="text-xl font-semibold mb-4">Batches of {speciesData?.species}</h2>
-            <div className="space-y-4">
+            <h2 className="text-heading-3 font-heading font-bold mb-4">Batches of {speciesData?.species}</h2>
+            <div className="space-y-2">
               {speciesData?.batches.map((batch) => (
                 <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
                   <Card 
-                    className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-orange-500' : ''}`}
+                    className={`hover:shadow-card transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Leaf className="w-5 h-5 text-primary" />
-                          <h3 className="text-lg font-semibold">{batch.id}</h3>
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
                           {batch.urgent && (
-                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                            <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
                               Urgent
                             </span>
                           )}
-                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                            "bg-yellow-100 text-yellow-700"
+                          <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${
+                            batch.health === "Excellent" ? "bg-success/20 text-success" :
+                            batch.health === "Good" ? "bg-info/20 text-info" :
+                            "bg-warning/20 text-warning"
                           }`}>
                             {batch.health}
                           </span>
                         </div>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
                           <div>
                             <span className="text-muted-foreground">Stage: </span>
                             <span className="font-medium capitalize">{batch.stage}</span>
@@ -265,79 +264,78 @@ export default function ManagerInventory() {
 
     return (
       <ManagerLayout>
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto px-4 py-6 bg-white">
           <div className="mb-6">
             <Button 
-              variant="ghost" 
+              variant="primary-ghost" 
               onClick={() => setSelectedStage(null)}
               className="mb-4"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-6 h-6 mr-2" />
               Back to Stages
             </Button>
             
             <div className="flex items-center gap-4 mb-4">
-              <div className={`w-16 h-16 rounded-xl ${stage?.color} flex items-center justify-center`}>
-                <Icon className="w-8 h-8" />
+              <div className={`w-16 h-16 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center`}>
+                <Icon className="w-8 h-8 text-forest-green" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold">{stage?.name} Stage</h1>
-                <p className="text-muted-foreground">Detailed view and management</p>
+                <h1 className="text-heading-1 font-heading font-bold">{stage?.name} Stage</h1>
+                <p className="text-body text-muted-foreground">Detailed view and management</p>
               </div>
             </div>
           </div>
 
           {/* Stage Overview Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Total Plants</div>
-              <div className="text-2xl font-bold">{stats.plants.toLocaleString()}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Total Plants</div>
+              <div className="text-heading-2 font-heading font-bold">{stats.plants.toLocaleString()}</div>
             </Card>
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Active Batches</div>
-              <div className="text-2xl font-bold">{stats.batches}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Active Batches</div>
+              <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
             </Card>
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Species Types</div>
-              <div className="text-2xl font-bold">{stats.species}</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Species Types</div>
+              <div className="text-heading-2 font-heading font-bold">{stats.species}</div>
             </Card>
-            <Card className="p-4">
-              <div className="text-sm text-muted-foreground mb-1">Average Age</div>
-              <div className="text-2xl font-bold">{stats.avgAge} days</div>
+            <Card>
+              <div className="text-body-small text-muted-foreground mb-1">Average Age</div>
+              <div className="text-heading-2 font-heading font-bold">{stats.avgAge} days</div>
             </Card>
           </div>
 
           {/* Batches in Stage */}
           <div>
-            <h2 className="text-xl font-semibold mb-4">Batches in {stage?.name}</h2>
-        <div className="space-y-4">
+            <h2 className="text-heading-3 font-heading font-bold mb-4">Batches in {stage?.name}</h2>
+            <div className="space-y-2">
               {stats.batchList.map((batch) => (
                 <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
                   <Card 
-                    className={`p-4 hover:shadow-md transition-shadow cursor-pointer ${batch.urgent ? `border-l-4 ${stage?.borderColor}` : ''}`}
+                    className={`hover:shadow-card transition-shadow cursor-pointer ${batch.urgent ? `border-l-4 border-l-caution` : ''}`}
                   >
                     <div className="flex items-start justify-between">
                        <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <Leaf className="w-5 h-5 text-primary" />
-                          <h3 className="text-lg font-semibold">{batch.id}</h3>
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
                           {batch.urgent && (
-                            <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
+                            <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
                               Urgent
                             </span>
                           )}
-                          <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                            batch.health === "Excellent" ? "bg-green-100 text-green-700" :
-                            batch.health === "Good" ? "bg-blue-100 text-blue-700" :
-                            "bg-yellow-100 text-yellow-700"
+                          <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${
+                            batch.health === "Excellent" ? "bg-success/20 text-success" :
+                            batch.health === "Good" ? "bg-info/20 text-info" :
+                            "bg-warning/20 text-warning"
                           }`}>
                             {batch.health}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
-                        <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
+                        <p className="text-body text-muted-foreground mb-1">{batch.species}</p>
+                        <p className="text-body-small text-muted-foreground mb-3">{batch.scientificName}</p>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
                           <div>
                             <span className="text-muted-foreground">Location: </span>
                             <span className="font-medium">📍 {batch.location}</span>
@@ -358,7 +356,7 @@ export default function ManagerInventory() {
                           </div>
                         </div>
                       </div>
-                      <Button variant="ghost" size="sm">View Details</Button>
+                      <Button variant="primary-ghost" size="sm">View Details</Button>
                     </div>
                   </Card>
                 </Link>
@@ -372,24 +370,24 @@ export default function ManagerInventory() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+      <main className="container mx-auto px-4 py-6 bg-white">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Inventory Management</h1>
-            <p className="text-muted-foreground">Track batches across stages and locations</p>
+            <h1 className="text-heading-1 font-heading font-bold mb-2">Inventory Management</h1>
+            <p className="text-body text-muted-foreground">Track batches across stages and locations</p>
           </div>
           <div className="flex flex-wrap gap-2 w-full sm:w-auto">
             <Button
-              variant={activeView === "stocktake" ? "default" : "outline"}
+              variant={activeView === "stocktake" ? "default" : "primary-outline"}
               onClick={() => setActiveView("stocktake")}
               className="flex-1 sm:flex-none"
             >
-              <ClipboardList className="w-4 h-4 mr-2" />
+              <ClipboardList className="w-6 h-6 mr-2" />
               Stocktake
             </Button>
-            <Button variant="hero" asChild className="flex-1 sm:flex-none">
+            <Button variant="default" asChild className="flex-1 sm:flex-none">
               <Link to="/managers/batches/add">
-                <Plus className="w-4 h-4" />
+                <Plus className="w-6 h-6" />
                 New Batch
               </Link>
             </Button>
@@ -399,18 +397,18 @@ export default function ManagerInventory() {
         {activeView === "stocktake" ? (
           <>
             <Button
-              variant="ghost"
+              variant="primary-ghost"
               onClick={() => setActiveView("inventory")}
               className="mb-4"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-6 h-6 mr-2" />
               Back to Inventory
             </Button>
             <StocktakeManager />
           </>
         ) : (
           <Tabs defaultValue="batches" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-2 sm:grid-cols-4 gap-2">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 border-2 border-forest-green">
             <TabsTrigger value="stages" className="text-xs sm:text-sm">
               <Layers className="w-4 h-4 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Stages</span>
@@ -441,24 +439,24 @@ export default function ManagerInventory() {
                 return (
                   <Card 
                     key={stage.id} 
-                    className="p-6 hover:shadow-lg transition-all cursor-pointer group"
+                    className="hover:shadow-card transition-all cursor-pointer group"
                     onClick={() => setSelectedStage(stage.id)}
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className={`w-12 h-12 rounded-xl ${stage.color} flex items-center justify-center`}>
-                        <Icon className="w-6 h-6" />
+                      <div className="w-12 h-12 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
+                        <Icon className="w-6 h-6 text-forest-green" />
                       </div>
                       <div className="text-right">
-                        <div className="text-2xl font-bold">{stats.batches}</div>
-                        <div className="text-xs text-muted-foreground">Batches</div>
+                        <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
+                        <div className="text-body-small text-muted-foreground">Batches</div>
                       </div>
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">{stage.name}</h3>
-                    <div className="space-y-1 text-sm text-muted-foreground">
+                    <h3 className="text-heading-3 font-heading font-bold mb-2">{stage.name}</h3>
+                    <div className="space-y-1 text-body-small text-muted-foreground">
                       <p>{stats.plants.toLocaleString()} plants</p>
                       <p>{stats.species} species</p>
                     </div>
-                    <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                    <div className="mt-4 text-body text-forest-green font-heading font-bold group-hover:translate-x-1 transition-transform inline-block">
                       View details →
                     </div>
                   </Card>
@@ -472,31 +470,31 @@ export default function ManagerInventory() {
               {getSpeciesData().map((species) => (
                 <Card 
                   key={species.species} 
-                  className="p-6 hover:shadow-lg transition-all cursor-pointer group"
+                  className="hover:shadow-card transition-all cursor-pointer group"
                   onClick={() => setSelectedSpecies(species.species)}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                      <Sprout className="w-6 h-6 text-primary" />
+                    <div className="w-12 h-12 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
+                      <Sprout className="w-6 h-6 text-forest-green" />
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold">{species.batchCount}</div>
-                      <div className="text-xs text-muted-foreground">Batches</div>
+                      <div className="text-heading-2 font-heading font-bold">{species.batchCount}</div>
+                      <div className="text-body-small text-muted-foreground">Batches</div>
                     </div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-1">{species.species}</h3>
-                  <p className="text-sm text-muted-foreground mb-3 italic">{species.scientificName}</p>
-                  <div className="space-y-1 text-sm text-muted-foreground">
+                  <h3 className="text-heading-3 font-heading font-bold mb-1">{species.species}</h3>
+                  <p className="text-body-small text-muted-foreground mb-3 italic">{species.scientificName}</p>
+                  <div className="space-y-1 text-body-small text-muted-foreground">
                     <p>{species.totalPlants.toLocaleString()} plants</p>
-                    <p className={`inline-block px-2 py-1 text-xs rounded-full font-medium ${
-                      species.health === "Excellent" ? "bg-green-100 text-green-700" :
-                      species.health === "Good" ? "bg-blue-100 text-blue-700" :
-                      "bg-yellow-100 text-yellow-700"
+                    <p className={`inline-block px-2 py-1 text-body-small rounded-full font-heading font-bold ${
+                      species.health === "Excellent" ? "bg-success/20 text-success" :
+                      species.health === "Good" ? "bg-info/20 text-info" :
+                      "bg-warning/20 text-warning"
                     }`}>
                       {species.health}
                     </p>
                   </div>
-                  <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform inline-block">
+                  <div className="mt-4 text-body text-forest-green font-heading font-bold group-hover:translate-x-1 transition-transform inline-block">
                     View details →
                   </div>
                 </Card>
@@ -504,18 +502,18 @@ export default function ManagerInventory() {
             </div>
           </TabsContent>
 
-          <TabsContent value="batches" className="space-y-4">
+          <TabsContent value="batches" className="space-y-2">
             <div className="flex gap-4 mb-6">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <Input placeholder="Search batches by species or ID..." className="pl-10" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+                <Input placeholder="Search batches by species or ID..." className="pl-10 border-2 border-forest-green" />
               </div>
             </div>
 
             <div className="space-y-3">
               {batches.map((batch) => (
                 <div key={batch.id} className="relative">
-                  <Card className="p-4 hover:shadow-md transition-shadow">
+                  <Card className="hover:shadow-card transition-shadow">
                     <div className="flex items-start gap-4">
                       <div className="pt-1">
                         <Checkbox
@@ -526,9 +524,8 @@ export default function ManagerInventory() {
                       <Link to={`/managers/batch/${batch.id}`} className="flex-1">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
-                              <Leaf className="w-5 h-5 text-primary" />
-                              <h3 className="text-lg font-semibold">{batch.id}</h3>
+                            <div className="flex items-center gap-1.5 mb-2">
+                              <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
                               {batch.urgent && (
                                 <Badge variant="destructive">Urgent</Badge>
                               )}
@@ -541,10 +538,10 @@ export default function ManagerInventory() {
                               </Badge>
                             </div>
                             
-                            <p className="text-sm text-muted-foreground mb-1">{batch.species}</p>
-                            <p className="text-xs text-muted-foreground mb-3">{batch.scientificName}</p>
+                            <p className="text-body text-muted-foreground mb-1">{batch.species}</p>
+                            <p className="text-body-small text-muted-foreground mb-3">{batch.scientificName}</p>
                             
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
                               <div>
                                 <span className="text-muted-foreground">Stage: </span>
                                 <span className="font-medium capitalize">{batch.stage}</span>
@@ -573,7 +570,7 @@ export default function ManagerInventory() {
                           setDirectEditDialogOpen(true);
                         }}
                       >
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="w-6 h-6" />
                       </Button>
                     </div>
                   </Card>
@@ -603,13 +600,13 @@ export default function ManagerInventory() {
                             <CollapsibleTrigger asChild>
                               <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                 {isExpanded ? (
-                                  <ChevronDown className="h-4 w-4" />
+                                  <ChevronDown className="h-6 w-6" />
                                 ) : (
-                                  <ChevronRight className="h-4 w-4" />
+                                  <ChevronRight className="h-6 w-6" />
                                 )}
                               </Button>
                             </CollapsibleTrigger>
-                            <MapPin className="w-5 h-5 text-primary" />
+                            <MapPin className="w-6 h-6 text-primary" />
                             <div className="flex-1">
                               <div className="flex items-center gap-2">
                                 <h3 className="text-lg font-semibold">{building.name}</h3>
@@ -641,7 +638,7 @@ export default function ManagerInventory() {
                       </div>
 
                       <CollapsibleContent>
-                        <div className="p-4 space-y-2 bg-background">
+                        <div className="p-4 space-y-2 bg-white">
                           {bays.length === 0 ? (
                             <p className="text-sm text-muted-foreground italic px-4 py-2">No bays configured</p>
                           ) : (
@@ -665,7 +662,7 @@ export default function ManagerInventory() {
                                               )}
                                             </Button>
                                           </CollapsibleTrigger>
-                                          <Layers className="w-4 h-4 text-muted-foreground" />
+                                          <Layers className="w-6 h-6 text-muted-foreground" />
                                           <div className="flex-1">
                                             <div className="flex items-center gap-2">
                                               <span className="font-medium text-sm">{bay.name}</span>
@@ -689,7 +686,7 @@ export default function ManagerInventory() {
                                     </div>
 
                                     <CollapsibleContent>
-                                      <div className="p-3 space-y-1.5 bg-background">
+                                      <div className="p-3 space-y-1.5 bg-white">
                                         {tables.length === 0 ? (
                                           <p className="text-xs text-muted-foreground italic px-3 py-2">No tables configured</p>
                                         ) : (
@@ -715,7 +712,7 @@ export default function ManagerInventory() {
                                                       )}
                                                     </div>
                                                   </div>
-                                                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                                                  <ChevronRight className="w-6 h-6 text-muted-foreground" />
                                                 </div>
                                               </Link>
                                             );

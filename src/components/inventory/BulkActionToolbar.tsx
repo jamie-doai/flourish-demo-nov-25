@@ -46,7 +46,7 @@ export function BulkActionToolbar({
             </span>
           </div>
           <Button variant="ghost" size="sm" onClick={onClearSelection}>
-            <X className="w-4 h-4" />
+            <X className="w-6 h-6" />
           </Button>
         </div>
 
@@ -54,7 +54,7 @@ export function BulkActionToolbar({
 
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={onMoveLocation}>
-            <MapPin className="w-4 h-4 mr-2" />
+            <MapPin className="w-6 h-6 mr-2" />
             Move Location
           </Button>
 
@@ -70,19 +70,19 @@ export function BulkActionToolbar({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={onSplit} disabled={selectedCount !== 1}>
-                <GitBranch className="w-4 h-4 mr-2" />
+                <GitBranch className="w-6 h-6 mr-2" />
                 Split Batch
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onMerge} disabled={selectedCount < 2}>
-                <GitMerge className="w-4 h-4 mr-2" />
+                <GitMerge className="w-6 h-6 mr-2" />
                 Merge Batches
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onAdjustQuantity}>
-                <AlertCircle className="w-4 h-4 mr-2" />
+                <AlertCircle className="w-6 h-6 mr-2" />
                 Adjust Quantity
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onPrintLabels}>
-                <PrinterIcon className="w-4 h-4 mr-2" />
+                <PrinterIcon className="w-6 h-6 mr-2" />
                 Print Labels
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onApplyHold}>

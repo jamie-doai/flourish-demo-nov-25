@@ -23,7 +23,7 @@ export default function InvoiceDetail() {
         <Card className="p-6">
           <p className="text-muted-foreground">Invoice not found</p>
           <Link to="/managers/sales/invoices">
-            <Button variant="outline" className="mt-4">Back to Invoices</Button>
+            <Button variant="tertiary" className="mt-4">Back to Invoices</Button>
           </Link>
         </Card>
       </div>
@@ -64,7 +64,7 @@ export default function InvoiceDetail() {
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/invoices">
-            <Button variant="outline" size="sm">
+            <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Invoices
             </Button>
@@ -197,7 +197,7 @@ export default function InvoiceDetail() {
         </Card>
 
         <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={handleDownloadPDF}>
+          <Button variant="secondary" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4 mr-2" />
             Download PDF
           </Button>
@@ -210,14 +210,14 @@ export default function InvoiceDetail() {
           )}
 
           {invoice.balanceDue > 0 && (
-            <Button variant="outline" onClick={handleRecordPayment}>
+            <Button variant="secondary" onClick={handleRecordPayment}>
               <DollarSign className="w-4 h-4 mr-2" />
               Record Payment
             </Button>
           )}
 
           {!invoice.xeroSync && (
-            <Button variant="outline" onClick={handleSyncXero}>
+            <Button variant="tertiary" onClick={handleSyncXero}>
               <FileText className="w-4 h-4 mr-2" />
               Sync to Xero
             </Button>

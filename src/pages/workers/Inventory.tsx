@@ -49,7 +49,7 @@ export default function WorkerInventory() {
           
           <div className="flex gap-2 mb-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#37474F]/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#37474F]/40" />
               <Input
                 type="search"
                 placeholder="Search by species or batch ID..."
@@ -60,7 +60,7 @@ export default function WorkerInventory() {
             </div>
             <Link to="/workers/scan">
               <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90">
-                <Scan className="w-4 h-4" />
+                <Scan className="w-6 h-6" />
               </Button>
             </Link>
           </div>
@@ -102,7 +102,7 @@ export default function WorkerInventory() {
                 return (
                   <>
                     <div className={`w-10 h-10 rounded-full ${stage?.color} flex items-center justify-center`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-6 h-6" />
                     </div>
                     <div>
                       <h2 className="text-lg font-semibold text-[#37474F]">{stage?.name} Stage</h2>
@@ -125,7 +125,7 @@ export default function WorkerInventory() {
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <Leaf className="w-5 h-5 text-[#3B7A57]" />
+                        <Leaf className="w-6 h-6 text-[#3B7A57]" />
                       <h3 className="text-base font-semibold text-[#37474F]">{batch.id}</h3>
                       {batch.urgent && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
@@ -145,7 +145,7 @@ export default function WorkerInventory() {
                   <div>
                     <p className="text-[#37474F] text-xs mb-1">Location</p>
                     <div className="flex items-center gap-1">
-                      <MapPin className="w-4 h-4 text-[#37474F]" />
+                      <MapPin className="w-6 h-6 text-[#37474F]" />
                       <p className="text-[#37474F] font-medium text-sm">{batch.location}</p>
                     </div>
                   </div>

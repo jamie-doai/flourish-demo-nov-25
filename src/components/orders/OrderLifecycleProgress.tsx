@@ -49,9 +49,9 @@ export function OrderLifecycleProgress({ order }: OrderLifecycleProgressProps) {
                   } ${isCurrent ? "ring-4 ring-primary/20" : ""}`}
                 >
                   {isCompleted ? (
-                    <CheckCircle2 className="w-5 h-5" />
+                    <CheckCircle2 className="w-6 h-6" />
                   ) : (
-                    <Circle className="w-5 h-5" />
+                    <Circle className="w-6 h-6" />
                   )}
                 </div>
                 <div className="mt-2 text-center min-w-[100px]">

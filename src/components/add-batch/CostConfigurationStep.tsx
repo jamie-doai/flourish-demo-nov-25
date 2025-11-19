@@ -184,7 +184,7 @@ export function CostConfigurationStep({
       
       {/* Add Custom Cost (placeholder) */}
       <Button variant="outline" className="w-full" disabled>
-        <Plus className="w-4 h-4 mr-2" />
+        <Plus className="w-6 h-6 mr-2" />
         Add Custom Cost Item
       </Button>
       

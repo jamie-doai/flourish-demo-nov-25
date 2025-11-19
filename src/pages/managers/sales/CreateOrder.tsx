@@ -182,12 +182,12 @@ export default function CreateOrder() {
   const { subtotal, tax, total } = calculateTotals();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <DevBar />
       <Navigation />
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-6 max-w-7xl bg-white">
         <SidebarProvider>
-          <div className="flex gap-6">
+          <div className="flex gap-4">
             <div className="hidden md:block">
               <SalesSidebar />
             </div>
@@ -195,22 +195,22 @@ export default function CreateOrder() {
               <div className="mb-4">
                 <SidebarTrigger className="md:hidden" />
               </div>
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-1.5 mb-6">
           <Link to="/managers/sales/orders">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+            <Button variant="primary-outline" size="sm">
+              <ArrowLeft className="w-6 h-6 mr-2" />
               Back to Orders
             </Button>
           </Link>
         </div>
 
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2">Create New Order</h1>
-          <p className="text-muted-foreground">Create a direct order (pre-approved quote)</p>
+          <h1 className="text-heading-1 font-heading font-bold mb-2">Create New Order</h1>
+          <p className="text-body text-muted-foreground">Create a direct order (pre-approved quote)</p>
         </div>
 
-        <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">Client Details</h2>
+        <Card className="mb-6">
+          <h2 className="text-heading-4 font-heading font-bold mb-4">Client Details</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="client">Client *</Label>
@@ -230,8 +230,8 @@ export default function CreateOrder() {
           </div>
         </Card>
 
-        <Card className="p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">Delivery Details</h2>
+        <Card className="mb-6">
+          <h2 className="text-heading-4 font-heading font-bold mb-4">Delivery Details</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="delivery-type">Delivery Type *</Label>
@@ -273,16 +273,16 @@ export default function CreateOrder() {
           )}
         </Card>
 
-        <Card className="p-6 mb-6">
+        <Card className="mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold">Line Items</h2>
+            <h2 className="text-heading-4 font-heading font-bold">Line Items</h2>
             <div className="flex gap-2">
               <Button onClick={() => setShowInventorySheet(true)} size="sm">
-                <Package className="w-4 h-4 mr-2" />
+                <Package className="w-6 h-6 mr-2" />
                 Add from Inventory
               </Button>
-              <Button onClick={addLineItem} variant="outline" size="sm">
-                <Edit3 className="w-4 h-4 mr-2" />
+              <Button onClick={addLineItem} variant="tertiary" size="sm">
+                <Edit3 className="w-6 h-6 mr-2" />
                 Add Custom Item
               </Button>
             </div>
@@ -393,7 +393,7 @@ export default function CreateOrder() {
                           size="sm"
                           onClick={() => removeLineItem(item.id)}
                         >
-                          <Trash2 className="w-4 h-4 text-destructive" />
+                          <Trash2 className="w-6 h-6 text-destructive" />
                         </Button>
                       )}
                     </TableCell>
@@ -454,10 +454,10 @@ export default function CreateOrder() {
 
         <div className="flex gap-3 justify-end">
           <Link to="/managers/sales/orders">
-            <Button variant="outline">Cancel</Button>
+            <Button variant="tertiary">Cancel</Button>
           </Link>
           <Button onClick={handleCreateOrder}>
-            <Package className="w-4 h-4 mr-2" />
+            <Package className="w-6 h-6 mr-2" />
             Create Order
           </Button>
         </div>

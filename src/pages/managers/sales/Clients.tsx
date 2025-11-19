@@ -30,7 +30,7 @@ export default function ManagerSalesClients() {
               </div>
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales">
-            <Button variant="outline" size="sm">
+            <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Sales
             </Button>
@@ -134,7 +134,7 @@ export default function ManagerSalesClients() {
                 </div>
               </div>
 
-              <Button variant="outline" className="w-full mt-4" size="sm">
+              <Button variant="tertiary" className="w-full mt-4" size="sm">
                 View Details
               </Button>
             </Card>

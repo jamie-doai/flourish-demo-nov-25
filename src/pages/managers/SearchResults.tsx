@@ -90,7 +90,7 @@ export default function ManagerSearchResults() {
             {isMobile && (
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" size="lg">
+                  <Button variant="tertiary" size="lg">
                     <SlidersHorizontal className="w-4 h-4" />
                   </Button>
                 </SheetTrigger>

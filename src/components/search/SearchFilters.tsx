@@ -53,7 +53,7 @@ export function SearchFilters({ filters, onChange }: SearchFiltersProps) {
             onClick={clearFilters}
             className="h-auto p-1"
           >
-            <X className="w-4 h-4" />
+            <X className="w-6 h-6" />
           </Button>
         )}
       </div>

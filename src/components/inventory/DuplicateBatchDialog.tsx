@@ -97,7 +97,7 @@ export function DuplicateBatchDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Copy className="w-5 h-5" />
+            <Copy className="w-6 h-6" />
             Duplicate Batch
           </DialogTitle>
           <DialogDescription>
@@ -110,7 +110,7 @@ export function DuplicateBatchDialog({
           <div className="grid md:grid-cols-2 gap-4">
             <Card className="p-4">
               <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                <Check className="w-4 h-4 text-green-600" />
+                <Check className="w-6 h-6 text-green-600" />
                 Fields That Copy
               </h4>
               <div className="space-y-2 text-sm">
@@ -125,7 +125,7 @@ export function DuplicateBatchDialog({
 
             <Card className="p-4">
               <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
-                <X className="w-4 h-4 text-orange-600" />
+                <X className="w-6 h-6 text-orange-600" />
                 Fields That Reset
               </h4>
               <ul className="space-y-1 text-sm text-muted-foreground">
@@ -212,7 +212,7 @@ export function DuplicateBatchDialog({
             Cancel
           </Button>
           <Button onClick={handleConfirm} disabled={!batchId || quantity <= 0}>
-            <Copy className="w-4 h-4 mr-2" />
+            <Copy className="w-6 h-6 mr-2" />
             Create Duplicate
           </Button>
         </DialogFooter>

@@ -41,7 +41,7 @@ export function SalesSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} end className={getNavCls}>
-                      <item.icon className="h-4 w-4" />
+                      <item.icon className="h-6 w-6" />
                       {!collapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>

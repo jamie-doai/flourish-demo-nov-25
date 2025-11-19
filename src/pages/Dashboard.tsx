@@ -29,25 +29,25 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <DevBar />
       <Navigation />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-6 bg-white">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
-            <p className="text-muted-foreground">Welcome back! Here's what's happening today.</p>
+            <h1 className="text-heading-1 font-heading font-bold mb-2">Dashboard</h1>
+            <p className="text-body text-muted-foreground">Welcome back! Here's what's happening today.</p>
           </div>
-          <Button variant="hero">
-            <Plus className="w-4 h-4" />
+          <Button variant="default">
+            <Plus className="w-6 h-6" />
             New Batch
           </Button>
         </div>
 
         {/* Stats Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <StatsCard
             title="Active Batches"
             value="34"
@@ -76,17 +76,17 @@ export default function Dashboard() {
 
         {/* Alerts Banner */}
         {alerts.length > 0 && (
-          <Card className="p-4 mb-6 border-l-4 border-l-primary">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-primary mt-0.5" />
+          <Card className="mb-6 border-l-4 border-l-forest-green">
+            <div className="flex items-start gap-1.5">
+              <AlertCircle className="w-6 h-6 text-forest-green mt-0.5" />
               <div className="flex-1 space-y-2">
                 {alerts.map((alert) => (
                   <div key={alert.id} className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="font-medium">{alert.message}</p>
-                      <p className="text-sm text-muted-foreground">Location: {alert.location}</p>
+                      <p className="font-heading font-bold text-body">{alert.message}</p>
+                      <p className="text-body-small text-muted-foreground">Location: {alert.location}</p>
                     </div>
-                    <Button variant="ghost" size="sm">View</Button>
+                    <Button variant="primary-ghost" size="sm">View</Button>
                   </div>
                 ))}
               </div>
@@ -94,37 +94,37 @@ export default function Dashboard() {
           </Card>
         )}
 
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-4">
           {/* Recent Batches */}
-          <Card className="p-6">
+          <Card>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Active Batches</h2>
+              <h2 className="text-heading-3 font-heading font-bold">Active Batches</h2>
               <Link to="/managers/inventory">
-                <Button variant="ghost" size="sm">View All</Button>
+                <Button variant="primary-ghost" size="sm">View All</Button>
               </Link>
             </div>
             <div className="space-y-3">
               {recentBatches.map((batch) => (
                 <div
                   key={batch.id}
-                  className={`p-4 rounded-lg border transition-[var(--transition-smooth)] cursor-pointer ${
-                    batch.urgent ? "border-destructive bg-destructive/5" : "hover:bg-secondary/50"
+                  className={`p-4 rounded-lg border-2 transition-[var(--transition-smooth)] cursor-pointer ${
+                    batch.urgent ? "border-destructive bg-destructive/10" : "border-sage-gray hover:bg-lime-green/20"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="font-semibold">{batch.name}</div>
+                        <div className="font-heading font-bold text-body">{batch.name}</div>
                         {batch.urgent && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-destructive/20 text-destructive font-medium">
+                          <span className="text-body-small px-2 py-0.5 rounded-full bg-destructive/20 text-destructive font-heading font-bold">
                             Urgent
                           </span>
                         )}
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-body-small text-muted-foreground">
                         {batch.id} · {batch.quantity} plants
                       </div>
-                      <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-4 mt-2 text-body-small text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Package className="w-3 h-3" />
                           {batch.stage}
@@ -135,7 +135,7 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </div>
-                    <div className="text-right text-sm">
+                    <div className="text-right text-body-small">
                       <div className="text-muted-foreground">{batch.daysInStage} days</div>
                     </div>
                   </div>
@@ -145,25 +145,25 @@ export default function Dashboard() {
           </Card>
 
           {/* Today's Tasks */}
-          <Card className="p-6">
+          <Card>
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold">Today's Tasks</h2>
+              <h2 className="text-heading-3 font-heading font-bold">Today's Tasks</h2>
               <Link to="/managers/operations">
-                <Button variant="ghost" size="sm">View All</Button>
+                <Button variant="primary-ghost" size="sm">View All</Button>
               </Link>
             </div>
             <div className="space-y-3">
               {todayTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-start gap-3 p-3 rounded-lg border hover:bg-secondary/50 transition-[var(--transition-smooth)] cursor-pointer"
+                  className="flex items-start gap-1.5 p-3 rounded-lg border-2 border-sage-gray hover:bg-lime-green/20 transition-[var(--transition-smooth)] cursor-pointer"
                 >
                   <div className="mt-0.5">
-                    <CheckSquare className="w-4 h-4 text-muted-foreground" />
+                    <CheckSquare className="w-6 h-6 text-muted-foreground" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-sm">{task.task}</div>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                    <div className="font-heading font-bold text-body">{task.task}</div>
+                    <div className="flex items-center gap-3 mt-0.5 text-body-small text-muted-foreground">
                       <span>👤 {task.assignee}</span>
                       <span className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
@@ -172,12 +172,12 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <div
-                    className={`text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap ${
+                    className={`text-body-small font-heading font-bold px-2 py-1 rounded-full whitespace-nowrap ${
                       task.priority === "High"
                         ? "bg-destructive/10 text-destructive"
                         : task.priority === "Medium"
-                        ? "bg-accent/10 text-accent"
-                        : "bg-muted text-muted-foreground"
+                        ? "bg-lime-green/20 text-forest-green"
+                        : "bg-sage-gray/20 text-muted-foreground"
                     }`}
                   >
                     {task.priority}

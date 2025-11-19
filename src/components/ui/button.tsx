@@ -5,45 +5,55 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium ring-offset-background transition-[var(--transition-smooth)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:bg-muted disabled:text-muted-foreground disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-heading font-bold uppercase tracking-button transition-[var(--transition-smooth)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        // Primary: Filled olive green, white text
-        default: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--shadow-soft)] rounded-md font-semibold",
+        // Primary Solid - Dark Green background, white text
+        default: "bg-forest-green text-white border-2 border-forest-green hover:bg-[#3d4f3f] hover:border-[#3d4f3f] rounded-lg shadow-card",
         
-        // Secondary: White background, olive border and text
-        secondary: "bg-card text-primary border-2 border-primary hover:bg-primary/10 rounded-md",
+        // Primary Outline - Transparent, Dark Green border and text
+        "primary-outline": "bg-transparent text-forest-green border-2 border-forest-green hover:bg-forest-green hover:text-white rounded-lg",
         
-        // Tertiary: White background, brown border
-        tertiary: "bg-card text-secondary border-2 border-secondary hover:bg-secondary/10 rounded-md",
+        // Primary Ghost - Transparent, Dark Green text
+        "primary-ghost": "bg-transparent text-forest-green border-0 hover:bg-forest-green hover:text-white rounded-lg",
+        
+        // Secondary Solid - Neon Yellow background, Dark Green text
+        secondary: "bg-neon-yellow text-forest-green border-2 border-forest-green hover:bg-[#f9fe9a] rounded-lg shadow-card",
+        
+        // Secondary Outline - Transparent, Dark Green border and text
+        "secondary-outline": "bg-transparent text-forest-green border-2 border-forest-green hover:bg-neon-yellow rounded-lg",
+        
+        // Secondary Ghost - Transparent, Dark Green text
+        "secondary-ghost": "bg-transparent text-forest-green border-0 hover:bg-neon-yellow rounded-lg",
+        
+        // Tertiary Solid - Sage Green background, Dark Green text
+        tertiary: "bg-sage-green text-forest-green border-2 border-forest-green hover:bg-[#a8c67a] rounded-lg shadow-card",
+        
+        // Tertiary Outline - Transparent, Dark Green border and text
+        "tertiary-outline": "bg-transparent text-forest-green border-2 border-forest-green hover:bg-sage-green rounded-lg",
+        
+        // Tertiary Ghost - Transparent, Dark Green text
+        "tertiary-ghost": "bg-transparent text-forest-green border-0 hover:bg-sage-green rounded-lg",
         
         // Destructive: Red background, white text
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-[var(--shadow-soft)] rounded-md font-semibold",
+        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 border-2 border-destructive rounded-lg shadow-card",
         
-        // Outline: minimal border
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md",
-        
-        // Ghost: no background
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        
-        // Link: underline only
-        link: "text-primary underline-offset-4 hover:underline",
-        
-        // Hero: gradient or enhanced primary (for landing pages)
-        hero: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[var(--shadow-medium)] hover:shadow-[var(--shadow-soft)] font-semibold rounded-md",
+        // Legacy variants for backwards compatibility
+        outline: "bg-transparent text-forest-green border border-sage-gray hover:bg-sage-gray/20 rounded-lg",
+        ghost: "bg-transparent text-forest-green border-0 hover:bg-sage-gray/20 rounded-lg",
+        link: "text-forest-green underline-offset-4 hover:underline border-0 bg-transparent p-0 h-auto",
       },
       size: {
-        // Manager sizes (desktop)
-        default: "h-14 px-6 py-3 text-base", /* 56px height */
-        sm: "h-10 px-4 py-2 text-sm",
-        lg: "h-16 px-8 py-4 text-lg", /* 64px height */
-        icon: "h-12 w-12",
+        // Desktop sizes - 48px height
+        default: "h-12 px-6 py-3 text-base", /* 48px height, 12px vertical padding, 24px horizontal */
+        sm: "h-10 px-4 py-2 text-sm", /* 40px height */
+        lg: "h-14 px-8 py-3.5 text-lg", /* 56px height */
+        icon: "h-12 w-12 p-0", /* 48px square */
         
-        // Worker sizes (mobile/tablet - larger tap targets)
-        worker: "h-20 px-8 py-4 text-xl font-semibold", /* 125-160dp */
-        "worker-sm": "h-16 px-6 py-3 text-lg",
-        "worker-critical": "h-24 px-10 py-5 text-2xl font-bold", /* 160dp */
+        // Mobile sizes - 44px height
+        mobile: "h-11 px-6 py-2.5 text-base", /* 44px height for mobile */
+        "mobile-sm": "h-10 px-4 py-2 text-sm",
       },
     },
     defaultVariants: {

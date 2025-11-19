@@ -80,7 +80,7 @@ export function WorkerNav() {
                       active ? "bg-[#3B7A57]/10 text-[#3B7A57]" : "text-[#37474F]"
                     }`}
                   >
-                    <item.icon className="w-5 h-5" />
+                    <item.icon className="w-6 h-6" />
                     <span className="font-medium">{item.label}</span>
                   </Link>
                 );
@@ -90,7 +90,7 @@ export function WorkerNav() {
             <div className="pb-4">
               <SheetClose asChild>
                 <Button variant="outline" className="w-full">
-                  <X className="w-4 h-4 mr-2" />
+                  <X className="w-6 h-6 mr-2" />
                   Close Menu
                 </Button>
               </SheetClose>

@@ -22,12 +22,21 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          alt: "hsl(var(--primary-alt))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        tertiary: {
+          DEFAULT: "hsl(var(--tertiary))",
+          foreground: "hsl(var(--tertiary-foreground))",
+        },
+        // Brand Colors
+        "lime-green": "hsl(var(--lime-green))",
+        "sage-green": "hsl(var(--sage-green))",
+        "neon-yellow": "hsl(var(--neon-yellow))",
+        "forest-green": "hsl(var(--forest-green))",
+        "sage-gray": "hsl(var(--sage-gray))",
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
@@ -75,10 +84,46 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      fontFamily: {
+        display: ["Carter One", "sans-serif"], // Logo only
+        heading: ["Plus Jakarta Sans", "sans-serif"], // All headings and buttons
+        body: ["DM Sans", "sans-serif"], // All body text
+        sans: ["DM Sans", "sans-serif"], // Default
+      },
+      fontSize: {
+        display: ["64px", { lineHeight: "72px" }], // Display - Carter One
+        "heading-1": ["40px", { lineHeight: "48px" }], // H1 - Plus Jakarta Sans Bold
+        "heading-2": ["36px", { lineHeight: "44px" }], // H2 - Plus Jakarta Sans Bold
+        "heading-3": ["28px", { lineHeight: "36px" }], // H3 - Plus Jakarta Sans Bold
+        "heading-4": ["24px", { lineHeight: "32px" }], // H4 - Plus Jakarta Sans Bold
+        "body-large": ["20px", { lineHeight: "32px" }], // Body Large - DM Sans
+        base: ["16px", { lineHeight: "24px" }], // Body - DM Sans
+        "body-small": ["14px", { lineHeight: "20px" }], // Body Small - DM Sans
+      },
+      letterSpacing: {
+        button: "0.5px", // Button letter spacing
+      },
+      spacing: {
+        // 4px Grid System
+        "0.5": "4px",
+        "1": "8px",
+        "1.5": "12px",
+        "2": "16px",
+        "3": "24px",
+        "4": "32px",
+        "6": "48px",
+        "8": "64px",
+      },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: "0px",
+        sm: "4px",
+        DEFAULT: "8px", // Most common - cards, buttons, inputs
+        lg: "16px",
+      },
+      boxShadow: {
+        card: "0px 4px 24px 0px rgba(0, 0, 0, 0.1)",
+        soft: "var(--shadow-soft)",
+        medium: "var(--shadow-medium)",
       },
       keyframes: {
         "accordion-down": {

@@ -47,7 +47,7 @@ export function StageInventoryItem({ species, scientificName, stageData, onAddIt
     <div className="p-4 border rounded-lg bg-muted/30 space-y-3">
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
-          {StageIcon && <StageIcon className="h-4 w-4 text-muted-foreground" />}
+          {StageIcon && <StageIcon className="h-6 w-6 text-muted-foreground" />}
           <div>
             <div className="font-medium">{stageData.stageName}</div>
             <div className="text-sm text-muted-foreground">

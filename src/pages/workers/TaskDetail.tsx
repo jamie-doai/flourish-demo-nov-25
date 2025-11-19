@@ -67,7 +67,7 @@ export default function WorkerTaskDetail() {
           <div className="flex items-center gap-3">
             <Link to="/workers/tasks">
               <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-5 h-5 mr-2" />
+                <ArrowLeft className="w-6 h-6 mr-2" />
                 Task Details
               </Button>
             </Link>
@@ -164,7 +164,7 @@ export default function WorkerTaskDetail() {
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${
               isComplete ? "opacity-100" : "opacity-0"
             }`}>
-              <CheckCircle2 className="w-5 h-5 text-white mr-2" />
+              <CheckCircle2 className="w-6 h-6 text-white mr-2" />
               <span className="text-white font-semibold">Task Completed!</span>
             </div>
             <div className={`absolute inset-0 flex items-center transition-all ${
@@ -183,7 +183,7 @@ export default function WorkerTaskDetail() {
           <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
             <DialogTrigger asChild>
               <Button variant="outline" className="w-full h-12 border-2 border-[#37474F]/30 hover:border-[#3B7A57] text-[#37474F]">
-                <FileText className="w-5 h-5 mr-2" />
+                <FileText className="w-6 h-6 mr-2" />
                 Add Notes
               </Button>
             </DialogTrigger>
@@ -199,7 +199,7 @@ export default function WorkerTaskDetail() {
                   className="min-h-[120px]"
                 />
                 <Button variant="outline" className="w-full">
-                  <Camera className="w-4 h-4 mr-2" />
+                  <Camera className="w-6 h-6 mr-2" />
                   Add Photo
                 </Button>
                 <Button 

@@ -50,7 +50,7 @@ export function CostBreakdownCard({ batchId, onViewHistory, onAddCost }: CostBre
         <div className="flex items-start justify-between">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <DollarSign className="w-5 h-5" />
+              <DollarSign className="w-6 h-6" />
               Cost of Production
             </CardTitle>
             <CardDescription>
@@ -59,11 +59,11 @@ export function CostBreakdownCard({ batchId, onViewHistory, onAddCost }: CostBre
           </div>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" onClick={onAddCost}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-6 h-6 mr-2" />
               Add Cost
             </Button>
             <Button variant="outline" size="sm" onClick={onViewHistory}>
-              <Eye className="w-4 h-4 mr-2" />
+              <Eye className="w-6 h-6 mr-2" />
               View History
             </Button>
           </div>
@@ -84,7 +84,7 @@ export function CostBreakdownCard({ batchId, onViewHistory, onAddCost }: CostBre
         
         {/* Quantity Info */}
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <TrendingUp className="w-4 h-4" />
+          <TrendingUp className="w-6 h-6" />
           <span>
             {costSummary.currentQuantity} plants 
             {costSummary.originalQuantity !== costSummary.currentQuantity && (

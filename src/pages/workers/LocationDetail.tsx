@@ -65,14 +65,14 @@ export default function WorkerLocationDetail() {
                   <div>
                     <p className="text-xs text-[#37474F] mb-1">Temperature</p>
                     <div className="flex items-center gap-1">
-                      <Thermometer className="w-4 h-4 text-[#37474F]" />
+                      <Thermometer className="w-6 h-6 text-[#37474F]" />
                       <p className="text-sm text-[#37474F] font-semibold">{mockLocation.temperature}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-xs text-[#37474F] mb-1">Humidity</p>
                     <div className="flex items-center gap-1">
-                      <Droplet className="w-4 h-4 text-[#37474F]" />
+                      <Droplet className="w-6 h-6 text-[#37474F]" />
                       <p className="text-sm text-[#37474F] font-semibold">{mockLocation.humidity}</p>
                     </div>
                   </div>
@@ -97,7 +97,7 @@ export default function WorkerLocationDetail() {
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <Leaf className="w-5 h-5 text-[#3B7A57]" />
+                              <Leaf className="w-6 h-6 text-[#3B7A57]" />
                               <h3 className="text-base font-semibold text-[#37474F]">{batch.id}</h3>
                             </div>
                             <p className="text-xs text-[#37474F] mb-1">{batch.species}</p>
@@ -163,11 +163,11 @@ export default function WorkerLocationDetail() {
                             </div>
                             <div className="flex items-center gap-3 text-sm text-[#37474F] mb-1">
                               <div className="flex items-center gap-1">
-                                <Leaf className="w-4 h-4" />
+                                <Leaf className="w-6 h-6" />
                                 <span>{task.species}</span>
                               </div>
                               <div className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
+                                <Clock className="w-6 h-6" />
                                 <span>{task.due}</span>
                               </div>
                             </div>

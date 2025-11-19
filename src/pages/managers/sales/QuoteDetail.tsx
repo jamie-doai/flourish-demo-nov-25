@@ -25,7 +25,7 @@ export default function QuoteDetail() {
         <Card className="p-6">
           <p className="text-muted-foreground">Quote not found</p>
           <Link to="/managers/sales/quotes">
-            <Button variant="outline" className="mt-4">Back to Quotes</Button>
+            <Button variant="tertiary" className="mt-4">Back to Quotes</Button>
           </Link>
         </Card>
       </div>
@@ -74,7 +74,7 @@ export default function QuoteDetail() {
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/quotes">
-            <Button variant="outline" size="sm">
+            <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Quotes
             </Button>
@@ -223,7 +223,7 @@ export default function QuoteDetail() {
         </Card>
 
         <div className="flex gap-3 justify-end">
-          <Button variant="outline" onClick={handleDownloadPDF}>
+          <Button variant="secondary" onClick={handleDownloadPDF}>
             <Download className="w-4 h-4 mr-2" />
             Download PDF
           </Button>
@@ -244,7 +244,7 @@ export default function QuoteDetail() {
 
           {quote.convertedToOrder && (
             <Link to={`/managers/sales/orders/${quote.convertedToOrder}`}>
-              <Button variant="outline">View Order</Button>
+              <Button variant="secondary">View Order</Button>
             </Link>
           )}
         </div>

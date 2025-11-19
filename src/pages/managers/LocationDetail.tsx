@@ -59,9 +59,9 @@ export default function ManagerLocationDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tasks">Tasks</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 gap-2 border-2 border-forest-green">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">

@@ -8,11 +8,11 @@ interface ManagerLayoutProps {
 
 export function ManagerLayout({ children }: ManagerLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col w-full">
+    <div className="min-h-screen flex flex-col w-full bg-white">
       <DevBar />
       <Navigation />
       
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto bg-white">
         {children}
       </main>
     </div>

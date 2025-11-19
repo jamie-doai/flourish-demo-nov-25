@@ -74,7 +74,7 @@ export default function WorkerLocations() {
                 {sortBy === "tasks-least" && "Tasks (Least)"}
                 {sortBy === "name-asc" && "Name (A-Z)"}
                 {sortBy === "name-desc" && "Name (Z-A)"}
-                <ChevronDown className="w-4 h-4 ml-2" />
+                <ChevronDown className="w-6 h-6 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="bg-white z-50">
@@ -114,7 +114,7 @@ export default function WorkerLocations() {
                       className="block p-3 hover:bg-[#3B7A57]/5 transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-5 h-5 text-[#3B7A57] flex-shrink-0" />
+                        <MapPin className="w-6 h-6 text-[#3B7A57] flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <h3 className="text-base font-semibold text-[#37474F]">{location.name}</h3>
                           <div className="flex items-center gap-2 mt-0.5 text-sm text-[#37474F]">
@@ -140,7 +140,7 @@ export default function WorkerLocations() {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <span className="text-sm text-[#37474F]">Show Tables/Bays</span>
-                          <ChevronDown className={`w-4 h-4 text-[#37474F] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-6 h-6 text-[#37474F] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                         </Button>
                       </CollapsibleTrigger>
                     )}
