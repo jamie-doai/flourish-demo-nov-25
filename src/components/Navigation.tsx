@@ -19,26 +19,25 @@ export function Navigation() {
     { path: "/managers/operations", label: "Operations", icon: ClipboardList },
     { path: "/managers/sales", label: "Sales", icon: ShoppingCart },
     { path: "/managers/planning", label: "Planning", icon: Calendar },
-    { path: "/managers/settings", label: "Settings", icon: Settings },
   ];
 
   return (
     <>
-      <nav className="border-b bg-card/50 backdrop-blur-sm">
+      <nav className="border-b bg-forest-green">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
             <Link 
               to="/managers" 
-              className={`flex items-center gap-2 font-display text-heading-4 text-forest-green transition-all ${
+              className={`flex items-center gap-2 font-display text-heading-4 text-white transition-all ${
                 searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
               }`}
             >
-              <Sprout className="w-6 h-6 text-forest-green" />
+              <Sprout className="w-6 h-6 text-white" />
               <span>Flourish</span>
             </Link>
 
             <div 
-              className={`hidden md:flex items-center gap-1 flex-1 justify-center transition-all ${
+              className={`hidden md:flex items-center gap-0.5 flex-1 justify-center transition-all ${
                 searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
               }`}
             >
@@ -48,10 +47,9 @@ export function Navigation() {
                   variant="primary-ghost"
                   asChild
                   size="sm"
-                  className={isActive(item.path) ? "" : "hover:bg-lime-green/20"}
+                  className={`text-white ${isActive(item.path) ? "bg-lime-green/20" : "hover:bg-lime-green/20"}`}
                 >
                   <Link to={item.path}>
-                    <item.icon className="w-6 h-6" />
                     {item.label}
                   </Link>
                 </Button>
@@ -65,10 +63,10 @@ export function Navigation() {
               />
               
               <Button 
-                variant="default" 
+                variant="primary-ghost" 
                 size="sm" 
                 asChild 
-                className={`hidden lg:flex transition-all ${
+                className={`hidden lg:flex transition-all shadow-none bg-lime-green text-forest-green hover:bg-lime-green/90 border-0 ${
                   searchExpanded ? 'opacity-0 w-0 overflow-hidden p-0' : 'opacity-100'
                 }`}
               >
@@ -83,12 +81,12 @@ export function Navigation() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className={`hidden md:flex transition-all ${
+                    className={`hidden md:flex transition-all text-white hover:bg-lime-green/20 ${
                       searchExpanded ? 'opacity-0 w-0 overflow-hidden p-0' : 'opacity-100'
                     }`}
                   >
-                    <Avatar className="h-7 w-7">
-                      <AvatarFallback className="bg-primary/10 text-primary text-xs">SJ</AvatarFallback>
+                    <Avatar className="h-8 w-8 border-2 border-white">
+                      <AvatarFallback className="bg-white text-forest-green text-xs font-bold">SJ</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
@@ -115,7 +113,7 @@ export function Navigation() {
       </nav>
 
       {isMobile && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card/95 backdrop-blur-sm pb-safe">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-forest-green pb-safe">
           <div className="grid grid-cols-5 h-16">
             {/* Dashboard, Inventory, Operations - always visible */}
             {navItems.slice(0, 3).map((item) => (
@@ -123,7 +121,7 @@ export function Navigation() {
                 key={item.path}
                 to={item.path}
                 className={`flex flex-col items-center justify-center gap-1 transition-colors ${
-                  isActive(item.path) ? "text-forest-green" : "text-foreground/60 hover:text-forest-green hover:bg-lime-green/20"
+                  isActive(item.path) ? "text-white bg-lime-green/20" : "text-white/80 hover:text-white hover:bg-lime-green/20"
                 }`}
               >
                 <item.icon className="w-6 h-6" />
@@ -134,7 +132,7 @@ export function Navigation() {
             {/* Scan button - prominent */}
             <Link
               to="/managers/scan"
-              className="flex flex-col items-center justify-center gap-1 text-forest-green"
+              className="flex flex-col items-center justify-center gap-1 text-white"
             >
               <Scan className="w-6 h-6" />
               <span className="text-xs">Scan</span>
@@ -143,7 +141,7 @@ export function Navigation() {
             {/* Menu with Sales, Planning, Settings */}
             <Sheet>
               <SheetTrigger asChild>
-                <button className="flex flex-col items-center justify-center gap-1 text-muted-foreground">
+                <button className="flex flex-col items-center justify-center gap-1 text-white/80 hover:text-white">
                   <Menu className="w-6 h-6" />
                   <span className="text-xs">Menu</span>
                 </button>

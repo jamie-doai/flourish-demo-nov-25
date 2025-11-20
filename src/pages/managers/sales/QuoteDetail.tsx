@@ -84,9 +84,7 @@ export default function QuoteDetail() {
         <Card className="p-6 mb-6">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                <FileText className="w-6 h-6 text-primary" />
-              </div>
+              <FileText className="w-6 h-6 text-primary" />
               <div>
                 <h1 className="text-2xl font-bold">{quote.quoteNumber}</h1>
                 <p className="text-muted-foreground">{quote.clientName}</p>

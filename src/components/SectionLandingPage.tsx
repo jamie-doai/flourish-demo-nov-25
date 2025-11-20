@@ -38,9 +38,7 @@ export function SectionLandingPage({
             <Link key={section.path} to={section.path}>
               <Card className="hover:shadow-card transition-all cursor-pointer group">
                 <div className="flex items-start justify-between mb-3">
-                  <div className={`w-10 h-10 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center ${section.color || 'text-forest-green'}`}>
-                    <section.icon className="w-6 h-6" />
-                  </div>
+                  <section.icon className={`w-6 h-6 ${section.color || 'text-forest-green'}`} />
                   <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </div>
                 <h3 className="text-heading-4 font-heading font-bold mb-1">{section.title}</h3>

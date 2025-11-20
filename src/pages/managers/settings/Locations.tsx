@@ -6,12 +6,9 @@ import { MapPin, Plus } from "lucide-react";
 export default function ManagerLocationsSettings() {
   return (
     <SettingsLayout>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-              <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
-            </div>
+            <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
             <div>
               <h1 className="text-3xl font-bold">Location Configuration</h1>
               <p className="text-muted-foreground">Manage bays, houses, and facility settings</p>
@@ -31,7 +28,6 @@ export default function ManagerLocationsSettings() {
             <p className="text-muted-foreground">Location management functionality coming soon...</p>
           </CardContent>
         </Card>
-      </main>
     </SettingsLayout>
   );
 }

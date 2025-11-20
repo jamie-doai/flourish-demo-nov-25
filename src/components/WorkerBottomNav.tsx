@@ -31,7 +31,7 @@ export function WorkerBottomNav() {
 
       {/* Bottom Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-[#2C3E35] rounded-t-3xl transition-transform duration-150 max-w-[500px] mx-auto ${
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-lime-green rounded-t-3xl transition-transform duration-150 max-w-[500px] mx-auto ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
@@ -45,13 +45,13 @@ export function WorkerBottomNav() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
+                className={`flex items-center gap-4 p-4 rounded-xl transition-all border-2 border-forest-green bg-white text-forest-green shadow-md hover:shadow-lg ${
                   active
-                    ? "bg-muted text-foreground"
-                    : "bg-muted text-foreground hover:bg-muted/80"
+                    ? "bg-white"
+                    : "bg-white hover:bg-white"
                 }`}
               >
-                <item.icon className="w-7 h-7" strokeWidth={2} />
+                <item.icon className="w-6 h-6" strokeWidth={2} />
                 <span className="text-xl font-semibold">{item.label}</span>
               </Link>
             );
@@ -69,12 +69,12 @@ export function WorkerBottomNav() {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all max-h-24 ${
+                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all max-h-24 border-2 border-forest-green bg-white text-forest-green shadow-md hover:shadow-lg ${
                     'highlight' in item && item.highlight
-                      ? "bg-[#FFB84D] text-[#2C3E35] hover:bg-[#FFA726]"
+                      ? "bg-white hover:bg-white"
                       : active
-                      ? "bg-muted text-foreground"
-                      : "bg-muted text-foreground hover:bg-muted/80"
+                      ? "bg-white"
+                      : "bg-white hover:bg-white"
                   }`}
                 >
                   <item.icon className="w-6 h-6" strokeWidth={2} />
@@ -87,7 +87,7 @@ export function WorkerBottomNav() {
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            className="w-full mt-4 bg-[#1C2A21] text-white border-white/20 hover:bg-[#25352A] text-lg"
+            className="w-full mt-4 bg-white text-forest-green border-2 border-forest-green hover:bg-white shadow-md hover:shadow-lg text-lg"
           >
             Close <X className="w-6 h-6 ml-2" />
           </Button>

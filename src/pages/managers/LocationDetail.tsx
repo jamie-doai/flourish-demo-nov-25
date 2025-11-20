@@ -47,9 +47,7 @@ export default function ManagerLocationDetail() {
           </Link>
           
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center">
-              <MapPin className="w-8 h-8 text-primary" />
-            </div>
+            <MapPin className="w-8 h-8 text-primary" />
             <div>
               <h1 className="text-3xl font-bold">{mockLocation.name}</h1>
               <p className="text-muted-foreground">{mockLocation.type}</p>

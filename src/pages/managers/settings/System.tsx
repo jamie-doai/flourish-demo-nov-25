@@ -10,11 +10,8 @@ export default function ManagerSystemSettings() {
 
   return (
     <SettingsLayout>
-      <main className="container mx-auto px-4 py-8">
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center">
-            <Settings className="w-6 h-6 text-slate-600 dark:text-slate-400" />
-          </div>
+          <Settings className="w-6 h-6 text-slate-600 dark:text-slate-400" />
           <div>
             <h1 className="text-3xl font-bold">System Settings</h1>
             <p className="text-muted-foreground">Configure system preferences and integrations</p>
@@ -74,7 +71,6 @@ export default function ManagerSystemSettings() {
             </CardContent>
           </Card>
         </div>
-      </main>
     </SettingsLayout>
   );
 }

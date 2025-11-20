@@ -74,9 +74,7 @@ export default function InvoiceDetail() {
         <Card className="p-6 mb-6">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Receipt className="w-6 h-6 text-primary" />
-              </div>
+              <Receipt className="w-6 h-6 text-primary" />
               <div>
                 <h1 className="text-2xl font-bold">{invoice.invoiceNumber}</h1>
                 <p className="text-muted-foreground">{invoice.clientName}</p>

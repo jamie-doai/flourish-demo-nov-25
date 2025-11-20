@@ -6,12 +6,9 @@ import { Sprout, Plus } from "lucide-react";
 export default function ManagerSpeciesSettings() {
   return (
     <SettingsLayout>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-              <Sprout className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
-            </div>
+            <Sprout className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             <div>
               <h1 className="text-3xl font-bold">Species Catalog</h1>
               <p className="text-muted-foreground">Configure plant species and growing requirements</p>
@@ -31,7 +28,6 @@ export default function ManagerSpeciesSettings() {
             <p className="text-muted-foreground">Species catalog functionality coming soon...</p>
           </CardContent>
         </Card>
-      </main>
     </SettingsLayout>
   );
 }

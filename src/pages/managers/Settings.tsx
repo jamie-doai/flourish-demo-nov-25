@@ -62,9 +62,7 @@ export default function ManagerSettings() {
               <Link key={setting.path} to={setting.path}>
                 <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
                   <CardHeader>
-                    <div className={`w-12 h-12 rounded-xl ${setting.iconBg} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                      <Icon className={`w-6 h-6 ${setting.iconColor}`} />
-                    </div>
+                    <Icon className={`w-6 h-6 ${setting.iconColor} mb-4`} />
                     <CardTitle className="text-xl">{setting.title}</CardTitle>
                     <CardDescription className="text-sm">{setting.description}</CardDescription>
                   </CardHeader>

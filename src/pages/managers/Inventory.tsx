@@ -173,9 +173,7 @@ export default function ManagerInventory() {
             </Button>
             
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
-                <Sprout className="w-8 h-8 text-forest-green" />
-              </div>
+              <Sprout className="w-8 h-8 text-forest-green" />
               <div>
                 <h1 className="text-heading-1 font-heading font-bold">{speciesData?.species}</h1>
                 <p className="text-body text-muted-foreground">{speciesData?.scientificName}</p>
@@ -276,9 +274,7 @@ export default function ManagerInventory() {
             </Button>
             
             <div className="flex items-center gap-4 mb-4">
-              <div className={`w-16 h-16 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center`}>
-                <Icon className="w-8 h-8 text-forest-green" />
-              </div>
+              <Icon className="w-8 h-8 text-forest-green" />
               <div>
                 <h1 className="text-heading-1 font-heading font-bold">{stage?.name} Stage</h1>
                 <p className="text-body text-muted-foreground">Detailed view and management</p>
@@ -443,9 +439,7 @@ export default function ManagerInventory() {
                     onClick={() => setSelectedStage(stage.id)}
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
-                        <Icon className="w-6 h-6 text-forest-green" />
-                      </div>
+                      <Icon className="w-6 h-6 text-forest-green" />
                       <div className="text-right">
                         <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
                         <div className="text-body-small text-muted-foreground">Batches</div>
@@ -474,9 +468,7 @@ export default function ManagerInventory() {
                   onClick={() => setSelectedSpecies(species.species)}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-lime-green/20 border-2 border-forest-green flex items-center justify-center">
-                      <Sprout className="w-6 h-6 text-forest-green" />
-                    </div>
+                    <Sprout className="w-6 h-6 text-forest-green" />
                     <div className="text-right">
                       <div className="text-heading-2 font-heading font-bold">{species.batchCount}</div>
                       <div className="text-body-small text-muted-foreground">Batches</div>

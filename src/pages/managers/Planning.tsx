@@ -203,9 +203,7 @@ export default function ManagerPlanning() {
                         <div key={item.species} className="p-4 rounded-lg border">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                <Sprout className="w-5 h-5 text-primary" />
-                              </div>
+                              <Sprout className="w-5 h-5 text-primary" />
                               <div>
                                 <h3 className="font-semibold">{item.species}</h3>
                                 <Badge className={

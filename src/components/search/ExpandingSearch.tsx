@@ -108,13 +108,9 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
         variant="outline"
         size="sm"
         onClick={() => onExpandChange(true)}
-        className="gap-2"
+        className="border-white text-white hover:bg-lime-green/20"
       >
         <Search className="w-6 h-6" />
-        <span className="hidden lg:inline">Search</span>
-        <kbd className="hidden lg:inline pointer-events-none h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100">
-          <span className="text-xs">⌘</span>K
-        </kbd>
       </Button>
     );
   }

@@ -95,9 +95,7 @@ export default function ManagerSalesClients() {
             <Card key={client.id} className="p-6 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Users className="w-6 h-6 text-primary" />
-                  </div>
+                  <Users className="w-6 h-6 text-primary" />
                   <div>
                     <h3 className="font-semibold text-lg">{client.name}</h3>
                     <p className="text-sm text-muted-foreground">{client.contactPerson}</p>

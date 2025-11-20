@@ -101,9 +101,7 @@ export default function WorkerInventory() {
                 const Icon = stage?.icon || Sprout;
                 return (
                   <>
-                    <div className={`w-10 h-10 rounded-full ${stage?.color} flex items-center justify-center`}>
-                      <Icon className="w-6 h-6" />
-                    </div>
+                    <Icon className="w-6 h-6" />
                     <div>
                       <h2 className="text-lg font-semibold text-[#37474F]">{stage?.name} Stage</h2>
                       <p className="text-sm text-[#37474F]/60">
