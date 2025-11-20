@@ -1,0 +1,346 @@
+# Frontend Development Patterns
+
+## React Patterns
+
+### Component Structure
+```tsx
+// Standard component structure
+import { useState } from "react";
+import { ComponentProps } from "@/types";
+import { Button } from "@/components/ui/button";
+
+interface ComponentNameProps {
+  // Props definition
+}
+
+export function ComponentName({ prop1, prop2 }: ComponentNameProps) {
+  // Hooks
+  const [state, setState] = useState();
+  
+  // Event handlers
+  const handleAction = () => {
+    // Handler logic
+  };
+  
+  // Render
+  return (
+    <div>
+      {/* Component JSX */}
+    </div>
+  );
+}
+```
+
+### Component Guidelines
+- Use functional components exclusively
+- Keep components focused and single-purpose
+- Extract complex logic into custom hooks
+- Use composition over inheritance
+- Prefer explicit prop passing over context when possible
+
+### Hooks Usage
+- **Custom Hooks**: Create in `src/hooks/` for reusable logic
+- **Naming**: Start with `use` prefix (e.g., `useSearch`, `useMobile`)
+- **Rules**: Follow React Hooks rules (only call at top level)
+- **Dependencies**: Always include all dependencies in dependency arrays
+
+### State Management Patterns
+
+**Server State (React Query):**
+```tsx
+import { useQuery } from "@tanstack/react-query";
+
+const { data, isLoading, error } = useQuery({
+  queryKey: ['resource', id],
+  queryFn: () => fetchResource(id),
+});
+```
+
+**Client State (Zustand):**
+```tsx
+// Only when needed for complex client state
+import { create } from 'zustand';
+
+const useStore = create((set) => ({
+  // Store definition
+}));
+```
+
+**Form State:**
+```tsx
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+```
+
+### Error Boundaries
+- Use `ErrorBoundary` component for route-level error handling
+- Implement error boundaries around major sections
+- Provide user-friendly error messages
+- Log errors for debugging
+
+### Loading States
+- Use `Suspense` for lazy-loaded components
+- Implement `PageLoadingFallback` for route loading
+- Use skeleton loaders for content placeholders
+- Show loading states for async operations
+
+### Code Splitting
+- Use `React.lazy()` for all route components (see `src/App.tsx`)
+- Wrap lazy routes with `Suspense`
+- Split large components when they exceed 300 lines
+- Consider feature-based code splitting
+
+## TypeScript Patterns
+
+### Type Safety
+- **Strict Mode**: Follow strict mode patterns even if config allows leniency
+- **No `any`**: Use `unknown` or proper types instead
+- **Type Inference**: Leverage inference when types are obvious
+- **Explicit Types**: Use explicit types for public APIs and complex logic
+
+### Interface vs Type
+- **Interfaces**: Use for object shapes that may be extended
+- **Types**: Use for unions, intersections, and computed types
+- **Preference**: Prefer interfaces for component props and data models
+
+### Generic Patterns
+```tsx
+// Use generics for reusable utilities
+function processData<T>(data: T): T {
+  // Processing logic
+  return data;
+}
+```
+
+### Utility Types
+- Use `Pick`, `Omit`, `Partial`, `Required` when appropriate
+- Use `Record<K, V>` for key-value mappings
+- Use `Readonly` for immutable data structures
+
+### Type Definitions
+- Define types in `src/types/` for shared types
+- Colocate types with components when component-specific
+- Export types for reuse
+- Use discriminated unions for state management
+
+## Styling Patterns
+
+### Tailwind CSS Usage
+- Use Tailwind utility classes exclusively
+- Follow the 4px grid system (see `tailwind.config.ts` spacing scale)
+- Use custom spacing: `p-3` = 24px, `px-6` = 48px horizontal, `py-8` = 64px vertical
+- Use brand colors from design system (lime-green, sage-green, forest-green, etc.)
+
+### Brand Style Guide Compliance
+- **Colors**: Use HSL variables from `src/index.css`
+- **Typography**: Use design system fonts (Carter One, Plus Jakarta Sans, DM Sans)
+- **Spacing**: Follow 4px grid system
+- **Borders**: Use `border` (1px) for cards, `border-2` (2px) for emphasis
+- **Border Radius**: Use `rounded-lg` (8px) for most components
+
+### Responsive Design
+- Mobile-first approach
+- Use breakpoints: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+- Test on multiple screen sizes
+- Ensure touch targets are minimum 44x44px
+
+### Component Styling
+- Use `cn()` utility for conditional classes
+- Extract complex className logic to variables
+- Use CSS variables for theme values
+- Maintain consistent spacing patterns
+
+### Icon Sizing
+- Standard icon size: `w-3 h-3` (24px with custom spacing scale)
+- Button icons: `size-4` (16px) via `[&_svg]:size-4` in Button component
+- Large icons: `w-8 h-8` (64px) for hero/feature icons
+- Use Lucide React icons consistently
+
+## Architecture Patterns
+
+### Atomic Design Principles
+- **Atoms**: Basic UI elements (Button, Input, Badge)
+- **Molecules**: Simple component combinations
+- **Organisms**: Complex components (PageHeader, Navigation)
+- **Templates**: Layout structures (ManagerLayout, SidebarPageLayout)
+- **Pages**: Full page implementations
+
+### Feature-Based Organization
+- Group related components by feature
+- Keep feature components together (e.g., `inventory/`, `sales/`)
+- Share common components in `src/components/ui/`
+- Use clear folder structure
+
+### Layout Patterns
+
+**Manager Pages:**
+```tsx
+<ManagerLayout>
+  <main className="container mx-auto px-6 py-8">
+    <PageHeader title="..." actions={...} />
+    {/* Page content */}
+  </main>
+</ManagerLayout>
+```
+
+**Sidebar Pages:**
+```tsx
+<ManagerLayout>
+  <SidebarPageLayout sidebar={<SalesSidebar />}>
+    <PageHeader title="..." />
+    {/* Page content */}
+  </SidebarPageLayout>
+</ManagerLayout>
+```
+
+### Routing Patterns
+- Use React Router DOM for routing
+- Implement lazy loading for all routes
+- Use `useParams` for dynamic routes
+- Use `useNavigate` for programmatic navigation
+- Implement proper 404 handling
+
+### API Integration
+- Use React Query for data fetching
+- Implement proper error handling
+- Use optimistic updates when appropriate
+- Cache data appropriately
+- Handle loading and error states
+
+## Accessibility (WCAG 2.2 AA)
+
+### Semantic HTML
+- Use proper HTML elements (`<nav>`, `<main>`, `<header>`, `<section>`)
+- Use heading hierarchy correctly (h1 → h2 → h3)
+- Use `<button>` for actions, `<a>` for navigation
+- Use form elements properly (`<label>`, `<input>`, etc.)
+
+### Keyboard Navigation
+- Ensure all interactive elements are keyboard accessible
+- Implement proper tab order
+- Provide visible focus indicators
+- Support keyboard shortcuts where appropriate
+
+### ARIA Usage
+- Use ARIA only when semantic HTML isn't sufficient
+- Provide `aria-label` for icon-only buttons
+- Use `aria-describedby` for form help text
+- Implement `aria-live` regions for dynamic content
+
+### Screen Reader Support
+- Use `sr-only` class for screen-reader-only text
+- Provide skip-to-content links
+- Ensure images have alt text
+- Test with screen readers
+
+### Color Contrast
+- Ensure minimum 4.5:1 contrast ratio for text
+- Test color combinations for accessibility
+- Don't rely solely on color to convey information
+
+## Performance Optimization
+
+### Code Splitting
+- Lazy load all route components
+- Split large components when beneficial
+- Use dynamic imports for heavy dependencies
+- Monitor bundle size
+
+### Rendering Optimization
+- Use `React.memo` for expensive components
+- Use `useMemo` for expensive calculations
+- Use `useCallback` for stable function references
+- Avoid unnecessary re-renders
+
+### Image Optimization
+- Use appropriate image formats
+- Implement lazy loading for images
+- Provide proper sizing attributes
+- Use responsive images
+
+### Bundle Optimization
+- Monitor bundle size with build output
+- Remove unused dependencies
+- Use tree-shaking friendly imports
+- Consider code splitting strategies
+
+## Component Examples
+
+### Page Header Pattern
+```tsx
+<PageHeader
+  title="Page Title"
+  description="Page description"
+  backTo="/previous-page"
+  backLabel="Back"
+  actions={<Button>Action</Button>}
+/>
+```
+
+### Card Pattern
+```tsx
+<Card className="p-3">
+  <h3 className="text-heading-4 font-heading font-bold mb-2">Title</h3>
+  {/* Card content */}
+</Card>
+```
+
+### Button Pattern
+```tsx
+<Button variant="default" size="sm">
+  <Icon className="w-3 h-3 mr-2" />
+  Button Text
+</Button>
+```
+
+## Anti-Patterns to Avoid
+
+### React
+- ❌ Don't use class components
+- ❌ Don't mutate state directly
+- ❌ Don't forget dependency arrays in hooks
+- ❌ Don't create components that are too large
+- ❌ Don't mix server and client components incorrectly
+
+### TypeScript
+- ❌ Don't use `any` type
+- ❌ Don't ignore type errors
+- ❌ Don't use type assertions unnecessarily
+- ❌ Don't create overly complex type definitions
+
+### Styling
+- ❌ Don't use inline styles when Tailwind works
+- ❌ Don't break the 4px grid system
+- ❌ Don't use hardcoded colors (use design system)
+- ❌ Don't ignore responsive design
+- ❌ Don't use non-standard spacing values
+
+### Performance
+- ❌ Don't load everything upfront
+- ❌ Don't create unnecessary re-renders
+- ❌ Don't ignore bundle size
+- ❌ Don't skip code splitting opportunities
+
+## Project-Specific References
+
+### Key Components
+- `src/components/PageHeader.tsx` - Standardized page headers
+- `src/components/layouts/SidebarPageLayout.tsx` - Sidebar layout pattern
+- `src/components/layouts/ManagerLayout.tsx` - Manager page layout
+- `src/components/ui/button.tsx` - Button component with variants
+- `src/components/ui/card.tsx` - Card component
+
+### Key Patterns
+- Route-based code splitting: `src/App.tsx`
+- Error boundaries: `src/components/ErrorBoundary.tsx`
+- Custom hooks: `src/hooks/useSearch.tsx`, `src/hooks/use-mobile.tsx`
+- Layout patterns: See `src/components/layouts/`
+- Page patterns: See `src/pages/managers/`
+
+### Configuration Files
+- `tailwind.config.ts` - Tailwind configuration with custom spacing
+- `tsconfig.app.json` - TypeScript configuration
+- `eslint.config.js` - ESLint rules
+- `vite.config.ts` - Vite build configuration
+

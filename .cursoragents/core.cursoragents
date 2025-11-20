@@ -1,0 +1,160 @@
+# Core Development Rules & Code Quality
+
+## Project Structure
+
+### Folder Organization
+- **Components**: `src/components/` - Organized by feature/domain (e.g., `inventory/`, `sales/`, `batch/`)
+- **Pages**: `src/pages/` - Organized by user type (e.g., `managers/`, `workers/`)
+- **Layouts**: `src/components/layouts/` - Reusable layout components
+- **Lib**: `src/lib/` - Utility functions and helpers
+- **Hooks**: `src/hooks/` - Custom React hooks
+- **Types**: `src/types/` - TypeScript type definitions
+- **Data**: `src/data/` - Mock data and data utilities
+
+### File Naming Conventions
+- **Folders**: kebab-case (e.g., `add-batch/`, `sales-sidebar/`)
+- **Components**: PascalCase matching component name (e.g., `PageHeader.tsx`, `BatchDetail.tsx`)
+- **Utilities**: camelCase (e.g., `costCalculations.ts`, `locationUtils.ts`)
+- **Types**: camelCase (e.g., `batch.ts`, `sales.ts`)
+
+### Import Organization
+Follow this order:
+1. React and React-related imports
+2. External packages (lucide-react, @tanstack/react-query, etc.)
+3. Internal aliases (`@/components`, `@/lib`, etc.)
+4. Parent directory imports
+5. Sibling file imports
+6. Type-only imports (use `import type`)
+
+## Code Quality Standards
+
+### TypeScript
+- Use TypeScript strict mode patterns where possible
+- Avoid `any` type - use `unknown` or proper types
+- Prefer interfaces for object shapes, types for unions/intersections
+- Use discriminated unions for state management
+- Leverage type inference when types are obvious
+- Use `const` assertions for literal types
+
+### Error Handling
+- Use Error Boundaries for component error handling (`src/components/ErrorBoundary.tsx`)
+- Implement proper error states in components
+- Use try-catch for async operations
+- Provide meaningful error messages
+- Log errors appropriately (console.error in development)
+
+### Code Organization
+- Keep components focused and single-purpose
+- Extract reusable logic into custom hooks
+- Move complex calculations to utility functions in `src/lib/`
+- Use feature-based organization for related components
+- Maintain clear separation between UI and business logic
+
+## Git Workflow
+
+### Commit Conventions
+- Use clear, descriptive commit messages
+- Follow conventional commit format when possible
+- Reference ticket numbers if applicable
+- Keep commits atomic and focused
+
+### Branch Strategy
+- Keep branches ahead of main
+- Use descriptive branch names
+- Clean up merged branches
+
+## Performance Considerations
+
+### Code Splitting
+- Use `React.lazy()` for route-based code splitting (see `src/App.tsx`)
+- Implement `Suspense` boundaries for lazy-loaded components
+- Split large components into smaller, loadable chunks
+
+### Bundle Optimization
+- Avoid unnecessary dependencies
+- Use tree-shaking friendly imports
+- Monitor bundle size with build output
+
+## Security Best Practices
+
+### Input Validation
+- Validate all user inputs using Zod (when backend is ready)
+- Sanitize data before rendering
+- Never use `dangerouslySetInnerHTML` without sanitization
+- Validate API responses
+
+### Authentication & Authorization
+- Store tokens securely (in-memory, httpOnly cookies)
+- Never expose sensitive data in client-side code
+- Implement proper session management
+
+## Documentation Standards
+
+### Code Comments
+- Use JSDoc/TSDoc for complex functions
+- Explain "why" not "what" in comments
+- Mark technical debt with `@ai-technical-debt(priority, effort, impact)`
+- Use `@ai-context` for critical code sections
+- Use `@ai-dependencies` for external system relationships
+
+### README & Guides
+- Keep README updated with setup instructions
+- Document architecture decisions
+- Maintain `instructions.mdc` and `architecture.mdc` for major features
+
+## Development Practices
+
+### Testing
+- Write tests alongside implementation
+- Use Vitest + Testing Library
+- Aim for 70% coverage on critical paths
+- Test user interactions, not implementation details
+- Colocate test files: `ComponentName.test.tsx`
+
+### Code Review
+- Review for type safety
+- Check accessibility compliance
+- Verify responsive behavior
+- Ensure error handling is in place
+- Confirm code follows project patterns
+
+### Debugging
+- Use React DevTools for component debugging
+- Use browser DevTools for network/performance
+- Add temporary logging for complex flows
+- Remove debug code before committing
+
+## Project-Specific Patterns
+
+### Layout System
+- Use `ManagerLayout` for manager pages
+- Use `SidebarPageLayout` for sidebar-based pages (Sales, Planning, Settings)
+- Use `WorkerBottomNav` for worker mobile navigation
+- Maintain consistent padding: `px-6 py-8` for main containers, `p-3` for sidebar layouts
+
+### Component Patterns
+- Use shadcn-ui components from `src/components/ui/`
+- Follow Atomic Design principles
+- Create reusable components in `src/components/`
+- Use `PageHeader` component for consistent page headers
+- Use `Card` component with default `p-3` (24px) padding
+
+### State Management
+- Server state: React Query (`@tanstack/react-query`)
+- Client state: Zustand (when needed)
+- Form state: React Hook Form
+- Rarely changing global data: React Context
+
+## Anti-Patterns to Avoid
+
+- ❌ Don't duplicate server data in client state
+- ❌ Don't use `any` type
+- ❌ Don't create components that are too large (>300 lines)
+- ❌ Don't mix business logic with UI components
+- ❌ Don't hardcode values that should be configurable
+- ❌ Don't skip error handling
+- ❌ Don't ignore accessibility requirements
+- ❌ Don't commit console.log statements
+- ❌ Don't use inline styles when Tailwind classes work
+- ❌ Don't create unnecessary abstractions
+
