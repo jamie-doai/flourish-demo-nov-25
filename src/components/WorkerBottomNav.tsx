@@ -35,7 +35,7 @@ export function WorkerBottomNav() {
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="p-6 pb-8 space-y-3">
+        <div className="p-4 space-y-2">
           {/* Full width items */}
           {fullWidthNavItems.map((item) => {
             const active = isActive(item.path);
@@ -45,14 +45,14 @@ export function WorkerBottomNav() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 p-4 rounded-xl transition-all border-2 border-forest-green bg-white text-forest-green shadow-md hover:shadow-lg ${
+                className={`flex items-center gap-4 py-2 px-4 rounded-xl transition-all border-2 border-forest-green bg-forest-green text-lime-green shadow-md hover:shadow-lg ${
                   active
-                    ? "bg-white"
-                    : "bg-white hover:bg-white"
+                    ? "bg-forest-green"
+                    : "bg-forest-green hover:bg-forest-green/90"
                 }`}
               >
-                <item.icon className="w-6 h-6" strokeWidth={2} />
-                <span className="text-xl font-semibold">{item.label}</span>
+                <item.icon className="w-6 h-6 text-lime-green" strokeWidth={2} />
+                <span className="text-base font-semibold">{item.label}</span>
               </Link>
             );
           })}
@@ -69,15 +69,15 @@ export function WorkerBottomNav() {
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsOpen(false)}
-                  className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl transition-all max-h-24 border-2 border-forest-green bg-white text-forest-green shadow-md hover:shadow-lg ${
+                  className={`flex flex-col items-center justify-center gap-2 py-2 px-3 rounded-xl transition-all max-h-24 border-2 border-forest-green bg-forest-green text-lime-green shadow-md hover:shadow-lg ${
                     'highlight' in item && item.highlight
-                      ? "bg-white hover:bg-white"
+                      ? "bg-forest-green hover:bg-forest-green/90"
                       : active
-                      ? "bg-white"
-                      : "bg-white hover:bg-white"
+                      ? "bg-forest-green"
+                      : "bg-forest-green hover:bg-forest-green/90"
                   }`}
                 >
-                  <item.icon className="w-6 h-6" strokeWidth={2} />
+                  <item.icon className="w-6 h-6 text-lime-green" strokeWidth={2} />
                   <span className="text-base font-semibold">{item.label}</span>
                 </Link>
               );
@@ -87,9 +87,9 @@ export function WorkerBottomNav() {
           <Button
             variant="outline"
             onClick={() => setIsOpen(false)}
-            className="w-full mt-4 bg-white text-forest-green border-2 border-forest-green hover:bg-white shadow-md hover:shadow-lg text-lg"
+            className="w-full mt-4 py-2 bg-forest-green text-lime-green border-2 border-forest-green hover:bg-forest-green/90 shadow-md hover:shadow-lg text-base font-semibold"
           >
-            Close <X className="w-6 h-6 ml-2" />
+            Close <X className="w-6 h-6 text-lime-green ml-2" />
           </Button>
         </div>
       </div>
@@ -98,9 +98,9 @@ export function WorkerBottomNav() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-6 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors max-w-[500px] mx-auto"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-2 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors max-w-[500px] mx-auto"
         >
-          <Menu className="w-8 h-8" />
+          <Menu className="w-10 h-10" />
           <span className="text-2xl font-semibold">Menu</span>
         </button>
       )}
