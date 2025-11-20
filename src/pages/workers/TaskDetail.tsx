@@ -67,7 +67,7 @@ export default function WorkerTaskDetail() {
           <div className="flex items-center gap-3">
             <Link to="/workers/tasks">
               <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-6 h-6 mr-2" />
+                <ArrowLeft className="w-3 h-3 mr-2" />
                 Task Details
               </Button>
             </Link>
@@ -99,7 +99,7 @@ export default function WorkerTaskDetail() {
         </div>
 
         {/* Task Info Card */}
-        <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+        <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
           <h3 className="text-base font-semibold text-[#37474F] mb-3">Task Details</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
@@ -131,7 +131,7 @@ export default function WorkerTaskDetail() {
 
         {/* Instructions */}
         {task.instructions && task.instructions.length > 0 && (
-          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h3 className="text-base font-semibold text-[#37474F] mb-4">Instructions</h3>
             <ul className="space-y-3">
               {task.instructions.map((instruction, index) => (
@@ -155,7 +155,7 @@ export default function WorkerTaskDetail() {
                 handleComplete();
               }
             }}
-            className={`relative w-full h-14 rounded-full border-2 transition-all cursor-pointer ${
+            className={`relative w-full h-14 rounded-full border transition-all cursor-pointer ${
               isComplete 
                 ? "bg-[#3B7A57] border-[#3B7A57]" 
                 : "bg-white border-[#37474F]/30 hover:border-[#3B7A57]"
@@ -164,7 +164,7 @@ export default function WorkerTaskDetail() {
             <div className={`absolute inset-0 flex items-center justify-center transition-opacity ${
               isComplete ? "opacity-100" : "opacity-0"
             }`}>
-              <CheckCircle2 className="w-6 h-6 text-white mr-2" />
+              <CheckCircle2 className="w-3 h-3 text-white mr-2" />
               <span className="text-white font-semibold">Task Completed!</span>
             </div>
             <div className={`absolute inset-0 flex items-center transition-all ${
@@ -182,8 +182,8 @@ export default function WorkerTaskDetail() {
           {/* Add Notes Button */}
           <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
             <DialogTrigger asChild>
-              <Button variant="outline" className="w-full h-12 border-2 border-[#37474F]/30 hover:border-[#3B7A57] text-[#37474F]">
-                <FileText className="w-6 h-6 mr-2" />
+              <Button variant="outline" className="w-full h-12 border border-[#37474F]/30 hover:border-[#3B7A57] text-[#37474F]">
+                <FileText className="w-3 h-3 mr-2" />
                 Add Notes
               </Button>
             </DialogTrigger>
@@ -199,7 +199,7 @@ export default function WorkerTaskDetail() {
                   className="min-h-[120px]"
                 />
                 <Button variant="outline" className="w-full">
-                  <Camera className="w-6 h-6 mr-2" />
+                  <Camera className="w-3 h-3 mr-2" />
                   Add Photo
                 </Button>
                 <Button 

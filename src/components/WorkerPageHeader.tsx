@@ -18,7 +18,7 @@ export function WorkerPageHeader({ title, backTo, actions }: WorkerPageHeaderPro
             {backTo && (
               <Link to={backTo}>
                 <Button variant="outline" className="text-[#37474F]">
-                  <ArrowLeft className="w-6 h-6 mr-2" />
+                  <ArrowLeft className="w-3 h-3 mr-2" />
                   {title}
                 </Button>
               </Link>

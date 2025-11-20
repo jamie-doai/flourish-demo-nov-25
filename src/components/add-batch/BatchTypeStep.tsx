@@ -40,7 +40,7 @@ export function BatchTypeStep({ formData, updateFormData }: BatchTypeStepProps) 
         {batchTypes.map(({ type, label, icon: Icon, description }) => (
           <Card
             key={type}
-            className={`p-6 cursor-pointer transition-all hover:shadow-lg ${
+            className={`p-3 cursor-pointer transition-all hover:shadow-lg ${
               formData.batchType === type
                 ? "border-2 border-primary bg-primary/5"
                 : "border-2 border-transparent"

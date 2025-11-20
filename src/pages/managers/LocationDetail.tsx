@@ -36,28 +36,28 @@ export default function ManagerLocationDetail() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-6 py-8">
         {/* Header Section */}
         <div className="mb-6">
-          <Link to="/managers/inventory">
-            <Button variant="ghost" className="mb-4">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+          <Link to="/managers/inventory" className="mb-4 inline-block">
+            <Button variant="tertiary" size="sm">
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Inventory
             </Button>
           </Link>
           
-          <div className="flex items-center gap-4">
-            <MapPin className="w-8 h-8 text-primary" />
-            <div>
-              <h1 className="text-3xl font-bold">{mockLocation.name}</h1>
-              <p className="text-muted-foreground">{mockLocation.type}</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <MapPin className="w-3 h-3 text-forest-green flex-shrink-0" />
+            <div className="min-w-0">
+              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{mockLocation.name}</h1>
+              <p className="text-body-small sm:text-body text-muted-foreground">{mockLocation.type}</p>
             </div>
           </div>
         </div>
 
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 gap-2 border-2 border-forest-green">
+          <TabsList className="grid grid-cols-2 gap-2 border border-forest-green">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
           </TabsList>
@@ -67,7 +67,7 @@ export default function ManagerLocationDetail() {
             <div className="grid md:grid-cols-4 gap-4">
               <Card className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4 text-muted-foreground" />
+                  <MapPin className="w-3 h-3 text-muted-foreground" />
                   <div className="text-sm text-muted-foreground">Batches</div>
                 </div>
                 <div className="text-2xl font-bold">{mockLocation.batches || batchesInLocation.length}</div>
@@ -75,7 +75,7 @@ export default function ManagerLocationDetail() {
               
               <Card className="p-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <Leaf className="w-4 h-4 text-muted-foreground" />
+                  <Leaf className="w-3 h-3 text-muted-foreground" />
                   <div className="text-sm text-muted-foreground">Total Plants</div>
                 </div>
                 <div className="text-2xl font-bold">{(mockLocation.totalPlants || mockLocation.plants || 0).toLocaleString()}</div>
@@ -84,7 +84,7 @@ export default function ManagerLocationDetail() {
               {mockLocation.temperature && (
                 <Card className="p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Thermometer className="w-4 h-4 text-muted-foreground" />
+                    <Thermometer className="w-3 h-3 text-muted-foreground" />
                     <div className="text-sm text-muted-foreground">Temperature</div>
                   </div>
                   <div className="text-2xl font-bold">{mockLocation.temperature}</div>
@@ -94,7 +94,7 @@ export default function ManagerLocationDetail() {
               {mockLocation.humidity && (
                 <Card className="p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Droplet className="w-4 h-4 text-muted-foreground" />
+                    <Droplet className="w-3 h-3 text-muted-foreground" />
                     <div className="text-sm text-muted-foreground">Humidity</div>
                   </div>
                   <div className="text-2xl font-bold">{mockLocation.humidity}</div>
@@ -103,7 +103,7 @@ export default function ManagerLocationDetail() {
             </div>
 
             {/* Capacity */}
-            <Card className="p-6">
+            <Card>
               <h3 className="text-lg font-semibold mb-4">Capacity Overview</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -120,7 +120,7 @@ export default function ManagerLocationDetail() {
             </Card>
 
             {/* Maintenance Schedule */}
-            <Card className="p-6">
+            <Card>
               <h3 className="text-lg font-semibold mb-4">Maintenance Schedule</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
@@ -142,7 +142,7 @@ export default function ManagerLocationDetail() {
 
             {/* Child Locations */}
             {childLocations.length > 0 && (
-              <Card className="p-6">
+              <Card>
                 <h3 className="text-lg font-semibold mb-4">
                   {mockLocation.type === 'BUILDING' ? 'Bays' : mockLocation.type === 'BAY' ? 'Tables' : 'Child Locations'}
                 </h3>
@@ -174,7 +174,7 @@ export default function ManagerLocationDetail() {
                             >
                               <div className="flex items-center gap-3">
                                 {childTables.length > 0 ? (
-                                  isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />
+                                  isExpanded ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />
                                 ) : (
                                   <div className="w-4" />
                                 )}
@@ -213,7 +213,7 @@ export default function ManagerLocationDetail() {
                                       className="flex items-center justify-between p-3 rounded-lg hover:bg-accent border"
                                     >
                                       <div className="flex items-center gap-3">
-                                        <MapPin className="w-4 h-4 text-muted-foreground" />
+                                        <MapPin className="w-3 h-3 text-muted-foreground" />
                                         <div>
                                           <div className="font-medium text-sm">{table.name}</div>
                                           <div className="text-xs text-muted-foreground">{table.type}</div>
@@ -318,15 +318,15 @@ export default function ManagerLocationDetail() {
                           </div>
                           <div className="grid grid-cols-3 gap-4 text-sm text-muted-foreground">
                             <div className="flex items-center gap-1">
-                              <User className="w-4 h-4" />
+                              <User className="w-3 h-3" />
                               <span>{task.assignee || "Unassigned"}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
+                              <Clock className="w-3 h-3" />
                               <span>{task.dueDate || task.due}</span>
                             </div>
                             <div className="flex items-center gap-1">
-                              <CheckSquare className="w-4 h-4" />
+                              <CheckSquare className="w-3 h-3" />
                               <span>Batch: {task.batch}</span>
                             </div>
                           </div>
@@ -340,7 +340,7 @@ export default function ManagerLocationDetail() {
                 ))}
               </div>
             ) : (
-              <Card className="p-6 text-center">
+              <Card className="text-center">
                 <p className="text-muted-foreground">No tasks scheduled for this location</p>
               </Card>
             )}

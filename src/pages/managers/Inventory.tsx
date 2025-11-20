@@ -1,4 +1,5 @@
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -161,14 +162,14 @@ export default function ManagerInventory() {
     
   return (
     <ManagerLayout>
-        <main className="container mx-auto px-4 py-6 bg-white">
+        <main className="container mx-auto px-6 py-8 bg-white">
           <div className="mb-6">
             <Button 
               variant="primary-ghost" 
               onClick={() => setSelectedSpecies(null)}
               className="mb-4"
             >
-              <ArrowLeft className="w-6 h-6 mr-2" />
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Species
             </Button>
             
@@ -200,7 +201,7 @@ export default function ManagerInventory() {
           {/* Batches for this Species */}
           <div>
             <h2 className="text-heading-3 font-heading font-bold mb-4">Batches of {speciesData?.species}</h2>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               {speciesData?.batches.map((batch) => (
                 <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
                   <Card 
@@ -262,14 +263,14 @@ export default function ManagerInventory() {
 
     return (
       <ManagerLayout>
-        <main className="container mx-auto px-4 py-6 bg-white">
+        <main className="container mx-auto px-6 py-8 bg-white">
           <div className="mb-6">
             <Button 
               variant="primary-ghost" 
               onClick={() => setSelectedStage(null)}
               className="mb-4"
             >
-              <ArrowLeft className="w-6 h-6 mr-2" />
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Stages
             </Button>
             
@@ -305,7 +306,7 @@ export default function ManagerInventory() {
           {/* Batches in Stage */}
           <div>
             <h2 className="text-heading-3 font-heading font-bold mb-4">Batches in {stage?.name}</h2>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               {stats.batchList.map((batch) => (
                 <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
                   <Card 
@@ -366,29 +367,29 @@ export default function ManagerInventory() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 py-6 bg-white">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <div>
-            <h1 className="text-heading-1 font-heading font-bold mb-2">Inventory Management</h1>
-            <p className="text-body text-muted-foreground">Track batches across stages and locations</p>
-          </div>
-          <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-            <Button
-              variant={activeView === "stocktake" ? "default" : "primary-outline"}
-              onClick={() => setActiveView("stocktake")}
-              className="flex-1 sm:flex-none"
-            >
-              <ClipboardList className="w-6 h-6 mr-2" />
-              Stocktake
-            </Button>
-            <Button variant="default" asChild className="flex-1 sm:flex-none">
-              <Link to="/managers/batches/add">
-                <Plus className="w-6 h-6" />
-                New Batch
-              </Link>
-            </Button>
-          </div>
-        </div>
+      <main className="container mx-auto px-6 py-8 bg-white">
+        <PageHeader
+          title="Inventory Management"
+          description="Track batches across stages and locations"
+          actions={
+            <>
+              <Button
+                variant={activeView === "stocktake" ? "default" : "tertiary"}
+                onClick={() => setActiveView("stocktake")}
+                className="flex-1 sm:flex-none"
+              >
+                <ClipboardList className="w-3 h-3 mr-2" />
+                Stocktake
+              </Button>
+              <Button variant="default" asChild className="flex-1 sm:flex-none">
+                <Link to="/managers/batches/add">
+                  <Plus className="w-3 h-3 mr-2" />
+                  New Batch
+                </Link>
+              </Button>
+            </>
+          }
+        />
 
         {activeView === "stocktake" ? (
           <>
@@ -397,31 +398,31 @@ export default function ManagerInventory() {
               onClick={() => setActiveView("inventory")}
               className="mb-4"
             >
-              <ArrowLeft className="w-6 h-6 mr-2" />
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Inventory
             </Button>
             <StocktakeManager />
           </>
         ) : (
           <Tabs defaultValue="batches" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 border-2 border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
             <TabsTrigger value="stages" className="text-xs sm:text-sm">
-              <Layers className="w-4 h-4 mr-1 sm:mr-2" />
+              <Layers className="w-3 h-3 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Stages</span>
               <span className="sm:hidden">Stages</span>
             </TabsTrigger>
             <TabsTrigger value="species" className="text-xs sm:text-sm">
-              <Sprout className="w-4 h-4 mr-1 sm:mr-2" />
+              <Sprout className="w-3 h-3 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Species</span>
               <span className="sm:hidden">Species</span>
             </TabsTrigger>
             <TabsTrigger value="batches" className="text-xs sm:text-sm">
-              <Package className="w-4 h-4 mr-1 sm:mr-2" />
+              <Package className="w-3 h-3 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">All Batches</span>
               <span className="sm:hidden">Batches</span>
             </TabsTrigger>
             <TabsTrigger value="locations" className="text-xs sm:text-sm">
-              <MapPin className="w-4 h-4 mr-1 sm:mr-2" />
+              <MapPin className="w-3 h-3 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Locations</span>
               <span className="sm:hidden">Locations</span>
             </TabsTrigger>
@@ -439,7 +440,7 @@ export default function ManagerInventory() {
                     onClick={() => setSelectedStage(stage.id)}
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <Icon className="w-6 h-6 text-forest-green" />
+                      <Icon className="w-3 h-3 text-forest-green" />
                       <div className="text-right">
                         <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
                         <div className="text-body-small text-muted-foreground">Batches</div>
@@ -468,7 +469,7 @@ export default function ManagerInventory() {
                   onClick={() => setSelectedSpecies(species.species)}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <Sprout className="w-6 h-6 text-forest-green" />
+                    <Sprout className="w-3 h-3 text-forest-green" />
                     <div className="text-right">
                       <div className="text-heading-2 font-heading font-bold">{species.batchCount}</div>
                       <div className="text-body-small text-muted-foreground">Batches</div>
@@ -497,12 +498,12 @@ export default function ManagerInventory() {
           <TabsContent value="batches" className="space-y-2">
             <div className="flex gap-4 mb-6">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
                 <Input placeholder="Search batches by species or ID..." className="pl-10 border-2 border-forest-green" />
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2">
               {batches.map((batch) => (
                 <div key={batch.id} className="relative">
                   <Card className="hover:shadow-card transition-shadow">
@@ -562,7 +563,7 @@ export default function ManagerInventory() {
                           setDirectEditDialogOpen(true);
                         }}
                       >
-                        <Edit3 className="w-6 h-6" />
+                        <Edit3 className="w-3 h-3" />
                       </Button>
                     </div>
                   </Card>
@@ -586,7 +587,7 @@ export default function ManagerInventory() {
                 return (
                   <Card key={building.id} className="overflow-hidden">
                     <Collapsible open={isExpanded} onOpenChange={() => toggleBuilding(building.id)}>
-                      <div className="p-4 bg-muted/30">
+                      <div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3 flex-1">
                             <CollapsibleTrigger asChild>
@@ -598,7 +599,7 @@ export default function ManagerInventory() {
                                 )}
                               </Button>
                             </CollapsibleTrigger>
-                            <MapPin className="w-6 h-6 text-primary" />
+                            <MapPin className="w-3 h-3 text-primary" />
                             <div className="flex-1">
                               <div className="flex items-center gap-2">
                                 <h3 className="text-lg font-semibold">{building.name}</h3>
@@ -630,7 +631,7 @@ export default function ManagerInventory() {
                       </div>
 
                       <CollapsibleContent>
-                        <div className="p-4 space-y-2 bg-white">
+                        <div className="p-4 flex flex-col gap-2 bg-white">
                           {bays.length === 0 ? (
                             <p className="text-sm text-muted-foreground italic px-4 py-2">No bays configured</p>
                           ) : (
@@ -642,7 +643,7 @@ export default function ManagerInventory() {
                               return (
                                 <Card key={bay.id} className="ml-8">
                                   <Collapsible open={isBayExpanded} onOpenChange={() => toggleBay(bay.id)}>
-                                    <div className="p-3 bg-muted/20">
+                                    <div>
                                       <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-2 flex-1">
                                           <CollapsibleTrigger asChild>
@@ -654,7 +655,7 @@ export default function ManagerInventory() {
                                               )}
                                             </Button>
                                           </CollapsibleTrigger>
-                                          <Layers className="w-6 h-6 text-muted-foreground" />
+                                          <Layers className="w-3 h-3 text-muted-foreground" />
                                           <div className="flex-1">
                                             <div className="flex items-center gap-2">
                                               <span className="font-medium text-sm">{bay.name}</span>
@@ -678,7 +679,7 @@ export default function ManagerInventory() {
                                     </div>
 
                                     <CollapsibleContent>
-                                      <div className="p-3 space-y-1.5 bg-white">
+                                      <div className="p-3 flex flex-col gap-2 bg-white">
                                         {tables.length === 0 ? (
                                           <p className="text-xs text-muted-foreground italic px-3 py-2">No tables configured</p>
                                         ) : (
@@ -704,7 +705,7 @@ export default function ManagerInventory() {
                                                       )}
                                                     </div>
                                                   </div>
-                                                  <ChevronRight className="w-6 h-6 text-muted-foreground" />
+                                                  <ChevronRight className="w-3 h-3 text-muted-foreground" />
                                                 </div>
                                               </Link>
                                             );

@@ -49,20 +49,20 @@ export function StocktakeManager() {
           <p className="text-muted-foreground">Create and manage inventory counts</p>
         </div>
         <Button>
-          <Plus className="w-6 h-6 mr-2" />
+          <Plus className="w-3 h-3 mr-2" />
           New Stocktake
         </Button>
       </div>
 
       <Tabs defaultValue="sessions">
-        <TabsList>
+        <TabsList className="grid grid-cols-2 gap-2 border border-forest-green">
           <TabsTrigger value="sessions">Active Sessions</TabsTrigger>
           <TabsTrigger value="history">History</TabsTrigger>
         </TabsList>
 
         <TabsContent value="sessions" className="space-y-4">
           {sessions.map((session) => (
-            <Card key={session.id} className="p-6">
+            <Card key={session.id}>
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -111,7 +111,7 @@ export function StocktakeManager() {
                 {session.status === "completed" && (
                   <>
                     <Button variant="outline" size="sm">
-                      <Download className="w-6 h-6 mr-2" />
+                      <Download className="w-3 h-3 mr-2" />
                       Export Report
                     </Button>
                     <Button size="sm">Post Adjustments</Button>
@@ -168,7 +168,7 @@ export function StocktakeManager() {
           ))}
 
           {sessions.length === 0 && (
-            <Card className="p-12 text-center">
+            <Card className="text-center">
               <p className="text-muted-foreground">No active stocktake sessions</p>
               <Button className="mt-4">Create First Stocktake</Button>
             </Card>
@@ -176,7 +176,7 @@ export function StocktakeManager() {
         </TabsContent>
 
         <TabsContent value="history">
-          <Card className="p-12 text-center">
+          <Card className="text-center">
             <p className="text-muted-foreground">Historical stocktakes will appear here</p>
           </Card>
         </TabsContent>

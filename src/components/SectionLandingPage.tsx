@@ -36,10 +36,10 @@ export function SectionLandingPage({
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {sections.map((section) => (
             <Link key={section.path} to={section.path}>
-              <Card className="hover:shadow-card transition-all cursor-pointer group">
-                <div className="flex items-start justify-between mb-3">
-                  <section.icon className={`w-6 h-6 ${section.color || 'text-forest-green'}`} />
-                  <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+              <Card className="hover:shadow-card transition-all cursor-pointer group p-4">
+                <div className="flex items-start justify-between mb-2">
+                  <section.icon className={`w-3 h-3 ${section.color || 'text-forest-green'}`} />
+                  <ArrowRight className="w-3 h-3 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </div>
                 <h3 className="text-heading-4 font-heading font-bold mb-1">{section.title}</h3>
                 <p className="text-muted-foreground text-body-small">{section.description}</p>

@@ -103,7 +103,7 @@ export default function Dashboard() {
                 <Button variant="primary-ghost" size="sm">View All</Button>
               </Link>
             </div>
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2">
               {recentBatches.map((batch) => (
                 <div
                   key={batch.id}
@@ -152,7 +152,7 @@ export default function Dashboard() {
                 <Button variant="primary-ghost" size="sm">View All</Button>
               </Link>
             </div>
-            <div className="space-y-3">
+            <div className="flex flex-col gap-2">
               {todayTasks.map((task) => (
                 <div
                   key={task.id}

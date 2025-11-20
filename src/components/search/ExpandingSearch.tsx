@@ -110,7 +110,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
         onClick={() => onExpandChange(true)}
         className="border-white text-white hover:bg-lime-green/20"
       >
-        <Search className="w-6 h-6" />
+        <Search className="w-3 h-3" />
       </Button>
     );
   }
@@ -119,7 +119,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
     <div ref={containerRef} className="relative flex-1 max-w-2xl">
       <div className="relative flex items-center gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground z-10" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground z-10" />
           <Input
             ref={inputRef}
             value={query}
@@ -134,7 +134,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
             onClick={handleClose}
             className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
           >
-            <X className="w-6 h-6" />
+            <X className="w-3 h-3" />
           </Button>
         </div>
         <QuickFilterDropdown 
@@ -161,7 +161,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
                       onClick={() => handleRecentClick(recent)}
                       className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-colors text-left"
                     >
-                      <Clock className="w-6 h-6 text-muted-foreground" />
+                      <Clock className="w-3 h-3 text-muted-foreground" />
                       <span className="text-sm">{recent}</span>
                     </button>
                   ))}
@@ -209,7 +209,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
                 className="w-full"
               >
                 <span>Show more results</span>
-                <ArrowRight className="w-6 h-6 ml-2" />
+                <ArrowRight className="w-3 h-3 ml-2" />
               </Button>
             </div>
           )}

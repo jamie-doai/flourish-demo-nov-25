@@ -1,13 +1,13 @@
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Plus, ArrowLeft, FileText } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { quotes } from "@/data";
 
@@ -30,59 +30,36 @@ export default function ManagerSalesQuotes() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <SidebarProvider>
-          <div className="flex gap-6">
-            <div className="hidden md:block">
-              <SalesSidebar />
-            </div>
-            <main className="flex-1">
-              <div className="mb-4">
-                <SidebarTrigger className="md:hidden" />
-              </div>
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/managers/sales">
-            <Button variant="tertiary" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Sales
-            </Button>
-          </Link>
-        </div>
-
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <div>
-                <h1 className="text-3xl font-bold mb-2">Quotes</h1>
-                <p className="text-muted-foreground">Manage and track sales quotes</p>
-              </div>
-              <Select value="quotes" onValueChange={(value) => navigate(`/managers/sales/${value}`)}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select section" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="quotes">Quotes</SelectItem>
-                  <SelectItem value="orders">Orders</SelectItem>
-                  <SelectItem value="invoices">Invoices</SelectItem>
-                  <SelectItem value="clients">Clients</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        <PageHeader
+          title="Quotes"
+          description="Manage and track sales quotes"
+          backTo="/managers/sales"
+          backLabel="Back to Sales"
+          sectionSwitcher={{
+            value: "quotes",
+            onValueChange: (value) => navigate(`/managers/sales/${value}`),
+            options: [
+              { value: "quotes", label: "Quotes" },
+              { value: "orders", label: "Orders" },
+              { value: "invoices", label: "Invoices" },
+              { value: "clients", label: "Clients" },
+            ],
+          }}
+          actions={
             <Link to="/managers/sales/quotes/new">
               <Button>
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="w-3 h-3 mr-2" />
                 New Quote
               </Button>
             </Link>
-          </div>
-        </div>
+          }
+        />
 
         <div className="flex gap-4 mb-6">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
             <Input placeholder="Search quotes by client, ID..." className="pl-10" />
           </div>
         </div>
@@ -113,7 +90,7 @@ export default function ManagerSalesQuotes() {
               <div className="flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-2">
-                    <FileText className="w-5 h-5 text-primary" />
+                    <FileText className="w-3 h-3 text-primary" />
                     <div className="font-semibold text-lg">{quote.quoteNumber}</div>
                     <Badge className={getStatusColor(quote.status)}>{getStatusLabel(quote.status)}</Badge>
                     {quote.reserveStock && (
@@ -150,10 +127,7 @@ export default function ManagerSalesQuotes() {
             </Card>
           ))}
         </div>
-            </main>
-          </div>
-        </SidebarProvider>
-      </div>
-    </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }

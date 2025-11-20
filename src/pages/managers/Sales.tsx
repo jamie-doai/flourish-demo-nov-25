@@ -9,28 +9,28 @@ export default function ManagerSales() {
       icon: FileText,
       description: "Create and manage sales quotes",
       path: "/managers/sales/quotes",
-      color: "text-purple-500"
+      color: "text-forest-green"
     },
     {
       title: "Orders",
       icon: ShoppingCart,
       description: "Track and manage customer orders",
       path: "/managers/sales/orders",
-      color: "text-blue-500"
+      color: "text-forest-green"
     },
     {
       title: "Invoices",
       icon: Receipt,
       description: "Generate and manage invoices from orders",
       path: "/managers/sales/invoices",
-      color: "text-orange-500"
+      color: "text-forest-green"
     },
     {
       title: "Clients",
       icon: Users,
       description: "Manage client relationships",
       path: "/managers/sales/clients",
-      color: "text-green-500"
+      color: "text-forest-green"
     },
   ];
 

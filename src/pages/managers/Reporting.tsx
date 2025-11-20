@@ -19,20 +19,20 @@ export default function ManagerReporting() {
     <div className="min-h-screen bg-background">
       <DevBar />
       <Navigation />
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Reporting & Analytics</h1>
-            <p className="text-muted-foreground">Traceability, compliance, and performance insights</p>
+      <main className="container mx-auto px-6 py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div className="min-w-0">
+            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2 break-words">Reporting & Analytics</h1>
+            <p className="text-body-small sm:text-body text-muted-foreground">Traceability, compliance, and performance insights</p>
           </div>
-          <Button variant="hero">
-            <Download className="w-4 h-4" />
+          <Button variant="default" className="flex-shrink-0">
+            <Download className="w-3 h-3 mr-2" />
             Export Report
           </Button>
         </div>
 
         <Tabs defaultValue="traceability" className="space-y-6">
-          <TabsList>
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
             <TabsTrigger value="traceability"><FileCheck className="w-4 h-4 mr-2" />Traceability</TabsTrigger>
             <TabsTrigger value="analytics"><BarChart3 className="w-4 h-4 mr-2" />Analytics</TabsTrigger>
             <TabsTrigger value="costs"><DollarSign className="w-4 h-4 mr-2" />Cost Analysis</TabsTrigger>
@@ -112,7 +112,7 @@ export default function ManagerReporting() {
           </TabsContent>
 
           <TabsContent value="costs">
-            <Card className="p-6">
+            <Card>
               <div className="text-center py-12">
                 <DollarSign className="w-12 h-12 mx-auto text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Cost Analysis & Margins</h3>
@@ -128,7 +128,7 @@ export default function ManagerReporting() {
           </TabsContent>
 
           <TabsContent value="biosecurity">
-            <Card className="p-6">
+            <Card>
               <div className="text-center py-12">
                 <Shield className="w-12 h-12 mx-auto text-primary mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Biosecurity Compliance</h3>

@@ -8,7 +8,7 @@ export default function ManagerLocationsSettings() {
     <SettingsLayout>
       <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <MapPin className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <MapPin className="w-3 h-3 text-green-600 dark:text-green-400" />
             <div>
               <h1 className="text-3xl font-bold">Location Configuration</h1>
               <p className="text-muted-foreground">Manage bays, houses, and facility settings</p>

@@ -74,7 +74,7 @@ export default function WorkerLocations() {
                 {sortBy === "tasks-least" && "Tasks (Least)"}
                 {sortBy === "name-asc" && "Name (A-Z)"}
                 {sortBy === "name-desc" && "Name (Z-A)"}
-                <ChevronDown className="w-6 h-6 ml-2" />
+                <ChevronDown className="w-3 h-3 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="bg-white z-50">
@@ -108,13 +108,13 @@ export default function WorkerLocations() {
 
               return (
                 <Collapsible key={location.id} open={isOpen} onOpenChange={() => toggleLocation(location.id)}>
-                  <Card className="bg-white border-2 border-[#37474F]/20 shadow-sm overflow-hidden">
+                  <Card className="bg-white border border-[#37474F]/20 shadow-sm overflow-hidden p-3">
                     <Link 
                       to={`/workers/locations/${location.id}`}
-                      className="block p-3 hover:bg-[#3B7A57]/5 transition-colors"
+                      className="block hover:bg-[#3B7A57]/5 transition-colors"
                     >
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-6 h-6 text-[#3B7A57] flex-shrink-0" />
+                        <MapPin className="w-3 h-3 text-[#3B7A57] flex-shrink-0" />
                         <div className="flex-1 min-w-0">
                           <h3 className="text-base font-semibold text-[#37474F]">{location.name}</h3>
                           <div className="flex items-center gap-2 mt-0.5 text-sm text-[#37474F]">
@@ -140,7 +140,7 @@ export default function WorkerLocations() {
                           onClick={(e) => e.stopPropagation()}
                         >
                           <span className="text-sm text-[#37474F]">Show Tables/Bays</span>
-                          <ChevronDown className={`w-6 h-6 text-[#37474F] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`w-3 h-3 text-[#37474F] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                         </Button>
                       </CollapsibleTrigger>
                     )}
@@ -158,7 +158,7 @@ export default function WorkerLocations() {
 
                             return (
                               <Link key={child.id} to={`/workers/locations/${child.id}`}>
-                                <Card className="p-2 bg-[#F8FAF9] border border-[#37474F]/10 hover:border-[#37474F]/30 hover:bg-white transition-all">
+                                <Card className="p-3 bg-[#F8FAF9] border border-[#37474F]/10 hover:border-[#37474F]/30 hover:bg-white transition-all">
                                   <div className="flex items-center gap-2">
                                     <div className="flex-1 min-w-0">
                                       <h4 className="text-sm font-medium text-[#37474F]">{child.name}</h4>

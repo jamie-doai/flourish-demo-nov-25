@@ -158,7 +158,7 @@ export default function CostLibrary() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-6">
           <Link to="/managers/settings">
@@ -168,10 +168,10 @@ export default function CostLibrary() {
             </Button>
           </Link>
           
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold flex items-center gap-2">
-                <DollarSign className="w-8 h-8" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div className="min-w-0">
+              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold flex flex-col sm:flex-row sm:items-center gap-2 break-words">
+                <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" />
                 Cost Library
               </h1>
               <p className="text-muted-foreground mt-1">
@@ -215,7 +215,7 @@ export default function CostLibrary() {
         
         {/* Filters */}
         <Card className="mb-6">
-          <CardContent className="pt-6">
+          <CardContent className="pt-3">
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1">
                 <Input
@@ -324,7 +324,7 @@ export default function CostLibrary() {
         
         {/* Info Banner */}
         <Card className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-          <CardContent className="pt-6">
+          <CardContent className="pt-3">
             <p className="text-sm text-blue-900 dark:text-blue-100">
               💡 <strong>Cost Versioning:</strong> When you update a cost item, you can create a new version
               with an effective date. This ensures historical batches retain their original costs while

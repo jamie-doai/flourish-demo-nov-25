@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -48,7 +49,7 @@ export default function ManagerDashboard() {
     <ManagerLayout>
       {/* Header - Mobile only */}
       <header className="md:hidden sticky top-0 bg-white border-b-2 border-forest-green z-10">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between gap-1.5">
             <div>
               <h1 className="text-heading-2 font-heading font-bold">Dashboard</h1>
@@ -56,11 +57,11 @@ export default function ManagerDashboard() {
             </div>
             <div className="flex items-center gap-2">
               <Button variant="tertiary" size="sm">
-                <Filter className="w-6 h-6 mr-2" />
+                <Filter className="w-3 h-3 mr-2" />
                 Filter
               </Button>
               <Button size="sm" className="bg-primary hover:bg-primary/90">
-                <Plus className="w-6 h-6 mr-2" />
+                <Plus className="w-3 h-3 mr-2" />
                 New
               </Button>
             </div>
@@ -68,7 +69,21 @@ export default function ManagerDashboard() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 bg-white">
+      <main className="container mx-auto px-6 py-8 bg-white">
+        {/* Header - Desktop */}
+        <div className="hidden md:block mb-6">
+          <PageHeader
+            title="Dashboard"
+            description="Welcome back! Here's what's happening today."
+            actions={
+              <Button variant="default">
+                <Plus className="w-3 h-3 mr-2" />
+                New Batch
+              </Button>
+            }
+          />
+        </div>
+
         {/* Bento Grid - Tablet/Desktop */}
         <div className="hidden md:grid md:grid-cols-6 lg:grid-cols-12 gap-4">
           {/* KPIs Row */}
@@ -153,7 +168,7 @@ export default function ManagerDashboard() {
                     onClick={() => setCurrentLocationPage(p => Math.max(0, p - 1))}
                     disabled={currentLocationPage === 0}
                   >
-                    <ChevronLeft className="w-6 h-6" />
+                    <ChevronLeft className="w-3 h-3" />
                   </Button>
                   <span className="text-sm text-muted-foreground">
                     {currentLocationPage + 1} / {totalLocationPages}
@@ -164,7 +179,7 @@ export default function ManagerDashboard() {
                     onClick={() => setCurrentLocationPage(p => Math.min(totalLocationPages - 1, p + 1))}
                     disabled={currentLocationPage === totalLocationPages - 1}
                   >
-                    <ChevronRight className="w-6 h-6" />
+                    <ChevronRight className="w-3 h-3" />
                   </Button>
                 </div>
               )}
@@ -175,7 +190,7 @@ export default function ManagerDashboard() {
                   <Card className="hover:shadow-card transition-all">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-6 h-6 text-forest-green" />
+                        <MapPin className="w-3 h-3 text-forest-green" />
                         <h3 className="font-heading font-bold text-heading-4">{location.name}</h3>
                       </div>
                       <Badge variant={location.percentage >= 90 ? "destructive" : "secondary"}>
@@ -220,9 +235,9 @@ export default function ManagerDashboard() {
                       task.action.includes("Watering") ? "bg-cyan-100 dark:bg-cyan-950" :
                       "bg-purple-100 dark:bg-purple-950"
                     }`}>
-                      {task.action.includes("Potting") ? <Package className="w-6 h-6 text-blue-600 dark:text-blue-400" /> :
-                       task.action.includes("Watering") ? <Droplets className="w-6 h-6 text-cyan-600 dark:text-cyan-400" /> :
-                       <Clipboard className="w-6 h-6 text-purple-600 dark:text-purple-400" />}
+                      {task.action.includes("Potting") ? <Package className="w-3 h-3 text-blue-600 dark:text-blue-400" /> :
+                       task.action.includes("Watering") ? <Droplets className="w-3 h-3 text-cyan-600 dark:text-cyan-400" /> :
+                       <Clipboard className="w-3 h-3 text-purple-600 dark:text-purple-400" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-heading font-bold text-body">{task.action}</p>
@@ -413,7 +428,7 @@ export default function ManagerDashboard() {
                   <Card className="hover:shadow-card transition-shadow">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <MapPin className="w-6 h-6 text-forest-green" />
+                        <MapPin className="w-3 h-3 text-forest-green" />
                         <h3 className="font-heading font-bold text-heading-4">{location.name}</h3>
                       </div>
                       <Badge variant={location.percentage >= 90 ? "destructive" : "secondary"}>
@@ -457,9 +472,9 @@ export default function ManagerDashboard() {
                       task.action.includes("Watering") ? "bg-cyan-100 dark:bg-cyan-950" :
                       "bg-purple-100 dark:bg-purple-950"
                     }`}>
-                      {task.action.includes("Potting") ? <Package className="w-6 h-6 text-blue-600 dark:text-blue-400" /> :
-                       task.action.includes("Watering") ? <Droplets className="w-6 h-6 text-cyan-600 dark:text-cyan-400" /> :
-                       <Clipboard className="w-6 h-6 text-purple-600 dark:text-purple-400" />}
+                      {task.action.includes("Potting") ? <Package className="w-3 h-3 text-blue-600 dark:text-blue-400" /> :
+                       task.action.includes("Watering") ? <Droplets className="w-3 h-3 text-cyan-600 dark:text-cyan-400" /> :
+                       <Clipboard className="w-3 h-3 text-purple-600 dark:text-purple-400" />}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-heading font-bold text-body">{task.action}</p>

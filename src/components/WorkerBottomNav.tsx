@@ -51,7 +51,7 @@ export function WorkerBottomNav() {
                     : "bg-forest-green hover:bg-forest-green/90"
                 }`}
               >
-                <item.icon className="w-6 h-6 text-lime-green" strokeWidth={2} />
+                <item.icon className="w-3 h-3 text-lime-green" strokeWidth={2} />
                 <span className="text-base font-semibold">{item.label}</span>
               </Link>
             );
@@ -77,7 +77,7 @@ export function WorkerBottomNav() {
                       : "bg-forest-green hover:bg-forest-green/90"
                   }`}
                 >
-                  <item.icon className="w-6 h-6 text-lime-green" strokeWidth={2} />
+                  <item.icon className="w-3 h-3 text-lime-green" strokeWidth={2} />
                   <span className="text-base font-semibold">{item.label}</span>
                 </Link>
               );
@@ -89,7 +89,7 @@ export function WorkerBottomNav() {
             onClick={() => setIsOpen(false)}
             className="w-full mt-4 py-2 bg-forest-green text-lime-green border-2 border-forest-green hover:bg-forest-green/90 shadow-md hover:shadow-lg text-base font-semibold"
           >
-            Close <X className="w-6 h-6 text-lime-green ml-2" />
+            Close <X className="w-3 h-3 text-lime-green ml-2" />
           </Button>
         </div>
       </div>

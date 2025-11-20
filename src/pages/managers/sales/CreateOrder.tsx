@@ -1,7 +1,7 @@
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, Trash2, Save, Package, Edit3 } from "lucide-react";
+import { Plus, Trash2, Save, Package, Edit3 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -182,32 +182,14 @@ export default function CreateOrder() {
   const { subtotal, tax, total } = calculateTotals();
 
   return (
-    <div className="min-h-screen bg-white">
-      <DevBar />
-      <Navigation />
-      <div className="container mx-auto px-4 py-6 max-w-7xl bg-white">
-        <SidebarProvider>
-          <div className="flex gap-4">
-            <div className="hidden md:block">
-              <SalesSidebar />
-            </div>
-            <main className="flex-1 pb-20">
-              <div className="mb-4">
-                <SidebarTrigger className="md:hidden" />
-              </div>
-        <div className="flex items-center gap-1.5 mb-6">
-          <Link to="/managers/sales/orders">
-            <Button variant="primary-outline" size="sm">
-              <ArrowLeft className="w-6 h-6 mr-2" />
-              Back to Orders
-            </Button>
-          </Link>
-        </div>
-
-        <div className="mb-6">
-          <h1 className="text-heading-1 font-heading font-bold mb-2">Create New Order</h1>
-          <p className="text-body text-muted-foreground">Create a direct order (pre-approved quote)</p>
-        </div>
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        <PageHeader
+          title="Create New Order"
+          description="Create a direct order (pre-approved quote)"
+          backTo="/managers/sales/orders"
+          backLabel="Back to Orders"
+        />
 
         <Card className="mb-6">
           <h2 className="text-heading-4 font-heading font-bold mb-4">Client Details</h2>
@@ -278,11 +260,11 @@ export default function CreateOrder() {
             <h2 className="text-heading-4 font-heading font-bold">Line Items</h2>
             <div className="flex gap-2">
               <Button onClick={() => setShowInventorySheet(true)} size="sm">
-                <Package className="w-6 h-6 mr-2" />
+                <Package className="w-3 h-3 mr-2" />
                 Add from Inventory
               </Button>
               <Button onClick={addLineItem} variant="tertiary" size="sm">
-                <Edit3 className="w-6 h-6 mr-2" />
+                <Edit3 className="w-3 h-3 mr-2" />
                 Add Custom Item
               </Button>
             </div>
@@ -393,7 +375,7 @@ export default function CreateOrder() {
                           size="sm"
                           onClick={() => removeLineItem(item.id)}
                         >
-                          <Trash2 className="w-6 h-6 text-destructive" />
+                          <Trash2 className="w-3 h-3 text-destructive" />
                         </Button>
                       )}
                     </TableCell>
@@ -422,7 +404,7 @@ export default function CreateOrder() {
           </div>
         </Card>
 
-        <Card className="p-6 mb-6">
+        <Card className="mb-6">
           <h2 className="text-lg font-semibold mb-4">Additional Information</h2>
           
           <div className="space-y-4">
@@ -457,20 +439,17 @@ export default function CreateOrder() {
             <Button variant="tertiary">Cancel</Button>
           </Link>
           <Button onClick={handleCreateOrder}>
-            <Package className="w-6 h-6 mr-2" />
+            <Package className="w-3 h-3 mr-2" />
             Create Order
           </Button>
         </div>
-            </main>
-          </div>
 
         <InventorySelectionSheet
           open={showInventorySheet}
           onOpenChange={setShowInventorySheet}
           onAddItems={handleAddFromInventory}
         />
-        </SidebarProvider>
-      </div>
-    </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }

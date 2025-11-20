@@ -59,7 +59,7 @@ export default function ManagerSearchResults() {
   return (
     <ManagerLayout>
       
-      <div className="container mx-auto px-4 py-6">
+      <div className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-6">
           <Button
@@ -130,7 +130,7 @@ export default function ManagerSearchResults() {
             )}
             
             {isEmpty && (
-              <Card className="p-12">
+              <Card>
                 <div className="text-center">
                   <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No results found</h3>
@@ -152,7 +152,7 @@ export default function ManagerSearchResults() {
             )}
             
             {!query && (
-              <Card className="p-12">
+              <Card>
                 <div className="text-center">
                   <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">Start searching</h3>

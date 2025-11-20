@@ -50,7 +50,7 @@ export default function CostAnalysis() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-6">
           <Link to="/managers/reporting">
@@ -60,13 +60,13 @@ export default function CostAnalysis() {
             </Button>
           </Link>
           
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-3xl font-bold flex items-center gap-2">
-                <BarChart3 className="w-8 h-8" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div className="min-w-0">
+              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold flex flex-col sm:flex-row sm:items-center gap-2 break-words">
+                <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" />
                 Cost Analysis
               </h1>
-              <p className="text-muted-foreground mt-1">
+              <p className="text-body-small sm:text-body text-muted-foreground mt-1">
                 Production cost insights and margin analysis
               </p>
             </div>
@@ -208,7 +208,7 @@ export default function CostAnalysis() {
         
         {/* Info Banner */}
         <Card className="mt-6 bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
-          <CardContent className="pt-6">
+          <CardContent className="pt-3">
             <p className="text-sm text-blue-900 dark:text-blue-100">
               💡 <strong>Cost Tracking:</strong> Costs are automatically accumulated as batches progress
               through lifecycle stages. Visit individual batch pages to see detailed cost breakdowns

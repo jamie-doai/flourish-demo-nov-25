@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3, Split, Merge, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -44,7 +44,7 @@ export default function ManagerBatchDetail() {
       <div className="min-h-screen bg-background">
         <DevBar />
         <Navigation />
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-6 py-8">
           <p>Batch not found</p>
         </div>
       </div>
@@ -98,32 +98,23 @@ export default function ManagerBatchDetail() {
   const progressPercentage = ((currentStageIndex + 1) / lifecycleStages.length) * 100;
 
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
-      
-      <main className="container mx-auto px-4 py-6">
-        {/* Header with back button */}
-        <div className="mb-6">
-          <Link to="/managers/inventory">
-            <Button variant="ghost" className="mb-4">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Inventory
-            </Button>
-          </Link>
-          
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl font-bold">{mockBatch.id}</h1>
+    <ManagerLayout>
+      <main className="container mx-auto px-6 py-8">
+        <PageHeader
+          title={mockBatch.id}
+          description={mockBatch.species}
+          backTo="/managers/inventory"
+          backLabel="Back to Inventory"
+          actions={
             <Button variant="tertiary" onClick={() => setShowDirectEdit(true)}>
-              <Edit3 className="w-4 h-4 mr-2" />
+              <Edit3 className="w-3 h-3 mr-2" />
               Edit Batch
             </Button>
-          </div>
-          <p className="text-sm text-muted-foreground">{mockBatch.species}</p>
-        </div>
+          }
+        />
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-2 border-2 border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity Log</TabsTrigger>
@@ -133,7 +124,7 @@ export default function ManagerBatchDetail() {
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-6">
             {/* Quick Actions */}
-            <Card className="p-6">
+            <Card>
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <Button 
@@ -141,7 +132,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Watering")}
                 >
-                  <Droplets className="w-6 h-6 text-primary" />
+                  <Droplets className="w-3 h-3 text-primary" />
                   <span className="text-sm">Record Watering</span>
                 </Button>
 
@@ -150,7 +141,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Treatment")}
                 >
-                  <Sprout className="w-6 h-6 text-primary" />
+                  <Sprout className="w-3 h-3 text-primary" />
                   <span className="text-sm">Add Treatment</span>
                 </Button>
 
@@ -159,7 +150,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => handleAction("Photo")}
                 >
-                  <Camera className="w-6 h-6 text-primary" />
+                  <Camera className="w-3 h-3 text-primary" />
                   <span className="text-sm">Add Photo</span>
                 </Button>
 
@@ -168,7 +159,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => toast({ title: "Label sent to printer 🖨️" })}
                 >
-                  <Printer className="w-6 h-6 text-primary" />
+                  <Printer className="w-3 h-3 text-primary" />
                   <span className="text-sm">Print Label</span>
                 </Button>
 
@@ -177,7 +168,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowMoveDialog(true)}
                 >
-                  <Move className="w-6 h-6 text-primary" />
+                  <Move className="w-3 h-3 text-primary" />
                   <span className="text-sm">Move Batch</span>
                 </Button>
 
@@ -186,7 +177,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowSplitDialog(true)}
                 >
-                  <Split className="w-6 h-6 text-primary" />
+                  <Split className="w-3 h-3 text-primary" />
                   <span className="text-sm">Split Batch</span>
                 </Button>
 
@@ -195,7 +186,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowMergeDialog(true)}
                 >
-                  <Merge className="w-6 h-6 text-primary" />
+                  <Merge className="w-3 h-3 text-primary" />
                   <span className="text-sm">Merge Batch</span>
                 </Button>
 
@@ -204,7 +195,7 @@ export default function ManagerBatchDetail() {
                   className="h-auto flex flex-col items-center gap-2 p-4"
                   onClick={() => setShowDuplicateDialog(true)}
                 >
-                  <Copy className="w-6 h-6 text-primary" />
+                  <Copy className="w-3 h-3 text-primary" />
                   <span className="text-sm">Duplicate</span>
                 </Button>
               </div>
@@ -233,7 +224,7 @@ export default function ManagerBatchDetail() {
 
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
-              <Card className={`p-4 border-2 ${
+              <Card className={`p-4 border ${
                 mockBatch.saleStatus === "ready-for-sale" 
                   ? "border-green-500 bg-green-50 dark:bg-green-950/20" 
                   : mockBatch.saleStatus === "on-order"
@@ -241,7 +232,7 @@ export default function ManagerBatchDetail() {
                   : "border-orange-500 bg-orange-50 dark:bg-orange-950/20"
               }`}>
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className={`w-5 h-5 mt-0.5 ${
+                  <CheckCircle2 className={`w-3 h-3 mt-0.5 ${
                     mockBatch.saleStatus === "ready-for-sale" 
                       ? "text-green-600" 
                       : mockBatch.saleStatus === "on-order"
@@ -266,7 +257,7 @@ export default function ManagerBatchDetail() {
             )}
 
             {/* Lifecycle Timeline */}
-            <Card className="p-6">
+            <Card>
               <h3 className="text-base font-semibold mb-4">Lifecycle Progress</h3>
               <div className="grid grid-cols-6 gap-2">
                 {lifecycleStages.map((stage, index) => {
@@ -295,7 +286,7 @@ export default function ManagerBatchDetail() {
             </Card>
 
             {/* Batch Info */}
-            <Card className="p-6">
+            <Card>
               <h3 className="text-base font-semibold mb-4">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -351,21 +342,21 @@ export default function ManagerBatchDetail() {
               </Card>
 
               {/* Environmental Data */}
-              <Card className="p-6">
+              <Card>
                 <h3 className="text-base font-semibold mb-4">Environmental Conditions</h3>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <Thermometer className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <Thermometer className="w-3 h-3 text-primary mx-auto mb-2" />
                     <p className="text-lg font-semibold">{environmentalData.temperature}</p>
                     <p className="text-xs text-muted-foreground">Temperature</p>
                   </div>
                   <div>
-                    <Wind className="w-6 h-6 text-primary mx-auto mb-2" />
+                    <Wind className="w-3 h-3 text-primary mx-auto mb-2" />
                     <p className="text-lg font-semibold">{environmentalData.humidity}</p>
                     <p className="text-xs text-muted-foreground">Humidity</p>
                   </div>
                   <div>
-                    <CheckCircle2 className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                    <CheckCircle2 className="w-3 h-3 text-green-600 mx-auto mb-2" />
                     <p className="text-xs font-semibold">Optimal</p>
                     <p className="text-xs text-muted-foreground">Conditions</p>
                   </div>
@@ -378,7 +369,7 @@ export default function ManagerBatchDetail() {
 
           {/* Tasks Tab */}
           <TabsContent value="tasks" className="space-y-6">
-            <Card className="p-6">
+            <Card>
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold">Related Tasks</h3>
                 <Button size="sm">Add Task</Button>
@@ -442,9 +433,9 @@ export default function ManagerBatchDetail() {
 
         {/* Activity Log Tab */}
         <TabsContent value="activity">
-          <Card className="p-6">
+          <Card>
             <div className="flex items-center gap-2 mb-4">
-              <History className="w-4 h-4 text-muted-foreground" />
+              <History className="w-3 h-3 text-muted-foreground" />
               <h3 className="text-base font-semibold">Activity Log</h3>
             </div>
             <div className="space-y-4">
@@ -590,6 +581,7 @@ export default function ManagerBatchDetail() {
         onClose={() => setShowCostHistory(false)}
         batchId={mockBatch.id}
       />
-    </div>
+      </main>
+    </ManagerLayout>
   );
 }

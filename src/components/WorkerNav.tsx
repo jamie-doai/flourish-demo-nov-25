@@ -54,7 +54,7 @@ export function WorkerNav() {
                 active ? "text-[#3B7A57]" : "text-[#37474F]/50"
               }`}
             >
-              <item.icon className="w-6 h-6" />
+              <item.icon className="w-3 h-3" />
               <span className="text-xs font-medium">{item.label}</span>
             </Link>
           );
@@ -64,7 +64,7 @@ export function WorkerNav() {
         <Sheet>
           <SheetTrigger asChild>
             <button className="flex flex-col items-center justify-center gap-1 text-[#37474F]/50">
-              <Menu className="w-6 h-6" />
+              <Menu className="w-3 h-3" />
               <span className="text-xs font-medium">Menu</span>
             </button>
           </SheetTrigger>
@@ -80,7 +80,7 @@ export function WorkerNav() {
                       active ? "bg-[#3B7A57]/10 text-[#3B7A57]" : "text-[#37474F]"
                     }`}
                   >
-                    <item.icon className="w-6 h-6" />
+                    <item.icon className="w-3 h-3" />
                     <span className="font-medium">{item.label}</span>
                   </Link>
                 );
@@ -90,7 +90,7 @@ export function WorkerNav() {
             <div className="pb-4">
               <SheetClose asChild>
                 <Button variant="outline" className="w-full">
-                  <X className="w-6 h-6 mr-2" />
+                  <X className="w-3 h-3 mr-2" />
                   Close Menu
                 </Button>
               </SheetClose>

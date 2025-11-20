@@ -101,7 +101,7 @@ export default function WorkerBatchDetail() {
           <div className="flex items-center gap-3">
             <Link to="/managers/inventory">
               <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-6 h-6 mr-2" />
+                <ArrowLeft className="w-3 h-3 mr-2" />
                 Batches
               </Button>
             </Link>
@@ -115,7 +115,7 @@ export default function WorkerBatchDetail() {
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-3xl font-bold text-[#37474F]">{mockBatch.id}</h1>
             <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })}>
-              <Printer className="w-6 h-6 mr-2" />
+              <Printer className="w-3 h-3 mr-2" />
               Print Label
             </Button>
           </div>
@@ -127,38 +127,38 @@ export default function WorkerBatchDetail() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="w-full">
-                <MoreVertical className="w-6 h-6 mr-2" />
+                <MoreVertical className="w-3 h-3 mr-2" />
                 Quick Actions
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56 bg-background">
               <DropdownMenuItem onClick={() => handleAction("Watering")}>
-                <Droplets className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Droplets className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Record Watering
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleAction("Treatment")}>
-                <Sprout className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Sprout className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Add Treatment
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => handleAction("Photo")}>
-                <Camera className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Camera className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Add Photo
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => setShowSplitDialog(true)}>
-                <Split className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Split className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Split Batch
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setShowMergeDialog(true)}>
-                <Merge className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Merge className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Merge Batch
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setShowDuplicateDialog(true)}>
-                <Copy className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Copy className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Duplicate Batch
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setShowMoveDialog(true)}>
-                <Move className="w-6 h-6 mr-2 text-[#3B7A57]" />
+                <Move className="w-3 h-3 mr-2 text-[#3B7A57]" />
                 Move Batch
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -187,7 +187,7 @@ export default function WorkerBatchDetail() {
         </Dialog>
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="w-full">
+          <TabsList className="max-w-2xl">
             <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="flex-1">Activity Log</TabsTrigger>
@@ -196,7 +196,7 @@ export default function WorkerBatchDetail() {
           <TabsContent value="overview" className="space-y-4">
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
-              <Card className={`p-4 border-2 ${
+              <Card className={`p-4 border ${
                 mockBatch.saleStatus === "ready-for-sale" 
                   ? "border-green-500 bg-green-50" 
                   : mockBatch.saleStatus === "on-order"
@@ -204,7 +204,7 @@ export default function WorkerBatchDetail() {
                   : "border-orange-500 bg-orange-50"
               }`}>
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className={`w-6 h-6 mt-0.5 ${
+                  <CheckCircle2 className={`w-3 h-3 mt-0.5 ${
                     mockBatch.saleStatus === "ready-for-sale" 
                       ? "text-green-600" 
                       : mockBatch.saleStatus === "on-order"
@@ -229,7 +229,7 @@ export default function WorkerBatchDetail() {
             )}
 
             {/* Lifecycle Timeline */}
-            <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>
 
               <div className="grid grid-cols-6 gap-2">
@@ -259,7 +259,7 @@ export default function WorkerBatchDetail() {
             </Card>
 
             {/* Batch Info */}
-            <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -315,21 +315,21 @@ export default function WorkerBatchDetail() {
             </Card>
 
             {/* Environmental Data */}
-            <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Environmental Conditions</h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
-                  <Thermometer className="w-6 h-6 text-[#3B7A57] mx-auto mb-2" />
+                  <Thermometer className="w-3 h-3 text-[#3B7A57] mx-auto mb-2" />
                   <p className="text-lg font-semibold text-[#37474F]">{environmentalData.temperature}</p>
                   <p className="text-xs text-[#37474F]/60">Temperature</p>
                 </div>
                 <div>
-                  <Wind className="w-6 h-6 text-[#3B7A57] mx-auto mb-2" />
+                  <Wind className="w-3 h-3 text-[#3B7A57] mx-auto mb-2" />
                   <p className="text-lg font-semibold text-[#37474F]">{environmentalData.humidity}</p>
                   <p className="text-xs text-[#37474F]/60">Humidity</p>
                 </div>
                 <div>
-                  <CheckCircle2 className="w-6 h-6 text-green-600 mx-auto mb-2" />
+                  <CheckCircle2 className="w-3 h-3 text-green-600 mx-auto mb-2" />
                   <p className="text-xs font-semibold text-[#37474F]">Optimal</p>
                   <p className="text-xs text-[#37474F]/60">Conditions</p>
                 </div>
@@ -343,7 +343,7 @@ export default function WorkerBatchDetail() {
           <TabsContent value="tasks" className="space-y-4">
             {/* Related Tasks */}
             {relatedTasks.length > 0 ? (
-              <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">
                   Related Tasks ({relatedTasks.length})
                 </h3>
@@ -390,7 +390,7 @@ export default function WorkerBatchDetail() {
                 </div>
               </Card>
             ) : (
-              <Card className="p-8 bg-white border-2 border-[#37474F]/20 shadow-sm text-center">
+              <Card className="p-8 bg-white border border-[#37474F]/20 shadow-sm text-center">
                 <p className="text-[#37474F]/60">No tasks assigned to this batch</p>
               </Card>
             )}
@@ -398,9 +398,9 @@ export default function WorkerBatchDetail() {
 
           <TabsContent value="activity" className="space-y-4">
             {/* Activity Log */}
-            <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <History className="w-6 h-6 text-[#37474F]/60" />
+                <History className="w-3 h-3 text-[#37474F]/60" />
                 <h3 className="text-sm font-semibold text-[#37474F]">Activity Log</h3>
               </div>
               <div className="space-y-4">

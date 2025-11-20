@@ -28,7 +28,7 @@ export function StatsCard({ title, value, icon: Icon, trend }: StatsCardProps) {
             </p>
           )}
         </div>
-        <Icon className="w-6 h-6 text-forest-green" />
+        <Icon className="w-3 h-3 text-forest-green" />
       </div>
     </Card>
   );

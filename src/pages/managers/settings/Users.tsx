@@ -8,14 +8,14 @@ export default function ManagerUsersSettings() {
     <SettingsLayout>
       <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <Users className="w-3 h-3 text-blue-600 dark:text-blue-400" />
             <div>
               <h1 className="text-3xl font-bold">User Management</h1>
               <p className="text-muted-foreground">Manage users, roles, and permissions</p>
             </div>
           </div>
           <Button variant="hero">
-            <Plus className="w-6 h-6 mr-2" />
+            <Plus className="w-3 h-3 mr-2" />
             Add User
           </Button>
         </div>

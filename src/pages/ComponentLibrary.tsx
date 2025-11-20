@@ -54,7 +54,7 @@ export default function ComponentLibrary() {
         </div>
 
         <Tabs defaultValue="shared" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-3 gap-2 border-2 border-forest-green">
+          <TabsList className="grid grid-cols-3 gap-2 border-2 border-forest-green">
             <TabsTrigger value="shared" className="text-body font-heading font-bold">
               Shared Components
             </TabsTrigger>
@@ -113,7 +113,7 @@ export default function ComponentLibrary() {
                         <Button size="sm">Small</Button>
                         <Button size="default">Default</Button>
                         <Button size="lg">Large</Button>
-                        <Button size="icon"><Plus className="w-6 h-6" /></Button>
+                        <Button size="icon"><Plus className="w-3 h-3" /></Button>
                       </div>
                     </div>
                     <div>
@@ -230,21 +230,21 @@ export default function ComponentLibrary() {
                       <h3 className="text-heading-4 font-heading font-bold mb-3">Icon Sizes</h3>
                       <div className="flex items-center gap-6">
                         <div className="flex flex-col items-center gap-2">
-                          <Sprout className="w-6 h-6 text-forest-green" />
-                          <span className="text-body-small">24px (w-6)</span>
+                          <Sprout className="w-3 h-3 text-forest-green" />
+                          <span className="text-body-small">24px (w-3) - Standard</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
                           <Sprout className="w-8 h-8 text-forest-green" />
-                          <span className="text-body-small">32px (w-8)</span>
+                          <span className="text-body-small">64px (w-8) - Large</span>
                         </div>
                         <div className="flex flex-col items-center gap-2">
                           <Sprout className="w-12 h-12 text-forest-green" />
-                          <span className="text-body-small">48px (w-12)</span>
+                          <span className="text-body-small">48px (w-12) - Extra Large</span>
                         </div>
                       </div>
                     </div>
                     <CodeBlock id="icons">
-{`<Sprout className="w-6 h-6" />  {/* Small - 24px */}
+{`<Sprout className="w-3 h-3" />  {/* Small - 24px */}
 <Sprout className="w-8 h-8" />  {/* Medium - 32px */}
 <Sprout className="w-12 h-12" />  {/* Large - 48px */}`}
                     </CodeBlock>
@@ -363,12 +363,12 @@ export default function ComponentLibrary() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-muted-foreground" />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
                       <Input className="pl-10" placeholder="Search..." />
                     </div>
                     <CodeBlock id="search-bar">
 {`<div className="relative">
-  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6" />
+  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3" />
   <Input className="pl-10" placeholder="Search..." />
 </div>`}
                     </CodeBlock>
@@ -532,7 +532,7 @@ export default function ComponentLibrary() {
                   <CardContent className="space-y-4">
                     <Card className="hover:shadow-card transition-all">
                       <div className="flex items-center gap-1.5">
-                        <CheckCircle2 className="w-6 h-6 text-forest-green" />
+                        <CheckCircle2 className="w-3 h-3 text-forest-green" />
                         <div>
                           <p className="text-body font-heading font-bold">Task Completed</p>
                           <p className="text-body-small text-muted-foreground">Watering batch MAN-2024-156</p>

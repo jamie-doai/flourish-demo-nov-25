@@ -1,4 +1,5 @@
 import { SettingsLayout } from "@/components/layouts/SettingsLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, MapPin, Sprout, Settings as SettingsIcon, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -49,11 +50,10 @@ export default function ManagerSettings() {
 
   return (
     <SettingsLayout>
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Settings</h1>
-          <p className="text-muted-foreground">Manage users, locations, species catalog, and system preferences</p>
-        </div>
+      <PageHeader
+        title="Settings"
+        description="Manage users, locations, species catalog, and system preferences"
+      />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {settingsCards.map((setting) => {
@@ -62,7 +62,7 @@ export default function ManagerSettings() {
               <Link key={setting.path} to={setting.path}>
                 <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
                   <CardHeader>
-                    <Icon className={`w-6 h-6 ${setting.iconColor} mb-4`} />
+                    <Icon className={`w-3 h-3 ${setting.iconColor} mb-4`} />
                     <CardTitle className="text-xl">{setting.title}</CardTitle>
                     <CardDescription className="text-sm">{setting.description}</CardDescription>
                   </CardHeader>
@@ -76,7 +76,6 @@ export default function ManagerSettings() {
             );
           })}
         </div>
-      </main>
     </SettingsLayout>
   );
 }

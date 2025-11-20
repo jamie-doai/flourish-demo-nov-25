@@ -11,7 +11,7 @@ export default function ManagerProfile() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 py-8 max-w-2xl">
+      <main className="container mx-auto px-6 py-8 max-w-2xl">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-8 rounded-xl mb-6">
           <div className="flex items-center gap-4">
@@ -19,14 +19,14 @@ export default function ManagerProfile() {
               <User className="w-10 h-10" />
             </div>
             <div>
-              <h1 className="text-3xl font-semibold">Sarah Johnson</h1>
+              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-semibold break-words">Sarah Johnson</h1>
               <p className="text-primary-foreground/90">Operations Manager</p>
             </div>
           </div>
         </div>
 
         {/* Stats Card */}
-        <Card className="p-6 mb-6">
+        <Card className="mb-6">
           <h3 className="font-semibold mb-4">This Month</h3>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>

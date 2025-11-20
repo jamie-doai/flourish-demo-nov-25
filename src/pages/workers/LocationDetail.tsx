@@ -31,14 +31,14 @@ export default function WorkerLocationDetail() {
 
         <main className="container mx-auto px-4 py-6">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="w-full mb-4">
+            <TabsList className="mb-4 max-w-2xl">
               <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
               <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
               {/* Location Stats */}
-              <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">Facility Overview</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
@@ -65,14 +65,14 @@ export default function WorkerLocationDetail() {
                   <div>
                     <p className="text-xs text-[#37474F] mb-1">Temperature</p>
                     <div className="flex items-center gap-1">
-                      <Thermometer className="w-6 h-6 text-[#37474F]" />
+                      <Thermometer className="w-3 h-3 text-[#37474F]" />
                       <p className="text-sm text-[#37474F] font-semibold">{mockLocation.temperature}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-xs text-[#37474F] mb-1">Humidity</p>
                     <div className="flex items-center gap-1">
-                      <Droplet className="w-6 h-6 text-[#37474F]" />
+                      <Droplet className="w-3 h-3 text-[#37474F]" />
                       <p className="text-sm text-[#37474F] font-semibold">{mockLocation.humidity}</p>
                     </div>
                   </div>
@@ -93,11 +93,11 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {batchesInLocation.map((batch) => (
                     <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-                      <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <Leaf className="w-6 h-6 text-[#3B7A57]" />
+                              <Leaf className="w-3 h-3 text-[#3B7A57]" />
                               <h3 className="text-base font-semibold text-[#37474F]">{batch.id}</h3>
                             </div>
                             <p className="text-xs text-[#37474F] mb-1">{batch.species}</p>
@@ -139,7 +139,7 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {tasksForLocation.map((task) => (
                     <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                      <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -163,11 +163,11 @@ export default function WorkerLocationDetail() {
                             </div>
                             <div className="flex items-center gap-3 text-sm text-[#37474F] mb-1">
                               <div className="flex items-center gap-1">
-                                <Leaf className="w-6 h-6" />
+                                <Leaf className="w-3 h-3" />
                                 <span>{task.species}</span>
                               </div>
                               <div className="flex items-center gap-1">
-                                <Clock className="w-6 h-6" />
+                                <Clock className="w-3 h-3" />
                                 <span>{task.due}</span>
                               </div>
                             </div>
@@ -179,7 +179,7 @@ export default function WorkerLocationDetail() {
                   ))}
                 </div>
               ) : (
-                <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm text-center">
+                <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm text-center">
                   <p className="text-sm text-[#37474F]/60">No tasks scheduled for this location</p>
                 </Card>
               )}

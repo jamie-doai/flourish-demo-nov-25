@@ -11,7 +11,7 @@ export default function ManagerSystemSettings() {
   return (
     <SettingsLayout>
         <div className="flex items-center gap-4 mb-8">
-          <Settings className="w-6 h-6 text-slate-600 dark:text-slate-400" />
+          <Settings className="w-3 h-3 text-slate-600 dark:text-slate-400" />
           <div>
             <h1 className="text-3xl font-bold">System Settings</h1>
             <p className="text-muted-foreground">Configure system preferences and integrations</p>

@@ -40,8 +40,8 @@ export default function ManagerTaskDetail() {
       <div className="min-h-screen bg-background">
         <DevBar />
         <Navigation />
-        <main className="container mx-auto px-4 py-8">
-          <Card className="p-6 text-center">
+        <main className="container mx-auto px-6 py-8">
+          <Card className="text-center">
             <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-semibold mb-2">Task Not Found</h2>
             <p className="text-muted-foreground mb-4">The task you're looking for doesn't exist.</p>
@@ -86,18 +86,18 @@ export default function ManagerTaskDetail() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <Link to="/managers/operations">
-            <Button variant="tertiary">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+          <Link to="/managers/operations" className="self-start">
+            <Button variant="tertiary" size="sm">
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back
             </Button>
           </Link>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold mb-2">{task.title || task.action}</h1>
-            <div className="flex items-center gap-2">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2 break-words">{task.title || task.action}</h1>
+            <div className="flex items-center gap-2 flex-wrap">
               <Badge className={getStatusColor(task.status)} variant="outline">
                 {task.status}
               </Badge>
@@ -106,11 +106,11 @@ export default function ManagerTaskDetail() {
               </Badge>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap flex-shrink-0">
             <Dialog open={showReassignDialog} onOpenChange={setShowReassignDialog}>
               <DialogTrigger asChild>
                 <Button variant="tertiary">
-                  <User className="w-4 h-4 mr-2" />
+                  <User className="w-3 h-3 mr-2" />
                   Reassign
                 </Button>
               </DialogTrigger>
@@ -158,7 +158,7 @@ export default function ManagerTaskDetail() {
                 }}
                 disabled={isComplete}
               >
-                <CheckCircle2 className="w-4 h-4 mr-2" />
+                <CheckCircle2 className="w-3 h-3 mr-2" />
                 {isComplete ? "Completed" : "Mark Complete"}
               </Button>
             )}
@@ -169,26 +169,26 @@ export default function ManagerTaskDetail() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Task Details */}
-            <Card className="p-6">
+            <Card>
               <h2 className="text-xl font-semibold mb-4">Task Information</h2>
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <User className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <User className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Assigned To</p>
                       <p className="font-medium">{task.assignee}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <MapPin className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Location</p>
                       <p className="font-medium">{task.location}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Package className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <Package className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Batch</p>
                       <p className="font-medium">{task.batch}</p>
@@ -197,14 +197,14 @@ export default function ManagerTaskDetail() {
                 </div>
                 <div className="space-y-3">
                   <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <Calendar className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Due Date</p>
                       <p className="font-medium">{task.dueDate}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-muted-foreground mt-0.5" />
+                    <Clock className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Estimated Hours</p>
                       <p className="font-medium">{task.estimatedHours}h</p>
@@ -223,7 +223,7 @@ export default function ManagerTaskDetail() {
 
             {/* Instructions */}
             {task.instructions && task.instructions.length > 0 && (
-              <Card className="p-6">
+              <Card>
                 <h2 className="text-xl font-semibold mb-4">Instructions</h2>
                 <ul className="space-y-3">
                   {task.instructions.map((instruction, index) => (
@@ -237,7 +237,7 @@ export default function ManagerTaskDetail() {
             )}
 
             {/* Notes Section */}
-            <Card className="p-6">
+            <Card>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold">Notes & Attachments</h2>
                 <Dialog open={showNotesDialog} onOpenChange={setShowNotesDialog}>
@@ -286,7 +286,7 @@ export default function ManagerTaskDetail() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Quick Actions */}
-            <Card className="p-6">
+            <Card>
               <h3 className="font-semibold mb-4">Quick Actions</h3>
               <div className="space-y-2">
                 <Button variant="tertiary" className="w-full justify-start">
@@ -305,7 +305,7 @@ export default function ManagerTaskDetail() {
             </Card>
 
             {/* Activity Log */}
-            <Card className="p-6">
+            <Card>
               <h3 className="font-semibold mb-4">Recent Activity</h3>
               <div className="space-y-3 text-sm">
                 <div className="flex gap-2">

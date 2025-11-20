@@ -32,7 +32,7 @@ export function Navigation() {
                 searchExpanded ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'
               }`}
             >
-              <Sprout className="w-6 h-6 text-white" />
+              <Sprout className="w-3 h-3 text-white" />
               <span>Flourish</span>
             </Link>
 
@@ -71,7 +71,7 @@ export function Navigation() {
                 }`}
               >
                 <Link to="/managers/batches/add">
-                  <Plus className="w-6 h-6" />
+                  <Plus className="w-3 h-3" />
                   Add Batch
                 </Link>
               </Button>
@@ -95,13 +95,13 @@ export function Navigation() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/managers/profile" className="cursor-pointer">
-                      <UserCircle className="w-6 h-6 mr-2" />
+                      <UserCircle className="w-3 h-3 mr-2" />
                       Profile
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/managers/settings" className="cursor-pointer">
-                      <Settings className="w-6 h-6 mr-2" />
+                      <Settings className="w-3 h-3 mr-2" />
                       Settings
                     </Link>
                   </DropdownMenuItem>
@@ -124,7 +124,7 @@ export function Navigation() {
                   isActive(item.path) ? "text-white bg-lime-green/20" : "text-white/80 hover:text-white hover:bg-lime-green/20"
                 }`}
               >
-                <item.icon className="w-6 h-6" />
+                <item.icon className="w-3 h-3" />
                 <span className="text-xs">{item.label}</span>
               </Link>
             ))}
@@ -134,7 +134,7 @@ export function Navigation() {
               to="/managers/scan"
               className="flex flex-col items-center justify-center gap-1 text-white"
             >
-              <Scan className="w-6 h-6" />
+              <Scan className="w-3 h-3" />
               <span className="text-xs">Scan</span>
             </Link>
             
@@ -142,7 +142,7 @@ export function Navigation() {
             <Sheet>
               <SheetTrigger asChild>
                 <button className="flex flex-col items-center justify-center gap-1 text-white/80 hover:text-white">
-                  <Menu className="w-6 h-6" />
+                  <Menu className="w-3 h-3" />
                   <span className="text-xs">Menu</span>
                 </button>
               </SheetTrigger>
@@ -156,7 +156,7 @@ export function Navigation() {
                         isActive(item.path) ? "bg-lime-green/20 text-forest-green" : "text-foreground hover:bg-lime-green/20"
                       }`}
                     >
-                      <item.icon className="w-6 h-6" />
+                      <item.icon className="w-3 h-3" />
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   ))}
@@ -165,7 +165,7 @@ export function Navigation() {
                 <div className="pb-4">
                   <SheetClose asChild>
                     <Button variant="outline" className="w-full">
-                      <X className="w-6 h-6 mr-2" />
+                      <X className="w-3 h-3 mr-2" />
                       Close Menu
                     </Button>
                   </SheetClose>

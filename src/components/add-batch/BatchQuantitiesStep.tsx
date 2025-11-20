@@ -156,7 +156,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
                     variant="ghost"
                     className="h-8 w-8 p-0"
                   >
-                    <Trash2 className="w-6 h-6" />
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 )}
               </div>
@@ -224,14 +224,14 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
           ))}
 
           <Button onClick={addBatch} variant="outline" className="w-full">
-            <Plus className="w-6 h-6 mr-2" />
+            <Plus className="w-3 h-3 mr-2" />
             Add Another Batch
           </Button>
         </div>
       )}
 
       {!createMultiple && (
-        <Card className="p-6 text-center text-muted-foreground">
+        <Card className="text-center text-muted-foreground">
           <p>Single batch mode - continue to configure one batch</p>
         </Card>
       )}

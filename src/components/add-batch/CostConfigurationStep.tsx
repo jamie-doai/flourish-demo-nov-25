@@ -184,13 +184,13 @@ export function CostConfigurationStep({
       
       {/* Add Custom Cost (placeholder) */}
       <Button variant="outline" className="w-full" disabled>
-        <Plus className="w-6 h-6 mr-2" />
+        <Plus className="w-3 h-3 mr-2" />
         Add Custom Cost Item
       </Button>
       
       {selectedCosts.length === 0 && (
         <Card className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800">
-          <CardContent className="pt-6">
+          <CardContent className="pt-3">
             <p className="text-sm text-yellow-800 dark:text-yellow-200">
               ⚠️ No costs selected. It's recommended to configure costs for accurate production tracking.
             </p>

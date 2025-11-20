@@ -105,7 +105,7 @@ export default function AddBatch() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-6 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Button
@@ -117,8 +117,8 @@ export default function AddBatch() {
               Back to Inventory
             </Button>
             
-            <h1 className="text-3xl font-bold mb-2">Add New Batch</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2">Add New Batch</h1>
+            <p className="text-body-small sm:text-body text-muted-foreground">
               Step {currentStep + 1} of {STEPS.length}: {STEPS[currentStep]}
             </p>
           </div>
@@ -141,7 +141,7 @@ export default function AddBatch() {
           </div>
 
           {/* Step Content */}
-          <Card className="p-6 mb-6">
+          <Card className="mb-6">
             {currentStep === 0 && (
               <BatchTypeStep formData={formData} updateFormData={updateFormData} />
             )}

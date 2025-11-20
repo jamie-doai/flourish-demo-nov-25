@@ -49,7 +49,7 @@ export default function WorkerInventory() {
           
           <div className="flex gap-2 mb-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-6 h-6 text-[#37474F]/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[#37474F]/40" />
               <Input
                 type="search"
                 placeholder="Search by species or batch ID..."
@@ -60,15 +60,15 @@ export default function WorkerInventory() {
             </div>
             <Link to="/workers/scan">
               <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90">
-                <Scan className="w-6 h-6" />
+                <Scan className="w-3 h-3" />
               </Button>
             </Link>
           </div>
 
           {/* Stage Tabs */}
           <Tabs value={selectedStage} onValueChange={setSelectedStage} className="w-full">
-            <TabsList className="w-full grid grid-cols-7 h-auto gap-1 bg-transparent p-0">
-              <TabsTrigger value="all" className="text-xs py-2 data-[state=active]:bg-[#3B7A57] data-[state=active]:text-white">
+            <TabsList className="grid grid-cols-7 h-auto gap-1 p-1">
+              <TabsTrigger value="all" className="text-xs py-2">
                 All
               </TabsTrigger>
               {stages.map((stage) => {
@@ -78,7 +78,7 @@ export default function WorkerInventory() {
                   <TabsTrigger 
                     key={stage.id} 
                     value={stage.id}
-                    className="text-xs py-2 flex flex-col gap-1 h-auto data-[state=active]:bg-[#3B7A57] data-[state=active]:text-white"
+                    className="text-xs py-2 flex flex-col gap-1 h-auto"
                   >
                     <Icon className="w-3 h-3" />
                     <span className="hidden sm:inline">{stage.name}</span>
@@ -94,14 +94,14 @@ export default function WorkerInventory() {
       <main className="container mx-auto px-4 py-6">
         {/* Stage Summary */}
         {selectedStage !== "all" && (
-          <Card className="p-4 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <div className="flex items-center gap-3 mb-3">
               {(() => {
                 const stage = stages.find(s => s.id === selectedStage);
                 const Icon = stage?.icon || Sprout;
                 return (
                   <>
-                    <Icon className="w-6 h-6" />
+                    <Icon className="w-3 h-3" />
                     <div>
                       <h2 className="text-lg font-semibold text-[#37474F]">{stage?.name} Stage</h2>
                       <p className="text-sm text-[#37474F]/60">
@@ -119,11 +119,11 @@ export default function WorkerInventory() {
         <div className="space-y-4">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-              <Card className={`p-4 bg-white border-2 shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
+              <Card className={`p-4 bg-white border shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <Leaf className="w-6 h-6 text-[#3B7A57]" />
+                        <Leaf className="w-3 h-3 text-[#3B7A57]" />
                       <h3 className="text-base font-semibold text-[#37474F]">{batch.id}</h3>
                       {batch.urgent && (
                         <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full font-medium">
@@ -143,7 +143,7 @@ export default function WorkerInventory() {
                   <div>
                     <p className="text-[#37474F] text-xs mb-1">Location</p>
                     <div className="flex items-center gap-1">
-                      <MapPin className="w-6 h-6 text-[#37474F]" />
+                      <MapPin className="w-3 h-3 text-[#37474F]" />
                       <p className="text-[#37474F] font-medium text-sm">{batch.location}</p>
                     </div>
                   </div>

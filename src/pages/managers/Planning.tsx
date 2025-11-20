@@ -1,7 +1,7 @@
-import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { PlanningSidebar } from "@/components/PlanningSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -90,23 +90,18 @@ export default function ManagerPlanning() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <DevBar />
-      <Navigation />
-      <div className="container mx-auto px-4 py-8">
-        <SidebarProvider>
-          <div className="flex gap-6">
-            <div className="hidden md:block">
-              <PlanningSidebar />
-            </div>
-            <main className="flex-1">
-              <div className="mb-4">
-                <SidebarTrigger className="md:hidden" />
-              </div>
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Planning & Forecasting</h1>
-          <p className="text-muted-foreground">Production plans, capacity management, and resource allocation</p>
-        </div>
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<PlanningSidebar />}>
+        <PageHeader
+          title="Planning & Forecasting"
+          description="Production plans, capacity management, and resource allocation"
+          actions={
+            <Button>
+              <Plus className="w-3 h-3 mr-2" />
+              New Production Plan
+            </Button>
+          }
+        />
 
         {/* Content temporarily hidden - Full planning interface preserved in code */}
         {false && (
@@ -119,7 +114,7 @@ export default function ManagerPlanning() {
             </div>
 
             <Tabs defaultValue="plans" className="space-y-6">
-              <TabsList>
+              <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
                 <TabsTrigger value="plans">Production Plans</TabsTrigger>
                 <TabsTrigger value="forecast">Forecasting</TabsTrigger>
                 <TabsTrigger value="capacity">Capacity</TabsTrigger>
@@ -203,7 +198,7 @@ export default function ManagerPlanning() {
                         <div key={item.species} className="p-4 rounded-lg border">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-3">
-                              <Sprout className="w-5 h-5 text-primary" />
+                              <Sprout className="w-3 h-3 text-primary" />
                               <div>
                                 <h3 className="font-semibold">{item.species}</h3>
                                 <Badge className={
@@ -257,7 +252,7 @@ export default function ManagerPlanning() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5" />
+                        <TrendingUp className="w-3 h-3" />
                         Growth Trends
                       </CardTitle>
                     </CardHeader>
@@ -282,7 +277,7 @@ export default function ManagerPlanning() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Target className="w-5 h-5" />
+                        <Target className="w-3 h-3" />
                         Next Quarter Targets
                       </CardTitle>
                     </CardHeader>
@@ -314,7 +309,7 @@ export default function ManagerPlanning() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <MapPin className="w-5 h-5" />
+                      <MapPin className="w-3 h-3" />
                       Location Capacity Overview
                     </CardTitle>
                   </CardHeader>
@@ -381,7 +376,7 @@ export default function ManagerPlanning() {
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Users className="w-5 h-5" />
+                      <Users className="w-3 h-3" />
                       Staff & Resource Planning
                     </CardTitle>
                   </CardHeader>
@@ -458,10 +453,7 @@ export default function ManagerPlanning() {
             </Tabs>
           </>
         )}
-            </main>
-          </div>
-        </SidebarProvider>
-      </div>
-    </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }

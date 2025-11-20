@@ -32,28 +32,33 @@ export default function WorkerHome() {
   const dateStr = today.toLocaleDateString('en-NZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div className="min-h-screen bg-forest-green">
-      <div className="max-w-[500px] mx-auto bg-white min-h-screen pb-20">
+    <div className="min-h-screen bg-lime-green">
+      <div className="max-w-[500px] mx-auto bg-lime-green min-h-screen pb-20">
         <DevBar />
         
+        {/* Flourish Logo and Text */}
+        <div className="bg-lime-green p-3 pb-3">
+          <div className="flex items-center gap-2 font-display text-heading-4 text-forest-green">
+            <Sprout className="w-3 h-3 text-forest-green" />
+            <span>Flourish</span>
+          </div>
+        </div>
+        
         {/* Intro Header with Date and Weather */}
-        <header className="bg-lime-green p-6 pb-6 border-b-2 border-forest-green">
+        <header className="bg-lime-green p-3 pb-3">
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-1.5">
-              <Sprout className="w-8 h-8 text-forest-green" />
-              <div>
-                <h1 className="text-heading-2 font-heading font-bold text-forest-green">Kia ora, Alex 👋</h1>
-                <p className="text-body-small text-forest-green/70">{dateStr}</p>
-              </div>
+            <div>
+              <h1 className="text-heading-2 font-heading font-bold text-forest-green">Kia ora, Alex 👋</h1>
+              <p className="text-body-small text-forest-green/70">{dateStr}</p>
             </div>
             <div className="flex items-center gap-2 text-forest-green">
-              <Cloud className="w-6 h-6" />
+              <Cloud className="w-3 h-3" />
               <span className="text-body-large font-heading font-bold">18°C</span>
             </div>
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-6 space-y-6 bg-white">
+        <main className="container mx-auto px-3 py-3 space-y-6 bg-lime-green">
           {/* Notifications */}
           <div>
             <h2 className="text-heading-3 font-heading font-bold text-forest-green mb-3">Notifications</h2>
@@ -61,14 +66,14 @@ export default function WorkerHome() {
               {displayedNotifications.map((notification) => (
                 <Card 
                   key={notification.id} 
-                  className={`border-2 ${
+                  className={`border shadow-none p-3 ${
                     notification.type === "urgent" 
                       ? "border-caution bg-caution/10" 
                       : "border-forest-green bg-white"
                   }`}
                 >
                   <div className="flex items-start gap-2">
-                    <AlertCircle className={`w-6 h-6 mt-0.5 ${
+                    <AlertCircle className={`w-3 h-3 mt-0.5 ${
                       notification.type === "urgent" ? "text-caution" : "text-forest-green"
                     }`} />
                     <div className="flex-1">
@@ -85,7 +90,7 @@ export default function WorkerHome() {
                   className="w-full"
                 >
                   {showAllNotifications ? 'Show less' : `Show ${notifications.length - 3} more`}
-                  <ChevronRight className={`w-6 h-6 ml-1 transition-transform ${showAllNotifications ? 'rotate-90' : ''}`} />
+                  <ChevronRight className={`w-3 h-3 ml-1 transition-transform ${showAllNotifications ? 'rotate-90' : ''}`} />
                 </Button>
               )}
             </div>
@@ -97,14 +102,14 @@ export default function WorkerHome() {
             <div className="space-y-2">
               {displayedContinue.map((item) => (
                 <Link key={item.id} to={`/workers/tasks/${item.id}`}>
-                  <Card className="border-2 border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all">
+                  <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all shadow-none p-3">
                     <div className="flex items-center gap-1.5">
-                      <item.icon className="w-6 h-6 text-forest-green flex-shrink-0" />
+                      <item.icon className="w-3 h-3 text-forest-green flex-shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-body font-heading font-bold text-forest-green">{item.title}</p>
                         <p className="text-body-small text-muted-foreground mt-0.5">{item.subtitle}</p>
                       </div>
-                      <ChevronRight className="w-6 h-6 text-muted-foreground flex-shrink-0" />
+                      <ChevronRight className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                     </div>
                   </Card>
                 </Link>
@@ -116,7 +121,7 @@ export default function WorkerHome() {
                   className="w-full"
                 >
                   {showAllContinue ? 'Show less' : `Show ${continueItems.length - 3} more`}
-                  <ChevronRight className={`w-6 h-6 ml-1 transition-transform ${showAllContinue ? 'rotate-90' : ''}`} />
+                  <ChevronRight className={`w-3 h-3 ml-1 transition-transform ${showAllContinue ? 'rotate-90' : ''}`} />
                 </Button>
               )}
             </div>
@@ -127,29 +132,29 @@ export default function WorkerHome() {
             <h2 className="text-heading-3 font-heading font-bold text-forest-green mb-3">Navigate</h2>
             <div className="grid grid-cols-2 gap-1.5">
               <Link to="/workers/tasks">
-                <Card className="border-2 border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24">
-                  <ListTodo className="w-6 h-6 text-forest-green" />
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                  <ListTodo className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Tasks</span>
                 </Card>
               </Link>
 
               <Link to="/workers/locations">
-                <Card className="border-2 border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24">
-                  <MapPin className="w-6 h-6 text-forest-green" />
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                  <MapPin className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Locations</span>
                 </Card>
               </Link>
 
               <Link to="/workers/inventory">
-                <Card className="border-2 border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24">
-                  <Package className="w-6 h-6 text-forest-green" />
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                  <Package className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Inventory</span>
                 </Card>
               </Link>
 
               <Link to="/workers/scan">
-                <Card className="bg-neon-yellow border-2 border-forest-green hover:bg-[#f9fe9a] transition-all flex flex-col items-center justify-center gap-2 max-h-24">
-                  <Scan className="w-6 h-6 text-forest-green" />
+                <Card className="bg-neon-yellow border border-forest-green hover:bg-[#f9fe9a] transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                  <Scan className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Scan</span>
                 </Card>
               </Link>

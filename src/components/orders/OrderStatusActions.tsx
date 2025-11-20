@@ -90,7 +90,7 @@ export function OrderStatusActions({
         onClick={() => handleStatusClick(nextStatus)}
         variant={config.variant}
       >
-        <Icon className="w-6 h-6 mr-2" />
+        <Icon className="w-3 h-3 mr-2" />
         {config.label}
       </Button>
     );
@@ -116,7 +116,7 @@ export function OrderStatusActions({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
-              <MoreVertical className="w-6 h-6" />
+              <MoreVertical className="w-3 h-3" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">

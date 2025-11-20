@@ -24,7 +24,7 @@ export default function ManagerScan() {
       <Navigation />
       
       <header className="bg-card border-b sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link to="/managers">
@@ -41,7 +41,7 @@ export default function ManagerScan() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[70vh]">
+      <main className="container mx-auto px-6 py-8 flex flex-col items-center justify-center min-h-[70vh]">
         {/* Camera Preview Placeholder */}
         <div className="relative w-full max-w-sm aspect-square bg-muted/50 rounded-2xl border-2 border-border mb-8 overflow-hidden">
           {scanning ? (

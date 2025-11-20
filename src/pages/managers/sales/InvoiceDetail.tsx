@@ -20,7 +20,7 @@ export default function InvoiceDetail() {
   if (!invoice) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-6">
+        <Card>
           <p className="text-muted-foreground">Invoice not found</p>
           <Link to="/managers/sales/invoices">
             <Button variant="tertiary" className="mt-4">Back to Invoices</Button>
@@ -61,22 +61,22 @@ export default function InvoiceDetail() {
     <div className="min-h-screen bg-background pb-20">
       <DevBar />
       <Navigation />
-      <main className="container mx-auto px-4 py-8 max-w-6xl">
+      <main className="container mx-auto px-6 py-8 max-w-6xl">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/invoices">
             <Button variant="tertiary" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Invoices
             </Button>
           </Link>
         </div>
 
-        <Card className="p-6 mb-6">
-          <div className="flex items-start justify-between mb-6">
-            <div className="flex items-center gap-4">
-              <Receipt className="w-6 h-6 text-primary" />
-              <div>
-                <h1 className="text-2xl font-bold">{invoice.invoiceNumber}</h1>
+        <Card className="mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
+            <div className="flex items-center gap-4 min-w-0">
+              <Receipt className="w-3 h-3 text-primary flex-shrink-0" />
+              <div className="min-w-0">
+                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{invoice.invoiceNumber}</h1>
                 <p className="text-muted-foreground">{invoice.clientName}</p>
                 {invoice.linkedOrder && (
                   <Link to={`/managers/sales/orders/${invoice.linkedOrder}`} className="text-sm text-primary hover:underline">
@@ -196,27 +196,27 @@ export default function InvoiceDetail() {
 
         <div className="flex gap-3 justify-end">
           <Button variant="secondary" onClick={handleDownloadPDF}>
-            <Download className="w-4 h-4 mr-2" />
+            <Download className="w-3 h-3 mr-2" />
             Download PDF
           </Button>
 
           {invoice.status === "draft" && (
             <Button onClick={handleSendInvoice}>
-              <Send className="w-4 h-4 mr-2" />
+              <Send className="w-3 h-3 mr-2" />
               Send to Client
             </Button>
           )}
 
           {invoice.balanceDue > 0 && (
             <Button variant="secondary" onClick={handleRecordPayment}>
-              <DollarSign className="w-4 h-4 mr-2" />
+              <DollarSign className="w-3 h-3 mr-2" />
               Record Payment
             </Button>
           )}
 
           {!invoice.xeroSync && (
             <Button variant="tertiary" onClick={handleSyncXero}>
-              <FileText className="w-4 h-4 mr-2" />
+              <FileText className="w-3 h-3 mr-2" />
               Sync to Xero
             </Button>
           )}

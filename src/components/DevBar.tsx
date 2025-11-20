@@ -9,14 +9,14 @@ export function DevBar() {
           to="/workers" 
           className="flex items-center gap-2 px-3 py-1 rounded hover:bg-white/10 transition-colors"
         >
-          <HardHat className="w-6 h-6" />
+          <HardHat className="w-3 h-3" />
           Workers View
         </Link>
         <Link 
           to="/managers" 
           className="flex items-center gap-2 px-3 py-1 rounded hover:bg-white/10 transition-colors"
         >
-          <Briefcase className="w-6 h-6" />
+          <Briefcase className="w-3 h-3" />
           Managers View
         </Link>
       </div>

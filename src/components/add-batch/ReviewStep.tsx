@@ -225,7 +225,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
             className="flex-1"
             size="lg"
           >
-            <Check className="w-6 h-6 mr-2" />
+            <Check className="w-3 h-3 mr-2" />
             {formData.createMultiple && formData.batchConfigs && formData.batchConfigs.length > 0
               ? `Create ${formData.batchConfigs.length} Batches`
               : "Save & Exit"
@@ -238,7 +238,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
             className="flex-1"
             size="lg"
           >
-            <Plus className="w-6 h-6 mr-2" />
+            <Plus className="w-3 h-3 mr-2" />
             Save & Add Another
           </Button>
           
@@ -246,7 +246,7 @@ export function ReviewStep({ formData, onSave }: ReviewStepProps) {
             variant="outline"
             size="lg"
           >
-            <Printer className="w-6 h-6 mr-2" />
+            <Printer className="w-3 h-3 mr-2" />
             Print Label
           </Button>
         </div>

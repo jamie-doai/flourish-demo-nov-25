@@ -1,4 +1,5 @@
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,19 +82,19 @@ export default function ManagerOperations() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">Operations</h1>
-            <p className="text-muted-foreground">Task management, scheduling, and workflow coordination</p>
-          </div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="hero">
-                <Plus className="w-4 h-4" />
-                Create Task
-              </Button>
-            </DialogTrigger>
+      <main className="container mx-auto px-6 py-8">
+        <PageHeader
+          title="Operations"
+          description="Task management, scheduling, and workflow coordination"
+          actions={
+            <>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Plus className="w-3 h-3 mr-2" />
+                    Create Task
+                  </Button>
+                </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Create New Task</DialogTitle>
@@ -189,10 +190,12 @@ export default function ManagerOperations() {
               </div>
             </DialogContent>
           </Dialog>
-        </div>
+            </>
+          }
+        />
 
         <Tabs defaultValue="board" className="space-y-6">
-          <TabsList>
+          <TabsList className="grid grid-cols-3 gap-2 border border-forest-green">
             <TabsTrigger value="board">Task Board</TabsTrigger>
             <TabsTrigger value="list">List View</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
@@ -206,7 +209,7 @@ export default function ManagerOperations() {
                   <h3 className="font-semibold">Pending</h3>
                   <Badge variant="secondary">{tasksByStatus.pending.length}</Badge>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {tasksByStatus.pending.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
@@ -215,7 +218,7 @@ export default function ManagerOperations() {
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex items-center gap-2">
-                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                                 <span className="text-xs text-muted-foreground">{task.type}</span>
                               </div>
                               <Badge className={getPriorityColor(task.priority)} variant="outline">
@@ -251,7 +254,7 @@ export default function ManagerOperations() {
                   <h3 className="font-semibold">In Progress</h3>
                   <Badge variant="secondary">{tasksByStatus.inProgress.length}</Badge>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {tasksByStatus.inProgress.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
@@ -260,7 +263,7 @@ export default function ManagerOperations() {
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex items-center gap-2">
-                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                                 <span className="text-xs text-muted-foreground">{task.type}</span>
                               </div>
                               <Badge className={getPriorityColor(task.priority)} variant="outline">
@@ -296,7 +299,7 @@ export default function ManagerOperations() {
                   <h3 className="font-semibold">Scheduled</h3>
                   <Badge variant="secondary">{tasksByStatus.scheduled.length}</Badge>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {tasksByStatus.scheduled.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
@@ -305,7 +308,7 @@ export default function ManagerOperations() {
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex items-center gap-2">
-                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                                 <span className="text-xs text-muted-foreground">{task.type}</span>
                               </div>
                               <Badge className={getPriorityColor(task.priority)} variant="outline">
@@ -341,7 +344,7 @@ export default function ManagerOperations() {
                   <h3 className="font-semibold">Completed</h3>
                   <Badge variant="secondary">{tasksByStatus.completed.length}</Badge>
                 </div>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {tasksByStatus.completed.map((task) => {
                     const Icon = getTypeIcon(task.type);
                     return (
@@ -350,10 +353,10 @@ export default function ManagerOperations() {
                           <div className="space-y-2">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex items-center gap-2">
-                                <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
                                 <span className="text-xs text-muted-foreground">{task.type}</span>
                               </div>
-                              <CheckSquare className="w-4 h-4 text-primary" />
+                              <CheckSquare className="w-3 h-3 text-primary" />
                             </div>
                             <h4 className="font-medium text-sm leading-tight line-through">{task.title}</h4>
                             <div className="space-y-1 text-xs text-muted-foreground">
@@ -379,7 +382,7 @@ export default function ManagerOperations() {
           <TabsContent value="list" className="space-y-4">
             <div className="flex gap-4 mb-6">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
                 <Input placeholder="Search tasks..." className="pl-10" />
               </div>
               <Select value={selectedStatus} onValueChange={setSelectedStatus}>
@@ -396,7 +399,7 @@ export default function ManagerOperations() {
               </Select>
             </div>
 
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               {filteredTasks.map((task) => {
                 const Icon = getTypeIcon(task.type);
                 return (
@@ -404,7 +407,7 @@ export default function ManagerOperations() {
                     <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
                       <div className="flex items-center gap-4">
                         <div className="flex-shrink-0">
-                          <Icon className="w-5 h-5 text-primary" />
+                          <Icon className="w-3 h-3 text-primary" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-3 mb-1">
@@ -438,7 +441,7 @@ export default function ManagerOperations() {
                             </div>
                           </div>
                         </div>
-                        <ChevronRight className="w-5 h-5 text-muted-foreground" />
+                        <ChevronRight className="w-3 h-3 text-muted-foreground" />
                       </div>
                     </Card>
                   </Link>
@@ -448,7 +451,7 @@ export default function ManagerOperations() {
           </TabsContent>
 
           <TabsContent value="calendar" className="space-y-4">
-            <Card className="p-6">
+            <Card>
               <div className="text-center py-12">
                 <CalendarIcon className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Calendar View</h3>

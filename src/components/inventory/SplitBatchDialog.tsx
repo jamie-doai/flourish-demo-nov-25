@@ -103,7 +103,7 @@ export function SplitBatchDialog({ open, onOpenChange, batch, onConfirm }: Split
             <div className="flex items-center justify-between">
               <Label>Child Batches</Label>
               <Button variant="outline" size="sm" onClick={handleAddSplit}>
-                <Plus className="w-6 h-6 mr-2" />
+                <Plus className="w-3 h-3 mr-2" />
                 Add Split
               </Button>
             </div>
@@ -138,7 +138,7 @@ export function SplitBatchDialog({ open, onOpenChange, batch, onConfirm }: Split
                     onClick={() => handleRemoveSplit(index)}
                     className="mt-5"
                   >
-                    <Trash2 className="w-6 h-6 text-destructive" />
+                    <Trash2 className="w-3 h-3 text-destructive" />
                   </Button>
                 )}
               </div>

@@ -8,7 +8,7 @@ export default function ManagerSpeciesSettings() {
     <SettingsLayout>
       <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Sprout className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            <Sprout className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
             <div>
               <h1 className="text-3xl font-bold">Species Catalog</h1>
               <p className="text-muted-foreground">Configure plant species and growing requirements</p>

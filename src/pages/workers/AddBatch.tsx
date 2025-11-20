@@ -91,7 +91,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 1: Batch Type & Species */}
         {step === 1 && (
-          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Type & Species</h2>
 
             <div className="space-y-6">
@@ -102,7 +102,7 @@ export default function WorkerAddBatch() {
                     <button
                       key={type}
                       onClick={() => updateFormData({ batchType: type })}
-                      className={`p-4 rounded-lg border-2 transition-all ${
+                      className={`p-4 rounded-lg border transition-all ${
                         formData.batchType === type
                           ? "border-[#3B7A57] bg-[#3B7A57]/10"
                           : "border-[#37474F]/20"
@@ -161,7 +161,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 2: Source/Supplier */}
         {step === 2 && (
-          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Source Info</h2>
 
             <div className="space-y-6">
@@ -236,7 +236,7 @@ export default function WorkerAddBatch() {
                   </div>
 
                   <Button variant="outline" className="w-full h-12">
-                    <Camera className="w-6 h-6 mr-2" />
+                    <Camera className="w-3 h-3 mr-2" />
                     Add Photo
                   </Button>
                 </>
@@ -259,7 +259,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 3: Location & Quantity */}
         {step === 3 && (
-          <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Location</h2>
 
             <div className="space-y-6">
@@ -309,7 +309,7 @@ export default function WorkerAddBatch() {
         {/* Step 4: Confirm & Save */}
         {step === 4 && (
           <div className="space-y-4">
-            <Card className="p-5 bg-white border-2 border-[#37474F]/20 shadow-sm">
+            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
               <h2 className="text-xl font-bold text-[#37474F] mb-4">Confirm Details</h2>
 
               <div className="space-y-3 text-base">
@@ -357,7 +357,7 @@ export default function WorkerAddBatch() {
               <Button
                 onClick={() => handleSave(true)}
                 variant="outline"
-                className="w-full h-14 border-2 border-[#37474F]/30 text-base font-semibold"
+                className="w-full h-14 border border-[#37474F]/30 text-base font-semibold"
               >
                 Save & Add Another
               </Button>
@@ -372,7 +372,7 @@ export default function WorkerAddBatch() {
               <Button
                 variant="outline"
                 onClick={() => setStep(s => s - 1)}
-                className="flex-1 h-14 border-2 text-base"
+                className="flex-1 h-14 border text-base"
               >
                 Back
               </Button>
