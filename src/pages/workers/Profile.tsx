@@ -13,7 +13,7 @@ export default function WorkerProfile() {
 
   return (
     <div className="min-h-screen bg-slate-800">
-      <div className={`max-w-[500px] mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
+      <div className={`max-w-mobile mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
         <DevBar />
       <header className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 pb-12">
         <div className="flex items-center gap-4">

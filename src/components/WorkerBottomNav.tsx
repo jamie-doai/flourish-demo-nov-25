@@ -31,7 +31,7 @@ export function WorkerBottomNav() {
 
       {/* Bottom Drawer */}
       <div
-        className={`fixed bottom-0 left-0 right-0 z-50 bg-lime-green rounded-t-3xl transition-transform duration-150 max-w-[500px] mx-auto ${
+        className={`fixed bottom-0 left-0 right-0 z-50 bg-lime-green rounded-t-3xl transition-transform duration-150 max-w-mobile mx-auto ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
@@ -98,7 +98,7 @@ export function WorkerBottomNav() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-2 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors max-w-[500px] mx-auto"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-2 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors max-w-mobile mx-auto"
         >
           <Menu className="w-10 h-10" />
           <span className="text-2xl font-semibold">Menu</span>

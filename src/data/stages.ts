@@ -1,9 +1,9 @@
-import { Sprout, Leaf, FlowerIcon, TreePine, Package, DollarSign } from "lucide-react";
+import { Sprout, Leaf, FlowerIcon, TreePine, Package, DollarSign, LucideIcon } from "lucide-react";
 
 export interface Stage {
   id: string;
   name: string;
-  icon: any;
+  icon: LucideIcon;
   color: string;
   borderColor?: string;
 }

@@ -30,10 +30,10 @@ export default function WorkerTaskDetail() {
   if (!task) {
     return (
       <div className="min-h-screen bg-slate-800">
-        <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
           <DevBar />
           <WorkerBottomNav />
-          <main className="container mx-auto px-4 py-6 max-w-[500px]">
+          <main className="container mx-auto px-4 py-6 max-w-mobile">
             <Card className="p-6 text-center bg-white">
               <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
               <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
@@ -60,7 +60,7 @@ export default function WorkerTaskDetail() {
 
   return (
     <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
@@ -75,7 +75,7 @@ export default function WorkerTaskDetail() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 max-w-[500px]">
+      <main className="container mx-auto px-4 py-6 max-w-mobile">
         {/* Task Title */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-[#37474F] mb-2">{task.action}</h1>

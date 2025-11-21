@@ -44,7 +44,7 @@ export default function WorkerBatchDetail() {
   if (!mockBatch) {
     return (
       <div className="min-h-screen bg-slate-800">
-        <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+        <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
           <DevBar />
           <WorkerBottomNav />
           <div className="container mx-auto px-4 py-8">
@@ -61,14 +61,24 @@ export default function WorkerBatchDetail() {
     lastMeasured: "2 hours ago",
   };
 
-  const activityLog = [
-    { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
-    { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
-    { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
-    { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
-    { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
-    { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
-  ];
+interface ActivityLogEntry {
+  date: string;
+  action: string;
+  user: string;
+  time: string;
+  notes: string;
+}
+
+const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
+  { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
+  { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
+  { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
+  { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
+  { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
+  { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
+];
+
+  const activityLog = MOCK_ACTIVITY_LOG;
 
   const handleAction = (action: string) => {
     toast({
@@ -91,7 +101,7 @@ export default function WorkerBatchDetail() {
 
   return (
     <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
       <div className="hidden md:block">
         <Navigation />

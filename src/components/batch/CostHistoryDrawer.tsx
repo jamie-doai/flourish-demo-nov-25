@@ -27,7 +27,9 @@ interface CostHistoryDrawerProps {
   onClose: () => void;
 }
 
-const actionTypeConfig: Record<ActionType, { label: string; icon: any; color: string }> = {
+import { LucideIcon } from "lucide-react";
+
+const actionTypeConfig: Record<ActionType, { label: string; icon: LucideIcon; color: string }> = {
   stage_change: {
     label: 'Stage Change',
     icon: ArrowRightLeft,

@@ -8,12 +8,23 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Download, Search, TrendingUp, BarChart3, FileCheck, Shield, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 
+interface TraceabilityReport {
+  id: string;
+  species: string;
+  source: string;
+  collected: string;
+  status: string;
+  plants: number;
+}
+
+const TRACEABILITY_REPORTS: TraceabilityReport[] = [
+  { id: "MAN-2024-156", species: "Mānuka", source: "Waikanae Beach", collected: "2024-03-15", status: "Ready", plants: 450 },
+  { id: "TOT-2024-089", species: "Tōtara", source: "Silverstream Reserve", collected: "2024-02-20", status: "Hardening", plants: 320 },
+  { id: "HAR-2025-012", species: "Harakeke", source: "Auckland Regional", collected: "2025-01-05", status: "Ready", plants: 180 },
+];
+
 export default function ManagerReporting() {
-  const traceabilityReports = [
-    { id: "MAN-2024-156", species: "Mānuka", source: "Waikanae Beach", collected: "2024-03-15", status: "Ready", plants: 450 },
-    { id: "TOT-2024-089", species: "Tōtara", source: "Silverstream Reserve", collected: "2024-02-20", status: "Hardening", plants: 320 },
-    { id: "HAR-2025-012", species: "Harakeke", source: "Auckland Regional", collected: "2025-01-05", status: "Ready", plants: 180 },
-  ];
+  const traceabilityReports = TRACEABILITY_REPORTS;
 
   return (
     <div className="min-h-screen bg-background">

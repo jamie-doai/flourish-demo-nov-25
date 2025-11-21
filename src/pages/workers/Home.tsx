@@ -1,28 +1,45 @@
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Scan, StickyNote, AlertCircle, Package, MapPin, ListTodo, Sprout, Cloud, ChevronRight } from "lucide-react";
+import { Scan, StickyNote, AlertCircle, Package, MapPin, ListTodo, Sprout, Cloud, ChevronRight, LucideIcon } from "lucide-react";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { DevBar } from "@/components/DevBar";
 import { useState } from "react";
+
+interface Notification {
+  id: number;
+  type: "urgent" | "info";
+  message: string;
+  time: string;
+}
+
+interface ContinueItem {
+  id: number;
+  title: string;
+  subtitle: string;
+  icon: LucideIcon;
+}
+
+const NOTIFICATIONS: Notification[] = [
+  { id: 1, type: "urgent", message: "Mānuka watering overdue - Bay 01", time: "8:00 AM" },
+  { id: 2, type: "info", message: "Harakeke ready for dispatch - Pad C", time: "Today" },
+  { id: 3, type: "info", message: "New batch ready for potting - Propagation House 1", time: "Yesterday" },
+  { id: 4, type: "urgent", message: "Temperature alert in Bay 03", time: "2 hours ago" },
+];
+
+const CONTINUE_ITEMS: ContinueItem[] = [
+  { id: 1, title: "Complete watering task", subtitle: "Bay 01 - Mānuka batch", icon: Package },
+  { id: 2, title: "Review Harakeke batch", subtitle: "Pad C - Ready for dispatch", icon: ListTodo },
+  { id: 3, title: "Update notes for Tōtara", subtitle: "Shadehouse A", icon: StickyNote },
+  { id: 4, title: "Check propagation progress", subtitle: "Propagation House 2", icon: Sprout },
+];
 
 export default function WorkerHome() {
   const [showAllNotifications, setShowAllNotifications] = useState(false);
   const [showAllContinue, setShowAllContinue] = useState(false);
 
-  const notifications = [
-    { id: 1, type: "urgent", message: "Mānuka watering overdue - Bay 01", time: "8:00 AM" },
-    { id: 2, type: "info", message: "Harakeke ready for dispatch - Pad C", time: "Today" },
-    { id: 3, type: "info", message: "New batch ready for potting - Propagation House 1", time: "Yesterday" },
-    { id: 4, type: "urgent", message: "Temperature alert in Bay 03", time: "2 hours ago" },
-  ];
-
-  const continueItems = [
-    { id: 1, title: "Complete watering task", subtitle: "Bay 01 - Mānuka batch", icon: Package },
-    { id: 2, title: "Review Harakeke batch", subtitle: "Pad C - Ready for dispatch", icon: ListTodo },
-    { id: 3, title: "Update notes for Tōtara", subtitle: "Shadehouse A", icon: StickyNote },
-    { id: 4, title: "Check propagation progress", subtitle: "Propagation House 2", icon: Sprout },
-  ];
+  const notifications = NOTIFICATIONS;
+  const continueItems = CONTINUE_ITEMS;
 
   const displayedNotifications = showAllNotifications ? notifications : notifications.slice(0, 3);
   const displayedContinue = showAllContinue ? continueItems : continueItems.slice(0, 3);
@@ -33,7 +50,7 @@ export default function WorkerHome() {
 
   return (
     <div className="min-h-screen bg-lime-green">
-      <div className="max-w-[500px] mx-auto bg-lime-green min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-lime-green min-h-screen pb-20">
         <DevBar />
         
         {/* Flourish Logo and Text */}

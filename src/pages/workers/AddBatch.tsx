@@ -18,10 +18,10 @@ import {
 } from "@/components/ui/select";
 import { BatchFormData, BatchType, mockSpecies } from "@/types/batch";
 import { useToast } from "@/hooks/use-toast";
-import { Sprout, Scissors, Package, Camera } from "lucide-react";
+import { Sprout, Scissors, Package, Camera, LucideIcon } from "lucide-react";
 import { locations } from "@/data";
 
-const BATCH_TYPES: { type: BatchType; label: string; icon: any }[] = [
+const BATCH_TYPES: { type: BatchType; label: string; icon: LucideIcon }[] = [
   { type: "seed-collection", label: "Seed", icon: Sprout },
   { type: "cuttings", label: "Cutting", icon: Scissors },
   { type: "bought-in", label: "Bought-In", icon: Package },
@@ -72,7 +72,7 @@ export default function WorkerAddBatch() {
 
   return (
     <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
       <WorkerPageHeader title="Add Batch" backTo="/workers/inventory" />
 

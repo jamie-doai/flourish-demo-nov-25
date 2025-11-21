@@ -20,7 +20,7 @@ export default function WorkerScan() {
 
   return (
     <div className="min-h-screen bg-[#37474F]">
-      <div className="max-w-[500px] mx-auto bg-[#37474F] min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-[#37474F] min-h-screen pb-20">
         <DevBar />
       <header className="bg-[#37474F] text-white sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
@@ -40,7 +40,7 @@ export default function WorkerScan() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[70vh]">
+      <main className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-12rem)]">
         {/* Camera Preview Placeholder */}
         <div className="relative w-full max-w-sm aspect-square bg-[#37474F]/50 rounded-2xl border-2 border-white/20 mb-8 overflow-hidden">
           {scanning ? (

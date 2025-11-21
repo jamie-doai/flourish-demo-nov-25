@@ -37,8 +37,6 @@ export default function OrderDetail() {
 
   const handleStatusChange = (newStatus: OrderStatus, notes?: string) => {
     // In a real app, this would update the backend
-    console.log("Status change:", { newStatus, notes });
-    
     toast({
       title: "Order Status Updated",
       description: `Order ${order.orderNumber} status changed to ${newStatus}`,

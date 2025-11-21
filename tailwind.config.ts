@@ -103,6 +103,9 @@ export default {
       letterSpacing: {
         button: "0.5px", // Button letter spacing
       },
+      maxWidth: {
+        mobile: "500px",
+      },
       spacing: {
         // 4px Grid System
         "0.5": "4px",

@@ -91,7 +91,7 @@ export default function WorkerTasks() {
 
   return (
     <div className="min-h-screen bg-forest-green">
-      <div className="max-w-[500px] mx-auto bg-white min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-white min-h-screen pb-20">
         <DevBar />
       <WorkerPageHeader 
         title="Home" 

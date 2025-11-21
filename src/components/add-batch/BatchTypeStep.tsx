@@ -1,13 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { BatchFormData, BatchType } from "@/types/batch";
-import { Sprout, Scissors, Package } from "lucide-react";
+import { Sprout, Scissors, Package, LucideIcon } from "lucide-react";
 
 interface BatchTypeStepProps {
   formData: Partial<BatchFormData>;
   updateFormData: (data: Partial<BatchFormData>) => void;
 }
 
-const batchTypes: { type: BatchType; label: string; icon: any; description: string }[] = [
+const batchTypes: { type: BatchType; label: string; icon: LucideIcon; description: string }[] = [
   {
     type: "seed-collection",
     label: "Seed Collection",

@@ -41,7 +41,7 @@ export default function WorkerInventory() {
 
   return (
     <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
         <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10">
         <div className="container mx-auto px-4 py-4">

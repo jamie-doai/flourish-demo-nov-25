@@ -5,12 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Thermometer, Leaf, Sprout, Edit3, ClipboardList, ChevronRight, ChevronDown } from "lucide-react";
+import { Package, MapPin, Layers, Plus, Search, ArrowLeft, Sprout, ClipboardList } from "lucide-react";
 import { useState } from "react";
 import { stages, batches, locations, getTasksByLocation } from "@/data";
 import { getBaysByBuilding, getTablesByBay } from "@/data/locations";
 import { getBatchesAtLocation, getBatchCountAtLocation } from "@/lib/locationUtils";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { BulkActionToolbar } from "@/components/inventory/BulkActionToolbar";
@@ -19,6 +18,12 @@ import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
 import { StocktakeManager } from "@/components/inventory/StocktakeManager";
 import { LossAdjustmentDialog } from "@/components/inventory/LossAdjustmentDialog";
+import { BatchListItem } from "@/components/inventory/BatchListItem";
+import { SpeciesCard } from "@/components/inventory/SpeciesCard";
+import { StageCard } from "@/components/inventory/StageCard";
+import { SpeciesDetailView } from "@/components/inventory/SpeciesDetailView";
+import { StageDetailView } from "@/components/inventory/StageDetailView";
+import { LocationTreeView } from "@/components/inventory/LocationTreeView";
 import { useToast } from "@/hooks/use-toast";
 import { Batch } from "@/data/batches";
 
@@ -108,7 +113,7 @@ export default function ManagerInventory() {
     });
   };
 
-  const handleLossAdjustmentConfirm = (adjustments: any[]) => {
+  const handleLossAdjustmentConfirm = (adjustments: Array<{ batchId: string; newQuantity: number; reason: string; notes: string }>) => {
     toast({
       title: "Quantities adjusted",
       description: `Updated ${adjustments.length} batch(es)`,
@@ -160,97 +165,27 @@ export default function ManagerInventory() {
   if (selectedSpecies) {
     const speciesData = getSpeciesData().find(s => s.species === selectedSpecies);
     
-  return (
-    <ManagerLayout>
-        <main className="container mx-auto px-6 py-8 bg-white">
-          <div className="mb-6">
-            <Button 
-              variant="primary-ghost" 
-              onClick={() => setSelectedSpecies(null)}
-              className="mb-4"
-            >
+    if (!speciesData) {
+      return (
+        <ManagerLayout>
+          <main className="container mx-auto px-6 py-8 bg-white">
+            <Button variant="primary-ghost" onClick={() => setSelectedSpecies(null)} className="mb-4">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Species
             </Button>
-            
-            <div className="flex items-center gap-4 mb-4">
-              <Sprout className="w-8 h-8 text-forest-green" />
-              <div>
-                <h1 className="text-heading-1 font-heading font-bold">{speciesData?.species}</h1>
-                <p className="text-body text-muted-foreground">{speciesData?.scientificName}</p>
-              </div>
-            </div>
-          </div>
+            <p>Species not found</p>
+          </main>
+        </ManagerLayout>
+      );
+    }
 
-          {/* Species Overview Stats */}
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Total Plants</div>
-              <div className="text-heading-2 font-heading font-bold">{speciesData?.totalPlants.toLocaleString()}</div>
-            </Card>
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Active Batches</div>
-              <div className="text-heading-2 font-heading font-bold">{speciesData?.batchCount}</div>
-            </Card>
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Overall Health</div>
-              <div className="text-heading-2 font-heading font-bold">{speciesData?.health}</div>
-            </Card>
-          </div>
-
-          {/* Batches for this Species */}
-          <div>
-            <h2 className="text-heading-3 font-heading font-bold mb-4">Batches of {speciesData?.species}</h2>
-            <div className="flex flex-col gap-2">
-              {speciesData?.batches.map((batch) => (
-                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
-                  <Card 
-                    className={`hover:shadow-card transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
-                          {batch.urgent && (
-                            <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
-                              Urgent
-                            </span>
-                          )}
-                          <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${
-                            batch.health === "Excellent" ? "bg-success/20 text-success" :
-                            batch.health === "Good" ? "bg-info/20 text-info" :
-                            "bg-warning/20 text-warning"
-                          }`}>
-                            {batch.health}
-                          </span>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
-                          <div>
-                            <span className="text-muted-foreground">Stage: </span>
-                            <span className="font-medium capitalize">{batch.stage}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Location: </span>
-                            <span className="font-medium">📍 {batch.location}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Quantity: </span>
-                            <span className="font-medium">{batch.quantity} plants</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Started: </span>
-                            <span className="font-medium">{batch.started}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="sm">View Details</Button>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
+    return (
+      <ManagerLayout>
+        <main className="container mx-auto px-6 py-8 bg-white">
+          <SpeciesDetailView
+            speciesData={speciesData}
+            onBack={() => setSelectedSpecies(null)}
+          />
         </main>
       </ManagerLayout>
     );
@@ -259,107 +194,30 @@ export default function ManagerInventory() {
   if (selectedStage) {
     const stage = stages.find(s => s.id === selectedStage);
     const stats = getStageStats(selectedStage);
-    const Icon = stage?.icon;
+
+    if (!stage || !stats) {
+      return (
+        <ManagerLayout>
+          <main className="container mx-auto px-6 py-8 bg-white">
+            <Button variant="primary-ghost" onClick={() => setSelectedStage(null)} className="mb-4">
+              <ArrowLeft className="w-3 h-3 mr-2" />
+              Back to Stages
+            </Button>
+            <p>Stage not found</p>
+          </main>
+        </ManagerLayout>
+      );
+    }
 
     return (
       <ManagerLayout>
         <main className="container mx-auto px-6 py-8 bg-white">
-          <div className="mb-6">
-            <Button 
-              variant="primary-ghost" 
-              onClick={() => setSelectedStage(null)}
-              className="mb-4"
-            >
-              <ArrowLeft className="w-3 h-3 mr-2" />
-              Back to Stages
-            </Button>
-            
-            <div className="flex items-center gap-4 mb-4">
-              <Icon className="w-8 h-8 text-forest-green" />
-              <div>
-                <h1 className="text-heading-1 font-heading font-bold">{stage?.name} Stage</h1>
-                <p className="text-body text-muted-foreground">Detailed view and management</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Stage Overview Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Total Plants</div>
-              <div className="text-heading-2 font-heading font-bold">{stats.plants.toLocaleString()}</div>
-            </Card>
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Active Batches</div>
-              <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
-            </Card>
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Species Types</div>
-              <div className="text-heading-2 font-heading font-bold">{stats.species}</div>
-            </Card>
-            <Card>
-              <div className="text-body-small text-muted-foreground mb-1">Average Age</div>
-              <div className="text-heading-2 font-heading font-bold">{stats.avgAge} days</div>
-            </Card>
-          </div>
-
-          {/* Batches in Stage */}
-          <div>
-            <h2 className="text-heading-3 font-heading font-bold mb-4">Batches in {stage?.name}</h2>
-            <div className="flex flex-col gap-2">
-              {stats.batchList.map((batch) => (
-                <Link to={`/managers/batch/${batch.id}`} key={batch.id}>
-                  <Card 
-                    className={`hover:shadow-card transition-shadow cursor-pointer ${batch.urgent ? `border-l-4 border-l-caution` : ''}`}
-                  >
-                    <div className="flex items-start justify-between">
-                       <div className="flex-1">
-                        <div className="flex items-center gap-1.5 mb-2">
-                          <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
-                          {batch.urgent && (
-                            <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
-                              Urgent
-                            </span>
-                          )}
-                          <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${
-                            batch.health === "Excellent" ? "bg-success/20 text-success" :
-                            batch.health === "Good" ? "bg-info/20 text-info" :
-                            "bg-warning/20 text-warning"
-                          }`}>
-                            {batch.health}
-                          </span>
-                        </div>
-                        <p className="text-body text-muted-foreground mb-1">{batch.species}</p>
-                        <p className="text-body-small text-muted-foreground mb-3">{batch.scientificName}</p>
-                        
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
-                          <div>
-                            <span className="text-muted-foreground">Location: </span>
-                            <span className="font-medium">📍 {batch.location}</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Quantity: </span>
-                            <span className="font-medium">{batch.quantity} plants</span>
-                          </div>
-                          <div>
-                            <span className="text-muted-foreground">Started: </span>
-                            <span className="font-medium">{batch.started}</span>
-                          </div>
-                           <div>
-                             <span className="text-muted-foreground">Age: </span>
-                             <span className="font-medium">
-                               {Math.floor((new Date().getTime() - new Date(batch.started!).getTime()) / (1000 * 60 * 60 * 24))} days
-                             </span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button variant="primary-ghost" size="sm">View Details</Button>
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
+          <StageDetailView
+            stageName={stage.name}
+            stageIcon={stage.icon}
+            stats={stats}
+            onBack={() => setSelectedStage(null)}
+          />
         </main>
       </ManagerLayout>
     );
@@ -432,29 +290,14 @@ export default function ManagerInventory() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {stages.map((stage) => {
                 const stats = getStageStats(stage.id);
-                const Icon = stage.icon;
                 return (
-                  <Card 
-                    key={stage.id} 
-                    className="hover:shadow-card transition-all cursor-pointer group"
+                  <StageCard
+                    key={stage.id}
+                    stageName={stage.name}
+                    stageIcon={stage.icon}
+                    stats={stats}
                     onClick={() => setSelectedStage(stage.id)}
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <Icon className="w-3 h-3 text-forest-green" />
-                      <div className="text-right">
-                        <div className="text-heading-2 font-heading font-bold">{stats.batches}</div>
-                        <div className="text-body-small text-muted-foreground">Batches</div>
-                      </div>
-                    </div>
-                    <h3 className="text-heading-3 font-heading font-bold mb-2">{stage.name}</h3>
-                    <div className="space-y-1 text-body-small text-muted-foreground">
-                      <p>{stats.plants.toLocaleString()} plants</p>
-                      <p>{stats.species} species</p>
-                    </div>
-                    <div className="mt-4 text-body text-forest-green font-heading font-bold group-hover:translate-x-1 transition-transform inline-block">
-                      View details →
-                    </div>
-                  </Card>
+                  />
                 );
               })}
             </div>
@@ -463,34 +306,11 @@ export default function ManagerInventory() {
           <TabsContent value="species" className="space-y-4">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {getSpeciesData().map((species) => (
-                <Card 
-                  key={species.species} 
-                  className="hover:shadow-card transition-all cursor-pointer group"
+                <SpeciesCard
+                  key={species.species}
+                  species={species}
                   onClick={() => setSelectedSpecies(species.species)}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <Sprout className="w-3 h-3 text-forest-green" />
-                    <div className="text-right">
-                      <div className="text-heading-2 font-heading font-bold">{species.batchCount}</div>
-                      <div className="text-body-small text-muted-foreground">Batches</div>
-                    </div>
-                  </div>
-                  <h3 className="text-heading-3 font-heading font-bold mb-1">{species.species}</h3>
-                  <p className="text-body-small text-muted-foreground mb-3 italic">{species.scientificName}</p>
-                  <div className="space-y-1 text-body-small text-muted-foreground">
-                    <p>{species.totalPlants.toLocaleString()} plants</p>
-                    <p className={`inline-block px-2 py-1 text-body-small rounded-full font-heading font-bold ${
-                      species.health === "Excellent" ? "bg-success/20 text-success" :
-                      species.health === "Good" ? "bg-info/20 text-info" :
-                      "bg-warning/20 text-warning"
-                    }`}>
-                      {species.health}
-                    </p>
-                  </div>
-                  <div className="mt-4 text-body text-forest-green font-heading font-bold group-hover:translate-x-1 transition-transform inline-block">
-                    View details →
-                  </div>
-                </Card>
+                />
               ))}
             </div>
           </TabsContent>
@@ -505,226 +325,33 @@ export default function ManagerInventory() {
 
             <div className="flex flex-col gap-2">
               {batches.map((batch) => (
-                <div key={batch.id} className="relative">
-                  <Card className="hover:shadow-card transition-shadow">
-                    <div className="flex items-start gap-4">
-                      <div className="pt-1">
-                        <Checkbox
-                          checked={selectedBatches.has(batch.id)}
-                          onCheckedChange={(checked) => handleBatchSelect(batch.id, checked as boolean)}
-                        />
-                      </div>
-                      <Link to={`/managers/batch/${batch.id}`} className="flex-1">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-1.5 mb-2">
-                              <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
-                              {batch.urgent && (
-                                <Badge variant="destructive">Urgent</Badge>
-                              )}
-                              <Badge variant={
-                                batch.health === "Excellent" ? "default" :
-                                batch.health === "Good" ? "secondary" :
-                                "outline"
-                              }>
-                                {batch.health}
-                              </Badge>
-                            </div>
-                            
-                            <p className="text-body text-muted-foreground mb-1">{batch.species}</p>
-                            <p className="text-body-small text-muted-foreground mb-3">{batch.scientificName}</p>
-                            
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
-                              <div>
-                                <span className="text-muted-foreground">Stage: </span>
-                                <span className="font-medium capitalize">{batch.stage}</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Location: </span>
-                                <span className="font-medium">📍 {batch.location}</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Quantity: </span>
-                                <span className="font-medium">{batch.quantity} plants</span>
-                              </div>
-                              <div>
-                                <span className="text-muted-foreground">Started: </span>
-                                <span className="font-medium">{batch.started}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          setSelectedBatches(new Set([batch.id]));
-                          setDirectEditDialogOpen(true);
-                        }}
-                      >
-                        <Edit3 className="w-3 h-3" />
-                      </Button>
-                    </div>
-                  </Card>
-                </div>
+                <BatchListItem
+                  key={batch.id}
+                  batch={batch}
+                  showCheckbox
+                  isChecked={selectedBatches.has(batch.id)}
+                  onCheckChange={handleBatchSelect}
+                  onEdit={(batchId) => {
+                    setSelectedBatches(new Set([batchId]));
+                    setDirectEditDialogOpen(true);
+                  }}
+                />
               ))}
             </div>
           </TabsContent>
 
           <TabsContent value="locations" className="space-y-4">
-            <div className="space-y-3">
-              {locations
-                .filter(location => location.type === 'BUILDING')
-                .map((building) => {
-                const bays = getBaysByBuilding(building.id);
-                const isExpanded = expandedBuildings.has(building.id);
-                const buildingTasks = getTasksByLocation(building.name);
-                const pendingTasks = buildingTasks.filter(t => 
-                  t.status === "Pending" || t.status === "today" || t.status === "overdue" || t.status === "In Progress"
-                );
-                
-                return (
-                  <Card key={building.id} className="overflow-hidden">
-                    <Collapsible open={isExpanded} onOpenChange={() => toggleBuilding(building.id)}>
-                      <div>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 flex-1">
-                            <CollapsibleTrigger asChild>
-                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                {isExpanded ? (
-                                  <ChevronDown className="h-6 w-6" />
-                                ) : (
-                                  <ChevronRight className="h-6 w-6" />
-                                )}
-                              </Button>
-                            </CollapsibleTrigger>
-                            <MapPin className="w-3 h-3 text-primary" />
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-semibold">{building.name}</h3>
-                                <Badge variant="outline" className="text-xs">{building.code}</Badge>
-                                {pendingTasks.length > 0 && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    {pendingTasks.length} tasks
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                                <span>{building.climateControl}</span>
-                                <span>{bays.length} bays</span>
-                                {building.temperature && (
-                                  <div className="flex items-center gap-1">
-                                    <Thermometer className="w-3 h-3" />
-                                    <span>{building.temperature}</span>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            <Link to={`/managers/locations/${building.id}`}>
-                              <Button variant="ghost" size="sm">
-                                View Details
-                              </Button>
-                            </Link>
-                          </div>
-                        </div>
-                      </div>
-
-                      <CollapsibleContent>
-                        <div className="p-4 flex flex-col gap-2 bg-white">
-                          {bays.length === 0 ? (
-                            <p className="text-sm text-muted-foreground italic px-4 py-2">No bays configured</p>
-                          ) : (
-                            bays.map((bay) => {
-                              const tables = getTablesByBay(bay.id);
-                              const isBayExpanded = expandedBays.has(bay.id);
-                              const bayBatchCount = getBatchCountAtLocation(bay.id, true);
-                              
-                              return (
-                                <Card key={bay.id} className="ml-8">
-                                  <Collapsible open={isBayExpanded} onOpenChange={() => toggleBay(bay.id)}>
-                                    <div>
-                                      <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-2 flex-1">
-                                          <CollapsibleTrigger asChild>
-                                            <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                              {isBayExpanded ? (
-                                                <ChevronDown className="h-3 w-3" />
-                                              ) : (
-                                                <ChevronRight className="h-3 w-3" />
-                                              )}
-                                            </Button>
-                                          </CollapsibleTrigger>
-                                          <Layers className="w-3 h-3 text-muted-foreground" />
-                                          <div className="flex-1">
-                                            <div className="flex items-center gap-2">
-                                              <span className="font-medium text-sm">{bay.name}</span>
-                                              <Badge variant="outline" className="text-xs">{bay.code}</Badge>
-                                            </div>
-                                            <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                                              <span>{tables.length} tables</span>
-                                              <span>{bayBatchCount} batches</span>
-                                              {bay.maxCapacity && (
-                                                <span>{bay.maxCapacity} capacity</span>
-                                              )}
-                                            </div>
-                                          </div>
-                                          <Link to={`/managers/locations/${bay.id}`}>
-                                            <Button variant="ghost" size="sm" className="h-7 text-xs">
-                                              View
-                                            </Button>
-                                          </Link>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <CollapsibleContent>
-                                      <div className="p-3 flex flex-col gap-2 bg-white">
-                                        {tables.length === 0 ? (
-                                          <p className="text-xs text-muted-foreground italic px-3 py-2">No tables configured</p>
-                                        ) : (
-                                          tables.map((table) => {
-                                            const tableBatchCount = getBatchCountAtLocation(table.id, false);
-                                            
-                                            return (
-                                              <Link key={table.id} to={`/managers/locations/${table.id}`}>
-                                                <div className="flex items-center gap-2 p-2 rounded hover:bg-muted/50 transition-colors cursor-pointer ml-6">
-                                                  <Package className="w-3.5 h-3.5 text-muted-foreground" />
-                                                  <div className="flex-1">
-                                                    <div className="flex items-center gap-2">
-                                                      <span className="text-sm font-medium">{table.name}</span>
-                                                      <Badge variant="secondary" className="text-xs">{table.code}</Badge>
-                                                    </div>
-                                                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                                      <span>{tableBatchCount} batches</span>
-                                                      {table.maxCapacity && (
-                                                        <span>Max: {table.maxCapacity}</span>
-                                                      )}
-                                                      {table.dimensions && (
-                                                        <span>{table.dimensions}</span>
-                                                      )}
-                                                    </div>
-                                                  </div>
-                                                  <ChevronRight className="w-3 h-3 text-muted-foreground" />
-                                                </div>
-                                              </Link>
-                                            );
-                                          })
-                                        )}
-                                      </div>
-                                    </CollapsibleContent>
-                                  </Collapsible>
-                                </Card>
-                              );
-                            })
-                          )}
-                        </div>
-                      </CollapsibleContent>
-                    </Collapsible>
-                  </Card>
-                );
-              })}
-            </div>
+            <LocationTreeView
+              buildings={locations}
+              getBaysByBuilding={getBaysByBuilding}
+              getTablesByBay={getTablesByBay}
+              getBatchCountAtLocation={getBatchCountAtLocation}
+              getTasksByLocation={getTasksByLocation}
+              expandedBuildings={expandedBuildings}
+              expandedBays={expandedBays}
+              onToggleBuilding={toggleBuilding}
+              onToggleBay={toggleBay}
+            />
           </TabsContent>
         </Tabs>
         )}

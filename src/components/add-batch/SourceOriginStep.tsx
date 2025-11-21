@@ -86,7 +86,7 @@ export function SourceOriginStep({ formData, updateFormData }: SourceOriginStepP
                 <Label htmlFor="quantityUnit">Unit</Label>
                 <Select
                   value={formData.quantityUnit || "grams"}
-                  onValueChange={(value: any) => updateFormData({ quantityUnit: value })}
+                  onValueChange={(value: string) => updateFormData({ quantityUnit: value })}
                 >
                   <SelectTrigger id="quantityUnit">
                     <SelectValue />
@@ -103,7 +103,7 @@ export function SourceOriginStep({ formData, updateFormData }: SourceOriginStepP
               <Label htmlFor="storageCondition">Storage Condition</Label>
               <Select
                 value={formData.storageCondition || ""}
-                onValueChange={(value: any) => updateFormData({ storageCondition: value })}
+                onValueChange={(value: string) => updateFormData({ storageCondition: value })}
               >
                 <SelectTrigger id="storageCondition">
                   <SelectValue placeholder="Select condition..." />
@@ -215,7 +215,7 @@ export function SourceOriginStep({ formData, updateFormData }: SourceOriginStepP
                 <Label htmlFor="quantityUnit">Unit</Label>
                 <Select
                   value={formData.quantityUnit || "trays"}
-                  onValueChange={(value: any) => updateFormData({ quantityUnit: value })}
+                  onValueChange={(value: string) => updateFormData({ quantityUnit: value })}
                 >
                   <SelectTrigger id="quantityUnit">
                     <SelectValue />

@@ -1,9 +1,16 @@
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { SectionLandingPage } from "@/components/SectionLandingPage";
-import { FileText, ShoppingCart, Users, Receipt } from "lucide-react";
+import { FileText, ShoppingCart, Users, Receipt, LucideIcon } from "lucide-react";
 
-export default function ManagerSales() {
-  const sections = [
+interface SalesSection {
+  title: string;
+  icon: LucideIcon;
+  description: string;
+  path: string;
+  color: string;
+}
+
+const SALES_SECTIONS: SalesSection[] = [
     {
       title: "Quotes",
       icon: FileText,
@@ -32,14 +39,15 @@ export default function ManagerSales() {
       path: "/managers/sales/clients",
       color: "text-forest-green"
     },
-  ];
+];
 
+export default function ManagerSales() {
   return (
     <ManagerLayout>
       <SectionLandingPage
         title="Sales Management"
         description="Manage quotes, orders, and client relationships"
-        sections={sections}
+        sections={SALES_SECTIONS}
       />
     </ManagerLayout>
   );

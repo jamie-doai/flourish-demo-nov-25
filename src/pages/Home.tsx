@@ -3,10 +3,15 @@ import { Navigation } from "@/components/Navigation";
 import { DevBar } from "@/components/DevBar";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-greenhouse.jpg";
-import { Sprout, CheckCircle, BarChart3, Users, Truck } from "lucide-react";
+import { Sprout, CheckCircle, BarChart3, Users, Truck, LucideIcon } from "lucide-react";
 
-export default function Home() {
-  const features = [
+interface Feature {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}
+
+const FEATURES: Feature[] = [
     {
       icon: Sprout,
       title: "Batch Tracking",
@@ -32,7 +37,10 @@ export default function Home() {
       title: "Sales Management",
       description: "Handle quotes, orders, and invoices in one place",
     },
-  ];
+];
+
+export default function Home() {
+  const features = FEATURES;
 
   return (
     <div className="min-h-screen bg-white">
