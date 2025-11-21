@@ -1,42 +1,47 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { 
+  Plus,
+  TrendingUp,
+  Leaf
+} from "lucide-react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { formatDateTimeNZ } from "@/lib/utils";
-import { 
-  Filter,
-  Plus,
-  TrendingUp,
-  ChevronLeft,
-  ChevronRight,
-  Leaf
-} from "lucide-react";
-import { batches, locations, tasks, alerts, activityLogs, salesData } from "@/data";
+import { Badge } from "@/components/ui/badge";
 import { KPICard } from "@/components/dashboard/KPICard";
 import { LocationCard } from "@/components/dashboard/LocationCard";
 import { TaskCard } from "@/components/dashboard/TaskCard";
 import { ActivityLogItem } from "@/components/dashboard/ActivityLogItem";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { LocationPagination } from "@/components/dashboard/LocationPagination";
+import { batches, locations, tasks, alerts, activityLogs, salesData } from "@/data";
+import { formatDateTimeNZ } from "@/lib/utils";
+import {
+  calculateTotalPlants,
+  calculateTasksDueToday,
+  calculateOverdueTasks,
+  calculateBatchesReadyToMove,
+  calculateAverageCapacity,
+} from "@/lib/dashboardUtils";
+import { useLocationPagination } from "@/hooks/useLocationPagination";
 
 export default function ManagerDashboard() {
-  const [currentLocationPage, setCurrentLocationPage] = useState(0);
-  const locationsPerPage = 3;
-  const totalLocationPages = Math.ceil(locations.length / locationsPerPage);
-  
-  const paginatedLocations = locations.slice(
-    currentLocationPage * locationsPerPage,
-    (currentLocationPage + 1) * locationsPerPage
-  );
+  const {
+    currentPage: currentLocationPage,
+    totalPages: totalLocationPages,
+    paginatedLocations,
+    nextPage: nextLocationPage,
+    previousPage: previousLocationPage,
+  } = useLocationPagination(locations, 3);
 
-  // Calculate KPIs
-  const totalPlants = batches.reduce((sum, batch) => sum + batch.quantity, 0);
-  const tasksDueToday = tasks.filter(t => t.status === "today" || t.status === "overdue").length;
-  const overdueTasksCount = tasks.filter(t => t.status === "overdue").length;
-  const batchesReadyToMove = batches.filter(b => b.stage === "hardening").length;
-  const averageCapacity = Math.round(
-    locations.reduce((sum, loc) => sum + loc.percentage, 0) / locations.length
-  );
+  // Calculate KPIs using utility functions
+  const totalPlants = calculateTotalPlants(batches);
+  const tasksDueToday = calculateTasksDueToday(tasks);
+  const overdueTasksCount = calculateOverdueTasks(tasks);
+  const batchesReadyToMove = calculateBatchesReadyToMove(batches);
+  const averageCapacity = calculateAverageCapacity(locations);
 
   // Get today's date
   const today = new Date();
@@ -44,27 +49,7 @@ export default function ManagerDashboard() {
 
   return (
     <ManagerLayout>
-      {/* Header - Mobile only */}
-      <header className="md:hidden sticky top-0 bg-white border-b-2 border-forest-green z-10">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between gap-1.5">
-            <div>
-              <h1 className="text-heading-2 font-heading font-bold">Dashboard</h1>
-              <p className="text-body-small text-muted-foreground">{dateString}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="tertiary" size="sm">
-                <Filter className="w-3 h-3 mr-2" />
-                Filter
-              </Button>
-              <Button size="sm" className="bg-primary hover:bg-primary/90">
-                <Plus className="w-3 h-3 mr-2" />
-                New
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader dateString={dateString} />
 
       <main className="container mx-auto px-6 py-8 bg-white">
         {/* Header - Desktop */}
@@ -164,29 +149,12 @@ export default function ManagerDashboard() {
           <div className="md:col-span-6 lg:col-span-7 animate-fade-in">
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-heading-4 font-heading font-bold">Nursery Overview</h2>
-              {totalLocationPages > 1 && (
-                <div className="flex items-center gap-2">
-                  <Button 
-                    variant="tertiary" 
-                    size="sm"
-                    onClick={() => setCurrentLocationPage(p => Math.max(0, p - 1))}
-                    disabled={currentLocationPage === 0}
-                  >
-                    <ChevronLeft className="w-3 h-3" />
-                  </Button>
-                  <span className="text-sm text-muted-foreground">
-                    {currentLocationPage + 1} / {totalLocationPages}
-                  </span>
-                  <Button 
-                    variant="tertiary" 
-                    size="sm"
-                    onClick={() => setCurrentLocationPage(p => Math.min(totalLocationPages - 1, p + 1))}
-                    disabled={currentLocationPage === totalLocationPages - 1}
-                  >
-                    <ChevronRight className="w-3 h-3" />
-                  </Button>
-                </div>
-              )}
+              <LocationPagination
+                currentPage={currentLocationPage}
+                totalPages={totalLocationPages}
+                onPrevious={previousLocationPage}
+                onNext={nextLocationPage}
+              />
             </div>
             <div className="space-y-3">
               {paginatedLocations.map((location) => (

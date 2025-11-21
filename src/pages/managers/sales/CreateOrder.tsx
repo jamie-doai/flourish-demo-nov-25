@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Package, Edit3 } from "lucide-react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
@@ -9,29 +12,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Plus, Package, Edit3 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
-import { clients } from "@/data";
 import { InventorySelectionSheet } from "@/components/sales/InventorySelectionSheet";
 import { LineItemRow } from "@/components/sales/LineItemRow";
 import { TotalsSection } from "@/components/sales/TotalsSection";
+import { useToast } from "@/hooks/use-toast";
+import { useLineItems } from "@/hooks/useLineItems";
+import { clients } from "@/data";
 import { PendingLineItem } from "@/types/sales";
-
-interface LineItem {
-  id: string;
-  species: string;
-  scientificName?: string;
-  stage?: string;
-  potSize: string;
-  quantity: number;
-  unitPrice: number;
-  discount: number;
-  total: number;
-  batchIds?: string[];
-  costPerUnit?: number;
-}
+import { calculateTotals } from "@/lib/salesCalculations";
 
 export default function CreateOrder() {
   const navigate = useNavigate();
@@ -44,85 +32,17 @@ export default function CreateOrder() {
   const [specialInstructions, setSpecialInstructions] = useState("");
   const [internalNotes, setInternalNotes] = useState("");
   const [showInventorySheet, setShowInventorySheet] = useState(false);
-  const [lineItems, setLineItems] = useState<LineItem[]>([
-    {
-      id: "1",
-      species: "",
-      potSize: "",
-      quantity: 0,
-      unitPrice: 0,
-      discount: 0,
-      total: 0
-    }
-  ]);
 
-  const addLineItem = () => {
-    const newId = (lineItems.length + 1).toString();
-    setLineItems([
-      ...lineItems,
-      {
-        id: newId,
-        species: "",
-        potSize: "",
-        quantity: 0,
-        unitPrice: 0,
-        discount: 0,
-        total: 0
-      }
-    ]);
-  };
-
-  const removeLineItem = (id: string) => {
-    if (lineItems.length > 1) {
-      setLineItems(lineItems.filter(item => item.id !== id));
-    }
-  };
-
-  const updateLineItem = (id: string, field: keyof LineItem, value: unknown) => {
-    setLineItems(lineItems.map(item => {
-      if (item.id === id) {
-        const updatedItem = { ...item, [field]: value };
-        
-        // Recalculate total when quantity, unit price, or discount changes
-        if (field === 'quantity' || field === 'unitPrice' || field === 'discount') {
-          const qty = field === 'quantity' ? parseFloat(value as string) || 0 : item.quantity;
-          const price = field === 'unitPrice' ? parseFloat(value as string) || 0 : item.unitPrice;
-          const disc = field === 'discount' ? parseFloat(value as string) || 0 : item.discount;
-          
-          const subtotal = qty * price;
-          const discountAmount = subtotal * (disc / 100);
-          updatedItem.total = subtotal - discountAmount;
-        }
-        
-        return updatedItem;
-      }
-      return item;
-    }));
-  };
+  const {
+    lineItems,
+    addLineItem,
+    removeLineItem,
+    updateLineItem,
+    addItemsFromInventory,
+  } = useLineItems();
 
   const handleAddFromInventory = (items: PendingLineItem[]) => {
-    const newItems: LineItem[] = items.map(item => ({
-      id: `${Date.now()}-${Math.random()}`,
-      species: item.species,
-      scientificName: item.scientificName,
-      stage: item.stageName,
-      potSize: item.containerType,
-      quantity: item.quantity,
-      unitPrice: 0,
-      discount: 0,
-      total: 0,
-      batchIds: item.batchIds,
-      costPerUnit: item.costPerUnit
-    }));
-    
-    setLineItems([...lineItems, ...newItems]);
-  };
-
-  const calculateTotals = () => {
-    const subtotal = lineItems.reduce((sum, item) => sum + item.total, 0);
-    const tax = subtotal * 0.15; // NZ GST 15%
-    const total = subtotal + tax;
-    return { subtotal, tax, total };
+    addItemsFromInventory(items);
   };
 
 
@@ -173,7 +93,7 @@ export default function CreateOrder() {
     }, 1000);
   };
 
-  const { subtotal, tax, total } = calculateTotals();
+  const { subtotal, tax, total } = calculateTotals(lineItems);
 
   return (
     <ManagerLayout>
