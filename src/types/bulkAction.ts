@@ -5,8 +5,7 @@ export type BulkActionType =
   | 'task_add'
   | 'hold_apply'
   | 'hold_remove'
-  | 'label_print'
-  | 'stocktake_posting';
+  | 'label_print';
 
 export type BulkActionStatus = 'pending' | 'in_progress' | 'completed' | 'failed' | 'partial';
 

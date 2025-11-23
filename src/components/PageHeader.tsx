@@ -32,49 +32,59 @@ export function PageHeader({
   sectionSwitcher,
 }: PageHeaderProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-      <div className="flex-1 min-w-0">
-        {backTo && (
-          <Link to={backTo} className="mb-2 inline-block">
+    <div className="flex flex-col gap-4 mb-6">
+      {/* Back button - always on top */}
+      {backTo && (
+        <div>
+          <Link to={backTo} className="inline-block">
             <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-3 h-3 mr-2" />
               {backLabel}
             </Button>
           </Link>
-        )}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-          <div className="min-w-0">
-            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-1 sm:mb-2 break-words">{title}</h1>
-            {description && (
-              <p className="text-body-small sm:text-body text-muted-foreground break-words">{description}</p>
-            )}
-          </div>
-          {sectionSwitcher && (
-            <div className="flex-shrink-0">
-              <Select
-                value={sectionSwitcher.value}
-                onValueChange={sectionSwitcher.onValueChange}
-              >
-                <SelectTrigger className="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Select section" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sectionSwitcher.options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-        </div>
-      </div>
-      {actions && (
-        <div className="flex items-center justify-end gap-2 flex-wrap flex-shrink-0 ml-auto">
-          {actions}
         </div>
       )}
+      
+      {/* Main content area */}
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        {/* Title and description section */}
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-1 sm:mb-2">{title}</h1>
+              {description && (
+                <p className="text-body-small sm:text-body text-muted-foreground">{description}</p>
+              )}
+            </div>
+            {sectionSwitcher && (
+              <div className="flex-shrink-0 w-full sm:w-auto">
+                <Select
+                  value={sectionSwitcher.value}
+                  onValueChange={sectionSwitcher.onValueChange}
+                >
+                  <SelectTrigger className="w-full sm:w-[180px]">
+                    <SelectValue placeholder="Select section" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sectionSwitcher.options.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+        </div>
+        
+        {/* Actions section */}
+        {actions && (
+          <div className="flex items-start sm:items-center justify-start sm:justify-end gap-2 flex-wrap flex-shrink-0 md:ml-auto">
+            {actions}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

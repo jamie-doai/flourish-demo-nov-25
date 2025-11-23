@@ -54,7 +54,7 @@ export default function ComponentLibrary() {
         </div>
 
         <Tabs defaultValue="shared" className="space-y-6">
-          <TabsList className="grid grid-cols-3 gap-2 border-2 border-forest-green">
+          <TabsList className="grid grid-cols-3 gap-2 border-2 border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="shared" className="text-body font-heading font-bold">
               Shared Components
             </TabsTrigger>

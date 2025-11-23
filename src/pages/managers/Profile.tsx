@@ -18,8 +18,8 @@ export default function ManagerProfile() {
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
               <User className="w-10 h-10" />
             </div>
-            <div>
-              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-semibold break-words">Sarah Johnson</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-semibold">Sarah Johnson</h1>
               <p className="text-primary-foreground/90">Operations Manager</p>
             </div>
           </div>

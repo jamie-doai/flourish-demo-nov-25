@@ -49,7 +49,7 @@ export default function WorkerHome() {
   const dateStr = today.toLocaleDateString('en-NZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div className="min-h-screen bg-lime-green">
+    <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-lime-green min-h-screen pb-20">
         <DevBar />
         
@@ -83,10 +83,10 @@ export default function WorkerHome() {
               {displayedNotifications.map((notification) => (
                 <Card 
                   key={notification.id} 
-                  className={`border shadow-none p-3 ${
+                  className={`border shadow-none p-3 bg-white ${
                     notification.type === "urgent" 
-                      ? "border-caution bg-caution/10" 
-                      : "border-forest-green bg-white"
+                      ? "border-caution" 
+                      : "border-forest-green"
                   }`}
                 >
                   <div className="flex items-start gap-2">
@@ -118,8 +118,8 @@ export default function WorkerHome() {
             <h2 className="text-heading-3 font-heading font-bold text-forest-green mb-3">Continue</h2>
             <div className="space-y-2">
               {displayedContinue.map((item) => (
-                <Link key={item.id} to={`/workers/tasks/${item.id}`}>
-                  <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all shadow-none p-3">
+                <Link key={item.id} to={`/workers/tasks/${item.id}`} className="block">
+                  <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all shadow-none p-3">
                     <div className="flex items-center gap-1.5">
                       <item.icon className="w-3 h-3 text-forest-green flex-shrink-0" />
                       <div className="flex-1 min-w-0">
@@ -149,21 +149,21 @@ export default function WorkerHome() {
             <h2 className="text-heading-3 font-heading font-bold text-forest-green mb-3">Navigate</h2>
             <div className="grid grid-cols-2 gap-1.5">
               <Link to="/workers/tasks">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
                   <ListTodo className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Tasks</span>
                 </Card>
               </Link>
 
               <Link to="/workers/locations">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
                   <MapPin className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Locations</span>
                 </Card>
               </Link>
 
               <Link to="/workers/inventory">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-lime-green/20 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
                   <Package className="w-3 h-3 text-forest-green" />
                   <span className="text-body font-heading font-bold text-forest-green">Inventory</span>
                 </Card>

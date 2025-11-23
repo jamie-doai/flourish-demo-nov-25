@@ -24,8 +24,8 @@ export function Navigation() {
   return (
     <>
       <nav className="border-b bg-forest-green">
-        <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between gap-4">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-2 sm:gap-4">
             <Link 
               to="/managers" 
               className={`flex items-center gap-2 font-display text-heading-4 text-white transition-all ${

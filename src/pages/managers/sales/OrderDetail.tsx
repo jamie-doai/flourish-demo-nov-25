@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { OrderLifecycleProgress } from "@/components/orders/OrderLifecycleProgress";
 import { OrderStatusActions } from "@/components/orders/OrderStatusActions";
 import { OrderStatus } from "@/lib/orderLifecycle";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function OrderDetail() {
   const { orderId } = useParams();
@@ -76,10 +77,10 @@ export default function OrderDetail() {
 
         <Card className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
               <Package className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{order.orderNumber}</h1>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{order.orderNumber}</h1>
                 <p className="text-muted-foreground">{order.clientName}</p>
                 {order.linkedQuote && (
                   <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline">
@@ -99,20 +100,14 @@ export default function OrderDetail() {
           {/* Lifecycle Progress */}
           <OrderLifecycleProgress order={order} />
 
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Created</div>
-              <div className="font-medium">{order.dateCreated}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Delivery Date</div>
-              <div className="font-medium">{order.deliveryDate || "TBC"}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Dispatched</div>
-              <div className="font-medium">{order.dispatchedDate || "Not yet"}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Created", value: order.dateCreated },
+              { label: "Delivery Date", value: order.deliveryDate || "TBC" },
+              { label: "Dispatched", value: order.dispatchedDate || "Not yet" },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 

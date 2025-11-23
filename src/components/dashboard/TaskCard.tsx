@@ -46,7 +46,7 @@ export function TaskCard({ task, href }: TaskCardProps) {
   const statusBadge = getStatusBadge();
 
   const content = (
-    <Card className="hover:shadow-card transition-all">
+    <Card className={`hover:shadow-card transition-all ${href ? 'hover:bg-gray-50' : ''}`}>
       <div className="flex items-start gap-1.5">
         <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${bgClass}`}>
           <Icon className={`w-3 h-3 ${iconClass}`} />

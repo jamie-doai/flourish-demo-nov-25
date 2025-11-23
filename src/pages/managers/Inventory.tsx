@@ -16,7 +16,6 @@ import { BulkActionToolbar } from "@/components/inventory/BulkActionToolbar";
 import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
-import { StocktakeManager } from "@/components/inventory/StocktakeManager";
 import { LossAdjustmentDialog } from "@/components/inventory/LossAdjustmentDialog";
 import { BatchListItem } from "@/components/inventory/BatchListItem";
 import { SpeciesCard } from "@/components/inventory/SpeciesCard";
@@ -45,7 +44,6 @@ export default function ManagerInventory() {
   const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
   const [directEditDialogOpen, setDirectEditDialogOpen] = useState(false);
   const [lossAdjustmentDialogOpen, setLossAdjustmentDialogOpen] = useState(false);
-  const [activeView, setActiveView] = useState<"inventory" | "stocktake">("inventory");
   const [expandedBuildings, setExpandedBuildings] = useState<Set<string>>(new Set());
   const [expandedBays, setExpandedBays] = useState<Set<string>>(new Set());
 
@@ -225,45 +223,22 @@ export default function ManagerInventory() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8 bg-white">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 bg-white">
         <PageHeader
           title="Inventory Management"
           description="Track batches across stages and locations"
           actions={
-            <>
-              <Button
-                variant={activeView === "stocktake" ? "default" : "tertiary"}
-                onClick={() => setActiveView("stocktake")}
-                className="flex-1 sm:flex-none"
-              >
-                <ClipboardList className="w-3 h-3 mr-2" />
-                Stocktake
-              </Button>
-              <Button variant="default" asChild className="flex-1 sm:flex-none">
-                <Link to="/managers/batches/add">
-                  <Plus className="w-3 h-3 mr-2" />
-                  New Batch
-                </Link>
-              </Button>
-            </>
+            <Button variant="default" asChild className="flex-1 sm:flex-none">
+              <Link to="/managers/batches/add">
+                <Plus className="w-3 h-3 mr-2" />
+                New Batch
+              </Link>
+            </Button>
           }
         />
 
-        {activeView === "stocktake" ? (
-          <>
-            <Button
-              variant="primary-ghost"
-              onClick={() => setActiveView("inventory")}
-              className="mb-4"
-            >
-              <ArrowLeft className="w-3 h-3 mr-2" />
-              Back to Inventory
-            </Button>
-            <StocktakeManager />
-          </>
-        ) : (
-          <Tabs defaultValue="batches" className="space-y-6">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
+        <Tabs defaultValue="batches" className="space-y-6">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="stages" className="text-xs sm:text-sm">
               <Layers className="w-3 h-3 mr-1 sm:mr-2" />
               <span className="hidden sm:inline">Stages</span>
@@ -354,7 +329,6 @@ export default function ManagerInventory() {
             />
           </TabsContent>
         </Tabs>
-        )}
 
         {/* Bulk Action Toolbar */}
         <BulkActionToolbar

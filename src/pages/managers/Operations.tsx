@@ -45,7 +45,7 @@ export default function ManagerOperations() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <PageHeader
           title="Operations"
           description="Task management, scheduling, and workflow coordination"
@@ -158,7 +158,7 @@ export default function ManagerOperations() {
         />
 
         <Tabs defaultValue="board" className="space-y-6">
-          <TabsList className="grid grid-cols-3 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-3 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="board">Task Board</TabsTrigger>
             <TabsTrigger value="list">List View</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
@@ -206,7 +206,7 @@ export default function ManagerOperations() {
                 const Icon = getTypeIcon(task.type);
                 return (
                   <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                    <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">
                       <div className="flex items-center gap-4">
                         <div className="flex-shrink-0">
                           <Icon className="w-3 h-3 text-primary" />

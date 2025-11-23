@@ -12,6 +12,7 @@ import { ArrowLeft, FileText, Download, Send, Check, Package } from "lucide-reac
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getQuoteById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function QuoteDetail() {
   const { quoteId } = useParams();
@@ -83,10 +84,10 @@ export default function QuoteDetail() {
 
         <Card className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
               <FileText className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{quote.quoteNumber}</h1>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{quote.quoteNumber}</h1>
                 <p className="text-muted-foreground">{quote.clientName}</p>
               </div>
             </div>
@@ -95,20 +96,14 @@ export default function QuoteDetail() {
             </Badge>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Created</div>
-              <div className="font-medium">{quote.dateCreated}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Expiry Date</div>
-              <div className="font-medium">{quote.expiryDate}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Status</div>
-              <div className="font-medium capitalize">{quote.status}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Created", value: quote.dateCreated },
+              { label: "Expiry Date", value: quote.expiryDate },
+              { label: "Status", value: quote.status.charAt(0).toUpperCase() + quote.status.slice(1) },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 

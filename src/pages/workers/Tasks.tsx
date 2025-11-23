@@ -90,7 +90,7 @@ export default function WorkerTasks() {
       }, {} as Record<string, typeof tasks>);
 
   return (
-    <div className="min-h-screen bg-forest-green">
+    <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-white min-h-screen pb-20">
         <DevBar />
       <WorkerPageHeader 

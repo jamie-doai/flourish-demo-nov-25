@@ -37,7 +37,7 @@ export function BatchListItem({
     return (
       <Link to={`/managers/batch/${batch.id}`}>
         <Card
-          className={`hover:shadow-card transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
+          className={`hover:shadow-card hover:bg-gray-50 transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
         >
           <div className="flex items-start justify-between">
             <div className="flex-1">
@@ -81,7 +81,7 @@ export function BatchListItem({
 
   return (
     <div className="relative">
-      <Card className="hover:shadow-card transition-shadow">
+      <Card className="hover:shadow-card hover:bg-gray-50 transition-shadow">
         <div className="flex items-start gap-4">
           {showCheckbox && (
             <div className="pt-1">

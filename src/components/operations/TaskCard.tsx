@@ -27,7 +27,7 @@ export function TaskCard({ task, variant = "default" }: TaskCardProps) {
   if (variant === "completed") {
     return (
       <Link to={`/managers/tasks/${task.id}`}>
-        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow opacity-75">
+        <Card className="p-3 cursor-pointer hover:shadow-md hover:bg-gray-50 transition-shadow opacity-75">
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-2">
               <div className="flex items-center gap-2">
@@ -56,7 +56,7 @@ export function TaskCard({ task, variant = "default" }: TaskCardProps) {
   return (
     <Link to={`/managers/tasks/${task.id}`}>
       <Card
-        className={`p-3 cursor-pointer hover:shadow-md transition-shadow ${
+        className={`p-3 cursor-pointer hover:shadow-md hover:bg-gray-50 transition-shadow ${
           variant === "in-progress" ? "border-l-4 border-l-blue-500" : ""
         }`}
       >

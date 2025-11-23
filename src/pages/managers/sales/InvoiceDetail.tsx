@@ -11,6 +11,7 @@ import { ArrowLeft, Receipt, Download, Send, DollarSign, FileText } from "lucide
 import { Link, useParams } from "react-router-dom";
 import { getInvoiceById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function InvoiceDetail() {
   const { invoiceId } = useParams();
@@ -73,10 +74,10 @@ export default function InvoiceDetail() {
 
         <Card className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
+            <div className="flex items-center gap-4 min-w-0 flex-1">
               <Receipt className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{invoice.invoiceNumber}</h1>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{invoice.invoiceNumber}</h1>
                 <p className="text-muted-foreground">{invoice.clientName}</p>
                 {invoice.linkedOrder && (
                   <Link to={`/managers/sales/orders/${invoice.linkedOrder}`} className="text-sm text-primary hover:underline">
@@ -95,24 +96,15 @@ export default function InvoiceDetail() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Issued</div>
-              <div className="font-medium">{invoice.dateIssued}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Due Date</div>
-              <div className="font-medium">{invoice.dueDate}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Payment Terms</div>
-              <div className="font-medium">{invoice.paymentTerms || "Net 14 days"}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Tax Type</div>
-              <div className="font-medium">{invoice.taxType}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Issued", value: invoice.dateIssued },
+              { label: "Due Date", value: invoice.dueDate },
+              { label: "Payment Terms", value: invoice.paymentTerms || "Net 14 days" },
+              { label: "Tax Type", value: invoice.taxType },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 

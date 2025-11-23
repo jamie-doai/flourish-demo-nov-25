@@ -57,7 +57,7 @@ export default function ManagerSalesInvoices() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid md:grid-cols-5 gap-4 mb-6">
+        <div className="grid md:grid-cols-5 gap-4 mb-4">
           <Card className="p-4">
             <div className="text-sm text-muted-foreground mb-1">Total Invoices</div>
             <div className="text-2xl font-bold">{invoices.length}</div>
@@ -128,7 +128,7 @@ export default function ManagerSalesInvoices() {
                   </div>
                 </div>
                 <Link to={`/managers/sales/invoices/${invoice.id}`}>
-                  <Button variant="ghost" size="sm">View Details</Button>
+                  <Button size="sm">View Details</Button>
                 </Link>
               </div>
             </Card>

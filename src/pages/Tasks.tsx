@@ -142,7 +142,7 @@ export default function Tasks() {
           ) : (
             filteredTasks.map((task) => (
               <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                <Card className="p-6 hover:shadow-lg hover:bg-gray-50 transition-shadow cursor-pointer">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">

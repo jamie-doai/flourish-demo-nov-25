@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, FileText } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { quotes } from "@/data";
 
@@ -65,7 +65,7 @@ export default function ManagerSalesQuotes() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid md:grid-cols-4 gap-4 mb-6">
+        <div className="grid md:grid-cols-4 gap-4 mb-4">
           <Card className="p-4">
             <div className="text-sm text-muted-foreground mb-1">Total Quotes</div>
             <div className="text-2xl font-bold">{quotes.length}</div>
@@ -121,7 +121,7 @@ export default function ManagerSalesQuotes() {
                   </div>
                 </div>
                 <Link to={`/managers/sales/quotes/${quote.id}`}>
-                  <Button variant="ghost" size="sm">View Details</Button>
+                  <Button size="sm">View Details</Button>
                 </Link>
               </div>
             </Card>

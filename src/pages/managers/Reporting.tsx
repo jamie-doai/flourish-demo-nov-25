@@ -32,8 +32,8 @@ export default function ManagerReporting() {
       <Navigation />
       <main className="container mx-auto px-6 py-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="min-w-0">
-            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2 break-words">Reporting & Analytics</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">Reporting & Analytics</h1>
             <p className="text-body-small sm:text-body text-muted-foreground">Traceability, compliance, and performance insights</p>
           </div>
           <Button variant="default" className="flex-shrink-0">
@@ -43,7 +43,7 @@ export default function ManagerReporting() {
         </div>
 
         <Tabs defaultValue="traceability" className="space-y-6">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="traceability"><FileCheck className="w-4 h-4 mr-2" />Traceability</TabsTrigger>
             <TabsTrigger value="analytics"><BarChart3 className="w-4 h-4 mr-2" />Analytics</TabsTrigger>
             <TabsTrigger value="costs"><DollarSign className="w-4 h-4 mr-2" />Cost Analysis</TabsTrigger>
@@ -60,7 +60,7 @@ export default function ManagerReporting() {
 
             <div className="space-y-3">
               {traceabilityReports.map((batch) => (
-                <Card key={batch.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                <Card key={batch.id} className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">

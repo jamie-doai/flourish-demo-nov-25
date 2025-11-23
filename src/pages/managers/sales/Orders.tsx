@@ -80,7 +80,7 @@ export default function ManagerSalesOrders() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid md:grid-cols-4 gap-4 mb-6">
+        <div className="grid md:grid-cols-4 gap-4 mb-4">
           <Card className="p-4">
             <div className="text-sm text-muted-foreground mb-1">Total Orders</div>
             <div className="text-2xl font-bold">{orders.length}</div>
@@ -143,7 +143,7 @@ export default function ManagerSalesOrders() {
                   </div>
                 </div>
                 <Link to={`/managers/sales/orders/${order.id}`}>
-                  <Button variant="ghost" size="sm">View Details</Button>
+                  <Button size="sm">View Details</Button>
                 </Link>
               </div>
             </Card>

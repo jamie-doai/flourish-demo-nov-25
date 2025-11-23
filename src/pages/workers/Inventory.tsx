@@ -119,7 +119,7 @@ export default function WorkerInventory() {
         <div className="space-y-4">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-              <Card className={`p-4 bg-white border shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
+              <Card className={`p-4 bg-white border shadow-sm hover:shadow-md hover:bg-gray-50 transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">

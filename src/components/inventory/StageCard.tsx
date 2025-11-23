@@ -18,7 +18,7 @@ interface StageCardProps {
 export function StageCard({ stageName, stageIcon: Icon, stats, onClick }: StageCardProps) {
   return (
     <Card
-      className="hover:shadow-card transition-all cursor-pointer group"
+      className="hover:shadow-card hover:bg-gray-50 transition-all cursor-pointer group"
       onClick={onClick}
     >
       <div className="flex items-start justify-between mb-4">

@@ -61,10 +61,10 @@ export default function CostAnalysis() {
           </Link>
           
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <div className="min-w-0">
-              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold flex flex-col sm:flex-row sm:items-center gap-2 break-words">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold flex items-center gap-2">
                 <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" />
-                Cost Analysis
+                <span>Cost Analysis</span>
               </h1>
               <p className="text-body-small sm:text-body text-muted-foreground mt-1">
                 Production cost insights and margin analysis

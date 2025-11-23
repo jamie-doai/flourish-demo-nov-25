@@ -86,27 +86,28 @@ export default function ManagerTaskDetail() {
       <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+        <div className="flex flex-col gap-4 mb-6">
           <Link to="/managers/operations" className="self-start">
             <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back
             </Button>
           </Link>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2 break-words">{task.title || task.action}</h1>
-            <div className="flex items-center gap-2 flex-wrap">
-              <Badge className={getStatusColor(task.status)} variant="outline">
-                {task.status}
-              </Badge>
-              <Badge className={getPriorityColor(task.priority)} variant="outline">
-                {task.priority} Priority
-              </Badge>
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+            <div className="flex-1 min-w-0">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">{task.title || task.action}</h1>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge className={getStatusColor(task.status)} variant="outline">
+                  {task.status}
+                </Badge>
+                <Badge className={getPriorityColor(task.priority)} variant="outline">
+                  {task.priority} Priority
+                </Badge>
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 flex-wrap flex-shrink-0">
+            <div className="flex gap-2 flex-wrap flex-shrink-0 md:ml-auto">
             <Dialog open={showReassignDialog} onOpenChange={setShowReassignDialog}>
               <DialogTrigger asChild>
                 <Button variant="tertiary">

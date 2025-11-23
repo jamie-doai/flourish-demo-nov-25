@@ -11,7 +11,7 @@ interface LocationCardProps {
 export function LocationCard({ location }: LocationCardProps) {
   return (
     <Link to={`/managers/locations/${location.id}`}>
-      <Card className="hover:shadow-card transition-all">
+      <Card className="hover:shadow-card hover:bg-gray-50 transition-all">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             <MapPin className="w-3 h-3 text-forest-green" />

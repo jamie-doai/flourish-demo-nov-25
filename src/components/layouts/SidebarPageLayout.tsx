@@ -12,13 +12,13 @@ export function SidebarPageLayout({ sidebar, children }: SidebarPageLayoutProps)
     <div className="min-h-screen bg-background">
       <SidebarProvider>
         <div className="flex">
-          <aside className="hidden md:block border-r border-forest-green">
-            <div className="p-3">
+          <aside className="hidden md:block border-r border-forest-green min-w-[10rem] w-48 md:w-56 lg:w-60">
+            <div className="px-2 sm:px-2.5 md:px-3 py-3 sm:py-4 md:py-5">
               {sidebar}
             </div>
           </aside>
           <main className="flex-1">
-            <div className="p-3">
+            <div className="px-4 sm:px-6 py-6 sm:py-8">
               <SidebarTrigger className="md:hidden mb-4" />
               {children}
             </div>

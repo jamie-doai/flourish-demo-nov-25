@@ -124,7 +124,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
         />
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity Log</TabsTrigger>
