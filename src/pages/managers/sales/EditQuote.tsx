@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Plus, Save, Send, Edit3, Package } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Save, Send, Edit3, Package } from "lucide-react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
@@ -17,14 +17,17 @@ import { InventorySelectionSheet } from "@/components/sales/InventorySelectionSh
 import { LineItemRow } from "@/components/sales/LineItemRow";
 import { TotalsSection } from "@/components/sales/TotalsSection";
 import { useToast } from "@/hooks/use-toast";
-import { useLineItems } from "@/hooks/useLineItems";
-import { clients } from "@/data";
+import { useLineItems, LineItem } from "@/hooks/useLineItems";
+import { clients, getQuoteById } from "@/data";
 import { PendingLineItem } from "@/types/sales";
 import { calculateTotals } from "@/lib/salesCalculations";
 
-export default function CreateQuote() {
+export default function EditQuote() {
+  const { quoteId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const quote = getQuoteById(quoteId!);
 
   const [selectedClient, setSelectedClient] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -33,20 +36,62 @@ export default function CreateQuote() {
   const [internalNotes, setInternalNotes] = useState("");
   const [showInventorySheet, setShowInventorySheet] = useState(false);
 
+  // Convert quote items to LineItem format
+  const initialLineItems: LineItem[] = quote
+    ? quote.items.map((item) => ({
+        id: item.id,
+        species: item.species,
+        potSize: item.potSize,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        discount: item.discount,
+        total: item.total,
+        batchIds: item.batchId ? [item.batchId] : undefined,
+        costPerUnit: item.batchCOP,
+      }))
+    : [];
+
   const {
     lineItems,
     addLineItem,
     removeLineItem,
     updateLineItem,
     addItemsFromInventory,
-  } = useLineItems();
+  } = useLineItems(initialLineItems);
+
+  // Load quote data on mount
+  useEffect(() => {
+    if (quote) {
+      setSelectedClient(quote.clientId);
+      setExpiryDate(quote.expiryDate);
+      setReserveStock(quote.reserveStock ? "reserve" : "dont-reserve");
+      setClientNotes(quote.clientNotes || "");
+      setInternalNotes(quote.internalNotes || "");
+    }
+  }, [quote]);
+
+  if (!quote) {
+    return (
+      <ManagerLayout>
+        <SidebarPageLayout sidebar={<SalesSidebar />}>
+          <div className="flex items-center justify-center min-h-screen">
+            <Card>
+              <p className="text-muted-foreground">Quote not found</p>
+              <Link to="/managers/sales/quotes">
+                <Button variant="tertiary" className="mt-4">Back to Quotes</Button>
+              </Link>
+            </Card>
+          </div>
+        </SidebarPageLayout>
+      </ManagerLayout>
+    );
+  }
 
   const handleAddFromInventory = (items: PendingLineItem[]) => {
     addItemsFromInventory(items);
   };
 
-
-  const handleSaveDraft = () => {
+  const handleUpdateDraft = () => {
     if (!selectedClient) {
       toast({
         title: "Validation Error",
@@ -57,16 +102,16 @@ export default function CreateQuote() {
     }
 
     toast({
-      title: "Quote Saved",
-      description: "Quote has been saved as draft",
+      title: "Quote Updated",
+      description: "Quote has been updated",
     });
     
     setTimeout(() => {
-      navigate("/managers/sales/quotes");
+      navigate(`/managers/sales/quotes/${quoteId}`);
     }, 1000);
   };
 
-  const handleSendQuote = () => {
+  const handleUpdateAndSend = () => {
     if (!selectedClient) {
       toast({
         title: "Validation Error",
@@ -86,12 +131,12 @@ export default function CreateQuote() {
     }
 
     toast({
-      title: "Quote Sent",
-      description: "Quote has been sent to client",
+      title: "Quote Updated and Sent",
+      description: "Quote has been updated and sent to client",
     });
     
     setTimeout(() => {
-      navigate("/managers/sales/quotes");
+      navigate(`/managers/sales/quotes/${quoteId}`);
     }, 1000);
   };
 
@@ -101,10 +146,10 @@ export default function CreateQuote() {
     <ManagerLayout>
       <SidebarPageLayout sidebar={<SalesSidebar />}>
         <PageHeader
-          title="Create New Quote"
-          description="Generate a quote for a client"
-          backTo="/managers/sales/quotes"
-          backLabel="Back to Quotes"
+          title="Edit Quote"
+          description={`Editing quote ${quote.quoteNumber}`}
+          backTo={`/managers/sales/quotes/${quoteId}`}
+          backLabel="Back to Quote"
         />
 
         <Card className="mb-6">
@@ -235,16 +280,16 @@ export default function CreateQuote() {
         </Card>
 
         <div className="flex gap-3 justify-end">
-          <Link to="/managers/sales/quotes">
+          <Link to={`/managers/sales/quotes/${quoteId}`}>
             <Button variant="tertiary">Cancel</Button>
           </Link>
-          <Button variant="secondary" onClick={handleSaveDraft}>
+          <Button variant="secondary" onClick={handleUpdateDraft}>
             <Save className="w-3 h-3 mr-2" />
-            Save Draft
+            Update Draft
           </Button>
-          <Button onClick={handleSendQuote}>
+          <Button onClick={handleUpdateAndSend}>
             <Send className="w-3 h-3 mr-2" />
-            Send to Client
+            Update and Send
           </Button>
         </div>
 

@@ -6,7 +6,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { EntityType } from '@/data/search';
-import { Filter } from 'lucide-react';
 
 interface QuickFilterDropdownProps {
   value: EntityType | 'all';
@@ -30,10 +29,9 @@ export function QuickFilterDropdown({ value, onValueChange }: QuickFilterDropdow
   return (
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger 
-        className="h-8 w-[140px] text-xs"
+        className="h-9 w-[160px] text-xs px-2 py-0"
         aria-label="Filter search results by type"
       >
-        <Filter className="w-3 h-3 mr-1" />
         <SelectValue placeholder="All Types" />
       </SelectTrigger>
       <SelectContent className="z-[60]">

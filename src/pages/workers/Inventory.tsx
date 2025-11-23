@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { Search, Scan, MapPin, Leaf, Sprout } from "lucide-react";
 import { stages, batches } from "@/data";
 
@@ -42,7 +41,6 @@ export default function WorkerInventory() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10">
         <div className="container mx-auto px-4 py-4">
           <h1 className="text-xl font-semibold text-[#37474F] mb-4">Inventory</h1>

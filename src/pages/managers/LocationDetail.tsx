@@ -3,7 +3,6 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,10 +32,9 @@ export default function ManagerLocationDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header Section */}
         <div className="mb-6">
           <Link to="/managers/inventory" className="mb-4 inline-block">

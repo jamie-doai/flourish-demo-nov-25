@@ -53,26 +53,78 @@ export function getStatusColor(status: string): string {
 }
 
 /**
+ * Infers task type from action string for backward compatibility
+ * @param action - Task action string (e.g., "Water Bay 01 batches", "Pot up seedlings")
+ * @returns Task type string or null if cannot be inferred
+ */
+export function inferTaskTypeFromAction(action: string): string | null {
+  const lowerAction = action.toLowerCase();
+  
+  if (lowerAction.includes("water") || lowerAction.includes("watering")) {
+    return "Watering";
+  }
+  if (lowerAction.includes("pot") || lowerAction.includes("transplant") || lowerAction.includes("potting")) {
+    return "Potting";
+  }
+  if (lowerAction.includes("sow") || lowerAction.includes("seed")) {
+    return "Sowing";
+  }
+  if (lowerAction.includes("move") || lowerAction.includes("transport") || lowerAction.includes("movement")) {
+    return "Movement";
+  }
+  if (lowerAction.includes("check") || lowerAction.includes("inspect") || lowerAction.includes("quality") || lowerAction.includes("pest")) {
+    return "Quality Check";
+  }
+  if (lowerAction.includes("fertilize") || lowerAction.includes("apply") || lowerAction.includes("treat") || lowerAction.includes("treatment") || lowerAction.includes("prune")) {
+    return "Treatment";
+  }
+  
+  return null;
+}
+
+/**
  * Returns the appropriate icon component for a task type
  * @param type - Task type (Watering, Potting, Sowing, Movement, Quality Check, Treatment)
+ * @param action - Optional action string to infer type if type is not provided
  * @returns Lucide icon component
  */
-export function getTypeIcon(type: string): LucideIcon {
-  switch (type) {
-    case "Watering":
-      return Droplets;
-    case "Potting":
-      return Package;
-    case "Sowing":
-      return Sprout;
-    case "Movement":
-      return MapPin;
-    case "Quality Check":
-      return CheckSquare;
-    case "Treatment":
-      return AlertCircle;
-    default:
-      return Clock;
+export function getTypeIcon(type?: string, action?: string): LucideIcon {
+  // Use type if provided
+  if (type) {
+    switch (type) {
+      case "Watering":
+        return Droplets;
+      case "Potting":
+        return Package;
+      case "Sowing":
+        return Sprout;
+      case "Movement":
+        return MapPin;
+      case "Quality Check":
+        return CheckSquare;
+      case "Treatment":
+        return AlertCircle;
+      default:
+        // If type doesn't match, try to infer from action if provided
+        if (action) {
+          const inferredType = inferTaskTypeFromAction(action);
+          if (inferredType) {
+            return getTypeIcon(inferredType);
+          }
+        }
+        return Clock;
+    }
   }
+  
+  // If no type, try to infer from action
+  if (action) {
+    const inferredType = inferTaskTypeFromAction(action);
+    if (inferredType) {
+      return getTypeIcon(inferredType);
+    }
+  }
+  
+  // Default fallback
+  return Clock;
 }
 

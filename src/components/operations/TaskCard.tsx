@@ -22,7 +22,7 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, variant = "default" }: TaskCardProps) {
-  const Icon = getTypeIcon(task.type);
+  const Icon = getTypeIcon(task.type, task.title);
 
   if (variant === "completed") {
     return (

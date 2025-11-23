@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Camera, CheckCircle2, FileText, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getTaskById } from "@/data/tasks";
@@ -31,7 +30,6 @@ export default function WorkerTaskDetail() {
     return (
       <div className="min-h-screen bg-slate-800">
         <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-          <DevBar />
           <WorkerBottomNav />
           <main className="container mx-auto px-4 py-6 max-w-mobile">
             <Card className="p-6 text-center bg-white">
@@ -61,7 +59,6 @@ export default function WorkerTaskDetail() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
       <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-3">

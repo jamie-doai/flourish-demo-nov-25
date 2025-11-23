@@ -45,7 +45,7 @@ export default function ManagerOperations() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px]">
         <PageHeader
           title="Operations"
           description="Task management, scheduling, and workflow coordination"
@@ -203,7 +203,7 @@ export default function ManagerOperations() {
 
             <div className="flex flex-col gap-2">
               {filteredTasks.map((task) => {
-                const Icon = getTypeIcon(task.type);
+                const Icon = getTypeIcon(task.type, task.title || task.action);
                 return (
                   <Link key={task.id} to={`/managers/tasks/${task.id}`}>
                     <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">

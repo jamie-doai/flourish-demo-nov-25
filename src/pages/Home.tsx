@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-greenhouse.jpg";
 import { Sprout, CheckCircle, BarChart3, Users, Truck, LucideIcon } from "lucide-react";
@@ -44,7 +43,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      <DevBar />
       <Navigation />
 
       {/* Hero Section */}

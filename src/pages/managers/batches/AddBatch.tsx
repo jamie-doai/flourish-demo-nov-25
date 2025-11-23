@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DevBar } from "@/components/DevBar";
 import { Navigation } from "@/components/Navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -102,10 +101,9 @@ export default function AddBatch() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
             <Button

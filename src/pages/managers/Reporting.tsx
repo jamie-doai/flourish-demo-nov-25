@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,9 +27,8 @@ export default function ManagerReporting() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div className="min-w-0 flex-1">
             <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">Reporting & Analytics</h1>

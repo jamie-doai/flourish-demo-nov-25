@@ -59,7 +59,7 @@ export default function ManagerSearchResults() {
   return (
     <ManagerLayout>
       
-      <div className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header */}
         <div className="mb-6">
           <Button

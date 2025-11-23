@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Scan, StickyNote, AlertCircle, Package, MapPin, ListTodo, Sprout, Cloud, ChevronRight, LucideIcon } from "lucide-react";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { useState } from "react";
 
 interface Notification {
@@ -51,7 +50,6 @@ export default function WorkerHome() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-lime-green min-h-screen pb-20">
-        <DevBar />
         
         {/* Flourish Logo and Text */}
         <div className="bg-lime-green p-3 pb-3">

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
-import { Leaf, MapPin, ChevronDown, ChevronUp, Droplets, Move, Sprout, Flower2, Search } from "lucide-react";
+import { Leaf, MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { getTypeIcon } from "@/lib/taskUtils";
 import {
   Collapsible,
   CollapsibleContent,
@@ -35,19 +35,6 @@ export default function WorkerTasks() {
     if (lowerAction.includes("sow") || lowerAction.includes("seed")) return "Sow";
     if (lowerAction.includes("prune")) return "Prune";
     return action; // Return original if no match
-  };
-
-  // Helper to get icon for task action
-  const getTaskIcon = (action: string) => {
-    const simplifiedAction = getSimplifiedAction(action);
-    const lowerAction = simplifiedAction.toLowerCase();
-    if (lowerAction.includes("water")) return Droplets;
-    if (lowerAction.includes("move")) return Move;
-    if (lowerAction.includes("fertilize") || lowerAction.includes("apply")) return Sprout;
-    if (lowerAction.includes("pot")) return Flower2;
-    if (lowerAction.includes("check")) return Search;
-    if (lowerAction.includes("sow")) return Sprout;
-    return Leaf; // Default icon
   };
 
   // Filter tasks based on status
@@ -92,7 +79,6 @@ export default function WorkerTasks() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-white min-h-screen pb-20">
-        <DevBar />
       <WorkerPageHeader 
         title="Home" 
         backTo="/workers"
@@ -184,7 +170,7 @@ export default function WorkerTasks() {
                     if (actionTasks.length === 1) {
                       // Single task - no grouping
                       const task = actionTasks[0];
-                      const TaskIcon = getTaskIcon(task.action);
+                      const TaskIcon = getTypeIcon(task.type, task.action);
                       return (
                         <div key={`${location}-${action}`} className="px-3">
                           <Link to={`/workers/tasks/${task.id}`}>
@@ -225,7 +211,9 @@ export default function WorkerTasks() {
                     }
                     
                     // Multiple tasks - grouped in collapsible container
-                    const GroupIcon = getTaskIcon(action);
+                    // Use first task's type for group icon, or infer from action
+                    const firstTask = actionTasks[0];
+                    const GroupIcon = getTypeIcon(firstTask.type, action);
                     return (
                       <Collapsible
                         key={groupKey}
@@ -247,7 +235,7 @@ export default function WorkerTasks() {
                           <CollapsibleContent>
                             <div className="pt-2 flex flex-col gap-2">
                               {actionTasks.map((task) => {
-                                const TaskIcon = getTaskIcon(task.action);
+                                const TaskIcon = getTypeIcon(task.type, task.action);
                                 return (
                                   <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                                     <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
@@ -300,7 +288,7 @@ export default function WorkerTasks() {
               if (actionTasks.length === 1) {
                 // Single task - no grouping
                 const task = actionTasks[0];
-                const TaskIcon = getTaskIcon(task.action);
+                const TaskIcon = getTypeIcon(task.type, task.action);
                 return (
                   <div key={`task-${action}`} className="px-3 mb-4">
                     <Link to={`/workers/tasks/${task.id}`}>
@@ -343,7 +331,9 @@ export default function WorkerTasks() {
               }
               
               // Multiple tasks - grouped in collapsible container
-              const GroupIcon = getTaskIcon(action);
+              // Use first task's type for group icon, or infer from action
+              const firstTask = actionTasks[0];
+              const GroupIcon = getTypeIcon(firstTask.type, action);
               return (
                 <Collapsible
                   key={groupKey}
@@ -366,7 +356,7 @@ export default function WorkerTasks() {
                     <CollapsibleContent>
                       <div className="pt-2 flex flex-col gap-2">
                         {actionTasks.map((task) => {
-                          const TaskIcon = getTaskIcon(task.action);
+                          const TaskIcon = getTypeIcon(task.type, task.action);
                           return (
                             <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                               <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">

@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Plus, Save, Send, Edit3, Package } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Package, Edit3 } from "lucide-react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
@@ -10,28 +10,45 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { InventorySelectionSheet } from "@/components/sales/InventorySelectionSheet";
 import { LineItemRow } from "@/components/sales/LineItemRow";
 import { TotalsSection } from "@/components/sales/TotalsSection";
 import { useToast } from "@/hooks/use-toast";
-import { useLineItems } from "@/hooks/useLineItems";
-import { clients } from "@/data";
+import { useLineItems, LineItem } from "@/hooks/useLineItems";
+import { clients, getOrderById } from "@/data";
 import { PendingLineItem } from "@/types/sales";
 import { calculateTotals } from "@/lib/salesCalculations";
 
-export default function CreateQuote() {
+export default function EditOrder() {
+  const { orderId } = useParams();
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const order = getOrderById(orderId!);
+
   const [selectedClient, setSelectedClient] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [reserveStock, setReserveStock] = useState("dont-reserve");
-  const [clientNotes, setClientNotes] = useState("");
+  const [deliveryType, setDeliveryType] = useState<"pickup" | "courier" | "in-house">("courier");
+  const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [specialInstructions, setSpecialInstructions] = useState("");
   const [internalNotes, setInternalNotes] = useState("");
   const [showInventorySheet, setShowInventorySheet] = useState(false);
+
+  // Convert order items to LineItem format
+  const initialLineItems: LineItem[] = order
+    ? order.items.map((item) => ({
+        id: item.id,
+        species: item.species,
+        potSize: item.potSize,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        discount: 0,
+        total: item.total,
+        batchIds: item.batchId ? [item.batchId] : undefined,
+      }))
+    : [];
 
   const {
     lineItems,
@@ -39,41 +56,48 @@ export default function CreateQuote() {
     removeLineItem,
     updateLineItem,
     addItemsFromInventory,
-  } = useLineItems();
+  } = useLineItems(initialLineItems);
+
+  // Load order data on mount
+  useEffect(() => {
+    if (order) {
+      setSelectedClient(order.clientId);
+      setDeliveryType(order.deliveryType);
+      setDeliveryDate(order.deliveryDate || "");
+      setDeliveryAddress(order.deliveryAddress || "");
+      setSpecialInstructions(order.specialInstructions || "");
+    }
+  }, [order]);
+
+  if (!order) {
+    return (
+      <ManagerLayout>
+        <SidebarPageLayout sidebar={<SalesSidebar />}>
+          <div className="flex items-center justify-center min-h-screen">
+            <Card>
+              <p className="text-muted-foreground">Order not found</p>
+              <Link to="/managers/sales/orders">
+                <Button variant="tertiary" className="mt-4">Back to Orders</Button>
+              </Link>
+            </Card>
+          </div>
+        </SidebarPageLayout>
+      </ManagerLayout>
+    );
+  }
 
   const handleAddFromInventory = (items: PendingLineItem[]) => {
     addItemsFromInventory(items);
   };
 
-
-  const handleSaveDraft = () => {
+  const validateForm = () => {
     if (!selectedClient) {
       toast({
         title: "Validation Error",
         description: "Please select a client",
         variant: "destructive"
       });
-      return;
-    }
-
-    toast({
-      title: "Quote Saved",
-      description: "Quote has been saved as draft",
-    });
-    
-    setTimeout(() => {
-      navigate("/managers/sales/quotes");
-    }, 1000);
-  };
-
-  const handleSendQuote = () => {
-    if (!selectedClient) {
-      toast({
-        title: "Validation Error",
-        description: "Please select a client",
-        variant: "destructive"
-      });
-      return;
+      return false;
     }
 
     if (lineItems.some(item => !item.species || item.quantity === 0)) {
@@ -82,16 +106,31 @@ export default function CreateQuote() {
         description: "Please complete all line items",
         variant: "destructive"
       });
-      return;
+      return false;
     }
 
+    if (deliveryType === "courier" && !deliveryAddress) {
+      toast({
+        title: "Validation Error",
+        description: "Please provide delivery address for courier delivery",
+        variant: "destructive"
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleUpdateOrder = () => {
+    if (!validateForm()) return;
+
     toast({
-      title: "Quote Sent",
-      description: "Quote has been sent to client",
+      title: "Order Updated Successfully",
+      description: `Order ${order.orderNumber} has been updated`,
     });
     
     setTimeout(() => {
-      navigate("/managers/sales/quotes");
+      navigate(`/managers/sales/orders/${orderId}`);
     }, 1000);
   };
 
@@ -101,10 +140,10 @@ export default function CreateQuote() {
     <ManagerLayout>
       <SidebarPageLayout sidebar={<SalesSidebar />}>
         <PageHeader
-          title="Create New Quote"
-          description="Generate a quote for a client"
-          backTo="/managers/sales/quotes"
-          backLabel="Back to Quotes"
+          title="Edit Order"
+          description={`Editing order ${order.orderNumber}`}
+          backTo={`/managers/sales/orders/${orderId}`}
+          backLabel="Back to Order"
         />
 
         <Card className="mb-6">
@@ -125,17 +164,50 @@ export default function CreateQuote() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+        </Card>
+
+        <Card className="mb-6">
+          <h2 className="text-heading-4 font-heading font-bold mb-4">Delivery Details</h2>
+          <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="expiry">Quote Expiry Date</Label>
+              <Label htmlFor="delivery-type">Delivery Type *</Label>
+              <Select value={deliveryType} onValueChange={(value: string) => setDeliveryType(value as "pickup" | "courier" | "in-house")}>
+                <SelectTrigger id="delivery-type" className="mt-2">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pickup">Pickup</SelectItem>
+                  <SelectItem value="courier">Courier</SelectItem>
+                  <SelectItem value="in-house">In-house Delivery</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="delivery-date">Delivery Date</Label>
               <Input
-                id="expiry"
+                id="delivery-date"
                 type="date"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(e.target.value)}
+                value={deliveryDate}
+                onChange={(e) => setDeliveryDate(e.target.value)}
                 className="mt-2"
               />
             </div>
           </div>
+          
+          {deliveryType === "courier" && (
+            <div className="mt-4">
+              <Label htmlFor="delivery-address">Delivery Address *</Label>
+              <Textarea
+                id="delivery-address"
+                placeholder="Full delivery address..."
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                className="mt-2"
+                rows={3}
+              />
+            </div>
+          )}
         </Card>
 
         <Card className="mb-6">
@@ -187,34 +259,16 @@ export default function CreateQuote() {
         </Card>
 
         <Card className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">Additional Options</h2>
+          <h2 className="text-lg font-semibold mb-4">Additional Information</h2>
           
-          <div className="space-y-2 mb-6">
-            <Label className="text-sm font-medium">Reserve Stock</Label>
-            <RadioGroup 
-              value={reserveStock} 
-              onValueChange={setReserveStock}
-              className="flex flex-row gap-6"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="reserve" id="reserve-yes" />
-                <Label htmlFor="reserve-yes" className="cursor-pointer">Reserve Stock</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="dont-reserve" id="reserve-no" />
-                <Label htmlFor="reserve-no" className="cursor-pointer">Don't Reserve Stock</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
           <div className="space-y-4">
             <div>
-              <Label htmlFor="client-notes">Client Notes</Label>
+              <Label htmlFor="special-instructions">Special Instructions</Label>
               <Textarea
-                id="client-notes"
-                placeholder="Notes visible to the client on the quote..."
-                value={clientNotes}
-                onChange={(e) => setClientNotes(e.target.value)}
+                id="special-instructions"
+                placeholder="Delivery notes, handling requirements..."
+                value={specialInstructions}
+                onChange={(e) => setSpecialInstructions(e.target.value)}
                 className="mt-2"
                 rows={3}
               />
@@ -235,16 +289,12 @@ export default function CreateQuote() {
         </Card>
 
         <div className="flex gap-3 justify-end">
-          <Link to="/managers/sales/quotes">
+          <Link to={`/managers/sales/orders/${orderId}`}>
             <Button variant="tertiary">Cancel</Button>
           </Link>
-          <Button variant="secondary" onClick={handleSaveDraft}>
-            <Save className="w-3 h-3 mr-2" />
-            Save Draft
-          </Button>
-          <Button onClick={handleSendQuote}>
-            <Send className="w-3 h-3 mr-2" />
-            Send to Client
+          <Button onClick={handleUpdateOrder}>
+            <Package className="w-3 h-3 mr-2" />
+            Update Order
           </Button>
         </div>
 

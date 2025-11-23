@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DevBar } from "@/components/DevBar";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { Card } from "@/components/ui/card";
@@ -73,7 +72,6 @@ export default function WorkerAddBatch() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
       <WorkerPageHeader title="Add Batch" backTo="/workers/inventory" />
 
       <main className="container mx-auto px-4 py-6">

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { MapPin, ChevronDown, ChevronRight, AlertCircle } from "lucide-react";
 import { locations, getTasksByLocation, batches } from "@/data";
@@ -63,7 +62,6 @@ export default function WorkerLocations() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
         <WorkerPageHeader title="Locations" backTo="/workers" />
 
         <div className="container mx-auto px-4 pt-4">

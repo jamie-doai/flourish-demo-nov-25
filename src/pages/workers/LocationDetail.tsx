@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, CheckCircle2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { WorkerPageHeader } from "@/components/WorkerPageHeader";
@@ -22,7 +21,6 @@ export default function WorkerLocationDetail() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
         
         <WorkerPageHeader 
           title={mockLocation.name}

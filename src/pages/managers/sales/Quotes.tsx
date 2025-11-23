@@ -37,16 +37,6 @@ export default function ManagerSalesQuotes() {
           description="Manage and track sales quotes"
           backTo="/managers/sales"
           backLabel="Back to Sales"
-          sectionSwitcher={{
-            value: "quotes",
-            onValueChange: (value) => navigate(`/managers/sales/${value}`),
-            options: [
-              { value: "quotes", label: "Quotes" },
-              { value: "orders", label: "Orders" },
-              { value: "invoices", label: "Invoices" },
-              { value: "clients", label: "Clients" },
-            ],
-          }}
           actions={
             <Link to="/managers/sales/quotes/new">
               <Button>
@@ -86,45 +76,45 @@ export default function ManagerSalesQuotes() {
 
         <div className="space-y-4">
           {quotes.map((quote) => (
-            <Card key={quote.id} className="p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-2">
-                    <FileText className="w-3 h-3 text-primary" />
-                    <div className="font-semibold text-lg">{quote.quoteNumber}</div>
-                    <Badge className={getStatusColor(quote.status)}>{getStatusLabel(quote.status)}</Badge>
-                    {quote.reserveStock && (
-                      <Badge variant="outline" className="text-xs">Stock Reserved</Badge>
-                    )}
+            <Link key={quote.id} to={`/managers/sales/quotes/${quote.id}`} className="block">
+              <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-all cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-2">
+                      <FileText className="w-3 h-3 text-primary" />
+                      <div className="font-semibold text-lg">{quote.quoteNumber}</div>
+                      <Badge className={getStatusColor(quote.status)}>{getStatusLabel(quote.status)}</Badge>
+                      {quote.reserveStock && (
+                        <Badge variant="outline" className="text-xs">Stock Reserved</Badge>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Client: </span>
+                        <span className="font-medium">{quote.clientName}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Items: </span>
+                        <span className="font-medium">{quote.items.length}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Total: </span>
+                        <span className="font-medium text-primary">${quote.total.toLocaleString()}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Created: </span>
+                        <span>{quote.dateCreated}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Expires: </span>
+                        <span>{quote.expiryDate}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{quote.clientName}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Items: </span>
-                      <span className="font-medium">{quote.items.length}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">${quote.total.toLocaleString()}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Created: </span>
-                      <span>{quote.dateCreated}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Expires: </span>
-                      <span>{quote.expiryDate}</span>
-                    </div>
-                  </div>
+                  <Button size="sm" onClick={(e) => e.stopPropagation()}>View Details</Button>
                 </div>
-                <Link to={`/managers/sales/quotes/${quote.id}`}>
-                  <Button size="sm">View Details</Button>
-                </Link>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           ))}
         </div>
       </SidebarPageLayout>

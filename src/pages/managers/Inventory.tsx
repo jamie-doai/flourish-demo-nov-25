@@ -166,7 +166,7 @@ export default function ManagerInventory() {
     if (!speciesData) {
       return (
         <ManagerLayout>
-          <main className="container mx-auto px-6 py-8 bg-white">
+          <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
             <Button variant="primary-ghost" onClick={() => setSelectedSpecies(null)} className="mb-4">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Species
@@ -179,7 +179,7 @@ export default function ManagerInventory() {
 
     return (
       <ManagerLayout>
-        <main className="container mx-auto px-6 py-8 bg-white">
+        <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
           <SpeciesDetailView
             speciesData={speciesData}
             onBack={() => setSelectedSpecies(null)}
@@ -196,7 +196,7 @@ export default function ManagerInventory() {
     if (!stage || !stats) {
       return (
         <ManagerLayout>
-          <main className="container mx-auto px-6 py-8 bg-white">
+          <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
             <Button variant="primary-ghost" onClick={() => setSelectedStage(null)} className="mb-4">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Stages
@@ -209,7 +209,7 @@ export default function ManagerInventory() {
 
     return (
       <ManagerLayout>
-        <main className="container mx-auto px-6 py-8 bg-white">
+        <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
           <StageDetailView
             stageName={stage.name}
             stageIcon={stage.icon}
@@ -223,7 +223,7 @@ export default function ManagerInventory() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8 bg-white">
+      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px] bg-white">
         <PageHeader
           title="Inventory Management"
           description="Track batches across stages and locations"

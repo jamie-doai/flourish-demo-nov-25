@@ -5,16 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +15,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
+import { lifecycleStages, getBatchById, getTasksByBatch } from "@/data";
 import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
+import { MoveLocationDialog } from "@/components/inventory/MoveLocationDialog";
+import { getTypeIcon } from "@/lib/taskUtils";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -38,14 +32,12 @@ export default function WorkerBatchDetail() {
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
-  const locations = getLocationNames();
   const relatedTasks = getTasksByBatch(batchId || "");
 
   if (!mockBatch) {
     return (
       <div className="min-h-screen bg-slate-800">
         <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-          <DevBar />
           <WorkerBottomNav />
           <div className="container mx-auto px-4 py-8">
             <p>Batch not found</p>
@@ -102,7 +94,6 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
   return (
     <div className="min-h-screen bg-slate-800">
       <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
       <div className="hidden md:block">
         <Navigation />
       </div>
@@ -176,25 +167,12 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
         </div>
 
         {/* Move Dialog */}
-        <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Move to Location</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-2 py-4">
-              {locations.filter(loc => loc !== mockBatch.location).map((location) => (
-                <Button
-                  key={location}
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => handleMove(location)}
-                >
-                  📍 {location}
-                </Button>
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
+        <MoveLocationDialog
+          open={showMoveDialog}
+          onOpenChange={setShowMoveDialog}
+          currentLocation={mockBatch.location}
+          onSelect={handleMove}
+        />
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="max-w-2xl">
@@ -414,27 +392,36 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
                 <h3 className="text-sm font-semibold text-[#37474F]">Activity Log</h3>
               </div>
               <div className="space-y-4">
-                {activityLog.map((log, index) => (
-                  <div key={index} className="flex gap-3 pb-4 border-b border-[#3B7A57]/5 last:border-0 last:pb-0">
-                    <div className="w-8 h-8 bg-[#3B7A57]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-2 h-2 bg-[#3B7A57] rounded-full"></div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-1">
-                        <p className="text-sm text-[#37474F] font-semibold">{log.action}</p>
-                        <span className="text-xs text-[#37474F]/40">{log.time}</span>
+                {activityLog.map((log, index) => {
+                  const ActivityIcon = getTypeIcon(undefined, log.action);
+                  return (
+                    <div key={index} className="grid grid-cols-[auto_auto_0.6fr_1.4fr] gap-5 items-start pb-4 border-b border-[#3B7A57]/5 last:border-0 last:pb-0">
+                      {/* Column 1: Icon */}
+                      <div className="w-8 h-8 bg-[#3B7A57]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <ActivityIcon className="w-3 h-3 text-[#3B7A57]" />
                       </div>
-                      <p className="text-xs text-[#37474F]/60 mb-1">
-                        {log.user} • {log.date}
-                      </p>
-                      {log.notes && (
-                        <p className="text-xs text-[#37474F]/70 bg-[#F8FAF9] p-2 rounded mt-2">
-                          {log.notes}
-                        </p>
+                      
+                      {/* Column 2: Date/Time (vertical stack) */}
+                      <div className="flex flex-col">
+                        <span className="text-xs text-[#37474F]/60">{log.date}</span>
+                        <span className="text-xs text-[#37474F]/60">{log.time}</span>
+                      </div>
+                      
+                      {/* Column 3: Task/User (vertical stack) */}
+                      <div className="flex flex-col">
+                        <p className="text-sm text-[#37474F] font-semibold">{log.action}</p>
+                        <p className="text-xs text-[#37474F]/60">{log.user}</p>
+                      </div>
+                      
+                      {/* Column 4: Notes (no background) */}
+                      {log.notes ? (
+                        <p className="text-xs text-[#37474F]/70">{log.notes}</p>
+                      ) : (
+                        <div></div>
                       )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </Card>
           </TabsContent>

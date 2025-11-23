@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { StatsCard } from "@/components/StatsCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,7 +29,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white">
-      <DevBar />
       <Navigation />
 
       <main className="container mx-auto px-4 py-6 bg-white">

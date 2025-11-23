@@ -25,15 +25,63 @@ All colors MUST be HSL.
     
     /* Lime Green #d7f99d - Primary brand color */
     --lime-green: 78 92% 80%;
+    /* Lime Green Variants (000-1000) - Even spread from light to dark */
+    --lime-green-000: 78 92% 95%;
+    --lime-green-100: 78 92% 86%;
+    --lime-green-200: 78 92% 77%;
+    --lime-green-300: 78 92% 68%;
+    --lime-green-400: 78 92% 59%;
+    --lime-green-500: 78 92% 50%;
+    --lime-green-600: 78 92% 41%;
+    --lime-green-700: 78 92% 32%;
+    --lime-green-800: 78 92% 23%;
+    --lime-green-900: 78 92% 14%;
+    --lime-green-1000: 78 92% 5%;
     
     /* Sage Green #b6d487 - Secondary accents */
     --sage-green: 85 52% 68%;
+    /* Sage Green Variants (000-1000) - Even spread from light to dark */
+    --sage-green-000: 85 52% 95%;
+    --sage-green-100: 85 52% 86%;
+    --sage-green-200: 85 52% 77%;
+    --sage-green-300: 85 52% 68%;
+    --sage-green-400: 85 52% 59%;
+    --sage-green-500: 85 52% 50%;
+    --sage-green-600: 85 52% 41%;
+    --sage-green-700: 85 52% 32%;
+    --sage-green-800: 85 52% 23%;
+    --sage-green-900: 85 52% 14%;
+    --sage-green-1000: 85 52% 5%;
     
     /* Neon Yellow #fafd8f - Primary CTAs */
     --neon-yellow: 60 95% 78%;
+    /* Neon Yellow Variants (000-1000) - Even spread from light to dark */
+    --neon-yellow-000: 60 95% 95%;
+    --neon-yellow-100: 60 95% 86%;
+    --neon-yellow-200: 60 95% 77%;
+    --neon-yellow-300: 60 95% 68%;
+    --neon-yellow-400: 60 95% 59%;
+    --neon-yellow-500: 60 95% 50%;
+    --neon-yellow-600: 60 95% 41%;
+    --neon-yellow-700: 60 95% 32%;
+    --neon-yellow-800: 60 95% 23%;
+    --neon-yellow-900: 60 95% 14%;
+    --neon-yellow-1000: 60 95% 5%;
     
     /* Forest Green #29372b - Primary buttons and text */
     --forest-green: 130 13% 19%;
+    /* Forest Green Variants (000-1000) - Even spread from light to dark */
+    --forest-green-000: 130 13% 95%;
+    --forest-green-100: 130 13% 86%;
+    --forest-green-200: 130 13% 77%;
+    --forest-green-300: 130 13% 68%;
+    --forest-green-400: 130 13% 59%;
+    --forest-green-500: 130 13% 50%;
+    --forest-green-600: 130 13% 41%;
+    --forest-green-700: 130 13% 32%;
+    --forest-green-800: 130 13% 23%;
+    --forest-green-900: 130 13% 14%;
+    --forest-green-1000: 130 13% 5%;
     
     /* Sage Gray #d4d9d5 - Borders/dividers */
     --sage-gray: 140 6% 84%;

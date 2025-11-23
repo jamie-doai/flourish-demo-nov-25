@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
 import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -14,7 +13,6 @@ export default function WorkerProfile() {
   return (
     <div className="min-h-screen bg-slate-800">
       <div className={`max-w-mobile mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
-        <DevBar />
       <header className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 pb-12">
         <div className="flex items-center gap-4">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">

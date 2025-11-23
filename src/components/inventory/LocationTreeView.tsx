@@ -45,45 +45,46 @@ export function LocationTreeView({
             <Card key={building.id} className="overflow-hidden">
               <Collapsible open={isExpanded} onOpenChange={() => onToggleBuilding(building.id)}>
                 <div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3 flex-1">
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          {isExpanded ? (
-                            <ChevronDown className="h-6 w-6" />
-                          ) : (
-                            <ChevronRight className="h-6 w-6" />
-                          )}
-                        </Button>
-                      </CollapsibleTrigger>
-                      <MapPin className="w-3 h-3 text-primary" />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-semibold">{building.name}</h3>
-                          <Badge variant="outline" className="text-xs">{building.code}</Badge>
-                          {pendingTasks.length > 0 && (
-                            <Badge variant="secondary" className="text-xs">
-                              {pendingTasks.length} tasks
-                            </Badge>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
-                          <span>{building.climateControl}</span>
-                          <span>{bays.length} bays</span>
-                          {building.temperature && (
-                            <div className="flex items-center gap-1">
-                              <Thermometer className="w-3 h-3" />
-                              <span>{building.temperature}</span>
-                            </div>
-                          )}
+                  <div className="flex items-center gap-2">
+                    <CollapsibleTrigger asChild>
+                      <Button variant="ghost" size="sm" className="p-[32px]">
+                        {isExpanded ? (
+                          <ChevronDown className="h-6 w-6" />
+                        ) : (
+                          <ChevronRight className="h-6 w-6" />
+                        )}
+                      </Button>
+                    </CollapsibleTrigger>
+                    <Link 
+                      to={`/managers/locations/${building.id}`}
+                      className="flex items-center justify-between gap-3 flex-1 hover:bg-muted/30 transition-colors rounded px-3 py-2"
+                    >
+                      <div className="flex items-center gap-3 flex-1">
+                        <MapPin className="w-3 h-3 text-primary" />
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-lg font-semibold">{building.name}</h3>
+                            <Badge variant="outline" className="text-xs">{building.code}</Badge>
+                            {pendingTasks.length > 0 && (
+                              <Badge variant="secondary" className="text-xs">
+                                {pendingTasks.length} tasks
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                            <span>{building.climateControl}</span>
+                            <span>{bays.length} bays</span>
+                            {building.temperature && (
+                              <div className="flex items-center gap-1">
+                                <Thermometer className="w-3 h-3" />
+                                <span>{building.temperature}</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
-                      <Link to={`/managers/locations/${building.id}`}>
-                        <Button variant="ghost" size="sm">
-                          View Details
-                        </Button>
-                      </Link>
-                    </div>
+                      <span className="text-sm text-muted-foreground font-medium">View Details</span>
+                    </Link>
                   </div>
                 </div>
 
@@ -98,40 +99,41 @@ export function LocationTreeView({
                         const bayBatchCount = getBatchCountAtLocation(bay.id, true);
 
                         return (
-                          <Card key={bay.id} className="ml-8">
+                          <Card key={bay.id} className="ml-8 border-gray-300">
                             <Collapsible open={isBayExpanded} onOpenChange={() => onToggleBay(bay.id)}>
                               <div>
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-2 flex-1">
-                                    <CollapsibleTrigger asChild>
-                                      <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                        {isBayExpanded ? (
-                                          <ChevronDown className="h-3 w-3" />
-                                        ) : (
-                                          <ChevronRight className="h-3 w-3" />
-                                        )}
-                                      </Button>
-                                    </CollapsibleTrigger>
-                                    <Layers className="w-3 h-3 text-muted-foreground" />
-                                    <div className="flex-1">
-                                      <div className="flex items-center gap-2">
-                                        <span className="font-medium text-sm">{bay.name}</span>
-                                        {bay.code && <Badge variant="outline" className="text-xs">{bay.code}</Badge>}
-                                      </div>
-                                      <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                                        <span>{tables.length} tables</span>
-                                        <span>{bayBatchCount} batches</span>
-                                        {bay.maxCapacity && (
-                                          <span>{bay.maxCapacity} capacity</span>
-                                        )}
+                                <div className="flex items-center gap-2">
+                                  <CollapsibleTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-1.5">
+                                      {isBayExpanded ? (
+                                        <ChevronDown className="h-3 w-3" />
+                                      ) : (
+                                        <ChevronRight className="h-3 w-3" />
+                                      )}
+                                    </Button>
+                                  </CollapsibleTrigger>
+                                  <Link 
+                                    to={`/managers/locations/${bay.id}`}
+                                    className="flex items-center justify-between gap-2 flex-1 hover:bg-muted/30 transition-colors rounded px-2 py-1.5"
+                                  >
+                                    <div className="flex items-center gap-2 flex-1">
+                                      <Layers className="w-3 h-3 text-muted-foreground" />
+                                      <div className="flex-1">
+                                        <div className="flex items-center gap-2">
+                                          <span className="font-medium text-sm">{bay.name}</span>
+                                          {bay.code && <Badge variant="outline" className="text-xs">{bay.code}</Badge>}
+                                        </div>
+                                        <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
+                                          <span>{tables.length} tables</span>
+                                          <span>{bayBatchCount} batches</span>
+                                          {bay.maxCapacity && (
+                                            <span>{bay.maxCapacity} capacity</span>
+                                          )}
+                                        </div>
                                       </div>
                                     </div>
-                                    <Link to={`/managers/locations/${bay.id}`}>
-                                      <Button variant="ghost" size="sm" className="h-7 text-xs">
-                                        View
-                                      </Button>
-                                    </Link>
-                                  </div>
+                                    <span className="text-xs text-muted-foreground font-medium">View</span>
+                                  </Link>
                                 </div>
                               </div>
 

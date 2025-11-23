@@ -11,7 +11,7 @@ export default function ManagerProfile() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8 max-w-2xl">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-8 rounded-xl mb-6">
           <div className="flex items-center gap-4">

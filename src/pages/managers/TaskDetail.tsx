@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Camera, CheckCircle2, FileText, User, MapPin, Clock, Package, Calendar, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getTaskById } from "@/data/tasks";
@@ -38,9 +37,8 @@ export default function ManagerTaskDetail() {
   if (!task) {
     return (
       <div className="min-h-screen bg-background">
-        <DevBar />
         <Navigation />
-        <main className="container mx-auto px-6 py-8">
+        <main className="container mx-auto px-12 py-8 max-w-[1920px]">
           <Card className="text-center">
             <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
             <h2 className="text-xl font-semibold mb-2">Task Not Found</h2>
@@ -83,10 +81,9 @@ export default function ManagerTaskDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px]">
         {/* Header */}
         <div className="flex flex-col gap-4 mb-6">
           <Link to="/managers/operations" className="self-start">

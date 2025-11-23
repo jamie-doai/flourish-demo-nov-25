@@ -1,8 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Package, Droplets, Clipboard, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Task } from "@/data/tasks";
+import { getTypeIcon } from "@/lib/taskUtils";
 
 interface TaskCardProps {
   task: Task;
@@ -10,26 +11,45 @@ interface TaskCardProps {
 }
 
 export function TaskCard({ task, href }: TaskCardProps) {
-  const getIconAndColor = () => {
-    if (task.action.includes("Potting")) {
-      return {
-        icon: Package,
-        bgClass: "bg-blue-100 dark:bg-blue-950",
-        iconClass: "text-blue-600 dark:text-blue-400"
-      };
+  const getColorClasses = (type?: string) => {
+    // Use consistent color scheme based on task type
+    switch (type) {
+      case "Watering":
+        return {
+          bgClass: "bg-cyan-100 dark:bg-cyan-950",
+          iconClass: "text-cyan-600 dark:text-cyan-400"
+        };
+      case "Potting":
+        return {
+          bgClass: "bg-blue-100 dark:bg-blue-950",
+          iconClass: "text-blue-600 dark:text-blue-400"
+        };
+      case "Sowing":
+        return {
+          bgClass: "bg-green-100 dark:bg-green-950",
+          iconClass: "text-green-600 dark:text-green-400"
+        };
+      case "Movement":
+        return {
+          bgClass: "bg-orange-100 dark:bg-orange-950",
+          iconClass: "text-orange-600 dark:text-orange-400"
+        };
+      case "Quality Check":
+        return {
+          bgClass: "bg-purple-100 dark:bg-purple-950",
+          iconClass: "text-purple-600 dark:text-purple-400"
+        };
+      case "Treatment":
+        return {
+          bgClass: "bg-yellow-100 dark:bg-yellow-950",
+          iconClass: "text-yellow-600 dark:text-yellow-400"
+        };
+      default:
+        return {
+          bgClass: "bg-purple-100 dark:bg-purple-950",
+          iconClass: "text-purple-600 dark:text-purple-400"
+        };
     }
-    if (task.action.includes("Watering")) {
-      return {
-        icon: Droplets,
-        bgClass: "bg-cyan-100 dark:bg-cyan-950",
-        iconClass: "text-cyan-600 dark:text-cyan-400"
-      };
-    }
-    return {
-      icon: Clipboard,
-      bgClass: "bg-purple-100 dark:bg-purple-950",
-      iconClass: "text-purple-600 dark:text-purple-400"
-    };
   };
 
   const getStatusBadge = () => {
@@ -42,7 +62,8 @@ export function TaskCard({ task, href }: TaskCardProps) {
     return { variant: "secondary" as const, label: "Upcoming" };
   };
 
-  const { icon: Icon, bgClass, iconClass } = getIconAndColor();
+  const Icon = getTypeIcon(task.type, task.action);
+  const { bgClass, iconClass } = getColorClasses(task.type);
   const statusBadge = getStatusBadge();
 
   const content = (

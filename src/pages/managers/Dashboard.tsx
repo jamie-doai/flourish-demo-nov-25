@@ -51,7 +51,7 @@ export default function ManagerDashboard() {
     <ManagerLayout>
       <DashboardHeader dateString={dateString} />
 
-      <main className="container mx-auto px-6 py-8 bg-white">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
         {/* Header - Desktop */}
         <div className="hidden md:block mb-6">
           <PageHeader

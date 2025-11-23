@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
-import { DevBar } from '@/components/DevBar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -155,10 +154,9 @@ export default function CostLibrary() {
   
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header */}
         <div className="mb-6">
           <Link to="/managers/settings">
