@@ -60,7 +60,8 @@ export default function ManagerTaskDetail() {
     setTimeout(() => navigate("/managers/operations"), 1500);
   };
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority?: string) => {
+    if (!priority) return "bg-muted text-muted-foreground";
     switch (priority) {
       case "High": return "bg-destructive/10 text-destructive";
       case "Medium": return "bg-accent/10 text-accent";
@@ -83,7 +84,7 @@ export default function ManagerTaskDetail() {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px]">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header */}
         <div className="flex flex-col gap-4 mb-6">
           <Link to="/managers/operations" className="self-start">
@@ -99,9 +100,11 @@ export default function ManagerTaskDetail() {
                 <Badge className={getStatusColor(task.status)} variant="outline">
                   {task.status}
                 </Badge>
-                <Badge className={getPriorityColor(task.priority)} variant="outline">
-                  {task.priority} Priority
-                </Badge>
+                {task.priority && (
+                  <Badge className={getPriorityColor(task.priority)} variant="outline">
+                    {task.priority} Priority
+                  </Badge>
+                )}
               </div>
             </div>
             <div className="flex gap-2 flex-wrap flex-shrink-0 md:ml-auto">
@@ -119,9 +122,9 @@ export default function ManagerTaskDetail() {
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Assign To</label>
-                    <Select defaultValue={task.assignee}>
+                    <Select defaultValue={task.assignee || undefined}>
                       <SelectTrigger>
-                        <SelectValue />
+                        <SelectValue placeholder="Select assignee" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Mereana">Mereana (Manager)</SelectItem>
@@ -161,6 +164,7 @@ export default function ManagerTaskDetail() {
               </Button>
             )}
           </div>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
@@ -175,7 +179,7 @@ export default function ManagerTaskDetail() {
                     <User className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Assigned To</p>
-                      <p className="font-medium">{task.assignee}</p>
+                      <p className="font-medium">{task.assignee || "Unassigned"}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -198,14 +202,14 @@ export default function ManagerTaskDetail() {
                     <Calendar className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Due Date</p>
-                      <p className="font-medium">{task.dueDate}</p>
+                      <p className="font-medium">{task.dueDate || task.due || "TBD"}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-3 h-3 text-muted-foreground mt-0.5" />
                     <div>
                       <p className="text-sm text-muted-foreground">Estimated Hours</p>
-                      <p className="font-medium">{task.estimatedHours}h</p>
+                      <p className="font-medium">{task.estimatedHours ? `${task.estimatedHours}h` : "TBD"}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -316,7 +320,7 @@ export default function ManagerTaskDetail() {
                 <div className="flex gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5"></div>
                   <div>
-                    <p className="font-medium">Assigned to {task.assignee}</p>
+                    <p className="font-medium">Assigned to {task.assignee || "Unassigned"}</p>
                     <p className="text-muted-foreground text-xs">2 hours ago</p>
                   </div>
                 </div>

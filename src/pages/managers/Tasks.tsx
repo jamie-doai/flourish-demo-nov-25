@@ -1,0 +1,258 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { 
+  Plus, Search, 
+  User, MapPin, Clock, Package, ChevronRight
+} from "lucide-react";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { tasks as unifiedTasks } from "@/data";
+import { getPriorityColor, getStatusColor, getTypeIcon } from "@/lib/taskUtils";
+import { useTaskFiltering } from "@/hooks/useTaskFiltering";
+
+export default function ManagerTasks() {
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Use unified tasks from data
+  const tasks = unifiedTasks.map(task => ({
+    id: task.id,
+    title: task.title || task.action,
+    batch: task.batch,
+    assignee: task.assignee || "Unassigned",
+    dueDate: task.dueDate || "TBD",
+    priority: task.priority || "Medium",
+    status: task.status === "overdue" ? "Pending" : 
+            task.status === "today" ? "In Progress" :
+            task.status === "upcoming" ? "Scheduled" :
+            task.status === "completed" ? "Completed" : task.status,
+    location: task.location,
+    type: task.type || "Quality Check",
+    estimatedHours: task.estimatedHours || 1,
+    action: task.action,
+    species: task.species,
+  }));
+
+  const { filteredTasks } = useTaskFiltering(tasks, selectedStatus);
+
+  // Apply search filter
+  const searchFilteredTasks = filteredTasks.filter(task => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      task.title?.toLowerCase().includes(query) ||
+      task.action?.toLowerCase().includes(query) ||
+      task.species?.toLowerCase().includes(query) ||
+      task.location?.toLowerCase().includes(query) ||
+      task.assignee?.toLowerCase().includes(query) ||
+      task.batch?.toLowerCase().includes(query)
+    );
+  });
+
+  return (
+    <ManagerLayout>
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
+        <PageHeader
+          title="Tasks"
+          description="View and manage all tasks across the nursery"
+          actions={
+            <>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>
+                    <Plus className="w-3 h-3 mr-2" />
+                    Create Task
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Create New Task</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Task Type</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="watering">Watering</SelectItem>
+                            <SelectItem value="potting">Potting</SelectItem>
+                            <SelectItem value="sowing">Sowing</SelectItem>
+                            <SelectItem value="movement">Movement</SelectItem>
+                            <SelectItem value="quality">Quality Check</SelectItem>
+                            <SelectItem value="treatment">Treatment</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Priority</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select priority" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="high">High</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="low">Low</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Title</Label>
+                      <Input placeholder="Task title..." />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Description</Label>
+                      <Textarea placeholder="Task details..." rows={3} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Assign To</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select worker" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="mereana">Mereana (Manager)</SelectItem>
+                            <SelectItem value="liam">Liam (Dispatch)</SelectItem>
+                            <SelectItem value="sofia">Sofia (Grower)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Location</Label>
+                        <Select>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select location" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="bay01">Bay 01</SelectItem>
+                            <SelectItem value="bay05">Bay 05</SelectItem>
+                            <SelectItem value="shadehouse">ShadeHouse A</SelectItem>
+                            <SelectItem value="prophouse">PropHouse 1</SelectItem>
+                            <SelectItem value="dispatch">Dispatch Pad C</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Due Date</Label>
+                        <Input type="date" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Estimated Hours</Label>
+                        <Input type="number" placeholder="0" step="0.5" />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Batch ID (optional)</Label>
+                      <Input placeholder="MAN-2024-156" />
+                    </div>
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button variant="ghost">Cancel</Button>
+                    <Button>Create Task</Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </>
+          }
+        />
+
+        {/* Search and Filters */}
+        <div className="flex gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
+            <Input 
+              placeholder="Search tasks..." 
+              className="pl-10" 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+            <SelectTrigger className="w-48">
+              <SelectValue placeholder="Filter by status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Tasks</SelectItem>
+              <SelectItem value="Pending">Pending</SelectItem>
+              <SelectItem value="In Progress">In Progress</SelectItem>
+              <SelectItem value="Scheduled">Scheduled</SelectItem>
+              <SelectItem value="Completed">Completed</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Task List */}
+        <div className="flex flex-col gap-2">
+          {searchFilteredTasks.length === 0 ? (
+            <Card className="p-12 text-center">
+              <p className="text-muted-foreground">No tasks found. Try adjusting your search or filters.</p>
+            </Card>
+          ) : (
+            searchFilteredTasks.map((task) => {
+              const Icon = getTypeIcon(task.type, task.title || task.action);
+              return (
+                <Link key={task.id} to={`/managers/tasks/${task.id}`}>
+                  <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <div className="flex-shrink-0">
+                        <Icon className="w-3 h-3 text-primary" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="font-semibold">{task.title}</h3>
+                          <Badge className={getStatusColor(task.status)} variant="outline">
+                            {task.status}
+                          </Badge>
+                          <Badge className={getPriorityColor(task.priority)} variant="outline">
+                            {task.priority}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <span className="text-xs">{task.id}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <User className="w-3 h-3" />
+                            {task.assignee}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {task.location}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            Due: {task.dueDate}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Package className="w-3 h-3" />
+                            {task.batch}
+                          </div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-3 h-3 text-muted-foreground" />
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })
+          )}
+        </div>
+      </main>
+    </ManagerLayout>
+  );
+}

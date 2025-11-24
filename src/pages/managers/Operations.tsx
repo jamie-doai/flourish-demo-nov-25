@@ -45,7 +45,7 @@ export default function ManagerOperations() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px]">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <PageHeader
           title="Operations"
           description="Task management, scheduling, and workflow coordination"

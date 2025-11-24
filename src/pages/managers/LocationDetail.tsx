@@ -2,13 +2,12 @@ import { Navigation } from "@/components/Navigation";
 import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown } from "lucide-react";
+import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { getLocationById, getBatchesByLocation, getTasksByLocation, getTotalQuantityAtLocation, getUniqueBatchesAtLocation } from "@/data";
-import { getChildLocations } from "@/lib/locationUtils";
+import { getChildLocations, getCapacityPercentage } from "@/lib/locationUtils";
 import { useState } from "react";
 
 export default function ManagerLocationDetail() {
@@ -19,6 +18,7 @@ export default function ManagerLocationDetail() {
   const [expandedLocations, setExpandedLocations] = useState<string[]>([]);
   
   const childLocations = getChildLocations(locationId || "");
+  const capacityPercentage = locationId ? getCapacityPercentage(locationId) : (mockLocation?.capacity || mockLocation?.percentage || 0);
 
   const toggleLocation = (locId: string) => {
     setExpandedLocations(prev => 
@@ -79,6 +79,14 @@ export default function ManagerLocationDetail() {
                 <div className="text-2xl font-bold">{(mockLocation.totalPlants || mockLocation.plants || 0).toLocaleString()}</div>
               </Card>
 
+              <Card className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Package className="w-3 h-3 text-muted-foreground" />
+                  <div className="text-sm text-muted-foreground">Capacity</div>
+                </div>
+                <div className="text-2xl font-bold">{capacityPercentage}%</div>
+              </Card>
+
               {mockLocation.temperature && (
                 <Card className="p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -99,23 +107,6 @@ export default function ManagerLocationDetail() {
                 </Card>
               )}
             </div>
-
-            {/* Capacity */}
-            <Card>
-              <h3 className="text-lg font-semibold mb-4">Capacity Overview</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Current Capacity</span>
-                  <span className="text-2xl font-bold">{mockLocation.capacity}%</span>
-                </div>
-                <Progress value={mockLocation.capacity} className="h-3" />
-                <p className="text-sm text-muted-foreground">
-                  {mockLocation.capacity >= 80 ? "Near capacity - consider redistribution" : 
-                   mockLocation.capacity >= 60 ? "Moderate utilization" : 
-                   "Good availability"}
-                </p>
-              </div>
-            </Card>
 
             {/* Child Locations */}
             {childLocations.length > 0 && (

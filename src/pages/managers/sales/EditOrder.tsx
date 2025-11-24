@@ -146,13 +146,13 @@ export default function EditOrder() {
           backLabel="Back to Order"
         />
 
-        <Card className="mb-6">
+        <Card className="mb-6 max-w-full overflow-hidden">
           <h2 className="text-heading-4 font-heading font-bold mb-4">Client Details</h2>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="client">Client *</Label>
               <Select value={selectedClient} onValueChange={setSelectedClient}>
-                <SelectTrigger id="client" className="mt-2">
+                <SelectTrigger id="client" className="mt-2 w-full">
                   <SelectValue placeholder="Select a client" />
                 </SelectTrigger>
                 <SelectContent>
@@ -167,13 +167,13 @@ export default function EditOrder() {
           </div>
         </Card>
 
-        <Card className="mb-6">
+        <Card className="mb-6 max-w-full overflow-hidden">
           <h2 className="text-heading-4 font-heading font-bold mb-4">Delivery Details</h2>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="delivery-type">Delivery Type *</Label>
               <Select value={deliveryType} onValueChange={(value: string) => setDeliveryType(value as "pickup" | "courier" | "in-house")}>
-                <SelectTrigger id="delivery-type" className="mt-2">
+                <SelectTrigger id="delivery-type" className="mt-2 w-full">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -190,7 +190,7 @@ export default function EditOrder() {
                 type="date"
                 value={deliveryDate}
                 onChange={(e) => setDeliveryDate(e.target.value)}
-                className="mt-2"
+                className="mt-2 w-full"
               />
             </div>
           </div>
@@ -203,17 +203,17 @@ export default function EditOrder() {
                 placeholder="Full delivery address..."
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
-                className="mt-2"
+                className="mt-2 w-full"
                 rows={3}
               />
             </div>
           )}
         </Card>
 
-        <Card className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+        <Card className="mb-6 max-w-full overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <h2 className="text-heading-4 font-heading font-bold">Line Items</h2>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <Button onClick={() => setShowInventorySheet(true)} size="sm">
                 <Package className="w-3 h-3 mr-2" />
                 Add from Inventory
@@ -225,8 +225,8 @@ export default function EditOrder() {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <Table>
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[800px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Species</TableHead>
@@ -258,7 +258,7 @@ export default function EditOrder() {
           <TotalsSection subtotal={subtotal} tax={tax} total={total} />
         </Card>
 
-        <Card className="mb-6">
+        <Card className="mb-6 max-w-full overflow-hidden">
           <h2 className="text-lg font-semibold mb-4">Additional Information</h2>
           
           <div className="space-y-4">
@@ -269,7 +269,7 @@ export default function EditOrder() {
                 placeholder="Delivery notes, handling requirements..."
                 value={specialInstructions}
                 onChange={(e) => setSpecialInstructions(e.target.value)}
-                className="mt-2"
+                className="mt-2 w-full"
                 rows={3}
               />
             </div>
@@ -281,18 +281,18 @@ export default function EditOrder() {
                 placeholder="Private notes for internal use only..."
                 value={internalNotes}
                 onChange={(e) => setInternalNotes(e.target.value)}
-                className="mt-2 bg-muted"
+                className="mt-2 w-full bg-muted"
                 rows={3}
               />
             </div>
           </div>
         </Card>
 
-        <div className="flex gap-3 justify-end">
-          <Link to={`/managers/sales/orders/${orderId}`}>
-            <Button variant="tertiary">Cancel</Button>
+        <div className="flex flex-col sm:flex-row gap-3 justify-end">
+          <Link to={`/managers/sales/orders/${orderId}`} className="w-full sm:w-auto">
+            <Button variant="tertiary" className="w-full sm:w-auto">Cancel</Button>
           </Link>
-          <Button onClick={handleUpdateOrder}>
+          <Button onClick={handleUpdateOrder} className="w-full sm:w-auto">
             <Package className="w-3 h-3 mr-2" />
             Update Order
           </Button>
