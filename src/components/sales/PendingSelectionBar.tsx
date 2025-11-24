@@ -11,7 +11,7 @@ export function PendingSelectionBar({ itemCount, onClear, onAddToQuote }: Pendin
   if (itemCount === 0) return null;
 
   return (
-    <div className="border-t bg-card p-6 flex items-center justify-between gap-4 shrink-0">
+    <div className="sticky bottom-0 left-0 right-0 border-t bg-lime-green-000 p-6 flex flex-col gap-3 z-10 shadow-lg">
       <div className="flex items-center gap-2">
         <ShoppingCart className="h-5 w-5 text-primary" />
         <span className="font-medium">
@@ -20,11 +20,11 @@ export function PendingSelectionBar({ itemCount, onClear, onAddToQuote }: Pendin
       </div>
       
       <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={onClear}>
+        <Button variant="outline" size="sm" onClick={onClear} className="flex-1">
           <X className="h-4 w-4 mr-1" />
           Clear
         </Button>
-        <Button size="sm" onClick={onAddToQuote}>
+        <Button size="sm" onClick={onAddToQuote} className="flex-1">
           Add {itemCount} {itemCount === 1 ? 'Item' : 'Items'} to Quote
         </Button>
       </div>

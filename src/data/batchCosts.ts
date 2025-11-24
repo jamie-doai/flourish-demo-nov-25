@@ -336,3 +336,33 @@ export const getBatchCostSummary = (batchId: string): BatchCostSummary | null =>
     costByStage: costByStage as Record<BatchStage, number>,
   };
 };
+
+export const addCustomCost = (
+  batchId: string,
+  costName: string,
+  category: CostCategory,
+  amount: number,
+  stage: BatchStage,
+  quantity: number,
+  appliedBy: string = 'USER',
+  reason?: string
+): CostHistory => {
+  const newCost: CostHistory = {
+    id: `CH-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    batchId,
+    costTemplateId: `CUSTOM-${Date.now()}`,
+    costName,
+    category,
+    stage,
+    amount,
+    quantity,
+    perUnitCost: amount / quantity,
+    appliedAt: new Date().toISOString(),
+    appliedBy,
+    actionType: 'manual',
+    reason,
+  };
+  
+  costHistory.unshift(newCost); // Add to beginning (most recent first)
+  return newCost;
+};

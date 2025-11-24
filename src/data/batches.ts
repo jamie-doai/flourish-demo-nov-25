@@ -1,4 +1,5 @@
 import { locations } from './locations';
+import { getUniqueBatchesAtLocation } from './batchLocations';
 
 export interface Batch {
   id: string;
@@ -810,6 +811,293 @@ export const batches: Batch[] = [
     totalCost: 528.00,
     saleStatus: "ready-for-sale"
   },
+  
+  // Missing batches from batchLocations
+  { 
+    id: "KAR-2024-193", 
+    species: "Karamū", 
+    scientificName: "Coprosma robusta", 
+    location: "Shadehouse B", 
+    stage: "hardening", 
+    quantity: 105, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-05",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots",
+    plantedDate: "2024-09-05",
+    ageInDays: 31
+  },
+  { 
+    id: "KAN-2024-167", 
+    species: "Kānuka", 
+    scientificName: "Kunzea ericoides", 
+    location: "Propagation House 2", 
+    stage: "propagation", 
+    quantity: 130, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-20",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "KAW-2024-215", 
+    species: "Kawakawa", 
+    scientificName: "Macropiper excelsum", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 110, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-10",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "MAN-2024-143", 
+    species: "Mānuka", 
+    scientificName: "Leptospermum scoparium", 
+    location: "Propagation House 1", 
+    stage: "propagation", 
+    quantity: 125, 
+    health: "Excellent", 
+    urgent: false, 
+    started: "2024-08-12",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "HAR-2024-088", 
+    species: "Harakeke", 
+    scientificName: "Phormium tenax", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 115, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-07-15",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "POH-2024-126", 
+    species: "Pōhutukawa", 
+    scientificName: "Metrosideros excelsa", 
+    location: "Propagation House 2", 
+    stage: "propagation", 
+    quantity: 90, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-05",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "KAN-2024-154", 
+    species: "Kānuka", 
+    scientificName: "Kunzea ericoides", 
+    location: "Shadehouse B", 
+    stage: "hardening", 
+    quantity: 160, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-18",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "KOW-2024-176", 
+    species: "Kōwhai", 
+    scientificName: "Sophora microphylla", 
+    location: "Potting Shed", 
+    stage: "potting", 
+    quantity: 145, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-01",
+    lastWatered: "2025-10-06",
+    container: "Individual pots"
+  },
+  { 
+    id: "KAW-2024-189", 
+    species: "Kawakawa", 
+    scientificName: "Macropiper excelsum", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 98, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-07-25",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "MAN-2024-132", 
+    species: "Mānuka", 
+    scientificName: "Leptospermum scoparium", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 140, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-08",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "HAR-2024-224", 
+    species: "Harakeke", 
+    scientificName: "Phormium tenax", 
+    location: "Unassigned Inventory", 
+    stage: "propagation", 
+    quantity: 75, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-10-05",
+    container: "Propagation trays"
+  },
+  { 
+    id: "TOT-2024-197", 
+    species: "Tōtara", 
+    scientificName: "Podocarpus totara", 
+    location: "In Transit", 
+    stage: "ready", 
+    quantity: 50, 
+    health: "Excellent", 
+    urgent: false, 
+    started: "2024-10-06",
+    container: "PB5 pots",
+    saleStatus: "on-order"
+  },
+  { 
+    id: "KAR-2024-208", 
+    species: "Karamū", 
+    scientificName: "Coprosma robusta", 
+    location: "Propagation House 1", 
+    stage: "propagation", 
+    quantity: 72, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-08",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "POH-2024-211", 
+    species: "Pōhutukawa", 
+    scientificName: "Metrosideros excelsa", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 88, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-12",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "MAN-2024-164", 
+    species: "Mānuka", 
+    scientificName: "Leptospermum scoparium", 
+    location: "Propagation House 2", 
+    stage: "propagation", 
+    quantity: 115, 
+    health: "Excellent", 
+    urgent: false, 
+    started: "2024-08-22",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "KAN-2024-187", 
+    species: "Kānuka", 
+    scientificName: "Kunzea ericoides", 
+    location: "Shadehouse B", 
+    stage: "hardening", 
+    quantity: 135, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-03",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "HAR-2024-172", 
+    species: "Harakeke", 
+    scientificName: "Phormium tenax", 
+    location: "Propagation House 1", 
+    stage: "propagation", 
+    quantity: 105, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-08-28",
+    lastWatered: "2025-10-06",
+    container: "Propagation trays"
+  },
+  { 
+    id: "KOW-2024-195", 
+    species: "Kōwhai", 
+    scientificName: "Sophora microphylla", 
+    location: "Potting Shed", 
+    stage: "potting", 
+    quantity: 92, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-06",
+    lastWatered: "2025-10-06",
+    container: "Individual pots"
+  },
+  { 
+    id: "KAW-2024-203", 
+    species: "Kawakawa", 
+    scientificName: "Macropiper excelsum", 
+    location: "Shadehouse A", 
+    stage: "hardening", 
+    quantity: 78, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-10",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "TOT-2024-219", 
+    species: "Tōtara", 
+    scientificName: "Podocarpus totara", 
+    location: "Shadehouse B", 
+    stage: "hardening", 
+    quantity: 110, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-09-18",
+    lastWatered: "2025-10-06",
+    container: "PB3 pots"
+  },
+  { 
+    id: "MAN-SEED-001", 
+    species: "Mānuka", 
+    scientificName: "Leptospermum scoparium", 
+    location: "Seed Store", 
+    stage: "seed", 
+    quantity: 2500, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-06-15",
+    container: "Seed trays"
+  },
+  { 
+    id: "TOT-SEED-002", 
+    species: "Tōtara", 
+    scientificName: "Podocarpus totara", 
+    location: "Seed Store", 
+    stage: "seed", 
+    quantity: 1800, 
+    health: "Good", 
+    urgent: false, 
+    started: "2024-07-10",
+    container: "Seed trays"
+  },
 ];
 
 export const getBatchById = (id: string): Batch | undefined => {
@@ -817,15 +1105,17 @@ export const getBatchById = (id: string): Batch | undefined => {
 };
 
 export const getBatchesByLocation = (locationId: string): Batch[] => {
-  // First, try to get the location name from the locations array
-  const location = locations.find(loc => loc.id === locationId);
+  // Get batch IDs from batchLocations data (the source of truth)
+  const batchIds = getUniqueBatchesAtLocation(locationId);
   
-  if (!location) {
+  if (batchIds.length === 0) {
     return [];
   }
   
-  // Filter batches by matching location name
-  return batches.filter(batch => batch.location === location.name);
+  // Fetch actual batch objects from the batches array
+  return batchIds
+    .map(batchId => getBatchById(batchId))
+    .filter((batch): batch is Batch => batch !== undefined);
 };
 
 export const getBatchesByStage = (stage: string): Batch[] => {

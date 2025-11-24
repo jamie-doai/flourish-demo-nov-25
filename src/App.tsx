@@ -33,6 +33,7 @@ const QuoteDetail = lazy(() => import("./pages/managers/sales/QuoteDetail"));
 const OrderDetail = lazy(() => import("./pages/managers/sales/OrderDetail"));
 const InvoiceDetail = lazy(() => import("./pages/managers/sales/InvoiceDetail"));
 const ManagerOperations = lazy(() => import("./pages/managers/Operations"));
+const ManagerTasks = lazy(() => import("./pages/managers/Tasks"));
 const ManagerTaskDetail = lazy(() => import("./pages/managers/TaskDetail"));
 const ManagerPlanning = lazy(() => import("./pages/managers/Planning"));
 const ManagerReporting = lazy(() => import("./pages/managers/Reporting"));
@@ -136,6 +137,7 @@ const App = () => (
                   <Route path="/managers/sales/invoices/:invoiceId" element={<InvoiceDetail />} />
                   <Route path="/managers/sales/clients" element={<ManagerSalesClients />} />
                   <Route path="/managers/operations" element={<ManagerOperations />} />
+                  <Route path="/managers/tasks" element={<ManagerTasks />} />
                   <Route path="/managers/tasks/:taskId" element={<ManagerTaskDetail />} />
                   <Route path="/managers/planning" element={<ManagerPlanning />} />
                   <Route path="/managers/reporting" element={<ManagerReporting />} />
