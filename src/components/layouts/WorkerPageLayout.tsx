@@ -6,6 +6,7 @@ interface WorkerPageLayoutProps {
   title: string;
   backTo?: string;
   headerActions?: ReactNode;
+  headerMetadata?: ReactNode;
   children: ReactNode;
   backgroundClass?: string;
   mainClassName?: string;
@@ -16,15 +17,20 @@ export function WorkerPageLayout({
   title,
   backTo,
   headerActions,
+  headerMetadata,
   children,
   backgroundClass = "bg-[#F8FAF9]",
   mainClassName = "",
   headerClassName,
 }: WorkerPageLayoutProps) {
+  const hasHeaderContent = title || backTo || headerActions || headerMetadata;
+
   return (
     <div className="min-h-screen bg-slate-800">
       <div className={`max-w-mobile mx-auto ${backgroundClass} min-h-screen pb-20`}>
-        <WorkerPageHeader title={title} backTo={backTo} actions={headerActions} headerClassName={headerClassName} />
+        {hasHeaderContent && (
+          <WorkerPageHeader title={title} backTo={backTo} actions={headerActions} metadata={headerMetadata} headerClassName={headerClassName} />
+        )}
         
         <main className={`px-[16px] py-4 ${mainClassName}`}>
           {children}

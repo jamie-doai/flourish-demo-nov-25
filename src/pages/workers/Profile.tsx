@@ -30,7 +30,7 @@ export default function WorkerProfile() {
 
       <div>
         {/* Stats Card */}
-        <Card className="p-5 mb-6">
+        <Card className="p-3 mb-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">This Week</h3>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -49,7 +49,7 @@ export default function WorkerProfile() {
         </Card>
 
         {/* Sync Status */}
-        <Card className="p-4 mb-6">
+        <Card className="p-3 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-3 h-3 text-green-600" />
@@ -66,7 +66,7 @@ export default function WorkerProfile() {
           <h3 className="text-sm font-semibold text-foreground px-1">Settings</h3>
           
           <Card className="divide-y divide-border">
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {isDark ? <Moon className="w-3 h-3 text-muted-foreground" /> : <Sun className="w-3 h-3 text-muted-foreground" />}
                 <span className="text-sm text-foreground">Dark Mode</span>
@@ -77,7 +77,7 @@ export default function WorkerProfile() {
               />
             </div>
 
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Bell className="w-3 h-3 text-muted-foreground" />
                 <span className="text-sm text-foreground">Push Notifications</span>
@@ -85,7 +85,7 @@ export default function WorkerProfile() {
               <Switch defaultChecked />
             </div>
 
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <WifiOff className="w-3 h-3 text-muted-foreground" />
                 <span className="text-sm text-foreground">Offline Mode</span>
@@ -98,12 +98,12 @@ export default function WorkerProfile() {
         {/* Menu Items */}
         <div className="space-y-3 mb-6">
           <Card className="divide-y divide-border">
-            <Link to="/workers/settings" className="p-4 flex items-center gap-3 hover:bg-accent transition-colors">
+            <Link to="/workers/settings" className="p-3 flex items-center gap-3 hover:bg-accent transition-colors">
               <Settings className="w-3 h-3 text-muted-foreground" />
               <span className="text-sm text-foreground">Account Settings</span>
             </Link>
 
-            <Link to="/workers/help" className="p-4 flex items-center gap-3 hover:bg-accent transition-colors">
+            <Link to="/workers/help" className="p-3 flex items-center gap-3 hover:bg-accent transition-colors">
               <HelpCircle className="w-3 h-3 text-muted-foreground" />
               <span className="text-sm text-foreground">Help & Support</span>
             </Link>

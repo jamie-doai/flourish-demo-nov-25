@@ -52,7 +52,7 @@ export default function WorkerAddBatch() {
       setFormData({ collectedBy: "Current User", dateCollected: new Date() });
       setStep(1);
     } else {
-      navigate("/workers/inventory");
+      navigate("/workers");
     }
   };
 
@@ -71,7 +71,7 @@ export default function WorkerAddBatch() {
   return (
     <WorkerPageLayout 
       title="Add Batch" 
-      backTo="/workers/inventory"
+      backTo="/workers"
       mainClassName="py-6"
     >
         {/* Progress Indicator */}
@@ -88,7 +88,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 1: Batch Type & Species */}
         {step === 1 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Type & Species</h2>
 
             <div className="space-y-6">
@@ -158,7 +158,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 2: Source/Supplier */}
         {step === 2 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Source Info</h2>
 
             <div className="space-y-6">
@@ -256,7 +256,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 3: Location & Quantity */}
         {step === 3 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Location</h2>
 
             <div className="space-y-6">
@@ -306,7 +306,7 @@ export default function WorkerAddBatch() {
         {/* Step 4: Confirm & Save */}
         {step === 4 && (
           <div className="space-y-4">
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h2 className="text-xl font-bold text-[#37474F] mb-4">Confirm Details</h2>
 
               <div className="space-y-3 text-base">

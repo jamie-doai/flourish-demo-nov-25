@@ -166,7 +166,7 @@ export default function ManagerInventory() {
     if (!speciesData) {
       return (
         <ManagerLayout>
-          <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
+          <main className="container mx-auto px-4 py-8 max-w-[1920px] bg-white">
             <Button variant="primary-ghost" onClick={() => setSelectedSpecies(null)} className="mb-4">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Species
@@ -196,7 +196,7 @@ export default function ManagerInventory() {
     if (!stage || !stats) {
       return (
         <ManagerLayout>
-          <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
+          <main className="container mx-auto px-4 py-8 max-w-[1920px] bg-white">
             <Button variant="primary-ghost" onClick={() => setSelectedStage(null)} className="mb-4">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Stages

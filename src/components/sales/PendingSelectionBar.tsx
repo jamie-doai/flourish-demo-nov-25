@@ -11,7 +11,7 @@ export function PendingSelectionBar({ itemCount, onClear, onAddToQuote }: Pendin
   if (itemCount === 0) return null;
 
   return (
-    <div className="border-t bg-card p-4 flex items-center justify-between gap-4">
+    <div className="border-t bg-card p-6 flex items-center justify-between gap-4 shrink-0">
       <div className="flex items-center gap-2">
         <ShoppingCart className="h-5 w-5 text-primary" />
         <span className="font-medium">

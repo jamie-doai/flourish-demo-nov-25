@@ -56,7 +56,7 @@ export default function WorkerHome() {
       title=""
       backgroundClass="bg-lime-green"
       headerClassName="bg-lime-green border-b-0"
-      mainClassName="space-y-6 py-4"
+      mainClassName="space-y-6"
     >
       {/* Flourish Logo and Text */}
       <div className="flex items-center gap-2 font-display text-heading-4 text-forest-green mb-4">
@@ -67,7 +67,7 @@ export default function WorkerHome() {
       {/* Intro Header with Date and Weather */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-heading-2 font-heading font-bold text-forest-green">Kia ora, Alex 👋</h1>
+          <h1 className="text-heading-2 font-display font-bold text-forest-green">Kia ora, Alex</h1>
           <p className="text-body-small text-forest-green/70">{dateStr}</p>
         </div>
         <div className="flex items-center gap-2 text-forest-green">
@@ -99,11 +99,7 @@ export default function WorkerHome() {
                 const linkPath = getNotificationLink();
                 const cardContent = (
                   <Card 
-                    className={`border shadow-none p-2 bg-white ${
-                      notification.type === "urgent" 
-                        ? "border-caution" 
-                        : "border-forest-green"
-                    } ${
+                    className={`border border-forest-green shadow-none p-3 bg-[#f7fee7] ${
                       linkPath ? "hover:border-lime-green hover:bg-green-50 transition-all cursor-pointer" : ""
                     }`}
                   >
@@ -148,7 +144,7 @@ export default function WorkerHome() {
             <div className="space-y-1">
               {displayedContinue.map((item) => (
                 <Link key={item.id} to={`/workers/tasks/${item.id}`} className="block">
-                  <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all shadow-none p-2">
+                  <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all shadow-none p-3 bg-[#f7fee7]">
                     <div className="flex items-center gap-1.5">
                       <item.icon className="w-3 h-3 text-forest-green flex-shrink-0" />
                       <div className="flex-1 min-w-0">
@@ -178,29 +174,22 @@ export default function WorkerHome() {
             <h2 className="text-heading-3 font-heading font-bold text-forest-green mb-3">Navigate</h2>
             <div className="grid grid-cols-2 gap-1.5">
               <Link to="/workers/tasks">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
-                  <ListTodo className="w-3 h-3 text-forest-green" />
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3 bg-[#f7fee7]">
+                  <ListTodo className="w-4 h-4 text-forest-green flex-shrink-0" />
                   <span className="text-body font-heading font-bold text-forest-green">Tasks</span>
                 </Card>
               </Link>
 
               <Link to="/workers/locations">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
-                  <MapPin className="w-3 h-3 text-forest-green" />
+                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3 bg-[#f7fee7]">
+                  <MapPin className="w-4 h-4 text-forest-green flex-shrink-0" />
                   <span className="text-body font-heading font-bold text-forest-green">Locations</span>
-                </Card>
-              </Link>
-
-              <Link to="/workers/inventory">
-                <Card className="border border-forest-green hover:border-lime-green hover:bg-green-50 transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
-                  <Package className="w-3 h-3 text-forest-green" />
-                  <span className="text-body font-heading font-bold text-forest-green">Inventory</span>
                 </Card>
               </Link>
 
               <Link to="/workers/scan">
                 <Card className="bg-neon-yellow border border-forest-green hover:bg-[#f9fe9a] transition-all flex flex-col items-center justify-center gap-2 max-h-24 shadow-none p-3">
-                  <Scan className="w-3 h-3 text-forest-green" />
+                  <Scan className="w-4 h-4 text-forest-green flex-shrink-0" />
                   <span className="text-body font-heading font-bold text-forest-green">Scan</span>
                 </Card>
               </Link>

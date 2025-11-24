@@ -36,7 +36,7 @@ export default function WorkerBatchDetail() {
 
   if (!mockBatch) {
     return (
-      <WorkerPageLayout title="Batch Not Found" backTo="/workers/inventory">
+      <WorkerPageLayout title="Batch Not Found" backTo="/workers">
         <div className="py-8">
           <p>Batch not found</p>
         </div>
@@ -95,63 +95,59 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
       </div>
       <WorkerPageLayout 
         title={mockBatch.id}
-        backTo="/workers/inventory"
+        backTo="/workers"
+        headerMetadata={
+          <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
+        }
         headerActions={
-          <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })} className="text-sm">
-            <Printer className="w-3 h-3 mr-2" />
-            Print Label
-          </Button>
+          <>
+            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })} className="text-sm">
+              <Printer className="w-3 h-3 mr-2" />
+              Print Label
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="text-sm">
+                  <MoreVertical className="w-3 h-3 mr-2" />
+                  Actions
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-background">
+                <DropdownMenuItem onClick={() => handleAction("Watering")}>
+                  <Droplets className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Record Watering
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAction("Treatment")}>
+                  <Sprout className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Add Treatment
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAction("Photo")}>
+                  <Camera className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Add Photo
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setShowSplitDialog(true)}>
+                  <Split className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Split Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowMergeDialog(true)}>
+                  <Merge className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Merge Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowDuplicateDialog(true)}>
+                  <Copy className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Duplicate Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowMoveDialog(true)}>
+                  <Move className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Move Batch
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
         }
         mainClassName="py-6"
       >
-        {/* Batch Title */}
-        <div className="mb-6">
-          <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
-        </div>
-
-        {/* Quick Actions Dropdown */}
-        <div className="mb-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full">
-                <MoreVertical className="w-3 h-3 mr-2" />
-                Quick Actions
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-background">
-              <DropdownMenuItem onClick={() => handleAction("Watering")}>
-                <Droplets className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Record Watering
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAction("Treatment")}>
-                <Sprout className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Add Treatment
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAction("Photo")}>
-                <Camera className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Add Photo
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setShowSplitDialog(true)}>
-                <Split className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Split Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowMergeDialog(true)}>
-                <Merge className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Merge Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowDuplicateDialog(true)}>
-                <Copy className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Duplicate Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowMoveDialog(true)}>
-                <Move className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Move Batch
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
         {/* Move Dialog */}
         <MoveLocationDialog
           open={showMoveDialog}
@@ -161,7 +157,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
         />
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="max-w-2xl">
+          <TabsList className="mb-4 max-w-2xl gap-1.5">
             <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="flex-1">Activity Log</TabsTrigger>
@@ -170,7 +166,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
           <TabsContent value="overview" className="space-y-4">
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
-              <Card className={`p-4 border ${
+              <Card className={`p-3 border ${
                 mockBatch.saleStatus === "ready-for-sale" 
                   ? "border-green-500 bg-green-50" 
                   : mockBatch.saleStatus === "on-order"
@@ -203,7 +199,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             )}
 
             {/* Lifecycle Timeline */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>
 
               <div className="grid grid-cols-6 gap-2">
@@ -233,7 +229,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             </Card>
 
             {/* Batch Info */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -289,7 +285,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             </Card>
 
             {/* Environmental Data */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Environmental Conditions</h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
@@ -317,7 +313,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
           <TabsContent value="tasks" className="space-y-4">
             {/* Related Tasks */}
             {relatedTasks.length > 0 ? (
-              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">
                   Related Tasks ({relatedTasks.length})
                 </h3>
@@ -364,7 +360,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
                 </div>
               </Card>
             ) : (
-              <Card className="p-8 bg-white border border-[#37474F]/20 shadow-sm text-center">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm text-center">
                 <p className="text-[#37474F]/60">No tasks assigned to this batch</p>
               </Card>
             )}
@@ -372,7 +368,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
 
           <TabsContent value="activity" className="space-y-4">
             {/* Activity Log */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <History className="w-3 h-3 text-[#37474F]/60" />
                 <h3 className="text-sm font-semibold text-[#37474F]">Activity Log</h3>

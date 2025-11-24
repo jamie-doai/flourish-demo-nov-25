@@ -52,7 +52,6 @@ const CostAnalysis = lazy(() => import("./pages/managers/reporting/CostAnalysis"
 const WorkerHome = lazy(() => import("./pages/workers/Home"));
 const WorkerTasks = lazy(() => import("./pages/workers/Tasks"));
 const WorkerTaskDetail = lazy(() => import("./pages/workers/TaskDetail"));
-const WorkerInventory = lazy(() => import("./pages/workers/Inventory"));
 const WorkerBatchDetail = lazy(() => import("./pages/workers/BatchDetail"));
 const WorkerAddBatch = lazy(() => import("./pages/workers/AddBatch"));
 const WorkerScan = lazy(() => import("./pages/workers/Scan"));
@@ -156,7 +155,6 @@ const App = () => (
                   <Route path="/workers" element={<WorkerHome />} />
                   <Route path="/workers/tasks" element={<WorkerTasks />} />
                   <Route path="/workers/tasks/:taskId" element={<WorkerTaskDetail />} />
-                  <Route path="/workers/inventory" element={<WorkerInventory />} />
                   <Route path="/workers/batch/:batchId" element={<WorkerBatchDetail />} />
                   <Route path="/workers/batches/add" element={<WorkerAddBatch />} />
                   <Route path="/workers/scan" element={<WorkerScan />} />

@@ -29,14 +29,14 @@ export default function WorkerLocationDetail() {
       mainClassName="py-6"
     >
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-4 max-w-2xl">
+            <TabsList className="mb-4 max-w-2xl gap-1.5">
               <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
               <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
               {/* Location Stats */}
-              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">Facility Overview</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
@@ -91,7 +91,7 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {batchesInLocation.map((batch) => (
                     <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
@@ -137,7 +137,7 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {tasksForLocation.map((task) => (
                     <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -177,7 +177,7 @@ export default function WorkerLocationDetail() {
                   ))}
                 </div>
               ) : (
-                <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm text-center">
+                <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm text-center">
                   <p className="text-sm text-[#37474F]/60">No tasks scheduled for this location</p>
                 </Card>
               )}

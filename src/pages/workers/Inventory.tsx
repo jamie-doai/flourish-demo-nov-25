@@ -65,7 +65,7 @@ export default function WorkerInventory() {
       {/* Stage Tabs */}
       <div className="mb-6">
         <Tabs value={selectedStage} onValueChange={setSelectedStage} className="w-full">
-          <TabsList className="grid grid-cols-7 h-auto gap-1 p-1 overflow-x-auto">
+          <TabsList className="grid grid-cols-7 h-auto gap-1.5 p-1 overflow-x-auto">
             <TabsTrigger value="all" className="text-xs py-2">
               All
             </TabsTrigger>
@@ -89,7 +89,7 @@ export default function WorkerInventory() {
       </div>
         {/* Stage Summary */}
         {selectedStage !== "all" && (
-          <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <div className="flex items-center gap-3 mb-3">
               {(() => {
                 const stage = stages.find(s => s.id === selectedStage);
@@ -114,7 +114,7 @@ export default function WorkerInventory() {
         <div className="space-y-4">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-              <Card className={`p-4 bg-white border shadow-sm hover:shadow-md hover:bg-gray-50 transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
+              <Card className={`p-3 bg-white border shadow-sm hover:shadow-md hover:bg-gray-50 transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">

@@ -90,7 +90,7 @@ export function WorkerBottomNav() {
               onClick={() => setIsOpen(false)}
               className="w-full py-2 bg-lime-green text-forest-green border-2 border-forest-green hover:bg-lime-green/90 shadow-md hover:shadow-lg text-base font-semibold"
             >
-              Close <X className="w-3 h-3 text-forest-green ml-2" />
+              <X className="w-3 h-3 text-forest-green mr-2" /> Close
             </Button>
           </div>
         </div>
