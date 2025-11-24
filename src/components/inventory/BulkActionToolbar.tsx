@@ -36,7 +36,7 @@ export function BulkActionToolbar({
   if (selectedCount === 0) return null;
 
   return (
-    <Card className="fixed bottom-6 left-1/2 -translate-x-1/2 p-4 shadow-lg z-50 border border-primary/20">
+    <Card className="fixed bottom-6 left-1/2 -translate-x-1/2 p-4 shadow-lg z-50 border border-forest-green bg-lime-green">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-3">
           <div className="text-sm">
@@ -50,21 +50,21 @@ export function BulkActionToolbar({
           </Button>
         </div>
 
-        <div className="h-8 w-px bg-border" />
+        <div className="h-8 w-px bg-forest-green" />
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onMoveLocation}>
+          <Button variant="outline" size="sm" onClick={onMoveLocation} className="border-forest-green">
             <MapPin className="w-3 h-3 mr-2" />
             Move Location
           </Button>
 
-          <Button variant="outline" size="sm" onClick={onChangeStatus}>
+          <Button variant="outline" size="sm" onClick={onChangeStatus} className="border-forest-green">
             Change Status
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-forest-green">
                 More Actions
               </Button>
             </DropdownMenuTrigger>

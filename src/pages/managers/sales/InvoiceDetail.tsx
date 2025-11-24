@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,10 +6,11 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Receipt, Download, Send, DollarSign, FileText } from "lucide-react";
+import { ArrowLeft, Receipt, Download, Send, DollarSign, FileText, Edit } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import { getInvoiceById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function InvoiceDetail() {
   const { invoiceId } = useParams();
@@ -59,9 +59,8 @@ export default function InvoiceDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <DevBar />
       <Navigation />
-      <main className="container mx-auto px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/invoices">
             <Button variant="tertiary" size="sm">
@@ -72,47 +71,70 @@ export default function InvoiceDetail() {
         </div>
 
         <Card className="mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
-              <Receipt className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{invoice.invoiceNumber}</h1>
-                <p className="text-muted-foreground">{invoice.clientName}</p>
-                {invoice.linkedOrder && (
-                  <Link to={`/managers/sales/orders/${invoice.linkedOrder}`} className="text-sm text-primary hover:underline">
-                    From Order: {invoice.linkedOrder}
-                  </Link>
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+              <div className="flex items-center gap-4 min-w-0 flex-1">
+                <Receipt className="w-3 h-3 text-primary flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{invoice.invoiceNumber}</h1>
+                  <p className="text-muted-foreground">{invoice.clientName}</p>
+                  {invoice.linkedOrder && (
+                    <Link to={`/managers/sales/orders/${invoice.linkedOrder}`} className="text-sm text-primary hover:underline">
+                      From Order: {invoice.linkedOrder}
+                    </Link>
+                  )}
+                </div>
+              </div>
+              <div className="flex gap-2 items-center">
+                <Badge className={getStatusColor(invoice.status)}>
+                  {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
+                </Badge>
+                {invoice.xeroSync && (
+                  <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Xero Synced</Badge>
                 )}
               </div>
             </div>
-            <div className="flex gap-2 items-center">
-              <Badge className={getStatusColor(invoice.status)}>
-                {invoice.status.charAt(0).toUpperCase() + invoice.status.slice(1)}
-              </Badge>
-              {invoice.xeroSync && (
-                <Badge variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">Xero Synced</Badge>
+            <div className="flex flex-wrap gap-2 justify-end">
+              <Link to={`/managers/sales/invoices/${invoiceId}/edit`}>
+                <Button variant="secondary">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+              <Button variant="secondary" onClick={handleDownloadPDF}>
+                <Download className="w-3 h-3 mr-2" />
+                Download PDF
+              </Button>
+              {invoice.status === "draft" && (
+                <Button onClick={handleSendInvoice}>
+                  <Send className="w-3 h-3 mr-2" />
+                  Send to Client
+                </Button>
+              )}
+              {invoice.balanceDue > 0 && (
+                <Button variant="secondary" onClick={handleRecordPayment}>
+                  <DollarSign className="w-3 h-3 mr-2" />
+                  Record Payment
+                </Button>
+              )}
+              {!invoice.xeroSync && (
+                <Button variant="tertiary" onClick={handleSyncXero}>
+                  <FileText className="w-3 h-3 mr-2" />
+                  Sync to Xero
+                </Button>
               )}
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Issued</div>
-              <div className="font-medium">{invoice.dateIssued}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Due Date</div>
-              <div className="font-medium">{invoice.dueDate}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Payment Terms</div>
-              <div className="font-medium">{invoice.paymentTerms || "Net 14 days"}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Tax Type</div>
-              <div className="font-medium">{invoice.taxType}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Issued", value: invoice.dateIssued },
+              { label: "Due Date", value: invoice.dueDate },
+              { label: "Payment Terms", value: invoice.paymentTerms || "Net 14 days" },
+              { label: "Tax Type", value: invoice.taxType },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 
@@ -193,34 +215,6 @@ export default function InvoiceDetail() {
             </>
           )}
         </Card>
-
-        <div className="flex gap-3 justify-end">
-          <Button variant="secondary" onClick={handleDownloadPDF}>
-            <Download className="w-3 h-3 mr-2" />
-            Download PDF
-          </Button>
-
-          {invoice.status === "draft" && (
-            <Button onClick={handleSendInvoice}>
-              <Send className="w-3 h-3 mr-2" />
-              Send to Client
-            </Button>
-          )}
-
-          {invoice.balanceDue > 0 && (
-            <Button variant="secondary" onClick={handleRecordPayment}>
-              <DollarSign className="w-3 h-3 mr-2" />
-              Record Payment
-            </Button>
-          )}
-
-          {!invoice.xeroSync && (
-            <Button variant="tertiary" onClick={handleSyncXero}>
-              <FileText className="w-3 h-3 mr-2" />
-              Sync to Xero
-            </Button>
-          )}
-        </div>
       </main>
     </div>
   );

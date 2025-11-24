@@ -15,5 +15,4 @@ export * from './costCatalog';
 export * from './batchCosts';
 export * from './lineage';
 export * from './bulkActions';
-export * from './stocktakes';
 export * from './holds';

@@ -1,6 +1,6 @@
 import { EntityType } from '@/data/search';
 import { Badge } from '@/components/ui/badge';
-import { FileText, Package, ClipboardCheck, MapPin, User, ShoppingCart, FileCheck, Receipt, Users } from 'lucide-react';
+import { FileText, Package, ClipboardCheck, MapPin, User, ShoppingCart, FileCheck, Receipt, Users, LucideIcon } from 'lucide-react';
 
 interface EntityBadgeProps {
   type: EntityType;
@@ -8,7 +8,7 @@ interface EntityBadgeProps {
 }
 
 export function EntityBadge({ type, className }: EntityBadgeProps) {
-  const config: Record<EntityType, { label: string; icon: any; className: string }> = {
+  const config: Record<EntityType, { label: string; icon: LucideIcon; className: string }> = {
     species: {
       label: 'Species',
       icon: FileText,

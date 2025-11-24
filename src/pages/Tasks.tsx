@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -56,7 +55,6 @@ export default function Tasks() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
@@ -142,7 +140,7 @@ export default function Tasks() {
           ) : (
             filteredTasks.map((task) => (
               <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                <Card className="p-6 hover:shadow-lg hover:bg-gray-50 transition-shadow cursor-pointer">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">

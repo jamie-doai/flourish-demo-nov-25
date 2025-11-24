@@ -3,18 +3,10 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
+import { Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,10 +15,12 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch } from "@/data";
+import { lifecycleStages, getBatchById, getTasksByBatch } from "@/data";
 import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
+import { MoveLocationDialog } from "@/components/inventory/MoveLocationDialog";
+import { getTypeIcon } from "@/lib/taskUtils";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -38,20 +32,15 @@ export default function WorkerBatchDetail() {
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
-  const locations = getLocationNames();
   const relatedTasks = getTasksByBatch(batchId || "");
 
   if (!mockBatch) {
     return (
-      <div className="min-h-screen bg-slate-800">
-        <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-          <DevBar />
-          <WorkerBottomNav />
-          <div className="container mx-auto px-4 py-8">
-            <p>Batch not found</p>
-          </div>
+      <WorkerPageLayout title="Batch Not Found" backTo="/workers">
+        <div className="py-8">
+          <p>Batch not found</p>
         </div>
-      </div>
+      </WorkerPageLayout>
     );
   }
 
@@ -61,14 +50,24 @@ export default function WorkerBatchDetail() {
     lastMeasured: "2 hours ago",
   };
 
-  const activityLog = [
-    { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
-    { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
-    { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
-    { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
-    { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
-    { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
-  ];
+interface ActivityLogEntry {
+  date: string;
+  action: string;
+  user: string;
+  time: string;
+  notes: string;
+}
+
+const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
+  { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
+  { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
+  { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
+  { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
+  { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
+  { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
+];
+
+  const activityLog = MOCK_ACTIVITY_LOG;
 
   const handleAction = (action: string) => {
     toast({
@@ -90,104 +89,75 @@ export default function WorkerBatchDetail() {
   const progressPercentage = ((currentStageIndex + 1) / lifecycleStages.length) * 100;
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
+    <>
       <div className="hidden md:block">
         <Navigation />
       </div>
-      <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Link to="/managers/inventory">
-              <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-3 h-3 mr-2" />
-                Batches
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-6">
-        {/* Batch Title */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl font-bold text-[#37474F]">{mockBatch.id}</h1>
-            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })}>
+      <WorkerPageLayout 
+        title={mockBatch.id}
+        backTo="/workers"
+        headerMetadata={
+          <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
+        }
+        headerActions={
+          <>
+            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })} className="text-sm">
               <Printer className="w-3 h-3 mr-2" />
               Print Label
             </Button>
-          </div>
-          <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
-        </div>
-
-        {/* Quick Actions Dropdown */}
-        <div className="mb-6">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full">
-                <MoreVertical className="w-3 h-3 mr-2" />
-                Quick Actions
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-background">
-              <DropdownMenuItem onClick={() => handleAction("Watering")}>
-                <Droplets className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Record Watering
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAction("Treatment")}>
-                <Sprout className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Add Treatment
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleAction("Photo")}>
-                <Camera className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Add Photo
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setShowSplitDialog(true)}>
-                <Split className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Split Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowMergeDialog(true)}>
-                <Merge className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Merge Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowDuplicateDialog(true)}>
-                <Copy className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Duplicate Batch
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setShowMoveDialog(true)}>
-                <Move className="w-3 h-3 mr-2 text-[#3B7A57]" />
-                Move Batch
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        {/* Move Dialog */}
-        <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Move to Location</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-2 py-4">
-              {locations.filter(loc => loc !== mockBatch.location).map((location) => (
-                <Button
-                  key={location}
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => handleMove(location)}
-                >
-                  📍 {location}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="text-sm">
+                  <MoreVertical className="w-3 h-3 mr-2" />
+                  Actions
                 </Button>
-              ))}
-            </div>
-          </DialogContent>
-        </Dialog>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-background">
+                <DropdownMenuItem onClick={() => handleAction("Watering")}>
+                  <Droplets className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Record Watering
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAction("Treatment")}>
+                  <Sprout className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Add Treatment
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleAction("Photo")}>
+                  <Camera className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Add Photo
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setShowSplitDialog(true)}>
+                  <Split className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Split Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowMergeDialog(true)}>
+                  <Merge className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Merge Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowDuplicateDialog(true)}>
+                  <Copy className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Duplicate Batch
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowMoveDialog(true)}>
+                  <Move className="w-3 h-3 mr-2 text-[#3B7A57]" />
+                  Move Batch
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        }
+        mainClassName="py-6"
+      >
+        {/* Move Dialog */}
+        <MoveLocationDialog
+          open={showMoveDialog}
+          onOpenChange={setShowMoveDialog}
+          currentLocation={mockBatch.location}
+          onSelect={handleMove}
+        />
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="max-w-2xl">
+          <TabsList className="mb-4 max-w-2xl gap-1.5">
             <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="flex-1">Activity Log</TabsTrigger>
@@ -196,7 +166,7 @@ export default function WorkerBatchDetail() {
           <TabsContent value="overview" className="space-y-4">
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
-              <Card className={`p-4 border ${
+              <Card className={`p-3 border ${
                 mockBatch.saleStatus === "ready-for-sale" 
                   ? "border-green-500 bg-green-50" 
                   : mockBatch.saleStatus === "on-order"
@@ -229,7 +199,7 @@ export default function WorkerBatchDetail() {
             )}
 
             {/* Lifecycle Timeline */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-4">Lifecycle Progress</h3>
 
               <div className="grid grid-cols-6 gap-2">
@@ -259,7 +229,7 @@ export default function WorkerBatchDetail() {
             </Card>
 
             {/* Batch Info */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
@@ -315,7 +285,7 @@ export default function WorkerBatchDetail() {
             </Card>
 
             {/* Environmental Data */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Environmental Conditions</h3>
               <div className="grid grid-cols-3 gap-4 text-center">
                 <div>
@@ -343,7 +313,7 @@ export default function WorkerBatchDetail() {
           <TabsContent value="tasks" className="space-y-4">
             {/* Related Tasks */}
             {relatedTasks.length > 0 ? (
-              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">
                   Related Tasks ({relatedTasks.length})
                 </h3>
@@ -390,7 +360,7 @@ export default function WorkerBatchDetail() {
                 </div>
               </Card>
             ) : (
-              <Card className="p-8 bg-white border border-[#37474F]/20 shadow-sm text-center">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm text-center">
                 <p className="text-[#37474F]/60">No tasks assigned to this batch</p>
               </Card>
             )}
@@ -398,38 +368,47 @@ export default function WorkerBatchDetail() {
 
           <TabsContent value="activity" className="space-y-4">
             {/* Activity Log */}
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <History className="w-3 h-3 text-[#37474F]/60" />
                 <h3 className="text-sm font-semibold text-[#37474F]">Activity Log</h3>
               </div>
               <div className="space-y-4">
-                {activityLog.map((log, index) => (
-                  <div key={index} className="flex gap-3 pb-4 border-b border-[#3B7A57]/5 last:border-0 last:pb-0">
-                    <div className="w-8 h-8 bg-[#3B7A57]/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-2 h-2 bg-[#3B7A57] rounded-full"></div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-1">
-                        <p className="text-sm text-[#37474F] font-semibold">{log.action}</p>
-                        <span className="text-xs text-[#37474F]/40">{log.time}</span>
+                {activityLog.map((log, index) => {
+                  const ActivityIcon = getTypeIcon(undefined, log.action);
+                  return (
+                    <div key={index} className="grid grid-cols-[auto_auto_0.6fr_1.4fr] gap-5 items-start pb-4 border-b border-[#3B7A57]/5 last:border-0 last:pb-0">
+                      {/* Column 1: Icon */}
+                      <div className="w-8 h-8 bg-[#3B7A57]/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <ActivityIcon className="w-3 h-3 text-[#3B7A57]" />
                       </div>
-                      <p className="text-xs text-[#37474F]/60 mb-1">
-                        {log.user} • {log.date}
-                      </p>
-                      {log.notes && (
-                        <p className="text-xs text-[#37474F]/70 bg-[#F8FAF9] p-2 rounded mt-2">
-                          {log.notes}
-                        </p>
+                      
+                      {/* Column 2: Date/Time (vertical stack) */}
+                      <div className="flex flex-col">
+                        <span className="text-xs text-[#37474F]/60">{log.date}</span>
+                        <span className="text-xs text-[#37474F]/60">{log.time}</span>
+                      </div>
+                      
+                      {/* Column 3: Task/User (vertical stack) */}
+                      <div className="flex flex-col">
+                        <p className="text-sm text-[#37474F] font-semibold">{log.action}</p>
+                        <p className="text-xs text-[#37474F]/60">{log.user}</p>
+                      </div>
+                      
+                      {/* Column 4: Notes (no background) */}
+                      {log.notes ? (
+                        <p className="text-xs text-[#37474F]/70">{log.notes}</p>
+                      ) : (
+                        <div></div>
                       )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
+      </WorkerPageLayout>
 
       {/* Dialogs */}
       <SplitBatchDialog
@@ -464,11 +443,6 @@ export default function WorkerBatchDetail() {
           });
         }}
       />
-
-      <div className="md:hidden">
-      <WorkerBottomNav />
-      </div>
-      </div>
-    </div>
+    </>
   );
 }

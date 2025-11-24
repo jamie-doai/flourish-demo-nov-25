@@ -3,8 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Calendar, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown } from "lucide-react";
+import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -33,10 +32,9 @@ export default function ManagerLocationDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header Section */}
         <div className="mb-6">
           <Link to="/managers/inventory" className="mb-4 inline-block">
@@ -48,8 +46,8 @@ export default function ManagerLocationDetail() {
           
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <MapPin className="w-3 h-3 text-forest-green flex-shrink-0" />
-            <div className="min-w-0">
-              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{mockLocation.name}</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{mockLocation.name}</h1>
               <p className="text-body-small sm:text-body text-muted-foreground">{mockLocation.type}</p>
             </div>
           </div>
@@ -57,7 +55,7 @@ export default function ManagerLocationDetail() {
 
         {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-2 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-2 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
           </TabsList>
@@ -105,7 +103,7 @@ export default function ManagerLocationDetail() {
             {/* Capacity */}
             <Card>
               <h3 className="text-lg font-semibold mb-4">Capacity Overview</h3>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Current Capacity</span>
                   <span className="text-2xl font-bold">{mockLocation.capacity}%</span>
@@ -116,27 +114,6 @@ export default function ManagerLocationDetail() {
                    mockLocation.capacity >= 60 ? "Moderate utilization" : 
                    "Good availability"}
                 </p>
-              </div>
-            </Card>
-
-            {/* Maintenance Schedule */}
-            <Card>
-              <h3 className="text-lg font-semibold mb-4">Maintenance Schedule</h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-muted-foreground" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Last Maintenance</p>
-                    <p className="font-medium">{mockLocation.lastMaintenance}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <div>
-                    <p className="text-sm text-muted-foreground">Next Scheduled</p>
-                    <p className="font-medium text-primary">{mockLocation.nextMaintenance}</p>
-                  </div>
-                </div>
               </div>
             </Card>
 

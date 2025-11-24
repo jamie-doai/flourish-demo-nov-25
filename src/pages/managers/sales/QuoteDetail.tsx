@@ -1,17 +1,17 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, FileText, Download, Send, Check, Package } from "lucide-react";
+import { ArrowLeft, FileText, Download, Send, Check, Package, Edit } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getQuoteById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function QuoteDetail() {
   const { quoteId } = useParams();
@@ -69,9 +69,8 @@ export default function QuoteDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <DevBar />
       <Navigation />
-      <main className="container mx-auto px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/quotes">
             <Button variant="tertiary" size="sm">
@@ -82,33 +81,58 @@ export default function QuoteDetail() {
         </div>
 
         <Card className="mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
-              <FileText className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{quote.quoteNumber}</h1>
-                <p className="text-muted-foreground">{quote.clientName}</p>
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+              <div className="flex items-center gap-4 min-w-0 flex-1">
+                <FileText className="w-3 h-3 text-primary flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{quote.quoteNumber}</h1>
+                  <p className="text-muted-foreground">{quote.clientName}</p>
+                </div>
               </div>
+              <Badge className={getStatusColor(quote.status)}>
+                {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
+              </Badge>
             </div>
-            <Badge className={getStatusColor(quote.status)}>
-              {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
-            </Badge>
+            <div className="flex flex-wrap gap-2 justify-end">
+              <Link to={`/managers/sales/quotes/${quoteId}/edit`}>
+                <Button variant="secondary">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+              <Button variant="secondary" onClick={handleDownloadPDF}>
+                <Download className="w-4 h-4 mr-2" />
+                Download PDF
+              </Button>
+              {quote.status === "draft" && (
+                <Button onClick={handleSendQuote}>
+                  <Send className="w-3 h-3 mr-2" />
+                  Send to Client
+                </Button>
+              )}
+              {(quote.status === "sent" || quote.status === "accepted") && (
+                <Button onClick={handleConvertToOrder}>
+                  <Check className="w-3 h-3 mr-2" />
+                  Convert to Order
+                </Button>
+              )}
+              {quote.convertedToOrder && (
+                <Link to={`/managers/sales/orders/${quote.convertedToOrder}`}>
+                  <Button variant="secondary">View Order</Button>
+                </Link>
+              )}
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Created</div>
-              <div className="font-medium">{quote.dateCreated}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Expiry Date</div>
-              <div className="font-medium">{quote.expiryDate}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Status</div>
-              <div className="font-medium capitalize">{quote.status}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Created", value: quote.dateCreated },
+              { label: "Expiry Date", value: quote.expiryDate },
+              { label: "Status", value: quote.status.charAt(0).toUpperCase() + quote.status.slice(1) },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 
@@ -192,9 +216,21 @@ export default function QuoteDetail() {
 
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Switch id="reserve-stock" checked={quote.reserveStock} />
-                <Label htmlFor="reserve-stock" className="cursor-pointer">Reserve Stock</Label>
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">Reserve Stock</Label>
+                <RadioGroup 
+                  value={quote.reserveStock ? "reserve" : "dont-reserve"} 
+                  className="flex flex-row gap-6"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="reserve" id="reserve-yes" />
+                    <Label htmlFor="reserve-yes" className="cursor-pointer">Reserve Stock</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="dont-reserve" id="reserve-no" />
+                    <Label htmlFor="reserve-no" className="cursor-pointer">Don't Reserve Stock</Label>
+                  </div>
+                </RadioGroup>
               </div>
               {quote.reserveStock && (
                 <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
@@ -219,33 +255,6 @@ export default function QuoteDetail() {
             )}
           </div>
         </Card>
-
-        <div className="flex gap-3 justify-end">
-          <Button variant="secondary" onClick={handleDownloadPDF}>
-            <Download className="w-4 h-4 mr-2" />
-            Download PDF
-          </Button>
-          
-          {quote.status === "draft" && (
-            <Button onClick={handleSendQuote}>
-              <Send className="w-3 h-3 mr-2" />
-              Send to Client
-            </Button>
-          )}
-
-          {(quote.status === "sent" || quote.status === "accepted") && (
-            <Button onClick={handleConvertToOrder}>
-              <Check className="w-3 h-3 mr-2" />
-              Convert to Order
-            </Button>
-          )}
-
-          {quote.convertedToOrder && (
-            <Link to={`/managers/sales/orders/${quote.convertedToOrder}`}>
-              <Button variant="secondary">View Order</Button>
-            </Link>
-          )}
-        </div>
       </main>
     </div>
   );

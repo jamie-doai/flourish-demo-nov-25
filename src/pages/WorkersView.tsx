@@ -1,10 +1,8 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 
 export default function WorkersView() {
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">

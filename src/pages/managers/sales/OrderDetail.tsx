@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,13 +7,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Package, MapPin, Truck } from "lucide-react";
+import { ArrowLeft, Package, MapPin, Truck, Edit } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
 import { OrderLifecycleProgress } from "@/components/orders/OrderLifecycleProgress";
 import { OrderStatusActions } from "@/components/orders/OrderStatusActions";
 import { OrderStatus } from "@/lib/orderLifecycle";
+import { MetadataCard } from "@/components/sales/MetadataCard";
 
 export default function OrderDetail() {
   const { orderId } = useParams();
@@ -37,8 +37,6 @@ export default function OrderDetail() {
 
   const handleStatusChange = (newStatus: OrderStatus, notes?: string) => {
     // In a real app, this would update the backend
-    console.log("Status change:", { newStatus, notes });
-    
     toast({
       title: "Order Status Updated",
       description: `Order ${order.orderNumber} status changed to ${newStatus}`,
@@ -64,9 +62,8 @@ export default function OrderDetail() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <DevBar />
       <Navigation />
-      <main className="container mx-auto px-6 py-8 max-w-6xl">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="flex items-center gap-3 mb-6">
           <Link to="/managers/sales/orders">
             <Button variant="tertiary" size="sm">
@@ -77,44 +74,48 @@ export default function OrderDetail() {
         </div>
 
         <Card className="mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4 min-w-0">
-              <Package className="w-3 h-3 text-primary flex-shrink-0" />
-              <div className="min-w-0">
-                <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold break-words">{order.orderNumber}</h1>
-                <p className="text-muted-foreground">{order.clientName}</p>
-                {order.linkedQuote && (
-                  <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline">
-                    From Quote: {order.linkedQuote}
-                  </Link>
-                )}
+          <div className="mb-6">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
+              <div className="flex items-center gap-4 min-w-0 flex-1">
+                <Package className="w-3 h-3 text-primary flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{order.orderNumber}</h1>
+                  <p className="text-muted-foreground">{order.clientName}</p>
+                  {order.linkedQuote && (
+                    <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline">
+                      From Quote: {order.linkedQuote}
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
-            <OrderStatusActions
-              order={order}
-              onStatusChange={handleStatusChange}
-              onDownloadPackingSlip={handleDownloadPackingSlip}
-              onGenerateInvoice={handleGenerateInvoice}
-            />
+            <div className="flex items-center gap-2 flex-wrap justify-end">
+              <Link to={`/managers/sales/orders/${orderId}/edit`}>
+                <Button variant="secondary">
+                  <Edit className="w-4 h-4 mr-2" />
+                  Edit
+                </Button>
+              </Link>
+              <OrderStatusActions
+                order={order}
+                onStatusChange={handleStatusChange}
+                onDownloadPackingSlip={handleDownloadPackingSlip}
+                onGenerateInvoice={handleGenerateInvoice}
+              />
+            </div>
           </div>
 
           {/* Lifecycle Progress */}
           <OrderLifecycleProgress order={order} />
 
-          <div className="grid md:grid-cols-3 gap-6 mb-6">
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Date Created</div>
-              <div className="font-medium">{order.dateCreated}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Delivery Date</div>
-              <div className="font-medium">{order.deliveryDate || "TBC"}</div>
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground mb-1">Dispatched</div>
-              <div className="font-medium">{order.dispatchedDate || "Not yet"}</div>
-            </div>
-          </div>
+          <MetadataCard
+            items={[
+              { label: "Date Created", value: order.dateCreated },
+              { label: "Delivery Date", value: order.deliveryDate || "TBC" },
+              { label: "Dispatched", value: order.dispatchedDate || "Not yet" },
+            ]}
+            className="mb-4"
+          />
 
           <Separator className="my-6" />
 

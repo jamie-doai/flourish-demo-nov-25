@@ -1,11 +1,19 @@
 import { SettingsLayout } from "@/components/layouts/SettingsLayout";
 import { PageHeader } from "@/components/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, MapPin, Sprout, Settings as SettingsIcon, DollarSign } from "lucide-react";
+import { Users, MapPin, Sprout, Settings as SettingsIcon, DollarSign, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export default function ManagerSettings() {
-  const settingsCards = [
+interface SettingsCard {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  path: string;
+  iconBg: string;
+  iconColor: string;
+}
+
+const SETTINGS_CARDS: SettingsCard[] = [
     {
       title: "User Management",
       description: "Manage users, roles, and permissions",
@@ -46,8 +54,9 @@ export default function ManagerSettings() {
       iconBg: "bg-slate-100 dark:bg-slate-900/30",
       iconColor: "text-slate-600 dark:text-slate-400"
     }
-  ];
+];
 
+export default function ManagerSettings() {
   return (
     <SettingsLayout>
       <PageHeader
@@ -56,7 +65,7 @@ export default function ManagerSettings() {
       />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {settingsCards.map((setting) => {
+          {SETTINGS_CARDS.map((setting) => {
             const Icon = setting.icon;
             return (
               <Link key={setting.path} to={setting.path}>

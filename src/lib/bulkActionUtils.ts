@@ -65,11 +65,3 @@ export function generateBulkActionPreview(
     conflicts
   };
 }
-
-export function calculateVariancePercent(
-  systemQty: number,
-  countedQty: number
-): number {
-  if (systemQty === 0) return 0;
-  return ((countedQty - systemQty) / systemQty) * 100;
-}

@@ -1,5 +1,4 @@
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,21 +7,31 @@ import { Badge } from "@/components/ui/badge";
 import { FileText, Download, Search, TrendingUp, BarChart3, FileCheck, Shield, DollarSign } from "lucide-react";
 import { Link } from "react-router-dom";
 
+interface TraceabilityReport {
+  id: string;
+  species: string;
+  source: string;
+  collected: string;
+  status: string;
+  plants: number;
+}
+
+const TRACEABILITY_REPORTS: TraceabilityReport[] = [
+  { id: "MAN-2024-156", species: "Mānuka", source: "Waikanae Beach", collected: "2024-03-15", status: "Ready", plants: 450 },
+  { id: "TOT-2024-089", species: "Tōtara", source: "Silverstream Reserve", collected: "2024-02-20", status: "Hardening", plants: 320 },
+  { id: "HAR-2025-012", species: "Harakeke", source: "Auckland Regional", collected: "2025-01-05", status: "Ready", plants: 180 },
+];
+
 export default function ManagerReporting() {
-  const traceabilityReports = [
-    { id: "MAN-2024-156", species: "Mānuka", source: "Waikanae Beach", collected: "2024-03-15", status: "Ready", plants: 450 },
-    { id: "TOT-2024-089", species: "Tōtara", source: "Silverstream Reserve", collected: "2024-02-20", status: "Hardening", plants: 320 },
-    { id: "HAR-2025-012", species: "Harakeke", source: "Auckland Regional", collected: "2025-01-05", status: "Ready", plants: 180 },
-  ];
+  const traceabilityReports = TRACEABILITY_REPORTS;
 
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div className="min-w-0">
-            <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold mb-2 break-words">Reporting & Analytics</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">Reporting & Analytics</h1>
             <p className="text-body-small sm:text-body text-muted-foreground">Traceability, compliance, and performance insights</p>
           </div>
           <Button variant="default" className="flex-shrink-0">
@@ -32,7 +41,7 @@ export default function ManagerReporting() {
         </div>
 
         <Tabs defaultValue="traceability" className="space-y-6">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="traceability"><FileCheck className="w-4 h-4 mr-2" />Traceability</TabsTrigger>
             <TabsTrigger value="analytics"><BarChart3 className="w-4 h-4 mr-2" />Analytics</TabsTrigger>
             <TabsTrigger value="costs"><DollarSign className="w-4 h-4 mr-2" />Cost Analysis</TabsTrigger>
@@ -49,7 +58,7 @@ export default function ManagerReporting() {
 
             <div className="space-y-3">
               {traceabilityReports.map((batch) => (
-                <Card key={batch.id} className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                <Card key={batch.id} className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">

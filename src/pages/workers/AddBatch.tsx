@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DevBar } from "@/components/DevBar";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -18,10 +16,10 @@ import {
 } from "@/components/ui/select";
 import { BatchFormData, BatchType, mockSpecies } from "@/types/batch";
 import { useToast } from "@/hooks/use-toast";
-import { Sprout, Scissors, Package, Camera } from "lucide-react";
+import { Sprout, Scissors, Package, Camera, LucideIcon } from "lucide-react";
 import { locations } from "@/data";
 
-const BATCH_TYPES: { type: BatchType; label: string; icon: any }[] = [
+const BATCH_TYPES: { type: BatchType; label: string; icon: LucideIcon }[] = [
   { type: "seed-collection", label: "Seed", icon: Sprout },
   { type: "cuttings", label: "Cutting", icon: Scissors },
   { type: "bought-in", label: "Bought-In", icon: Package },
@@ -54,7 +52,7 @@ export default function WorkerAddBatch() {
       setFormData({ collectedBy: "Current User", dateCollected: new Date() });
       setStep(1);
     } else {
-      navigate("/workers/inventory");
+      navigate("/workers");
     }
   };
 
@@ -71,12 +69,11 @@ export default function WorkerAddBatch() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
-      <WorkerPageHeader title="Add Batch" backTo="/workers/inventory" />
-
-      <main className="container mx-auto px-4 py-6">
+    <WorkerPageLayout 
+      title="Add Batch" 
+      backTo="/workers"
+      mainClassName="py-6"
+    >
         {/* Progress Indicator */}
         <div className="flex justify-between mb-6">
           {[1, 2, 3, 4].map((s) => (
@@ -91,7 +88,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 1: Batch Type & Species */}
         {step === 1 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Type & Species</h2>
 
             <div className="space-y-6">
@@ -161,7 +158,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 2: Source/Supplier */}
         {step === 2 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Source Info</h2>
 
             <div className="space-y-6">
@@ -259,7 +256,7 @@ export default function WorkerAddBatch() {
 
         {/* Step 3: Location & Quantity */}
         {step === 3 && (
-          <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <h2 className="text-xl font-bold text-[#37474F] mb-4">Location</h2>
 
             <div className="space-y-6">
@@ -309,7 +306,7 @@ export default function WorkerAddBatch() {
         {/* Step 4: Confirm & Save */}
         {step === 4 && (
           <div className="space-y-4">
-            <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+            <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h2 className="text-xl font-bold text-[#37474F] mb-4">Confirm Details</h2>
 
               <div className="space-y-3 text-base">
@@ -386,10 +383,6 @@ export default function WorkerAddBatch() {
             </Button>
           </div>
         )}
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

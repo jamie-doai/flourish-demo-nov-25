@@ -30,7 +30,7 @@ export function PageSidebar({ title, items, collapsible = "icon" }: PageSidebarP
   const location = useLocation();
 
   return (
-    <Sidebar className={`${collapsed ? "w-14" : "w-60"}`} collapsible={collapsible}>
+    <Sidebar className={`${collapsed ? "w-12 sm:w-14" : "w-full"}`} collapsible={collapsible}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className={collapsed ? "sr-only" : ""}>

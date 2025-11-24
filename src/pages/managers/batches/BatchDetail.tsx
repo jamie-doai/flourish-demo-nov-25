@@ -15,13 +15,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { lifecycleStages, getBatchById, getLocationNames, getTasksByBatch, Batch } from "@/data";
+import { lifecycleStages, getBatchById, getTasksByBatch, Batch } from "@/data";
 import { CostBreakdownCard } from "@/components/batch/CostBreakdownCard";
 import { CostHistoryDrawer } from "@/components/batch/CostHistoryDrawer";
 import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
 import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
+import { MoveLocationDialog } from "@/components/inventory/MoveLocationDialog";
+import { getTypeIcon } from "@/lib/taskUtils";
 
 export default function ManagerBatchDetail() {
   const { batchId } = useParams();
@@ -36,15 +38,12 @@ export default function ManagerBatchDetail() {
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
 
   const mockBatch = getBatchById(batchId || "");
-  const locations = getLocationNames();
   const relatedTasks = getTasksByBatch(batchId || "");
 
   if (!mockBatch) {
     return (
       <div className="min-h-screen bg-background">
-        <DevBar />
-        <Navigation />
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto px-12 py-8 max-w-[1920px]">
           <p>Batch not found</p>
         </div>
       </div>
@@ -57,14 +56,24 @@ export default function ManagerBatchDetail() {
     lastMeasured: "2 hours ago",
   };
 
-  const activityLog = [
-    { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
-    { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
-    { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
-    { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
-    { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
-    { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
-  ];
+interface ActivityLogEntry {
+  date: string;
+  action: string;
+  user: string;
+  time: string;
+  notes: string;
+}
+
+const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
+  { date: "2025-10-06", action: "Watering completed", user: "Alex Thompson", time: "08:30 AM", notes: "All plants showing good growth" },
+  { date: "2025-10-05", action: "Health check performed", user: "Jordan Smith", time: "02:15 PM", notes: "No signs of disease or pests" },
+  { date: "2025-10-03", action: "Stage progression", user: "System", time: "10:00 AM", notes: "Moved from Propagation to Potting stage" },
+  { date: "2025-10-01", action: "Fertilizer application", user: "Alex Thompson", time: "09:15 AM", notes: "Applied slow-release fertilizer NPK 15-5-10" },
+  { date: "2025-09-28", action: "Pest treatment", user: "Jordan Smith", time: "03:30 PM", notes: "Preventative neem oil spray" },
+  { date: "2025-09-25", action: "Count update", user: "Alex Thompson", time: "11:00 AM", notes: "Updated quantity to 120 plants" },
+];
+
+  const activityLog = MOCK_ACTIVITY_LOG;
 
   const handleAction = (action: string) => {
     toast({
@@ -99,7 +108,7 @@ export default function ManagerBatchDetail() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         <PageHeader
           title={mockBatch.id}
           description={mockBatch.species}
@@ -114,7 +123,7 @@ export default function ManagerBatchDetail() {
         />
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
             <TabsTrigger value="tasks" className="text-xs sm:text-sm">Tasks</TabsTrigger>
             <TabsTrigger value="activity" className="text-xs sm:text-sm">Activity Log</TabsTrigger>
@@ -201,26 +210,13 @@ export default function ManagerBatchDetail() {
               </div>
             </Card>
 
-            {/* Move Dialog (kept separate, not in grid) */}
-            <Dialog open={showMoveDialog} onOpenChange={setShowMoveDialog}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Move to Location</DialogTitle>
-                </DialogHeader>
-                <div className="space-y-2 py-4">
-                  {locations.filter(loc => loc !== mockBatch.location).map((location) => (
-                    <Button
-                      key={location}
-                      variant="tertiary"
-                      className="w-full justify-start"
-                      onClick={() => handleMove(location)}
-                    >
-                      📍 {location}
-                    </Button>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
+            {/* Move Dialog */}
+            <MoveLocationDialog
+              open={showMoveDialog}
+              onOpenChange={setShowMoveDialog}
+              currentLocation={mockBatch.location}
+              onSelect={handleMove}
+            />
 
             {/* Sale Status Alert */}
             {mockBatch.saleStatus && (
@@ -439,27 +435,36 @@ export default function ManagerBatchDetail() {
               <h3 className="text-base font-semibold">Activity Log</h3>
             </div>
             <div className="space-y-4">
-                {activityLog.map((log, index) => (
-                  <div key={index} className="flex gap-3 pb-4 border-b last:border-0 last:pb-0">
-                    <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-1">
-                        <p className="text-sm font-semibold">{log.action}</p>
+                {activityLog.map((log, index) => {
+                  const ActivityIcon = getTypeIcon(undefined, log.action);
+                  return (
+                    <div key={index} className="grid grid-cols-[auto_auto_0.6fr_1.4fr] gap-6 items-start pb-4 border-b last:border-0 last:pb-0">
+                      {/* Column 1: Icon */}
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                        <ActivityIcon className="w-3 h-3 text-primary" />
+                      </div>
+                      
+                      {/* Column 2: Date/Time (vertical stack) */}
+                      <div className="flex flex-col">
+                        <span className="text-xs text-muted-foreground">{log.date}</span>
                         <span className="text-xs text-muted-foreground">{log.time}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground mb-1">
-                        {log.user} • {log.date}
-                      </p>
-                      {log.notes && (
-                        <p className="text-xs text-muted-foreground bg-muted/50 p-2 rounded mt-2">
-                          {log.notes}
-                        </p>
+                      
+                      {/* Column 3: Task/User (vertical stack) */}
+                      <div className="flex flex-col">
+                        <p className="text-sm font-semibold">{log.action}</p>
+                        <p className="text-xs text-muted-foreground">{log.user}</p>
+                      </div>
+                      
+                      {/* Column 4: Notes (no background) */}
+                      {log.notes ? (
+                        <p className="text-xs text-muted-foreground">{log.notes}</p>
+                      ) : (
+                        <div></div>
                       )}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </Card>
           </TabsContent>
@@ -581,7 +586,6 @@ export default function ManagerBatchDetail() {
         onClose={() => setShowCostHistory(false)}
         batchId={mockBatch.id}
       />
-      </main>
     </ManagerLayout>
   );
 }

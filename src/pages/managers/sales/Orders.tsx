@@ -6,20 +6,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Package, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { orders } from "@/data";
 import { getStatusColor, getStatusLabel } from "@/lib/orderLifecycle";
-import { useState } from "react";
 
 export default function ManagerSalesOrders() {
   const navigate = useNavigate();
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-
-  const filteredOrders = statusFilter === "all" 
-    ? orders 
-    : orders.filter(order => order.status === statusFilter);
 
   const getDeliveryTypeLabel = (type: string) => {
     switch (type) {
@@ -38,16 +31,6 @@ export default function ManagerSalesOrders() {
           description="Track and manage customer orders"
           backTo="/managers/sales"
           backLabel="Back to Sales"
-          sectionSwitcher={{
-            value: "orders",
-            onValueChange: (value) => navigate(`/managers/sales/${value}`),
-            options: [
-              { value: "quotes", label: "Quotes" },
-              { value: "orders", label: "Orders" },
-              { value: "invoices", label: "Invoices" },
-              { value: "clients", label: "Clients" },
-            ],
-          }}
           actions={
             <Link to="/managers/sales/orders/create">
               <Button>
@@ -63,24 +46,10 @@ export default function ManagerSalesOrders() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-3 h-3 text-muted-foreground" />
             <Input placeholder="Search orders by client, ID..." className="pl-10" />
           </div>
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Orders</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="in_progress">In Progress</SelectItem>
-              <SelectItem value="ready_to_dispatch">Ready to Dispatch</SelectItem>
-              <SelectItem value="dispatched">Dispatched</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-            </SelectContent>
-          </Select>
         </div>
 
         {/* Summary Stats */}
-        <div className="grid md:grid-cols-4 gap-4 mb-6">
+        <div className="grid md:grid-cols-4 gap-4 mb-4">
           <Card className="p-4">
             <div className="text-sm text-muted-foreground mb-1">Total Orders</div>
             <div className="text-2xl font-bold">{orders.length}</div>
@@ -100,54 +69,49 @@ export default function ManagerSalesOrders() {
         </div>
 
         <div className="space-y-4">
-          {filteredOrders.length === 0 ? (
-            <Card className="p-8 text-center">
-              <p className="text-muted-foreground">No orders found matching filter</p>
-            </Card>
-          ) : (
-            filteredOrders.map((order) => (
-            <Card key={order.id} className="p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-2">
-                    <Package className="w-3 h-3 text-primary" />
-                    <div className="font-semibold text-lg">{order.orderNumber}</div>
-                    <Badge className={getStatusColor(order.status)}>{getStatusLabel(order.status)}</Badge>
-                    {order.linkedQuote && (
-                      <Badge variant="outline" className="text-xs">
-                        From {order.linkedQuote}
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{order.clientName}</span>
+          {orders.map((order) => (
+            <Link key={order.id} to={`/managers/sales/orders/${order.id}`} className="block">
+              <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-all cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-2">
+                      <Package className="w-3 h-3 text-primary" />
+                      <div className="font-semibold text-lg">{order.orderNumber}</div>
+                      <Badge className={getStatusColor(order.status)}>{getStatusLabel(order.status)}</Badge>
+                      {order.linkedQuote && (
+                        <Badge variant="outline" className="text-xs">
+                          From {order.linkedQuote}
+                        </Badge>
+                      )}
                     </div>
-                    <div>
-                      <span className="text-muted-foreground">Items: </span>
-                      <span className="font-medium">{order.items.length}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Delivery: </span>
-                      <span className="font-medium">{getDeliveryTypeLabel(order.deliveryType)}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">${order.total.toLocaleString()}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Due: </span>
-                      <span>{order.deliveryDate || "TBC"}</span>
+                    <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Client: </span>
+                        <span className="font-medium">{order.clientName}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Items: </span>
+                        <span className="font-medium">{order.items.length}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Delivery: </span>
+                        <span className="font-medium">{getDeliveryTypeLabel(order.deliveryType)}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Total: </span>
+                        <span className="font-medium text-primary">${order.total.toLocaleString()}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Due: </span>
+                        <span>{order.deliveryDate || "TBC"}</span>
+                      </div>
                     </div>
                   </div>
+                  <Button size="sm" onClick={(e) => e.stopPropagation()}>View Details</Button>
                 </div>
-                <Link to={`/managers/sales/orders/${order.id}`}>
-                  <Button variant="ghost" size="sm">View Details</Button>
-                </Link>
-              </div>
-            </Card>
-          )))}
+              </Card>
+            </Link>
+          ))}
         </div>
       </SidebarPageLayout>
     </ManagerLayout>

@@ -2,10 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
-import { Leaf, MapPin, ChevronDown, ChevronUp, Droplets, Move, Sprout, Flower2, Search } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { MapPin, ChevronDown, ChevronUp } from "lucide-react";
+import { getTypeIcon } from "@/lib/taskUtils";
 import {
   Collapsible,
   CollapsibleContent,
@@ -18,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function WorkerTasks() {
   const [filter, setFilter] = useState<"all" | "overdue" | "todo" | "complete-this-week">("all");
@@ -35,19 +35,6 @@ export default function WorkerTasks() {
     if (lowerAction.includes("sow") || lowerAction.includes("seed")) return "Sow";
     if (lowerAction.includes("prune")) return "Prune";
     return action; // Return original if no match
-  };
-
-  // Helper to get icon for task action
-  const getTaskIcon = (action: string) => {
-    const simplifiedAction = getSimplifiedAction(action);
-    const lowerAction = simplifiedAction.toLowerCase();
-    if (lowerAction.includes("water")) return Droplets;
-    if (lowerAction.includes("move")) return Move;
-    if (lowerAction.includes("fertilize") || lowerAction.includes("apply")) return Sprout;
-    if (lowerAction.includes("pot")) return Flower2;
-    if (lowerAction.includes("check")) return Search;
-    if (lowerAction.includes("sow")) return Sprout;
-    return Leaf; // Default icon
   };
 
   // Filter tasks based on status
@@ -89,71 +76,59 @@ export default function WorkerTasks() {
         return acc;
       }, {} as Record<string, typeof tasks>);
 
+  const getFilterLabel = () => {
+    switch (filter) {
+      case "all": return "All";
+      case "overdue": return "Overdue";
+      case "todo": return "Todo";
+      case "complete-this-week": return "Complete this week";
+      default: return "All";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-forest-green">
-      <div className="max-w-[500px] mx-auto bg-white min-h-screen pb-20">
-        <DevBar />
-      <WorkerPageHeader 
-        title="Home" 
-        backTo="/workers"
-      />
-
-      <div className="container mx-auto px-3 pt-3 bg-white">
-        <div className="flex items-center justify-between mb-3">
-          <h1 className="text-heading-3 font-heading font-bold text-forest-green">Tasks</h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="primary-outline" className="text-forest-green">
-                {filter === "all" && "All"}
-                {filter === "overdue" && "Overdue"}
-                {filter === "todo" && "Todo"}
-                {filter === "complete-this-week" && "Complete this week"}
-                <ChevronDown className="w-3 h-3 ml-1.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white z-50 border border-forest-green">
-              <DropdownMenuItem onClick={() => setFilter("all")}>
-                All
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("overdue")}>
-                Overdue
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("todo")}>
-                Todo
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("complete-this-week")}>
-                Complete this week
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        
-        {/* Group By Switch */}
-        <div className="flex items-center gap-1.5 mb-4 bg-white rounded-lg p-1 border border-forest-green w-fit">
-          <button
-            onClick={() => setGroupBy("location")}
-            className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
-              groupBy === "location"
-                ? "bg-forest-green text-white"
-                : "text-forest-green hover:bg-lime-green/20"
-            }`}
-          >
-            Location
-          </button>
-          <button
-            onClick={() => setGroupBy("task")}
-            className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
-              groupBy === "task"
-                ? "bg-forest-green text-white"
-                : "text-forest-green hover:bg-lime-green/20"
-            }`}
-          >
-            Task
-          </button>
-        </div>
+    <WorkerPageLayout 
+      title="Tasks" 
+      backTo="/workers"
+      headerActions={
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="primary-outline" className="text-forest-green text-sm min-w-0 max-w-full">
+              <span className="truncate">{getFilterLabel()}</span>
+              <ChevronDown className="w-3 h-3 ml-1.5 flex-shrink-0" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white z-50 border border-forest-green">
+            <DropdownMenuItem onClick={() => setFilter("all")}>
+              All
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("overdue")}>
+              Overdue
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("todo")}>
+              Todo
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("complete-this-week")}>
+              Complete this week
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      }
+      mainClassName="py-4"
+    >
+      {/* Group By Switch */}
+      <div className="mb-4 w-fit">
+        <Tabs value={groupBy} onValueChange={(value) => setGroupBy(value as "location" | "task")}>
+          <TabsList>
+            <TabsTrigger value="location" className="text-body-sm font-heading font-bold">
+              Location
+            </TabsTrigger>
+            <TabsTrigger value="task" className="text-body-sm font-heading font-bold">
+              Task
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
-
-      <main className="container mx-auto px-3 py-4 bg-white">
         <div className="space-y-4">
           {groupBy === "location" ? (
             // Location view: group by location, then by task type
@@ -184,9 +159,9 @@ export default function WorkerTasks() {
                     if (actionTasks.length === 1) {
                       // Single task - no grouping
                       const task = actionTasks[0];
-                      const TaskIcon = getTaskIcon(task.action);
+                      const TaskIcon = getTypeIcon(task.type, task.action);
                       return (
-                        <div key={`${location}-${action}`} className="px-3">
+                        <div key={`${location}-${action}`}>
                           <Link to={`/workers/tasks/${task.id}`}>
                             <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
                               <div className="flex items-start gap-1.5">
@@ -194,20 +169,18 @@ export default function WorkerTasks() {
                                   <TaskIcon className="w-3 h-3 text-forest-green" />
                                 </div>
                                 <div className="flex-1">
-                                  <div className="mb-1.5">
-                                    <div className="flex justify-end mb-1">
-                                      <span className={`px-2 py-0.5 text-body-sm rounded-full font-heading font-bold flex-shrink-0 ${
-                                        task.status === "overdue" 
-                                          ? "bg-caution/20 text-caution"
-                                          : task.status === "completed"
-                                          ? "bg-sage-gray/20 text-muted-foreground"
-                                          : "bg-info/20 text-info"
-                                      }`}>
-                                        {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
-                                      </span>
-                                    </div>
+                                  <div className="flex items-start justify-between mb-1.5">
                                     <span className="text-body-lg font-heading font-bold text-forest-green">
                                       {task.action}
+                                    </span>
+                                    <span className={`px-2 py-0.5 text-body-sm rounded-full font-heading font-bold flex-shrink-0 ml-2 ${
+                                      task.status === "overdue" 
+                                        ? "bg-caution/20 text-caution"
+                                        : task.status === "completed"
+                                        ? "bg-sage-gray/20 text-muted-foreground"
+                                        : "bg-info/20 text-info"
+                                    }`}>
+                                      {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
                                     </span>
                                   </div>
                                   <div className="text-body-sm text-forest-green mb-1">
@@ -225,15 +198,17 @@ export default function WorkerTasks() {
                     }
                     
                     // Multiple tasks - grouped in collapsible container
-                    const GroupIcon = getTaskIcon(action);
+                    // Use first task's type for group icon, or infer from action
+                    const firstTask = actionTasks[0];
+                    const GroupIcon = getTypeIcon(firstTask.type, action);
                     return (
                       <Collapsible
                         key={groupKey}
                         open={isOpen}
                         onOpenChange={(open) => setOpenGroups(prev => ({ ...prev, [groupKey]: open }))}
                       >
-                        <Card className="bg-lime-green/20 border border-forest-green p-3">
-                          <CollapsibleTrigger className="w-full flex items-center justify-between hover:bg-lime-green/30 transition-colors">
+                        <Card className="bg-[#F8FAF9] border border-gray-300 p-3">
+                          <CollapsibleTrigger className="w-full flex items-center justify-between hover:bg-gray-200/50 transition-colors">
                             <div className="flex items-center gap-1.5">
                               <h3 className="text-body-lg font-heading font-bold text-forest-green">{action}</h3>
                               <span className="text-body-small text-muted-foreground">({actionTasks.length})</span>
@@ -247,7 +222,7 @@ export default function WorkerTasks() {
                           <CollapsibleContent>
                             <div className="pt-2 flex flex-col gap-2">
                               {actionTasks.map((task) => {
-                                const TaskIcon = getTaskIcon(task.action);
+                                const TaskIcon = getTypeIcon(task.type, task.action);
                                 return (
                                   <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                                     <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
@@ -300,9 +275,9 @@ export default function WorkerTasks() {
               if (actionTasks.length === 1) {
                 // Single task - no grouping
                 const task = actionTasks[0];
-                const TaskIcon = getTaskIcon(task.action);
+                const TaskIcon = getTypeIcon(task.type, task.action);
                 return (
-                  <div key={`task-${action}`} className="px-3 mb-4">
+                  <div key={`task-${action}`} className="mb-4">
                     <Link to={`/workers/tasks/${task.id}`}>
                       <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
                         <div className="flex items-start gap-1.5">
@@ -327,8 +302,7 @@ export default function WorkerTasks() {
                             <div className="text-body-sm text-forest-green mb-1">
                               <span>{task.species}</span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-body-small text-muted-foreground mb-1">
-                              <MapPin className="w-3 h-3" />
+                            <div className="text-body-small text-muted-foreground mb-1">
                               <span>{task.location}</span>
                             </div>
                             <div className="text-body-small text-muted-foreground">
@@ -343,7 +317,9 @@ export default function WorkerTasks() {
               }
               
               // Multiple tasks - grouped in collapsible container
-              const GroupIcon = getTaskIcon(action);
+              // Use first task's type for group icon, or infer from action
+              const firstTask = actionTasks[0];
+              const GroupIcon = getTypeIcon(firstTask.type, action);
               return (
                 <Collapsible
                   key={groupKey}
@@ -351,8 +327,8 @@ export default function WorkerTasks() {
                   onOpenChange={(open) => setOpenGroups(prev => ({ ...prev, [groupKey]: open }))}
                   className="mb-4"
                 >
-                  <Card className="bg-lime-green/20 border border-forest-green p-3">
-                    <CollapsibleTrigger className="w-full flex items-center justify-between hover:bg-lime-green/30 transition-colors">
+                  <Card className="bg-[#F8FAF9] border border-gray-300 p-3">
+                    <CollapsibleTrigger className="w-full flex items-center justify-between hover:bg-gray-200/50 transition-colors">
                       <div className="flex items-center gap-1.5">
                         <h2 className="text-body-lg font-heading font-bold text-forest-green">{action}</h2>
                         <span className="text-body-small text-muted-foreground">({actionTasks.length})</span>
@@ -366,7 +342,7 @@ export default function WorkerTasks() {
                     <CollapsibleContent>
                       <div className="pt-2 flex flex-col gap-2">
                         {actionTasks.map((task) => {
-                          const TaskIcon = getTaskIcon(task.action);
+                          const TaskIcon = getTypeIcon(task.type, task.action);
                           return (
                             <Link key={task.id} to={`/workers/tasks/${task.id}`}>
                               <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
@@ -389,12 +365,10 @@ export default function WorkerTasks() {
                                         {task.status === "overdue" ? "Overdue" : task.status === "completed" ? "Complete" : "To-Do"}
                                       </span>
                                     </div>
-                                    <div className="flex items-center gap-1.5 text-body-sm text-forest-green mb-1">
-                                      <Leaf className="w-4 h-4" />
+                                    <div className="text-body-sm text-forest-green mb-1">
                                       <span>{task.species}</span>
                                     </div>
-                                    <div className="flex items-center gap-1.5 text-body-small text-muted-foreground mb-1">
-                                      <MapPin className="w-3 h-3" />
+                                    <div className="text-body-small text-muted-foreground mb-1">
                                       <span>{task.location}</span>
                                     </div>
                                     <div className="text-body-small text-muted-foreground">
@@ -415,15 +389,11 @@ export default function WorkerTasks() {
           )}
         </div>
 
-        {filteredTasks.length === 0 && (
-          <div className="text-center py-6">
-            <p className="text-body text-muted-foreground">No tasks found</p>
-          </div>
-        )}
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+      {filteredTasks.length === 0 && (
+        <div className="text-center py-6">
+          <p className="text-body text-muted-foreground">No tasks found</p>
+        </div>
+      )}
+    </WorkerPageLayout>
   );
 }

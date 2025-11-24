@@ -37,16 +37,6 @@ export default function ManagerSalesInvoices() {
           description="Generate and manage invoices from approved orders"
           backTo="/managers/sales"
           backLabel="Back to Sales"
-          sectionSwitcher={{
-            value: "invoices",
-            onValueChange: (value) => navigate(`/managers/sales/${value}`),
-            options: [
-              { value: "quotes", label: "Quotes" },
-              { value: "orders", label: "Orders" },
-              { value: "invoices", label: "Invoices" },
-              { value: "clients", label: "Clients" },
-            ],
-          }}
         />
 
         <div className="flex gap-4 mb-6">
@@ -57,7 +47,7 @@ export default function ManagerSalesInvoices() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid md:grid-cols-5 gap-4 mb-6">
+        <div className="grid md:grid-cols-5 gap-4 mb-4">
           <Card className="p-4">
             <div className="text-sm text-muted-foreground mb-1">Total Invoices</div>
             <div className="text-2xl font-bold">{invoices.length}</div>
@@ -82,56 +72,56 @@ export default function ManagerSalesInvoices() {
 
         <div className="space-y-4">
           {invoices.map((invoice) => (
-            <Card key={invoice.id} className="p-4 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-2">
-                    <Receipt className="w-3 h-3 text-primary" />
-                    <div className="font-semibold text-lg">{invoice.invoiceNumber}</div>
-                    <Badge className={getStatusColor(invoice.status)}>{getStatusLabel(invoice.status)}</Badge>
-                    {invoice.linkedOrder && (
-                      <Badge variant="outline" className="text-xs">
-                        From {invoice.linkedOrder}
-                      </Badge>
-                    )}
-                    {invoice.xeroSync && (
-                      <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
-                        Xero Synced
-                      </Badge>
-                    )}
+            <Link key={invoice.id} to={`/managers/sales/invoices/${invoice.id}`} className="block">
+              <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-all cursor-pointer">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-2">
+                      <Receipt className="w-3 h-3 text-primary" />
+                      <div className="font-semibold text-lg">{invoice.invoiceNumber}</div>
+                      <Badge className={getStatusColor(invoice.status)}>{getStatusLabel(invoice.status)}</Badge>
+                      {invoice.linkedOrder && (
+                        <Badge variant="outline" className="text-xs">
+                          From {invoice.linkedOrder}
+                        </Badge>
+                      )}
+                      {invoice.xeroSync && (
+                        <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-200">
+                          Xero Synced
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Client: </span>
+                        <span className="font-medium">{invoice.clientName}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Total: </span>
+                        <span className="font-medium text-primary">${invoice.total.toLocaleString()}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Balance Due: </span>
+                        <span className={`font-medium ${invoice.balanceDue > 0 ? 'text-orange-600' : 'text-green-600'}`}>
+                          ${invoice.balanceDue.toLocaleString()}
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Issued: </span>
+                        <span>{invoice.dateIssued}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Due: </span>
+                        <span className={invoice.status === "overdue" ? "text-red-600 font-medium" : ""}>
+                          {invoice.dueDate}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-5 gap-6 mt-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Client: </span>
-                      <span className="font-medium">{invoice.clientName}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Total: </span>
-                      <span className="font-medium text-primary">${invoice.total.toLocaleString()}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Balance Due: </span>
-                      <span className={`font-medium ${invoice.balanceDue > 0 ? 'text-orange-600' : 'text-green-600'}`}>
-                        ${invoice.balanceDue.toLocaleString()}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Issued: </span>
-                      <span>{invoice.dateIssued}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Due: </span>
-                      <span className={invoice.status === "overdue" ? "text-red-600 font-medium" : ""}>
-                        {invoice.dueDate}
-                      </span>
-                    </div>
-                  </div>
+                  <Button size="sm" onClick={(e) => e.stopPropagation()}>View Details</Button>
                 </div>
-                <Link to={`/managers/sales/invoices/${invoice.id}`}>
-                  <Button variant="ghost" size="sm">View Details</Button>
-                </Link>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           ))}
         </div>
       </SidebarPageLayout>

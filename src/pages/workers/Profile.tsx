@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -12,24 +11,26 @@ export default function WorkerProfile() {
   const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className={`max-w-[500px] mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
-        <DevBar />
-      <header className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 pb-12">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-            <User className="w-8 h-8" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold">Alex Thompson</h1>
-            <p className="text-primary-foreground/90 text-sm">Propagation Team</p>
-          </div>
+    <WorkerPageLayout 
+      title=""
+      backgroundClass={isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}
+      headerClassName="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground border-b-0"
+      mainClassName="py-6 -mt-6"
+    >
+      {/* Profile Header */}
+      <div className="flex items-center gap-4 mb-6 px-4">
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+          <User className="w-8 h-8" />
         </div>
-      </header>
+        <div>
+          <h1 className="text-2xl font-semibold">Alex Thompson</h1>
+          <p className="text-primary-foreground/90 text-sm">Propagation Team</p>
+        </div>
+      </div>
 
-      <main className="container mx-auto px-4 -mt-6">
+      <div>
         {/* Stats Card */}
-        <Card className="p-5 mb-6">
+        <Card className="p-3 mb-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">This Week</h3>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
@@ -48,7 +49,7 @@ export default function WorkerProfile() {
         </Card>
 
         {/* Sync Status */}
-        <Card className="p-4 mb-6">
+        <Card className="p-3 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-3 h-3 text-green-600" />
@@ -65,7 +66,7 @@ export default function WorkerProfile() {
           <h3 className="text-sm font-semibold text-foreground px-1">Settings</h3>
           
           <Card className="divide-y divide-border">
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 {isDark ? <Moon className="w-3 h-3 text-muted-foreground" /> : <Sun className="w-3 h-3 text-muted-foreground" />}
                 <span className="text-sm text-foreground">Dark Mode</span>
@@ -76,7 +77,7 @@ export default function WorkerProfile() {
               />
             </div>
 
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Bell className="w-3 h-3 text-muted-foreground" />
                 <span className="text-sm text-foreground">Push Notifications</span>
@@ -84,7 +85,7 @@ export default function WorkerProfile() {
               <Switch defaultChecked />
             </div>
 
-            <div className="p-4 flex items-center justify-between">
+            <div className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <WifiOff className="w-3 h-3 text-muted-foreground" />
                 <span className="text-sm text-foreground">Offline Mode</span>
@@ -97,12 +98,12 @@ export default function WorkerProfile() {
         {/* Menu Items */}
         <div className="space-y-3 mb-6">
           <Card className="divide-y divide-border">
-            <Link to="/workers/settings" className="p-4 flex items-center gap-3 hover:bg-accent transition-colors">
+            <Link to="/workers/settings" className="p-3 flex items-center gap-3 hover:bg-accent transition-colors">
               <Settings className="w-3 h-3 text-muted-foreground" />
               <span className="text-sm text-foreground">Account Settings</span>
             </Link>
 
-            <Link to="/workers/help" className="p-4 flex items-center gap-3 hover:bg-accent transition-colors">
+            <Link to="/workers/help" className="p-3 flex items-center gap-3 hover:bg-accent transition-colors">
               <HelpCircle className="w-3 h-3 text-muted-foreground" />
               <span className="text-sm text-foreground">Help & Support</span>
             </Link>
@@ -121,10 +122,7 @@ export default function WorkerProfile() {
         <p className="text-center text-xs text-muted-foreground mt-6">
           Flourish Worker App v1.0.0
         </p>
-      </main>
-
-      <WorkerBottomNav />
       </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

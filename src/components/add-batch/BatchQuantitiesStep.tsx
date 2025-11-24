@@ -52,7 +52,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
     
     const configs: BatchConfig[] = [];
     for (let i = 1; i <= count; i++) {
-      const suffix = getNextAvailableSuffix(baseId, [...batches, ...configs.map(c => ({ id: c.batchId } as any))]);
+      const suffix = getNextAvailableSuffix(baseId, [...batches, ...configs.map(c => ({ id: c.batchId }))]);
       configs.push({
         batchId: `${baseId}-${suffix}`,
         quantity: formData.quantity || 100,
@@ -81,7 +81,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
     const speciesCode = species?.code || "UNK";
     const locationCode = (formData.initialLocation || "GH1").substring(0, 3).toUpperCase().replace(/\s/g, '');
     const baseId = generateBatchId(speciesCode, locationCode, new Date());
-    const suffix = getNextAvailableSuffix(baseId, [...batches, ...batchConfigs.map(c => ({ id: c.batchId } as any))]);
+    const suffix = getNextAvailableSuffix(baseId, [...batches, ...batchConfigs.map(c => ({ id: c.batchId }))]);
     
     const newConfig: BatchConfig = {
       batchId: `${baseId}-${suffix}`,
@@ -101,7 +101,7 @@ export function BatchQuantitiesStep({ formData, updateFormData }: BatchQuantitie
     updateFormData({ batchConfigs: updated, numberOfBatches: updated.length });
   };
 
-  const updateBatchConfig = (index: number, field: keyof BatchConfig, value: any) => {
+  const updateBatchConfig = (index: number, field: keyof BatchConfig, value: BatchConfig[keyof BatchConfig]) => {
     const updated = [...batchConfigs];
     updated[index] = { ...updated[index], [field]: value };
     setBatchConfigs(updated);

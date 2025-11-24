@@ -21,10 +21,7 @@ export function InventorySelectionSheet({ open, onOpenChange, onAddItems }: Inve
   const [pendingItems, setPendingItems] = useState<PendingLineItem[]>([]);
 
   const inventorySummary = useMemo(() => {
-    const summary = getSpeciesInventorySummary(batches);
-    console.log("Inventory Summary:", summary);
-    console.log("Total batches:", batches.length);
-    return summary;
+    return getSpeciesInventorySummary(batches);
   }, []);
   
   const filteredInventory = useMemo(() => 
@@ -79,7 +76,7 @@ export function InventorySelectionSheet({ open, onOpenChange, onAddItems }: Inve
         </SheetHeader>
 
         <ScrollArea className="flex-1 px-6">
-          <div className="space-y-3 pb-6">
+          <div className="space-y-3 pb-24">
             {filteredInventory.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 {searchQuery ? "No species found matching your search" : "No inventory available"}

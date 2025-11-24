@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
-import { DevBar } from "@/components/DevBar";
 import { ArrowLeft, Camera, Maximize2 } from "lucide-react";
 
 export default function ManagerScan() {
@@ -20,11 +19,10 @@ export default function ManagerScan() {
 
   return (
     <div className="min-h-screen bg-background pb-20">
-      <DevBar />
       <Navigation />
       
       <header className="bg-card border-b sticky top-0 z-40">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-12 py-4 max-w-[1920px]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link to="/managers">
@@ -41,7 +39,7 @@ export default function ManagerScan() {
         </div>
       </header>
 
-      <main className="container mx-auto px-6 py-8 flex flex-col items-center justify-center min-h-[70vh]">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px] flex flex-col items-center justify-center min-h-[70vh]">
         {/* Camera Preview Placeholder */}
         <div className="relative w-full max-w-sm aspect-square bg-muted/50 rounded-2xl border-2 border-border mb-8 overflow-hidden">
           {scanning ? (

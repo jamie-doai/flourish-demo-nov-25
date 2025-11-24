@@ -1,0 +1,304 @@
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Save, Send, Edit3, Package } from "lucide-react";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
+import { SalesSidebar } from "@/components/SalesSidebar";
+import { PageHeader } from "@/components/PageHeader";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { InventorySelectionSheet } from "@/components/sales/InventorySelectionSheet";
+import { LineItemRow } from "@/components/sales/LineItemRow";
+import { TotalsSection } from "@/components/sales/TotalsSection";
+import { useToast } from "@/hooks/use-toast";
+import { useLineItems, LineItem } from "@/hooks/useLineItems";
+import { clients, getQuoteById } from "@/data";
+import { PendingLineItem } from "@/types/sales";
+import { calculateTotals } from "@/lib/salesCalculations";
+
+export default function EditQuote() {
+  const { quoteId } = useParams();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const quote = getQuoteById(quoteId!);
+
+  const [selectedClient, setSelectedClient] = useState("");
+  const [expiryDate, setExpiryDate] = useState("");
+  const [reserveStock, setReserveStock] = useState("dont-reserve");
+  const [clientNotes, setClientNotes] = useState("");
+  const [internalNotes, setInternalNotes] = useState("");
+  const [showInventorySheet, setShowInventorySheet] = useState(false);
+
+  // Convert quote items to LineItem format
+  const initialLineItems: LineItem[] = quote
+    ? quote.items.map((item) => ({
+        id: item.id,
+        species: item.species,
+        potSize: item.potSize,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+        discount: item.discount,
+        total: item.total,
+        batchIds: item.batchId ? [item.batchId] : undefined,
+        costPerUnit: item.batchCOP,
+      }))
+    : [];
+
+  const {
+    lineItems,
+    addLineItem,
+    removeLineItem,
+    updateLineItem,
+    addItemsFromInventory,
+  } = useLineItems(initialLineItems);
+
+  // Load quote data on mount
+  useEffect(() => {
+    if (quote) {
+      setSelectedClient(quote.clientId);
+      setExpiryDate(quote.expiryDate);
+      setReserveStock(quote.reserveStock ? "reserve" : "dont-reserve");
+      setClientNotes(quote.clientNotes || "");
+      setInternalNotes(quote.internalNotes || "");
+    }
+  }, [quote]);
+
+  if (!quote) {
+    return (
+      <ManagerLayout>
+        <SidebarPageLayout sidebar={<SalesSidebar />}>
+          <div className="flex items-center justify-center min-h-screen">
+            <Card>
+              <p className="text-muted-foreground">Quote not found</p>
+              <Link to="/managers/sales/quotes">
+                <Button variant="tertiary" className="mt-4">Back to Quotes</Button>
+              </Link>
+            </Card>
+          </div>
+        </SidebarPageLayout>
+      </ManagerLayout>
+    );
+  }
+
+  const handleAddFromInventory = (items: PendingLineItem[]) => {
+    addItemsFromInventory(items);
+  };
+
+  const handleUpdateDraft = () => {
+    if (!selectedClient) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a client",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Quote Updated",
+      description: "Quote has been updated",
+    });
+    
+    setTimeout(() => {
+      navigate(`/managers/sales/quotes/${quoteId}`);
+    }, 1000);
+  };
+
+  const handleUpdateAndSend = () => {
+    if (!selectedClient) {
+      toast({
+        title: "Validation Error",
+        description: "Please select a client",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (lineItems.some(item => !item.species || item.quantity === 0)) {
+      toast({
+        title: "Validation Error",
+        description: "Please complete all line items",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    toast({
+      title: "Quote Updated and Sent",
+      description: "Quote has been updated and sent to client",
+    });
+    
+    setTimeout(() => {
+      navigate(`/managers/sales/quotes/${quoteId}`);
+    }, 1000);
+  };
+
+  const { subtotal, tax, total } = calculateTotals(lineItems);
+
+  return (
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        <PageHeader
+          title="Edit Quote"
+          description={`Editing quote ${quote.quoteNumber}`}
+          backTo={`/managers/sales/quotes/${quoteId}`}
+          backLabel="Back to Quote"
+        />
+
+        <Card className="mb-6">
+          <h2 className="text-heading-4 font-heading font-bold mb-4">Client Details</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="client">Client *</Label>
+              <Select value={selectedClient} onValueChange={setSelectedClient}>
+                <SelectTrigger id="client" className="mt-2">
+                  <SelectValue placeholder="Select a client" />
+                </SelectTrigger>
+                <SelectContent>
+                  {clients.map((client) => (
+                    <SelectItem key={client.id} value={client.id}>
+                      {client.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label htmlFor="expiry">Quote Expiry Date</Label>
+              <Input
+                id="expiry"
+                type="date"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+          </div>
+        </Card>
+
+        <Card className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-heading-4 font-heading font-bold">Line Items</h2>
+            <div className="flex gap-2">
+              <Button onClick={() => setShowInventorySheet(true)} size="sm">
+                <Package className="w-3 h-3 mr-2" />
+                Add from Inventory
+              </Button>
+              <Button onClick={addLineItem} variant="tertiary" size="sm">
+                <Edit3 className="w-3 h-3 mr-2" />
+                Add Custom Item
+              </Button>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Species</TableHead>
+                  <TableHead>Stage</TableHead>
+                  <TableHead>Container</TableHead>
+                  <TableHead>Quantity</TableHead>
+                  <TableHead>Cost/Unit</TableHead>
+                  <TableHead>Unit Price</TableHead>
+                  <TableHead>Margin %</TableHead>
+                  <TableHead>Discount %</TableHead>
+                  <TableHead>Total</TableHead>
+                  <TableHead></TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {lineItems.map((item) => (
+                  <LineItemRow
+                    key={item.id}
+                    item={item}
+                    canRemove={lineItems.length > 1}
+                    onUpdate={updateLineItem}
+                    onRemove={removeLineItem}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          <TotalsSection subtotal={subtotal} tax={tax} total={total} />
+        </Card>
+
+        <Card className="mb-6">
+          <h2 className="text-lg font-semibold mb-4">Additional Options</h2>
+          
+          <div className="space-y-2 mb-6">
+            <Label className="text-sm font-medium">Reserve Stock</Label>
+            <RadioGroup 
+              value={reserveStock} 
+              onValueChange={setReserveStock}
+              className="flex flex-row gap-6"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="reserve" id="reserve-yes" />
+                <Label htmlFor="reserve-yes" className="cursor-pointer">Reserve Stock</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="dont-reserve" id="reserve-no" />
+                <Label htmlFor="reserve-no" className="cursor-pointer">Don't Reserve Stock</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="client-notes">Client Notes</Label>
+              <Textarea
+                id="client-notes"
+                placeholder="Notes visible to the client on the quote..."
+                value={clientNotes}
+                onChange={(e) => setClientNotes(e.target.value)}
+                className="mt-2"
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="internal-notes">Internal Notes</Label>
+              <Textarea
+                id="internal-notes"
+                placeholder="Private notes for internal use only..."
+                value={internalNotes}
+                onChange={(e) => setInternalNotes(e.target.value)}
+                className="mt-2 bg-muted"
+                rows={3}
+              />
+            </div>
+          </div>
+        </Card>
+
+        <div className="flex gap-3 justify-end">
+          <Link to={`/managers/sales/quotes/${quoteId}`}>
+            <Button variant="tertiary">Cancel</Button>
+          </Link>
+          <Button variant="secondary" onClick={handleUpdateDraft}>
+            <Save className="w-3 h-3 mr-2" />
+            Update Draft
+          </Button>
+          <Button onClick={handleUpdateAndSend}>
+            <Send className="w-3 h-3 mr-2" />
+            Update and Send
+          </Button>
+        </div>
+
+        <InventorySelectionSheet
+          open={showInventorySheet}
+          onOpenChange={setShowInventorySheet}
+          onAddItems={handleAddFromInventory}
+        />
+      </SidebarPageLayout>
+    </ManagerLayout>
+  );
+}

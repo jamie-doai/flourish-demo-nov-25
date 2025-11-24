@@ -4,8 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Search, Scan, MapPin, Leaf, Sprout } from "lucide-react";
 import { stages, batches } from "@/data";
 
@@ -40,61 +39,57 @@ export default function WorkerInventory() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
-      <header className="bg-white border-b border-[#3B7A57]/10">
-        <div className="container mx-auto px-4 py-4">
-          <h1 className="text-xl font-semibold text-[#37474F] mb-4">Inventory</h1>
-          
-          <div className="flex gap-2 mb-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[#37474F]/40" />
-              <Input
-                type="search"
-                placeholder="Search by species or batch ID..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Link to="/workers/scan">
-              <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90">
-                <Scan className="w-3 h-3" />
-              </Button>
-            </Link>
+    <WorkerPageLayout 
+      title="Inventory"
+      headerActions={
+        <div className="flex gap-2 min-w-0">
+          <div className="flex-1 relative min-w-0">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-[#37474F]/40" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-10 text-sm"
+            />
           </div>
-
-          {/* Stage Tabs */}
-          <Tabs value={selectedStage} onValueChange={setSelectedStage} className="w-full">
-            <TabsList className="grid grid-cols-7 h-auto gap-1 p-1">
-              <TabsTrigger value="all" className="text-xs py-2">
-                All
-              </TabsTrigger>
-              {stages.map((stage) => {
-                const stats = getStageStats(stage.id);
-                const Icon = stage.icon;
-                return (
-                  <TabsTrigger 
-                    key={stage.id} 
-                    value={stage.id}
-                    className="text-xs py-2 flex flex-col gap-1 h-auto"
-                  >
-                    <Icon className="w-3 h-3" />
-                    <span className="hidden sm:inline">{stage.name}</span>
-                    <span className="text-[10px] opacity-70">{stats.plants}</span>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-          </Tabs>
+          <Link to="/workers/scan" className="flex-shrink-0">
+            <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90">
+              <Scan className="w-3 h-3" />
+            </Button>
+          </Link>
         </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-6">
+      }
+      mainClassName="py-6"
+    >
+      {/* Stage Tabs */}
+      <div className="mb-6">
+        <Tabs value={selectedStage} onValueChange={setSelectedStage} className="w-full">
+          <TabsList className="grid grid-cols-7 h-auto gap-1.5 p-1 overflow-x-auto">
+            <TabsTrigger value="all" className="text-xs py-2">
+              All
+            </TabsTrigger>
+            {stages.map((stage) => {
+              const stats = getStageStats(stage.id);
+              const Icon = stage.icon;
+              return (
+                <TabsTrigger 
+                  key={stage.id} 
+                  value={stage.id}
+                  className="text-xs py-2 flex flex-col gap-1 h-auto"
+                >
+                  <Icon className="w-3 h-3" />
+                  <span className="hidden sm:inline">{stage.name}</span>
+                  <span className="text-[10px] opacity-70">{stats.plants}</span>
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+        </Tabs>
+      </div>
         {/* Stage Summary */}
         {selectedStage !== "all" && (
-          <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm mb-4">
+          <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm mb-4">
             <div className="flex items-center gap-3 mb-3">
               {(() => {
                 const stage = stages.find(s => s.id === selectedStage);
@@ -119,7 +114,7 @@ export default function WorkerInventory() {
         <div className="space-y-4">
           {filteredBatches.map((batch) => (
             <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-              <Card className={`p-4 bg-white border shadow-sm hover:shadow-md transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
+              <Card className={`p-3 bg-white border shadow-sm hover:shadow-md hover:bg-gray-50 transition-all ${batch.urgent ? 'border-orange-500' : 'border-[#37474F]/20 hover:border-[#37474F]/30'}`}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -180,15 +175,11 @@ export default function WorkerInventory() {
           ))}
         </div>
 
-        {filteredBatches.length === 0 && (
-          <div className="text-center py-20">
-            <p className="text-base text-[#37474F]">No batches found</p>
-          </div>
-        )}
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+      {filteredBatches.length === 0 && (
+        <div className="text-center py-20">
+          <p className="text-base text-[#37474F]">No batches found</p>
+        </div>
+      )}
+    </WorkerPageLayout>
   );
 }

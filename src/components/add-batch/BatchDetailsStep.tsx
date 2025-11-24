@@ -66,7 +66,7 @@ export function BatchDetailsStep({ formData, updateFormData }: BatchDetailsStepP
           <Label htmlFor="currentStatus">Current Status *</Label>
           <Select
             value={formData.currentStatus || ""}
-            onValueChange={(value: any) => updateFormData({ currentStatus: value })}
+            onValueChange={(value: string) => updateFormData({ currentStatus: value })}
           >
             <SelectTrigger id="currentStatus">
               <SelectValue placeholder="Select status..." />

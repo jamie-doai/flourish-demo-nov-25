@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
-import { DevBar } from '@/components/DevBar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -155,10 +154,9 @@ export default function CostLibrary() {
   
   return (
     <div className="min-h-screen bg-background">
-      <DevBar />
       <Navigation />
       
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Header */}
         <div className="mb-6">
           <Link to="/managers/settings">
@@ -169,10 +167,10 @@ export default function CostLibrary() {
           </Link>
           
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
-            <div className="min-w-0">
-              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-bold flex flex-col sm:flex-row sm:items-center gap-2 break-words">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold flex items-center gap-2">
                 <DollarSign className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0" />
-                Cost Library
+                <span>Cost Library</span>
               </h1>
               <p className="text-muted-foreground mt-1">
                 Manage cost items used across all batches

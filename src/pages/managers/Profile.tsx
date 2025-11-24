@@ -11,15 +11,15 @@ export default function ManagerProfile() {
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8 max-w-2xl">
+      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
         {/* Profile Header */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-8 rounded-xl mb-6">
           <div className="flex items-center gap-4">
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
               <User className="w-10 h-10" />
             </div>
-            <div>
-              <h1 className="text-heading-2 sm:text-heading-1 font-heading font-semibold break-words">Sarah Johnson</h1>
+            <div className="min-w-0 flex-1">
+              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-semibold">Sarah Johnson</h1>
               <p className="text-primary-foreground/90">Operations Manager</p>
             </div>
           </div>

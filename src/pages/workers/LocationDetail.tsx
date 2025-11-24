@@ -1,12 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, CheckCircle2 } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { MapPin, Thermometer, Droplet, Leaf, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
 
 export default function WorkerLocationDetail() {
@@ -16,29 +13,30 @@ export default function WorkerLocationDetail() {
   const tasksForLocation = getTasksByLocation(mockLocation?.name || "");
 
   if (!mockLocation) {
-    return <div>Location not found</div>;
+    return (
+      <WorkerPageLayout title="Location Not Found" backTo="/workers/locations">
+        <div className="py-6 text-center">
+          <p className="text-[#37474F]">Location not found</p>
+        </div>
+      </WorkerPageLayout>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
-        
-        <WorkerPageHeader 
-          title={mockLocation.name}
-          backTo="/workers/locations"
-        />
-
-        <main className="container mx-auto px-4 py-6">
+    <WorkerPageLayout 
+      title={mockLocation.name}
+      backTo="/workers/locations"
+      mainClassName="py-6"
+    >
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-4 max-w-2xl">
+            <TabsList className="mb-4 max-w-2xl gap-1.5">
               <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
               <TabsTrigger value="tasks" className="flex-1">Tasks</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">
               {/* Location Stats */}
-              <Card className="p-5 bg-white border border-[#37474F]/20 shadow-sm">
+              <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
                 <h3 className="text-sm font-semibold text-[#37474F] mb-3">Facility Overview</h3>
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
@@ -93,7 +91,7 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {batchesInLocation.map((batch) => (
                     <Link key={batch.id} to={`/workers/batch/${batch.id}`}>
-                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
@@ -139,7 +137,7 @@ export default function WorkerLocationDetail() {
                 <div className="space-y-3">
                   {tasksForLocation.map((task) => (
                     <Link key={task.id} to={`/workers/tasks/${task.id}`}>
-                      <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
+                      <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm hover:shadow-md hover:border-[#37474F]/30 transition-all">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -179,16 +177,12 @@ export default function WorkerLocationDetail() {
                   ))}
                 </div>
               ) : (
-                <Card className="p-4 bg-white border border-[#37474F]/20 shadow-sm text-center">
+                <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm text-center">
                   <p className="text-sm text-[#37474F]/60">No tasks scheduled for this location</p>
                 </Card>
               )}
             </TabsContent>
           </Tabs>
-        </main>
-
-        <WorkerBottomNav />
-      </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

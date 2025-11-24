@@ -23,16 +23,18 @@ export function generateBatchIdWithSuffix(
   return `${baseId}-${suffix}`;
 }
 
+type BatchLike = Pick<Batch, 'id'>;
+
 export function validateBatchIdUnique(
   batchId: string,
-  existingBatches: Batch[]
+  existingBatches: BatchLike[]
 ): boolean {
   return !existingBatches.some(batch => batch.id === batchId);
 }
 
 export function getNextAvailableSuffix(
   baseId: string,
-  existingBatches: Batch[]
+  existingBatches: BatchLike[]
 ): string {
   let suffix = 1;
   while (!validateBatchIdUnique(`${baseId}-${String(suffix).padStart(2, '0')}`, existingBatches)) {

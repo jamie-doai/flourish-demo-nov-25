@@ -19,7 +19,7 @@ export function WorkerNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#3B7A57]/10 pb-safe shadow-lg max-w-[500px] mx-auto">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#3B7A57]/10 pb-safe shadow-lg max-w-mobile mx-auto">
       <div className="grid grid-cols-5 h-20">
         {navItems.map((item) => {
           const active = item.exact 
@@ -68,7 +68,7 @@ export function WorkerNav() {
               <span className="text-xs font-medium">Menu</span>
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="flex flex-col max-w-[500px] right-0 left-auto">
+          <SheetContent side="right" className="flex flex-col max-w-mobile right-0 left-auto">
             <div className="flex flex-col gap-4 mt-8 flex-1">
               {menuItems.map((item) => {
                 const active = isActive(item.path);

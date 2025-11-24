@@ -16,7 +16,7 @@ export function SpeciesInventoryCard({ summary, isExpanded, onToggle, onAddItem 
     <Card className="overflow-hidden">
       <Button
         variant="ghost"
-        className="w-full p-4 h-auto flex items-start justify-between hover:bg-muted/50"
+        className="w-full p-6 h-auto flex items-start justify-between hover:bg-muted/50"
         onClick={onToggle}
       >
         <div className="flex-1 text-left">
@@ -39,7 +39,7 @@ export function SpeciesInventoryCard({ summary, isExpanded, onToggle, onAddItem 
       </Button>
 
       {isExpanded && (
-        <div className="p-4 pt-0 space-y-3 border-t">
+        <div className="p-6 pt-0 space-y-3 border-t">
           {summary.stages.map((stageData) => (
             <StageInventoryItem
               key={stageData.stage}

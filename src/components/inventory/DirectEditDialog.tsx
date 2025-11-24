@@ -81,7 +81,7 @@ export function DirectEditDialog({ open, onOpenChange, batch, onConfirm }: Direc
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-2xl bg-white">
         <DialogHeader>
           <DialogTitle>Direct Edit: {batch.id}</DialogTitle>
           <DialogDescription>
@@ -192,7 +192,7 @@ export function DirectEditDialog({ open, onOpenChange, batch, onConfirm }: Direc
           )}
         </div>
 
-        <DialogFooter>
+        <DialogFooter className="mt-12">
           <Button variant="outline" onClick={() => handleOpenChange(false)}>
             Cancel
           </Button>

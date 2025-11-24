@@ -1,3 +1,9 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { 
+  Plus, Search, Calendar as CalendarIcon, 
+  User, MapPin, Clock, Package, ChevronRight
+} from "lucide-react";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
@@ -9,14 +15,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Plus, Search, Calendar as CalendarIcon, CheckSquare, 
-  Clock, AlertCircle, User, MapPin, Droplets, Package, 
-  Sprout, ChevronRight
-} from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { TaskStatusColumn } from "@/components/operations/TaskStatusColumn";
+import { TaskCard } from "@/components/operations/TaskCard";
 import { tasks as unifiedTasks } from "@/data";
+import { getPriorityColor, getStatusColor, getTypeIcon } from "@/lib/taskUtils";
+import { useTaskFiltering } from "@/hooks/useTaskFiltering";
 
 export default function ManagerOperations() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
@@ -38,51 +41,11 @@ export default function ManagerOperations() {
     estimatedHours: task.estimatedHours || 1
   }));
 
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case "High": return "bg-destructive/10 text-destructive";
-      case "Medium": return "bg-accent/10 text-accent";
-      case "Low": return "bg-muted text-muted-foreground";
-      default: return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "Completed": return "bg-primary/10 text-primary";
-      case "In Progress": return "bg-blue-500/10 text-blue-500";
-      case "Pending": return "bg-yellow-500/10 text-yellow-500";
-      case "Scheduled": return "bg-purple-500/10 text-purple-500";
-      default: return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "Watering": return Droplets;
-      case "Potting": return Package;
-      case "Sowing": return Sprout;
-      case "Movement": return MapPin;
-      case "Quality Check": return CheckSquare;
-      case "Treatment": return AlertCircle;
-      default: return Clock;
-    }
-  };
-
-  const filteredTasks = selectedStatus === "all" 
-    ? tasks 
-    : tasks.filter(task => task.status === selectedStatus);
-
-  const tasksByStatus = {
-    pending: tasks.filter(t => t.status === "Pending"),
-    inProgress: tasks.filter(t => t.status === "In Progress"),
-    scheduled: tasks.filter(t => t.status === "Scheduled"),
-    completed: tasks.filter(t => t.status === "Completed"),
-  };
+  const { filteredTasks, tasksByStatus } = useTaskFiltering(tasks, selectedStatus);
 
   return (
     <ManagerLayout>
-      <main className="container mx-auto px-6 py-8">
+      <main className="container mx-auto px-12 py-6 sm:py-8 max-w-[1920px]">
         <PageHeader
           title="Operations"
           description="Task management, scheduling, and workflow coordination"
@@ -195,7 +158,7 @@ export default function ManagerOperations() {
         />
 
         <Tabs defaultValue="board" className="space-y-6">
-          <TabsList className="grid grid-cols-3 gap-2 border border-forest-green">
+          <TabsList className="grid grid-cols-3 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="board">Task Board</TabsTrigger>
             <TabsTrigger value="list">List View</TabsTrigger>
             <TabsTrigger value="calendar">Calendar</TabsTrigger>
@@ -203,179 +166,18 @@ export default function ManagerOperations() {
 
           <TabsContent value="board" className="space-y-4">
             <div className="grid md:grid-cols-4 gap-4">
-              {/* Pending Column */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-card rounded-lg border">
-                  <h3 className="font-semibold">Pending</h3>
-                  <Badge variant="secondary">{tasksByStatus.pending.length}</Badge>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {tasksByStatus.pending.map((task) => {
-                    const Icon = getTypeIcon(task.type);
-                    return (
-                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow">
-                          <div className="space-y-2">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                <span className="text-xs text-muted-foreground">{task.type}</span>
-                              </div>
-                              <Badge className={getPriorityColor(task.priority)} variant="outline">
-                                {task.priority}
-                              </Badge>
-                            </div>
-                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                            <div className="space-y-1 text-xs text-muted-foreground">
-                              <div className="flex items-center gap-1">
-                                <User className="w-3 h-3" />
-                                {task.assignee}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {task.location}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {task.dueDate}
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* In Progress Column */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-card rounded-lg border">
-                  <h3 className="font-semibold">In Progress</h3>
-                  <Badge variant="secondary">{tasksByStatus.inProgress.length}</Badge>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {tasksByStatus.inProgress.map((task) => {
-                    const Icon = getTypeIcon(task.type);
-                    return (
-                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow border-l-4 border-l-blue-500">
-                          <div className="space-y-2">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                <span className="text-xs text-muted-foreground">{task.type}</span>
-                              </div>
-                              <Badge className={getPriorityColor(task.priority)} variant="outline">
-                                {task.priority}
-                              </Badge>
-                            </div>
-                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                            <div className="space-y-1 text-xs text-muted-foreground">
-                              <div className="flex items-center gap-1">
-                                <User className="w-3 h-3" />
-                                {task.assignee}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {task.location}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {task.dueDate}
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Scheduled Column */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-card rounded-lg border">
-                  <h3 className="font-semibold">Scheduled</h3>
-                  <Badge variant="secondary">{tasksByStatus.scheduled.length}</Badge>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {tasksByStatus.scheduled.map((task) => {
-                    const Icon = getTypeIcon(task.type);
-                    return (
-                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow">
-                          <div className="space-y-2">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                <span className="text-xs text-muted-foreground">{task.type}</span>
-                              </div>
-                              <Badge className={getPriorityColor(task.priority)} variant="outline">
-                                {task.priority}
-                              </Badge>
-                            </div>
-                            <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
-                            <div className="space-y-1 text-xs text-muted-foreground">
-                              <div className="flex items-center gap-1">
-                                <User className="w-3 h-3" />
-                                {task.assignee}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {task.location}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Clock className="w-3 h-3" />
-                                {task.dueDate}
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Completed Column */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-card rounded-lg border">
-                  <h3 className="font-semibold">Completed</h3>
-                  <Badge variant="secondary">{tasksByStatus.completed.length}</Badge>
-                </div>
-                <div className="flex flex-col gap-2">
-                  {tasksByStatus.completed.map((task) => {
-                    const Icon = getTypeIcon(task.type);
-                    return (
-                      <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                        <Card className="p-3 cursor-pointer hover:shadow-md transition-shadow opacity-75">
-                          <div className="space-y-2">
-                            <div className="flex items-start justify-between gap-2">
-                              <div className="flex items-center gap-2">
-                                <Icon className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                <span className="text-xs text-muted-foreground">{task.type}</span>
-                              </div>
-                              <CheckSquare className="w-3 h-3 text-primary" />
-                            </div>
-                            <h4 className="font-medium text-sm leading-tight line-through">{task.title}</h4>
-                            <div className="space-y-1 text-xs text-muted-foreground">
-                              <div className="flex items-center gap-1">
-                                <User className="w-3 h-3" />
-                                {task.assignee}
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {task.location}
-                              </div>
-                            </div>
-                          </div>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
+              <TaskStatusColumn title="Pending" tasks={tasksByStatus.pending} />
+              <TaskStatusColumn
+                title="In Progress"
+                tasks={tasksByStatus.inProgress}
+                variant="in-progress"
+              />
+              <TaskStatusColumn title="Scheduled" tasks={tasksByStatus.scheduled} />
+              <TaskStatusColumn
+                title="Completed"
+                tasks={tasksByStatus.completed}
+                variant="completed"
+              />
             </div>
           </TabsContent>
 
@@ -401,10 +203,10 @@ export default function ManagerOperations() {
 
             <div className="flex flex-col gap-2">
               {filteredTasks.map((task) => {
-                const Icon = getTypeIcon(task.type);
+                const Icon = getTypeIcon(task.type, task.title || task.action);
                 return (
                   <Link key={task.id} to={`/managers/tasks/${task.id}`}>
-                    <Card className="p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <Card className="p-4 hover:shadow-md hover:bg-gray-50 transition-shadow cursor-pointer">
                       <div className="flex items-center gap-4">
                         <div className="flex-shrink-0">
                           <Icon className="w-3 h-3 text-primary" />

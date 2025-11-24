@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { DevBar } from "@/components/DevBar";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
-import { MapPin, ChevronDown, ChevronRight, AlertCircle } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { MapPin, ChevronDown, AlertCircle } from "lucide-react";
 import { locations, getTasksByLocation, batches } from "@/data";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -60,43 +58,48 @@ export default function WorkerLocations() {
     }
   });
 
+  const getSortLabel = () => {
+    switch (sortBy) {
+      case "tasks-most": return "Tasks (Most)";
+      case "tasks-least": return "Tasks (Least)";
+      case "name-asc": return "Name (A-Z)";
+      case "name-desc": return "Name (Z-A)";
+      default: return "Sort";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-[500px] mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        <DevBar />
-        <WorkerPageHeader title="Locations" backTo="/workers" />
-
-        <div className="container mx-auto px-4 pt-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="text-[#37474F]">
-                Sort by: {sortBy === "tasks-most" && "Tasks (Most)"}
-                {sortBy === "tasks-least" && "Tasks (Least)"}
-                {sortBy === "name-asc" && "Name (A-Z)"}
-                {sortBy === "name-desc" && "Name (Z-A)"}
-                <ChevronDown className="w-3 h-3 ml-2" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-white z-50">
-              <DropdownMenuItem onClick={() => setSortBy("tasks-most")}>
-                Tasks (Most)
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy("tasks-least")}>
-                Tasks (Least)
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy("name-asc")}>
-                Name (A-Z)
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy("name-desc")}>
-                Name (Z-A)
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-
-        <main className="container mx-auto px-4 py-4">
-          <div className="space-y-2">
-            {sortedLocations.map((location) => {
+    <WorkerPageLayout 
+      title="Locations" 
+      backTo="/workers"
+      headerActions={
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="text-[#37474F] text-sm min-w-0 max-w-full">
+              <span className="truncate">Sort: {getSortLabel()}</span>
+              <ChevronDown className="w-3 h-3 ml-2 flex-shrink-0" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white z-50">
+            <DropdownMenuItem onClick={() => setSortBy("tasks-most")}>
+              Tasks (Most)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSortBy("tasks-least")}>
+              Tasks (Least)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSortBy("name-asc")}>
+              Name (A-Z)
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSortBy("name-desc")}>
+              Name (Z-A)
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      }
+      mainClassName="py-4"
+    >
+      <div className="space-y-2">
+        {sortedLocations.map((location) => {
               const locationTasks = getTasksByLocation(location.name);
               const urgentTasks = locationTasks.filter(t => t.status === "overdue");
               const totalTasks = locationTasks.filter(t => 
@@ -184,12 +187,8 @@ export default function WorkerLocations() {
                   </Card>
                 </Collapsible>
               );
-            })}
-          </div>
-        </main>
-
-        <WorkerBottomNav />
+        })}
       </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

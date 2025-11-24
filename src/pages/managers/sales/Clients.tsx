@@ -22,16 +22,6 @@ export default function ManagerSalesClients() {
           description="Manage client relationships"
           backTo="/managers/sales"
           backLabel="Back to Sales"
-          sectionSwitcher={{
-            value: "clients",
-            onValueChange: (value) => navigate(`/managers/sales/${value}`),
-            options: [
-              { value: "quotes", label: "Quotes" },
-              { value: "orders", label: "Orders" },
-              { value: "invoices", label: "Invoices" },
-              { value: "clients", label: "Clients" },
-            ],
-          }}
           actions={
             <Button>
               <Plus className="w-3 h-3 mr-2" />

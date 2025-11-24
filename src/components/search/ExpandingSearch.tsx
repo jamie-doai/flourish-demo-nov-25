@@ -117,30 +117,30 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
   
   return (
     <div ref={containerRef} className="relative flex-1 max-w-2xl">
-      <div className="relative flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground z-10" />
+      <div className="relative flex-1">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3 h-3 text-muted-foreground z-10" />
           <Input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDownInput}
             placeholder="Search everything..."
-            className="pl-9 pr-10 h-10"
+            className="pl-12 pr-[calc(160px+2.5rem)] h-10"
           />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleClose}
-            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
-          >
-            <X className="w-3 h-3" />
-          </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleClose}
+          className="absolute right-[calc(160px+0.5rem)] top-[40px] h-8 w-8 p-1 z-10"
+        >
+          <X className="w-3 h-3" />
+        </Button>
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 z-10">
+          <QuickFilterDropdown 
+            value={quickFilter}
+            onValueChange={setQuickFilter}
+          />
         </div>
-        <QuickFilterDropdown 
-          value={quickFilter}
-          onValueChange={setQuickFilter}
-        />
       </div>
       
       {showDropdown && (
