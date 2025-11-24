@@ -131,7 +131,7 @@ export function ExpandingSearch({ isExpanded, onExpandChange }: ExpandingSearchP
           variant="ghost"
           size="sm"
           onClick={handleClose}
-          className="absolute right-[calc(160px+0.5rem)] top-1/2 -translate-y-1/2 h-8 w-8 p-1 z-10"
+          className="absolute right-[calc(160px+0.5rem)] top-[40px] h-8 w-8 p-1 z-10"
         >
           <X className="w-3 h-3" />
         </Button>

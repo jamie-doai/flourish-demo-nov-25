@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { User, Bell, Settings, HelpCircle, LogOut, CheckCircle2, WifiOff, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -11,21 +11,24 @@ export default function WorkerProfile() {
   const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className={`max-w-mobile mx-auto min-h-screen pb-20 ${isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}`}>
-      <header className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground p-6 pb-12">
-        <div className="flex items-center gap-4">
-          <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-            <User className="w-8 h-8" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold">Alex Thompson</h1>
-            <p className="text-primary-foreground/90 text-sm">Propagation Team</p>
-          </div>
+    <WorkerPageLayout 
+      title=""
+      backgroundClass={isDark ? 'bg-slate-900' : 'bg-[#F8FAF9]'}
+      headerClassName="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground border-b-0"
+      mainClassName="py-6 -mt-6"
+    >
+      {/* Profile Header */}
+      <div className="flex items-center gap-4 mb-6 px-4">
+        <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+          <User className="w-8 h-8" />
         </div>
-      </header>
+        <div>
+          <h1 className="text-2xl font-semibold">Alex Thompson</h1>
+          <p className="text-primary-foreground/90 text-sm">Propagation Team</p>
+        </div>
+      </div>
 
-      <main className="container mx-auto px-4 -mt-6">
+      <div>
         {/* Stats Card */}
         <Card className="p-5 mb-6">
           <h3 className="text-sm font-semibold text-foreground mb-3">This Week</h3>
@@ -119,10 +122,7 @@ export default function WorkerProfile() {
         <p className="text-center text-xs text-muted-foreground mt-6">
           Flourish Worker App v1.0.0
         </p>
-      </main>
-
-      <WorkerBottomNav />
       </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

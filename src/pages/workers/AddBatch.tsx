@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -70,11 +69,11 @@ export default function WorkerAddBatch() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-      <WorkerPageHeader title="Add Batch" backTo="/workers/inventory" />
-
-      <main className="container mx-auto px-4 py-6">
+    <WorkerPageLayout 
+      title="Add Batch" 
+      backTo="/workers/inventory"
+      mainClassName="py-6"
+    >
         {/* Progress Indicator */}
         <div className="flex justify-between mb-6">
           {[1, 2, 3, 4].map((s) => (
@@ -384,10 +383,6 @@ export default function WorkerAddBatch() {
             </Button>
           </div>
         )}
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { ArrowLeft, Camera, CheckCircle2, FileText, AlertCircle } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { Camera, CheckCircle2, FileText, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getTaskById } from "@/data/tasks";
 import { Badge } from "@/components/ui/badge";
@@ -28,23 +28,15 @@ export default function WorkerTaskDetail() {
 
   if (!task) {
     return (
-      <div className="min-h-screen bg-slate-800">
-        <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-          <WorkerBottomNav />
-          <main className="container mx-auto px-4 py-6 max-w-mobile">
-            <Card className="p-6 text-center bg-white">
-              <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
-              <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
-              <p className="text-[#37474F]/60 mb-4">The task you're looking for doesn't exist.</p>
-              <Link to="/workers/tasks">
-                <Button className="bg-[#3B7A57] hover:bg-[#3B7A57]/90 text-white">
-                  Back to Tasks
-                </Button>
-              </Link>
-            </Card>
-          </main>
+      <WorkerPageLayout title="Task Not Found" backTo="/workers/tasks">
+        <div className="py-6">
+          <Card className="p-6 text-center bg-white">
+            <AlertCircle className="w-12 h-12 mx-auto text-[#37474F]/60 mb-4" />
+            <h2 className="text-xl font-semibold text-[#37474F] mb-2">Task Not Found</h2>
+            <p className="text-[#37474F]/60 mb-4">The task you're looking for doesn't exist.</p>
+          </Card>
         </div>
-      </div>
+      </WorkerPageLayout>
     );
   }
 
@@ -57,22 +49,11 @@ export default function WorkerTaskDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-      <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Link to="/workers/tasks">
-              <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-3 h-3 mr-2" />
-                Task Details
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-6 max-w-mobile">
+    <WorkerPageLayout 
+      title={task.action}
+      backTo="/workers/tasks"
+      mainClassName="py-6"
+    >
         {/* Task Title */}
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-[#37474F] mb-2">{task.action}</h1>
@@ -215,10 +196,6 @@ export default function WorkerTaskDetail() {
             </DialogContent>
           </Dialog>
         </div>
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

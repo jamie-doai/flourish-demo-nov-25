@@ -1,11 +1,9 @@
 import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, CheckCircle2 } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { MapPin, Thermometer, Droplet, Leaf, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
 import { getLocationById, getBatchesByLocation, getTasksByLocation } from "@/data";
 
 export default function WorkerLocationDetail() {
@@ -15,19 +13,21 @@ export default function WorkerLocationDetail() {
   const tasksForLocation = getTasksByLocation(mockLocation?.name || "");
 
   if (!mockLocation) {
-    return <div>Location not found</div>;
+    return (
+      <WorkerPageLayout title="Location Not Found" backTo="/workers/locations">
+        <div className="py-6 text-center">
+          <p className="text-[#37474F]">Location not found</p>
+        </div>
+      </WorkerPageLayout>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-        
-        <WorkerPageHeader 
-          title={mockLocation.name}
-          backTo="/workers/locations"
-        />
-
-        <main className="container mx-auto px-4 py-6">
+    <WorkerPageLayout 
+      title={mockLocation.name}
+      backTo="/workers/locations"
+      mainClassName="py-6"
+    >
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="mb-4 max-w-2xl">
               <TabsTrigger value="overview" className="flex-1">Overview</TabsTrigger>
@@ -183,10 +183,6 @@ export default function WorkerLocationDetail() {
               )}
             </TabsContent>
           </Tabs>
-        </main>
-
-        <WorkerBottomNav />
-      </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

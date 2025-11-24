@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { ArrowLeft, Camera, Maximize2 } from "lucide-react";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
+import { Camera, Maximize2 } from "lucide-react";
 
 export default function WorkerScan() {
   const navigate = useNavigate();
@@ -18,27 +18,18 @@ export default function WorkerScan() {
   };
 
   return (
-    <div className="min-h-screen bg-[#37474F]">
-      <div className="max-w-mobile mx-auto bg-[#37474F] min-h-screen pb-20">
-      <header className="bg-[#37474F] text-white sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link to="/workers">
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-                  <ArrowLeft className="w-3 h-3" />
-                </Button>
-              </Link>
-              <h1 className="text-xl font-semibold">Scan Batch</h1>
-            </div>
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-              <Maximize2 className="w-3 h-3" />
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-[calc(100vh-12rem)]">
+    <WorkerPageLayout 
+      title="Scan Batch"
+      backTo="/workers"
+      backgroundClass="bg-[#37474F]"
+      headerClassName="bg-[#37474F] text-white border-b border-white/10"
+      headerActions={
+        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+          <Maximize2 className="w-3 h-3" />
+        </Button>
+      }
+      mainClassName="py-8 flex flex-col items-center justify-center min-h-[calc(100vh-12rem)]"
+    >
         {/* Camera Preview Placeholder */}
         <div className="relative w-full max-w-sm aspect-square bg-[#37474F]/50 rounded-2xl border-2 border-white/20 mb-8 overflow-hidden">
           {scanning ? (
@@ -87,14 +78,10 @@ export default function WorkerScan() {
         </Button>
 
         <div className="mt-8 text-center">
-          <p className="text-white/50 text-xs">
-            💡 Camera access required
-          </p>
-        </div>
-      </main>
-
-      <WorkerBottomNav />
+        <p className="text-white/50 text-xs">
+          💡 Camera access required
+        </p>
       </div>
-    </div>
+    </WorkerPageLayout>
   );
 }

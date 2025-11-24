@@ -45,20 +45,20 @@ export function WorkerBottomNav() {
                 key={item.path}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-4 py-2 px-4 rounded-xl transition-all border-2 border-forest-green bg-forest-green text-lime-green shadow-md hover:shadow-lg ${
+                className={`flex items-center gap-4 py-2 px-4 rounded-xl transition-all border-2 border-forest-green bg-transparent text-forest-green shadow-md hover:shadow-lg hover:bg-forest-green hover:text-lime-green ${
                   active
-                    ? "bg-forest-green"
-                    : "bg-forest-green hover:bg-forest-green/90"
+                    ? "bg-forest-green text-lime-green"
+                    : ""
                 }`}
               >
-                <item.icon className="w-3 h-3 text-lime-green" strokeWidth={2} />
+                <item.icon className={`w-3 h-3 ${active ? "text-lime-green" : "text-forest-green"}`} strokeWidth={2} />
                 <span className="text-base font-semibold">{item.label}</span>
               </Link>
             );
           })}
 
           {/* 2x2 Grid items */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             {gridNavItems.map((item) => {
               const active = 'exact' in item && item.exact
                 ? location.pathname === item.path 
@@ -84,13 +84,15 @@ export function WorkerBottomNav() {
             })}
           </div>
 
-          <Button
-            variant="outline"
-            onClick={() => setIsOpen(false)}
-            className="w-full mt-4 py-2 bg-forest-green text-lime-green border-2 border-forest-green hover:bg-forest-green/90 shadow-md hover:shadow-lg text-base font-semibold"
-          >
-            Close <X className="w-3 h-3 text-lime-green ml-2" />
-          </Button>
+          <div className="!mt-[40px]">
+            <Button
+              variant="outline"
+              onClick={() => setIsOpen(false)}
+              className="w-full py-2 bg-lime-green text-forest-green border-2 border-forest-green hover:bg-lime-green/90 shadow-md hover:shadow-lg text-base font-semibold"
+            >
+              Close <X className="w-3 h-3 text-forest-green ml-2" />
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -98,9 +100,9 @@ export function WorkerBottomNav() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-2 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors max-w-mobile mx-auto"
+          className="fixed bottom-0 left-0 right-0 z-40 bg-[#2C3E35] text-white py-2 rounded-t-3xl shadow-lg flex items-center justify-center gap-4 hover:bg-[#3B4F42] transition-colors w-full"
         >
-          <Menu className="w-10 h-10" />
+          <Menu className="w-[48px] h-[48px]" />
           <span className="text-2xl font-semibold">Menu</span>
         </button>
       )}

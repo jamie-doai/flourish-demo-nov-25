@@ -3,9 +3,9 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Navigation } from "@/components/Navigation";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
+import { Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
@@ -36,14 +36,11 @@ export default function WorkerBatchDetail() {
 
   if (!mockBatch) {
     return (
-      <div className="min-h-screen bg-slate-800">
-        <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
-          <WorkerBottomNav />
-          <div className="container mx-auto px-4 py-8">
-            <p>Batch not found</p>
-          </div>
+      <WorkerPageLayout title="Batch Not Found" backTo="/workers/inventory">
+        <div className="py-8">
+          <p>Batch not found</p>
         </div>
-      </div>
+      </WorkerPageLayout>
     );
   }
 
@@ -92,34 +89,23 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
   const progressPercentage = ((currentStageIndex + 1) / lifecycleStages.length) * 100;
 
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-mobile mx-auto bg-[#F8FAF9] min-h-screen pb-20">
+    <>
       <div className="hidden md:block">
         <Navigation />
       </div>
-      <header className="bg-white border-b border-[#3B7A57]/10 sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Link to="/managers/inventory">
-              <Button variant="outline" className="text-[#37474F]">
-                <ArrowLeft className="w-3 h-3 mr-2" />
-                Batches
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-6">
+      <WorkerPageLayout 
+        title={mockBatch.id}
+        backTo="/workers/inventory"
+        headerActions={
+          <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })} className="text-sm">
+            <Printer className="w-3 h-3 mr-2" />
+            Print Label
+          </Button>
+        }
+        mainClassName="py-6"
+      >
         {/* Batch Title */}
         <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <h1 className="text-3xl font-bold text-[#37474F]">{mockBatch.id}</h1>
-            <Button variant="outline" onClick={() => toast({ title: "Label sent to printer 🖨️" })}>
-              <Printer className="w-3 h-3 mr-2" />
-              Print Label
-            </Button>
-          </div>
           <p className="text-sm text-[#37474F]/60">{mockBatch.species}</p>
         </div>
 
@@ -426,7 +412,7 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             </Card>
           </TabsContent>
         </Tabs>
-      </main>
+      </WorkerPageLayout>
 
       {/* Dialogs */}
       <SplitBatchDialog
@@ -461,11 +447,6 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
           });
         }}
       />
-
-      <div className="md:hidden">
-      <WorkerBottomNav />
-      </div>
-      </div>
-    </div>
+    </>
   );
 }

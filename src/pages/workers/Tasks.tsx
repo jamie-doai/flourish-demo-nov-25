@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { WorkerBottomNav } from "@/components/WorkerBottomNav";
-import { WorkerPageHeader } from "@/components/WorkerPageHeader";
+import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Leaf, MapPin, ChevronDown, ChevronUp } from "lucide-react";
 import { getTypeIcon } from "@/lib/taskUtils";
 import {
@@ -76,70 +75,70 @@ export default function WorkerTasks() {
         return acc;
       }, {} as Record<string, typeof tasks>);
 
+  const getFilterLabel = () => {
+    switch (filter) {
+      case "all": return "All";
+      case "overdue": return "Overdue";
+      case "todo": return "Todo";
+      case "complete-this-week": return "Complete this week";
+      default: return "All";
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-800">
-      <div className="max-w-mobile mx-auto bg-white min-h-screen pb-20">
-      <WorkerPageHeader 
-        title="Home" 
-        backTo="/workers"
-      />
-
-      <div className="container mx-auto px-3 pt-3 bg-white">
-        <div className="flex items-center justify-between mb-3">
-          <h1 className="text-heading-3 font-heading font-bold text-forest-green">Tasks</h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="primary-outline" className="text-forest-green">
-                {filter === "all" && "All"}
-                {filter === "overdue" && "Overdue"}
-                {filter === "todo" && "Todo"}
-                {filter === "complete-this-week" && "Complete this week"}
-                <ChevronDown className="w-3 h-3 ml-1.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white z-50 border border-forest-green">
-              <DropdownMenuItem onClick={() => setFilter("all")}>
-                All
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("overdue")}>
-                Overdue
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("todo")}>
-                Todo
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilter("complete-this-week")}>
-                Complete this week
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        
-        {/* Group By Switch */}
-        <div className="flex items-center gap-1.5 mb-4 bg-white rounded-lg p-1 border border-forest-green w-fit">
-          <button
-            onClick={() => setGroupBy("location")}
-            className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
-              groupBy === "location"
-                ? "bg-forest-green text-white"
-                : "text-forest-green hover:bg-lime-green/20"
-            }`}
-          >
-            Location
-          </button>
-          <button
-            onClick={() => setGroupBy("task")}
-            className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
-              groupBy === "task"
-                ? "bg-forest-green text-white"
-                : "text-forest-green hover:bg-lime-green/20"
-            }`}
-          >
-            Task
-          </button>
-        </div>
+    <WorkerPageLayout 
+      title="Tasks" 
+      backTo="/workers"
+      backgroundClass="bg-white"
+      headerActions={
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="primary-outline" className="text-forest-green text-sm min-w-0 max-w-full">
+              <span className="truncate">{getFilterLabel()}</span>
+              <ChevronDown className="w-3 h-3 ml-1.5 flex-shrink-0" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="bg-white z-50 border border-forest-green">
+            <DropdownMenuItem onClick={() => setFilter("all")}>
+              All
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("overdue")}>
+              Overdue
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("todo")}>
+              Todo
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilter("complete-this-week")}>
+              Complete this week
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      }
+      mainClassName="py-4"
+    >
+      {/* Group By Switch */}
+      <div className="flex items-center gap-1.5 mb-4 bg-white rounded-lg p-1 border border-forest-green w-fit">
+        <button
+          onClick={() => setGroupBy("location")}
+          className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
+            groupBy === "location"
+              ? "bg-forest-green text-white"
+              : "text-forest-green hover:bg-lime-green/20"
+          }`}
+        >
+          Location
+        </button>
+        <button
+          onClick={() => setGroupBy("task")}
+          className={`px-3 py-1.5 rounded-md text-body-sm font-heading font-bold transition-colors ${
+            groupBy === "task"
+              ? "bg-forest-green text-white"
+              : "text-forest-green hover:bg-lime-green/20"
+          }`}
+        >
+          Task
+        </button>
       </div>
-
-      <main className="container mx-auto px-3 py-4 bg-white">
         <div className="space-y-4">
           {groupBy === "location" ? (
             // Location view: group by location, then by task type
@@ -172,7 +171,7 @@ export default function WorkerTasks() {
                       const task = actionTasks[0];
                       const TaskIcon = getTypeIcon(task.type, task.action);
                       return (
-                        <div key={`${location}-${action}`} className="px-3">
+                        <div key={`${location}-${action}`}>
                           <Link to={`/workers/tasks/${task.id}`}>
                             <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
                               <div className="flex items-start gap-1.5">
@@ -290,7 +289,7 @@ export default function WorkerTasks() {
                 const task = actionTasks[0];
                 const TaskIcon = getTypeIcon(task.type, task.action);
                 return (
-                  <div key={`task-${action}`} className="px-3 mb-4">
+                  <div key={`task-${action}`} className="mb-4">
                     <Link to={`/workers/tasks/${task.id}`}>
                       <Card className="border border-forest-green hover:border-lime-green hover:shadow-card transition-all p-3">
                         <div className="flex items-start gap-1.5">
@@ -405,15 +404,11 @@ export default function WorkerTasks() {
           )}
         </div>
 
-        {filteredTasks.length === 0 && (
-          <div className="text-center py-6">
-            <p className="text-body text-muted-foreground">No tasks found</p>
-          </div>
-        )}
-      </main>
-
-      <WorkerBottomNav />
-      </div>
-    </div>
+      {filteredTasks.length === 0 && (
+        <div className="text-center py-6">
+          <p className="text-body text-muted-foreground">No tasks found</p>
+        </div>
+      )}
+    </WorkerPageLayout>
   );
 }
