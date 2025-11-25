@@ -291,16 +291,16 @@ export default function ManagerTaskDetail() {
             <Card>
               <h3 className="font-semibold mb-4">Quick Actions</h3>
               <div className="space-y-2">
-                <Button variant="tertiary" className="w-full justify-start">
-                  <Clock className="w-4 h-4 mr-2" />
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Clock className="w-3 h-3 mr-2" />
                   Update Status
                 </Button>
-                <Button variant="tertiary" className="w-full justify-start">
-                  <Calendar className="w-4 h-4 mr-2" />
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Calendar className="w-3 h-3 mr-2" />
                   Change Due Date
                 </Button>
-                <Button variant="tertiary" className="w-full justify-start">
-                  <AlertCircle className="w-4 h-4 mr-2" />
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <AlertCircle className="w-3 h-3 mr-2" />
                   Change Priority
                 </Button>
               </div>

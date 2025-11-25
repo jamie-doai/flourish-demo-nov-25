@@ -1,4 +1,7 @@
-import { Navigation } from "@/components/Navigation";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
+import { SalesSidebar } from "@/components/SalesSidebar";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Package, MapPin, Truck, Edit } from "lucide-react";
+import { Package, MapPin, Truck, Edit } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
@@ -61,35 +64,24 @@ export default function OrderDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <Navigation />
-      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/managers/sales/orders">
-            <Button variant="tertiary" size="sm">
-              <ArrowLeft className="w-3 h-3 mr-2" />
-              Back to Orders
-            </Button>
-          </Link>
-        </div>
-
-        <Card className="mb-6">
-          <div className="mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
-              <div className="flex items-center gap-4 min-w-0 flex-1">
-                <Package className="w-3 h-3 text-primary flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{order.orderNumber}</h1>
-                  <p className="text-muted-foreground">{order.clientName}</p>
-                  {order.linkedQuote && (
-                    <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline">
-                      From Quote: {order.linkedQuote}
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 flex-wrap justify-end">
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        <PageHeader
+          title={order.orderNumber}
+          description={
+            <>
+              {order.clientName}
+              {order.linkedQuote && (
+                <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline ml-2">
+                  From Quote: {order.linkedQuote}
+                </Link>
+              )}
+            </>
+          }
+          backTo="/managers/sales/orders"
+          backLabel="Back to Orders"
+          actions={
+            <>
               <Link to={`/managers/sales/orders/${orderId}/edit`}>
                 <Button variant="secondary">
                   <Edit className="w-4 h-4 mr-2" />
@@ -102,8 +94,12 @@ export default function OrderDetail() {
                 onDownloadPackingSlip={handleDownloadPackingSlip}
                 onGenerateInvoice={handleGenerateInvoice}
               />
-            </div>
-          </div>
+            </>
+          }
+        />
+
+        <Card className="mb-6">
+          <div className="mb-6">
 
           {/* Lifecycle Progress */}
           <OrderLifecycleProgress order={order} />
@@ -209,8 +205,9 @@ export default function OrderDetail() {
               </div>
             </div>
           </div>
+          </div>
         </Card>
-      </main>
-    </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }

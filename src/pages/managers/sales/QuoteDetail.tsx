@@ -1,4 +1,7 @@
-import { Navigation } from "@/components/Navigation";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
+import { SalesSidebar } from "@/components/SalesSidebar";
+import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, FileText, Download, Send, Check, Package, Edit } from "lucide-react";
+import { FileText, Download, Send, Check, Package, Edit } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getQuoteById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
@@ -68,33 +71,15 @@ export default function QuoteDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <Navigation />
-      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/managers/sales/quotes">
-            <Button variant="tertiary" size="sm">
-              <ArrowLeft className="w-3 h-3 mr-2" />
-              Back to Quotes
-            </Button>
-          </Link>
-        </div>
-
-        <Card className="mb-6">
-          <div className="mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
-              <div className="flex items-center gap-4 min-w-0 flex-1">
-                <FileText className="w-3 h-3 text-primary flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{quote.quoteNumber}</h1>
-                  <p className="text-muted-foreground">{quote.clientName}</p>
-                </div>
-              </div>
-              <Badge className={getStatusColor(quote.status)}>
-                {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
-              </Badge>
-            </div>
-            <div className="flex flex-wrap gap-2 justify-end">
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        <PageHeader
+          title={quote.quoteNumber}
+          description={quote.clientName}
+          backTo="/managers/sales/quotes"
+          backLabel="Back to Quotes"
+          actions={
+            <>
               <Link to={`/managers/sales/quotes/${quoteId}/edit`}>
                 <Button variant="secondary">
                   <Edit className="w-4 h-4 mr-2" />
@@ -122,10 +107,20 @@ export default function QuoteDetail() {
                   <Button variant="secondary">View Order</Button>
                 </Link>
               )}
-            </div>
-          </div>
+            </>
+          }
+        />
 
-          <MetadataCard
+        <Card className="mb-6">
+          <div className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
+              <FileText className="w-3 h-3 text-primary flex-shrink-0" />
+              <Badge className={getStatusColor(quote.status)}>
+                {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
+              </Badge>
+            </div>
+
+            <MetadataCard
             items={[
               { label: "Date Created", value: quote.dateCreated },
               { label: "Expiry Date", value: quote.expiryDate },
@@ -254,8 +249,9 @@ export default function QuoteDetail() {
               </div>
             )}
           </div>
+          </div>
         </Card>
-      </main>
-    </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }
