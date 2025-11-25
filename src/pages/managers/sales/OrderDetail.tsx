@@ -1,7 +1,6 @@
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
 import { SalesSidebar } from "@/components/SalesSidebar";
-import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Package, MapPin, Truck, Edit } from "lucide-react";
+import { Package, MapPin, Truck, Edit, ArrowLeft } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getOrderById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
@@ -66,39 +65,52 @@ export default function OrderDetail() {
   return (
     <ManagerLayout>
       <SidebarPageLayout sidebar={<SalesSidebar />}>
-        <PageHeader
-          title={order.orderNumber}
-          description={
-            <>
-              {order.clientName}
-              {order.linkedQuote && (
-                <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline ml-2">
-                  From Quote: {order.linkedQuote}
-                </Link>
-              )}
-            </>
-          }
-          backTo="/managers/sales/orders"
-          backLabel="Back to Orders"
-          actions={
-            <>
-              <Link to={`/managers/sales/orders/${orderId}/edit`}>
-                <Button variant="secondary">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-              </Link>
-              <OrderStatusActions
-                order={order}
-                onStatusChange={handleStatusChange}
-                onDownloadPackingSlip={handleDownloadPackingSlip}
-                onGenerateInvoice={handleGenerateInvoice}
-              />
-            </>
-          }
-        />
+        {/* Back button */}
+        <div className="mb-4">
+          <Link to="/managers/sales/orders" className="inline-block">
+            <Button variant="tertiary" size="sm">
+              <ArrowLeft className="w-3 h-3 mr-2" />
+              Back to Orders
+            </Button>
+          </Link>
+        </div>
 
-        <Card className="mb-6">
+        {/* Title above buttons */}
+        <div className="mb-6">
+          <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">
+            {order.orderNumber}
+          </h1>
+          <div className="mb-4">
+            {order.clientName && (
+              <p className="text-body text-muted-foreground">
+                {order.clientName}
+                {order.linkedQuote && (
+                  <Link to={`/managers/sales/quotes/${order.linkedQuote}`} className="text-sm text-primary hover:underline ml-2">
+                    From Quote: {order.linkedQuote}
+                  </Link>
+                )}
+              </p>
+            )}
+          </div>
+          {/* Action buttons row */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link to={`/managers/sales/orders/${orderId}/edit`}>
+              <Button variant="outline" className="bg-white">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+            </Link>
+            <OrderStatusActions
+              order={order}
+              onStatusChange={handleStatusChange}
+              onDownloadPackingSlip={handleDownloadPackingSlip}
+              onGenerateInvoice={handleGenerateInvoice}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-6">
           <div className="mb-6">
 
           {/* Lifecycle Progress */}
@@ -207,6 +219,7 @@ export default function OrderDetail() {
           </div>
           </div>
         </Card>
+        </div>
       </SidebarPageLayout>
     </ManagerLayout>
   );

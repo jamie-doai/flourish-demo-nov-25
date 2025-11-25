@@ -17,6 +17,7 @@ import { SplitBatchDialog } from "@/components/inventory/SplitBatchDialog";
 import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DirectEditDialog } from "@/components/inventory/DirectEditDialog";
 import { LossAdjustmentDialog } from "@/components/inventory/LossAdjustmentDialog";
+import { CreateQuoteDialog } from "@/components/inventory/CreateQuoteDialog";
 import { BatchListItem } from "@/components/inventory/BatchListItem";
 import { SpeciesCard } from "@/components/inventory/SpeciesCard";
 import { StageCard } from "@/components/inventory/StageCard";
@@ -25,6 +26,7 @@ import { StageDetailView } from "@/components/inventory/StageDetailView";
 import { LocationTreeView } from "@/components/inventory/LocationTreeView";
 import { useToast } from "@/hooks/use-toast";
 import { Batch } from "@/data/batches";
+import { Label } from "@/components/ui/label";
 
 interface SpeciesData {
   species: string;
@@ -44,6 +46,7 @@ export default function ManagerInventory() {
   const [mergeDialogOpen, setMergeDialogOpen] = useState(false);
   const [directEditDialogOpen, setDirectEditDialogOpen] = useState(false);
   const [lossAdjustmentDialogOpen, setLossAdjustmentDialogOpen] = useState(false);
+  const [createQuoteDialogOpen, setCreateQuoteDialogOpen] = useState(false);
   const [expandedBuildings, setExpandedBuildings] = useState<Set<string>>(new Set());
   const [expandedBays, setExpandedBays] = useState<Set<string>>(new Set());
 
@@ -119,6 +122,52 @@ export default function ManagerInventory() {
     setSelectedBatches(new Set());
   };
 
+  const handleCreateQuoteConfirm = (quoteId: string) => {
+    setSelectedBatches(new Set());
+  };
+
+  const handleSelectAllBatches = () => {
+    setSelectedBatches(new Set(batches.map(b => b.id)));
+  };
+
+  const handleDeselectAllBatches = () => {
+    setSelectedBatches(new Set());
+  };
+
+  const handleSelectAllSpecies = (speciesData: SpeciesData) => {
+    setSelectedBatches(prev => {
+      const newSet = new Set(prev);
+      speciesData.batches.forEach(batch => newSet.add(batch.id));
+      return newSet;
+    });
+  };
+
+  const handleDeselectAllSpecies = (speciesData: SpeciesData) => {
+    setSelectedBatches(prev => {
+      const newSet = new Set(prev);
+      speciesData.batches.forEach(batch => newSet.delete(batch.id));
+      return newSet;
+    });
+  };
+
+  const handleSelectAllStage = (stageId: string) => {
+    const stageBatches = batches.filter(b => b.stage === stageId);
+    setSelectedBatches(prev => {
+      const newSet = new Set(prev);
+      stageBatches.forEach(batch => newSet.add(batch.id));
+      return newSet;
+    });
+  };
+
+  const handleDeselectAllStage = (stageId: string) => {
+    const stageBatches = batches.filter(b => b.stage === stageId);
+    setSelectedBatches(prev => {
+      const newSet = new Set(prev);
+      stageBatches.forEach(batch => newSet.delete(batch.id));
+      return newSet;
+    });
+  };
+
   const getSpeciesData = (): SpeciesData[] => {
     const speciesMap = new Map<string, SpeciesData>();
     
@@ -177,12 +226,80 @@ export default function ManagerInventory() {
       );
     }
 
+    const handleSelectAllSpeciesBatches = () => {
+      handleSelectAllSpecies(speciesData);
+    };
+
+    const handleDeselectAllSpeciesBatches = () => {
+      handleDeselectAllSpecies(speciesData);
+    };
+
+    const selectedSpeciesBatches = speciesData.batches.filter(b => selectedBatches.has(b.id));
+    const totalSelectedSpeciesPlants = selectedSpeciesBatches.reduce((sum, b) => sum + b.quantity, 0);
+
     return (
       <ManagerLayout>
         <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
           <SpeciesDetailView
             speciesData={speciesData}
             onBack={() => setSelectedSpecies(null)}
+            selectedBatches={selectedBatches}
+            onBatchSelect={handleBatchSelect}
+            onSelectAll={handleSelectAllSpeciesBatches}
+            onDeselectAll={handleDeselectAllSpeciesBatches}
+          />
+
+          {/* Bulk Action Toolbar */}
+          {selectedBatches.size > 0 && (
+            <BulkActionToolbar
+              selectedCount={selectedBatches.size}
+              totalPlants={totalSelectedPlants}
+              onClearSelection={() => setSelectedBatches(new Set())}
+              onMoveLocation={() => toast({ title: "Move location", description: "Feature coming soon" })}
+              onChangeStatus={() => toast({ title: "Change status", description: "Feature coming soon" })}
+              onSplit={() => setSplitDialogOpen(true)}
+              onMerge={() => setMergeDialogOpen(true)}
+              onAdjustQuantity={() => setLossAdjustmentDialogOpen(true)}
+              onPrintLabels={() => toast({ title: "Print labels", description: "Feature coming soon" })}
+              onApplyHold={() => toast({ title: "Apply hold", description: "Feature coming soon" })}
+              onCreateQuote={() => setCreateQuoteDialogOpen(true)}
+            />
+          )}
+
+          {/* Dialogs */}
+          <SplitBatchDialog
+            open={splitDialogOpen}
+            onOpenChange={setSplitDialogOpen}
+            batch={getSelectedBatchData()[0] || null}
+            onConfirm={handleSplitConfirm}
+          />
+
+          <MergeBatchDialog
+            open={mergeDialogOpen}
+            onOpenChange={setMergeDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleMergeConfirm}
+          />
+
+          <DirectEditDialog
+            open={directEditDialogOpen}
+            onOpenChange={setDirectEditDialogOpen}
+            batch={getSelectedBatchData()[0] || null}
+            onConfirm={handleDirectEditConfirm}
+          />
+
+          <LossAdjustmentDialog
+            open={lossAdjustmentDialogOpen}
+            onOpenChange={setLossAdjustmentDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleLossAdjustmentConfirm}
+          />
+
+          <CreateQuoteDialog
+            open={createQuoteDialogOpen}
+            onOpenChange={setCreateQuoteDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleCreateQuoteConfirm}
           />
         </main>
       </ManagerLayout>
@@ -207,6 +324,17 @@ export default function ManagerInventory() {
       );
     }
 
+    const handleSelectAllStageBatches = () => {
+      handleSelectAllStage(selectedStage);
+    };
+
+    const handleDeselectAllStageBatches = () => {
+      handleDeselectAllStage(selectedStage);
+    };
+
+    const selectedStageBatches = stats.batchList.filter(b => selectedBatches.has(b.id));
+    const totalSelectedStagePlants = selectedStageBatches.reduce((sum, b) => sum + b.quantity, 0);
+
     return (
       <ManagerLayout>
         <main className="container mx-auto px-12 py-8 max-w-[1920px] bg-white">
@@ -215,6 +343,63 @@ export default function ManagerInventory() {
             stageIcon={stage.icon}
             stats={stats}
             onBack={() => setSelectedStage(null)}
+            selectedBatches={selectedBatches}
+            onBatchSelect={handleBatchSelect}
+            onSelectAll={handleSelectAllStageBatches}
+            onDeselectAll={handleDeselectAllStageBatches}
+          />
+
+          {/* Bulk Action Toolbar */}
+          {selectedBatches.size > 0 && (
+            <BulkActionToolbar
+              selectedCount={selectedBatches.size}
+              totalPlants={totalSelectedStagePlants}
+              onClearSelection={() => setSelectedBatches(new Set())}
+              onMoveLocation={() => toast({ title: "Move location", description: "Feature coming soon" })}
+              onChangeStatus={() => toast({ title: "Change status", description: "Feature coming soon" })}
+              onSplit={() => setSplitDialogOpen(true)}
+              onMerge={() => setMergeDialogOpen(true)}
+              onAdjustQuantity={() => setLossAdjustmentDialogOpen(true)}
+              onPrintLabels={() => toast({ title: "Print labels", description: "Feature coming soon" })}
+              onApplyHold={() => toast({ title: "Apply hold", description: "Feature coming soon" })}
+              onCreateQuote={() => setCreateQuoteDialogOpen(true)}
+            />
+          )}
+
+          {/* Dialogs */}
+          <SplitBatchDialog
+            open={splitDialogOpen}
+            onOpenChange={setSplitDialogOpen}
+            batch={getSelectedBatchData()[0] || null}
+            onConfirm={handleSplitConfirm}
+          />
+
+          <MergeBatchDialog
+            open={mergeDialogOpen}
+            onOpenChange={setMergeDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleMergeConfirm}
+          />
+
+          <DirectEditDialog
+            open={directEditDialogOpen}
+            onOpenChange={setDirectEditDialogOpen}
+            batch={getSelectedBatchData()[0] || null}
+            onConfirm={handleDirectEditConfirm}
+          />
+
+          <LossAdjustmentDialog
+            open={lossAdjustmentDialogOpen}
+            onOpenChange={setLossAdjustmentDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleLossAdjustmentConfirm}
+          />
+
+          <CreateQuoteDialog
+            open={createQuoteDialogOpen}
+            onOpenChange={setCreateQuoteDialogOpen}
+            batches={getSelectedBatchData()}
+            onConfirm={handleCreateQuoteConfirm}
           />
         </main>
       </ManagerLayout>
@@ -237,7 +422,10 @@ export default function ManagerInventory() {
           }
         />
 
-        <Tabs defaultValue="batches" className="space-y-6">
+        <Tabs 
+          defaultValue="batches" 
+          className="space-y-6"
+        >
           <TabsList className="grid grid-cols-2 sm:grid-cols-4 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="stages" className="text-xs sm:text-sm">
               <Layers className="w-3 h-3 mr-1 sm:mr-2" />
@@ -297,6 +485,35 @@ export default function ManagerInventory() {
               </div>
             </div>
 
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-heading-3 font-heading font-bold">All Batches</h2>
+              <div className="flex items-center gap-3">
+                <Label className="text-sm text-muted-foreground">
+                  {selectedBatches.size} of {batches.length} selected
+                </Label>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSelectAllBatches}
+                    disabled={selectedBatches.size === batches.length && batches.length > 0}
+                    className="border-forest-green"
+                  >
+                    Select All
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleDeselectAllBatches}
+                    disabled={selectedBatches.size === 0}
+                    className="border-forest-green"
+                  >
+                    Deselect All
+                  </Button>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-col gap-2">
               {batches.map((batch) => (
                 <BatchListItem
@@ -341,6 +558,7 @@ export default function ManagerInventory() {
           onAdjustQuantity={() => setLossAdjustmentDialogOpen(true)}
           onPrintLabels={() => toast({ title: "Print labels", description: "Feature coming soon" })}
           onApplyHold={() => toast({ title: "Apply hold", description: "Feature coming soon" })}
+          onCreateQuote={() => setCreateQuoteDialogOpen(true)}
         />
 
         {/* Dialogs */}
@@ -370,6 +588,13 @@ export default function ManagerInventory() {
           onOpenChange={setLossAdjustmentDialogOpen}
           batches={getSelectedBatchData()}
           onConfirm={handleLossAdjustmentConfirm}
+        />
+
+        <CreateQuoteDialog
+          open={createQuoteDialogOpen}
+          onOpenChange={setCreateQuoteDialogOpen}
+          batches={getSelectedBatchData()}
+          onConfirm={handleCreateQuoteConfirm}
         />
       </main>
     </ManagerLayout>
