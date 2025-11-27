@@ -212,77 +212,85 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             {/* Quick Actions */}
             <Card>
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Watering")}
                 >
-                  <Droplets className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Record Watering</span>
+                  <Droplets className="w-3 h-3" />
+                  <span className="text-xs">Record Watering</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Treatment")}
                 >
-                  <Sprout className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Add Treatment</span>
+                  <Sprout className="w-3 h-3" />
+                  <span className="text-xs">Add Treatment</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Photo")}
                 >
-                  <Camera className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Add Photo</span>
+                  <Camera className="w-3 h-3" />
+                  <span className="text-xs">Add Photo</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => toast({ title: "Label sent to printer 🖨️" })}
                 >
-                  <Printer className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Print Label</span>
+                  <Printer className="w-3 h-3" />
+                  <span className="text-xs">Print Label</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowMoveDialog(true)}
                 >
-                  <Move className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Move Batch</span>
+                  <Move className="w-3 h-3" />
+                  <span className="text-xs">Move Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowSplitDialog(true)}
                 >
-                  <Split className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Split Batch</span>
+                  <Split className="w-3 h-3" />
+                  <span className="text-xs">Split Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowMergeDialog(true)}
                 >
-                  <Merge className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Merge Batch</span>
+                  <Merge className="w-3 h-3" />
+                  <span className="text-xs">Merge Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowDuplicateDialog(true)}
                 >
-                  <Copy className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Duplicate</span>
+                  <Copy className="w-3 h-3" />
+                  <span className="text-xs">Duplicate</span>
                 </Button>
               </div>
             </Card>

@@ -1,0 +1,13 @@
+# Netlify configuration for Flourish Grow
+# This file ensures proper SPA routing and build settings
+
+[build]
+  publish = "dist"
+  command = "bun run build"
+
+# Redirect all routes to index.html for client-side routing
+# This fixes 404 errors when refreshing on any route
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

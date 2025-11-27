@@ -88,7 +88,8 @@ export function OrderStatusActions({
     return (
       <Button
         onClick={() => handleStatusClick(nextStatus)}
-        variant={config.variant}
+        variant="outline"
+        className="bg-white"
       >
         <Icon className="w-3 h-3 mr-2" />
         {config.label}
@@ -115,7 +116,7 @@ export function OrderStatusActions({
       {hasSecondaryActions && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" className="bg-white" size="icon">
               <MoreVertical className="w-3 h-3" />
             </Button>
           </DropdownMenuTrigger>

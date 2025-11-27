@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 import { ArrowLeft, LucideIcon } from "lucide-react";
 import { BatchListItem } from "./BatchListItem";
+import { Label } from "@/components/ui/label";
 
 interface StageStats {
   batches: number;
@@ -27,9 +28,26 @@ interface StageDetailViewProps {
   stageIcon: LucideIcon;
   stats: StageStats;
   onBack: () => void;
+  selectedBatches: Set<string>;
+  onBatchSelect: (batchId: string, checked: boolean) => void;
+  onSelectAll: () => void;
+  onDeselectAll: () => void;
 }
 
-export function StageDetailView({ stageName, stageIcon: Icon, stats, onBack }: StageDetailViewProps) {
+export function StageDetailView({ 
+  stageName, 
+  stageIcon: Icon, 
+  stats, 
+  onBack, 
+  selectedBatches, 
+  onBatchSelect, 
+  onSelectAll, 
+  onDeselectAll 
+}: StageDetailViewProps) {
+  const selectedCount = stats.batchList.filter(b => selectedBatches.has(b.id)).length;
+  const totalBatches = stats.batchList.length;
+  const allSelected = selectedCount === totalBatches && totalBatches > 0;
+
   return (
     <>
       <div className="mb-6">
@@ -73,13 +91,43 @@ export function StageDetailView({ stageName, stageIcon: Icon, stats, onBack }: S
 
       {/* Batches in Stage */}
       <div>
-        <h2 className="text-heading-3 font-heading font-bold mb-4">Batches in {stageName}</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-heading-3 font-heading font-bold">Batches in {stageName}</h2>
+          <div className="flex items-center gap-3">
+            <Label className="text-sm text-muted-foreground">
+              {selectedCount} of {totalBatches} selected
+            </Label>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onSelectAll}
+                disabled={allSelected}
+                className="border-forest-green"
+              >
+                Select All
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onDeselectAll}
+                disabled={selectedCount === 0}
+                className="border-forest-green"
+              >
+                Deselect All
+              </Button>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col gap-2">
           {stats.batchList.map((batch) => (
             <BatchListItem
               key={batch.id}
               batch={batch}
               variant="compact"
+              showCheckbox
+              isChecked={selectedBatches.has(batch.id)}
+              onCheckChange={onBatchSelect}
             />
           ))}
         </div>

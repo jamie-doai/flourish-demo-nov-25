@@ -1,0 +1,153 @@
+# Flourish Grow - Cursor Rules
+
+This file provides quick reference rules for AI assistance. For detailed patterns and standards, see:
+- `.cursoragents/core.cursoragents` - Core development rules & code quality
+- `.cursoragents/frontend.cursoragents` - Frontend patterns & best practices
+
+## Project Context
+
+**Tech Stack:**
+- React 18 + TypeScript (strict mode patterns)
+- Vite for bundling
+- React Router DOM for routing
+- React Query (@tanstack/react-query) for server state
+- Zustand for client state (when needed)
+- React Hook Form + Zod for forms
+- Tailwind CSS + shadcn/ui components
+- Lucide React for icons
+
+**Project Type:** MVP web application for cannabis cultivation management
+
+**User Types:** Managers (desktop) and Workers (mobile)
+
+## Quick Reference
+
+### File Organization
+- Components: `src/components/` (feature-based: `inventory/`, `sales/`, `batch/`)
+- Pages: `src/pages/managers/` or `src/pages/workers/`
+- Utilities: `src/lib/`
+- Types: `src/types/`
+- Hooks: `src/hooks/`
+- Layouts: `src/components/layouts/`
+
+### Component Naming
+- Folders: kebab-case (`add-batch/`, `sales-sidebar/`)
+- Components: PascalCase matching component name (`PageHeader.tsx`)
+- Files: Match export name exactly
+
+### Styling
+- Use Tailwind CSS exclusively
+- Follow 4px grid system (custom spacing: `p-3` = 24px)
+- Standard icon size: `w-3 h-3` (24px)
+- Button icons: `size-4` (16px)
+- Use brand colors from design system (HSL variables in `src/index.css`)
+- Consistent padding: `px-6 py-8` for main containers, `p-3` for sidebar layouts
+
+### State Management
+- **Server state** → React Query (`useQuery`, `useMutation`)
+- **Client state** → Zustand (only when needed)
+- **Form state** → React Hook Form + Zod
+- **Rarely changing global data** → React Context
+- ❌ Never duplicate server data in client state
+
+### Common Patterns
+
+**Page Structure:**
+```tsx
+<ManagerLayout>
+  <main className="container mx-auto px-6 py-8">
+    <PageHeader title="Page Title" actions={...} />
+    {/* Content */}
+  </main>
+</ManagerLayout>
+```
+
+**Sidebar Pages:**
+```tsx
+<ManagerLayout>
+  <SidebarPageLayout sidebar={<SalesSidebar />}>
+    <PageHeader title="Page Title" />
+    {/* Content */}
+  </SidebarPageLayout>
+</ManagerLayout>
+```
+
+**Data Fetching:**
+```tsx
+const { data, isLoading, error } = useQuery({
+  queryKey: ['resource', id],
+  queryFn: () => fetchResource(id),
+});
+```
+
+### TypeScript Rules
+- Avoid `any` - use `unknown` or proper types
+- Prefer interfaces for object shapes
+- Use discriminated unions for state
+- Leverage type inference when obvious
+- Use `const` assertions for literal types
+
+### Import Order
+1. React and React-related
+2. External packages
+3. Internal aliases (`@/components`, `@/lib`)
+4. Parent directory imports
+5. Sibling file imports
+6. Type-only imports (`import type`)
+
+### Accessibility (WCAG 2.2 AA)
+- Use semantic HTML (`<nav>`, `<main>`, `<header>`)
+- Proper heading hierarchy (h1 → h2 → h3)
+- Keyboard navigation for all interactive elements
+- ARIA labels for icon-only buttons
+- Color contrast minimum 4.5:1
+
+### Code Quality Checklist
+Before marking complete:
+- ✅ TypeScript compiles (`tsc --noEmit`)
+- ✅ ESLint passes
+- ✅ No `any` types
+- ✅ Error handling in place
+- ✅ Loading states implemented
+- ✅ Accessibility verified
+- ✅ Responsive design checked
+
+### Anti-Patterns
+- ❌ Don't use `any` type
+- ❌ Don't duplicate server data in client state
+- ❌ Don't use inline styles (use Tailwind)
+- ❌ Don't create components >300 lines
+- ❌ Don't skip error handling
+- ❌ Don't ignore accessibility
+- ❌ Don't commit console.log statements
+
+### Key Components
+- `PageHeader` - Standardized page headers (`src/components/PageHeader.tsx`)
+- `Card` - Card component with default `p-3` padding (`src/components/ui/card.tsx`)
+- `ManagerLayout` - Manager page layout (`src/components/layouts/ManagerLayout.tsx`)
+- `SidebarPageLayout` - Sidebar layout (`src/components/layouts/SidebarPageLayout.tsx`)
+
+### When Implementing New Features
+1. Check existing patterns in `.cursoragents/` files
+2. Follow project structure conventions
+3. Use existing components from `src/components/ui/`
+4. Implement proper error boundaries and loading states
+5. Ensure mobile responsiveness
+6. Test accessibility
+7. Document with JSDoc for complex logic
+
+### Code Comments
+- Use JSDoc/TSDoc for complex functions
+- Explain "why" not "what"
+- Mark technical debt: `@ai-technical-debt(priority, effort, impact)`
+- Use `@ai-context` for critical code sections
+
+### Git Workflow
+- Reference ticket numbers in commits (format: XXX###)
+- Keep branches ahead of main
+- Use descriptive commit messages
+- Keep commits atomic and focused
+
+---
+
+**Note:** This is a quick reference. For detailed patterns, code examples, and comprehensive guidelines, refer to the `.cursoragents/` directory files.

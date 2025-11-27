@@ -1,4 +1,6 @@
-import { Navigation } from "@/components/Navigation";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { SidebarPageLayout } from "@/components/layouts/SidebarPageLayout";
+import { SalesSidebar } from "@/components/SalesSidebar";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, FileText, Download, Send, Check, Package, Edit } from "lucide-react";
+import { FileText, Download, Send, Check, Package, Edit, ArrowLeft } from "lucide-react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { getQuoteById } from "@/data";
 import { useToast } from "@/hooks/use-toast";
@@ -68,11 +70,11 @@ export default function QuoteDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20">
-      <Navigation />
-      <main className="container mx-auto px-12 py-8 max-w-[1920px]">
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/managers/sales/quotes">
+    <ManagerLayout>
+      <SidebarPageLayout sidebar={<SalesSidebar />}>
+        {/* Back button */}
+        <div className="mb-4">
+          <Link to="/managers/sales/quotes" className="inline-block">
             <Button variant="tertiary" size="sm">
               <ArrowLeft className="w-3 h-3 mr-2" />
               Back to Quotes
@@ -80,52 +82,57 @@ export default function QuoteDetail() {
           </Link>
         </div>
 
-        <Card className="mb-6">
+        {/* Title above buttons */}
+        <div className="mb-6">
+          <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold mb-2">
+            {quote.quoteNumber}
+          </h1>
+          {quote.clientName && (
+            <p className="text-body text-muted-foreground mb-4">{quote.clientName}</p>
+          )}
+          {/* Action buttons row */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link to={`/managers/sales/quotes/${quoteId}/edit`}>
+              <Button variant="outline" className="bg-white">
+                <Edit className="w-4 h-4 mr-2" />
+                Edit
+              </Button>
+            </Link>
+            <Button variant="outline" className="bg-white" onClick={handleDownloadPDF}>
+              <Download className="w-4 h-4 mr-2" />
+              Download PDF
+            </Button>
+            {quote.status === "draft" && (
+              <Button variant="outline" className="bg-white" onClick={handleSendQuote}>
+                <Send className="w-3 h-3 mr-2" />
+                Send to Client
+              </Button>
+            )}
+            {(quote.status === "sent" || quote.status === "accepted") && (
+              <Button variant="outline" className="bg-white" onClick={handleConvertToOrder}>
+                <Check className="w-3 h-3 mr-2" />
+                Convert to Order
+              </Button>
+            )}
+            {quote.convertedToOrder && (
+              <Link to={`/managers/sales/orders/${quote.convertedToOrder}`}>
+                <Button variant="outline" className="bg-white">View Order</Button>
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto">
+          <Card className="mb-6">
           <div className="mb-6">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-4">
-              <div className="flex items-center gap-4 min-w-0 flex-1">
-                <FileText className="w-3 h-3 text-primary flex-shrink-0" />
-                <div className="min-w-0 flex-1">
-                  <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{quote.quoteNumber}</h1>
-                  <p className="text-muted-foreground">{quote.clientName}</p>
-                </div>
-              </div>
+            <div className="flex items-center gap-4 mb-4">
+              <FileText className="w-3 h-3 text-primary flex-shrink-0" />
               <Badge className={getStatusColor(quote.status)}>
                 {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
               </Badge>
             </div>
-            <div className="flex flex-wrap gap-2 justify-end">
-              <Link to={`/managers/sales/quotes/${quoteId}/edit`}>
-                <Button variant="secondary">
-                  <Edit className="w-4 h-4 mr-2" />
-                  Edit
-                </Button>
-              </Link>
-              <Button variant="secondary" onClick={handleDownloadPDF}>
-                <Download className="w-4 h-4 mr-2" />
-                Download PDF
-              </Button>
-              {quote.status === "draft" && (
-                <Button onClick={handleSendQuote}>
-                  <Send className="w-3 h-3 mr-2" />
-                  Send to Client
-                </Button>
-              )}
-              {(quote.status === "sent" || quote.status === "accepted") && (
-                <Button onClick={handleConvertToOrder}>
-                  <Check className="w-3 h-3 mr-2" />
-                  Convert to Order
-                </Button>
-              )}
-              {quote.convertedToOrder && (
-                <Link to={`/managers/sales/orders/${quote.convertedToOrder}`}>
-                  <Button variant="secondary">View Order</Button>
-                </Link>
-              )}
-            </div>
-          </div>
 
-          <MetadataCard
+            <MetadataCard
             items={[
               { label: "Date Created", value: quote.dateCreated },
               { label: "Expiry Date", value: quote.expiryDate },
@@ -254,8 +261,10 @@ export default function QuoteDetail() {
               </div>
             )}
           </div>
+          </div>
         </Card>
-      </main>
-    </div>
+        </div>
+      </SidebarPageLayout>
+    </ManagerLayout>
   );
 }

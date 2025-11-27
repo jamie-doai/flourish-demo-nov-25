@@ -1,8 +1,9 @@
-import { Navigation } from "@/components/Navigation";
+import { ManagerLayout } from "@/components/layouts/ManagerLayout";
+import { PageHeader } from "@/components/PageHeader";
 import { Link, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown, Package } from "lucide-react";
+import { MapPin, Thermometer, Droplet, Leaf, Clock, User, CheckSquare, ChevronRight, ChevronDown, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -31,29 +32,15 @@ export default function ManagerLocationDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navigation />
-      
+    <ManagerLayout>
       <main className="container mx-auto px-12 py-8 max-w-[1920px]">
-        {/* Header Section */}
-        <div className="mb-6">
-          <Link to="/managers/inventory" className="mb-4 inline-block">
-            <Button variant="tertiary" size="sm">
-              <ArrowLeft className="w-3 h-3 mr-2" />
-              Back to Inventory
-            </Button>
-          </Link>
-          
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <MapPin className="w-3 h-3 text-forest-green flex-shrink-0" />
-            <div className="min-w-0 flex-1">
-              <h1 className="text-heading-3 sm:text-heading-2 md:text-heading-1 font-heading font-bold">{mockLocation.name}</h1>
-              <p className="text-body-small sm:text-body text-muted-foreground">{mockLocation.type}</p>
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          title={mockLocation.name}
+          description={mockLocation.type}
+          backTo="/managers/inventory"
+          backLabel="Back to Inventory"
+        />
 
-        {/* Tabs */}
         <Tabs defaultValue="overview" className="w-full">
           <TabsList className="grid grid-cols-2 gap-2 border border-forest-green h-auto px-1 !py-1">
             <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
@@ -315,6 +302,6 @@ export default function ManagerLocationDetail() {
           </TabsContent>
         </Tabs>
       </main>
-    </div>
+    </ManagerLayout>
   );
 }
