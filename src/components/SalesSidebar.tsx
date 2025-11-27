@@ -25,7 +25,7 @@ export function SalesSidebar() {
 
   const getNavCls = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-primary/10 text-primary font-medium border-l-2 border-primary" 
+      ? "bg-lime-green text-forest-green font-medium border-l-2 border-primary" 
       : "hover:bg-muted/50";
 
   return (

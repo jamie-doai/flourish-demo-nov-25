@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { WorkerPageLayout } from "@/components/layouts/WorkerPageLayout";
 import { Navigation } from "@/components/Navigation";
-import { Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical } from "lucide-react";
+import { Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Split, Merge, Copy, MoreVertical, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
@@ -21,6 +22,7 @@ import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
 import { MoveLocationDialog } from "@/components/inventory/MoveLocationDialog";
 import { getTypeIcon } from "@/lib/taskUtils";
+import { getBatchLocationSummary } from "@/lib/batchLocationUtils";
 
 export default function WorkerBatchDetail() {
   const { batchId } = useParams();
@@ -33,6 +35,7 @@ export default function WorkerBatchDetail() {
 
   const mockBatch = getBatchById(batchId || "");
   const relatedTasks = getTasksByBatch(batchId || "");
+  const locationSummary = mockBatch ? getBatchLocationSummary(batchId || "") : null;
 
   if (!mockBatch) {
     return (
@@ -232,18 +235,59 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             <Card className="p-3 bg-white border border-[#37474F]/20 shadow-sm">
               <h3 className="text-sm font-semibold text-[#37474F] mb-3">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <p className="text-xs text-[#37474F]/60 mb-1">Current Location</p>
-                  <p className="text-sm text-[#37474F] font-semibold">📍 {mockBatch.location}</p>
+                <div className={locationSummary?.isSplit ? "col-span-2" : ""}>
+                  <p className="text-xs text-[#37474F]/60 mb-1">Current Location{locationSummary?.isSplit ? "s" : ""}</p>
+                  {locationSummary && locationSummary.locations.length > 0 ? (
+                    <div className="space-y-2">
+                      {locationSummary.locations.map((loc) => (
+                        <div key={loc.locationId} className="flex items-start gap-2">
+                          <MapPin className="w-3 h-3 mt-0.5 text-[#37474F]/60 flex-shrink-0" />
+                          <div className="flex-1">
+                            <Link 
+                              to={`/workers/locations/${loc.locationId}`}
+                              className="text-sm text-[#37474F] font-semibold hover:underline flex items-center gap-1"
+                            >
+                              {loc.locationPath}
+                              {loc.isPrimary && (
+                                <Badge variant="outline" className="text-xs ml-1">Primary</Badge>
+                              )}
+                            </Link>
+                            {locationSummary.isSplit && (
+                              <p className="text-xs text-[#37474F]/60 mt-0.5">
+                                {loc.quantity} plants at {loc.locationName}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      {locationSummary.isSplit && (
+                        <p className="text-xs text-[#37474F]/60 mt-1 pt-2 border-t border-[#37474F]/10">
+                          Total: {locationSummary.totalQuantity} plants across {locationSummary.locations.length} locations
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[#37474F] font-semibold">📍 {mockBatch.location}</p>
+                  )}
                 </div>
-                <div>
-                  <p className="text-xs text-[#37474F]/60 mb-1">Current Stage</p>
-                  <p className="text-sm text-[#37474F] font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-[#37474F]/60 mb-1">Quantity</p>
-                  <p className="text-sm text-[#37474F] font-semibold">{mockBatch.quantity} plants</p>
-                </div>
+                {!locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-[#37474F]/60 mb-1">Current Stage</p>
+                    <p className="text-sm text-[#37474F] font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
+                  </div>
+                )}
+                {!locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-[#37474F]/60 mb-1">Quantity</p>
+                    <p className="text-sm text-[#37474F] font-semibold">{locationSummary?.totalQuantity || mockBatch.quantity} plants</p>
+                  </div>
+                )}
+                {locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-[#37474F]/60 mb-1">Current Stage</p>
+                    <p className="text-sm text-[#37474F] font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-xs text-[#37474F]/60 mb-1">Health Status</p>
                   <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full font-medium">

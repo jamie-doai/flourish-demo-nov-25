@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MapPin, GitBranch, GitMerge, AlertCircle, PrinterIcon, X } from "lucide-react";
+import { MapPin, GitBranch, GitMerge, AlertCircle, PrinterIcon, X, FileText } from "lucide-react";
 
 interface BulkActionToolbarProps {
   selectedCount: number;
@@ -19,6 +19,7 @@ interface BulkActionToolbarProps {
   onAdjustQuantity: () => void;
   onPrintLabels: () => void;
   onApplyHold: () => void;
+  onCreateQuote: () => void;
 }
 
 export function BulkActionToolbar({
@@ -32,6 +33,7 @@ export function BulkActionToolbar({
   onAdjustQuantity,
   onPrintLabels,
   onApplyHold,
+  onCreateQuote,
 }: BulkActionToolbarProps) {
   if (selectedCount === 0) return null;
 
@@ -53,6 +55,11 @@ export function BulkActionToolbar({
         <div className="h-8 w-px bg-forest-green" />
 
         <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={onCreateQuote} className="border-forest-green">
+            <FileText className="w-3 h-3 mr-2" />
+            Create Quote
+          </Button>
+
           <Button variant="outline" size="sm" onClick={onMoveLocation} className="border-forest-green">
             <MapPin className="w-3 h-3 mr-2" />
             Move Location

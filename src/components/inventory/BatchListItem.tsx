@@ -35,53 +35,65 @@ export function BatchListItem({
 
   if (variant === "compact") {
     return (
-      <Link to={`/managers/batch/${batch.id}`}>
+      <div className="relative">
         <Card
-          className={`hover:shadow-card hover:bg-gray-50 transition-shadow cursor-pointer ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
+          className={`transition-shadow ${isChecked ? 'bg-forest-green-100' : ''} ${isChecked ? 'hover:bg-forest-green-200' : 'hover:shadow-card hover:bg-gray-50'} ${batch.urgent ? 'border-l-4 border-l-caution' : ''}`}
         >
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-1.5 mb-2">
-                <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
-                {batch.urgent && (
-                  <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
-                    Urgent
-                  </span>
-                )}
-                <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${healthBadgeClass}`}>
-                  {batch.health}
-                </span>
+          <div className="flex items-start gap-4">
+            {showCheckbox && (
+              <div className="pt-1">
+                <Checkbox
+                  checked={isChecked}
+                  onCheckedChange={(checked) => onCheckChange?.(batch.id, checked as boolean)}
+                />
               </div>
+            )}
+            <Link to={`/managers/batch/${batch.id}`} className="flex-1">
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <h3 className="text-heading-4 font-heading font-bold">{batch.id}</h3>
+                    {batch.urgent && (
+                      <span className="px-2 py-1 bg-caution/20 text-caution text-body-small rounded-full font-heading font-bold">
+                        Urgent
+                      </span>
+                    )}
+                    <span className={`px-2 py-1 text-body-small rounded-full font-heading font-bold ${healthBadgeClass}`}>
+                      {batch.health}
+                    </span>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
-                <div>
-                  <span className="text-muted-foreground">Stage: </span>
-                  <span className="font-medium capitalize">{batch.stage}</span>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-body">
+                    <div>
+                      <span className="text-muted-foreground">Stage: </span>
+                      <span className="font-medium capitalize">{batch.stage}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Location: </span>
+                      <span className="font-medium">📍 {batch.location}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Quantity: </span>
+                      <span className="font-medium">{batch.quantity} plants</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Started: </span>
+                      <span className="font-medium">{batch.started}</span>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-muted-foreground">Location: </span>
-                  <span className="font-medium">📍 {batch.location}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Quantity: </span>
-                  <span className="font-medium">{batch.quantity} plants</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Started: </span>
-                  <span className="font-medium">{batch.started}</span>
-                </div>
+                <Button variant="ghost" size="sm">View Details</Button>
               </div>
-            </div>
-            <Button variant="ghost" size="sm">View Details</Button>
+            </Link>
           </div>
         </Card>
-      </Link>
+      </div>
     );
   }
 
   return (
     <div className="relative">
-      <Card className="hover:shadow-card hover:bg-gray-50 transition-shadow">
+      <Card className={`transition-shadow ${isChecked ? 'bg-forest-green-100' : ''} ${isChecked ? 'hover:bg-forest-green-200' : 'hover:shadow-card hover:bg-gray-50'}`}>
         <div className="flex items-start gap-4">
           {showCheckbox && (
             <div className="pt-1">

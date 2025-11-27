@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ManagerLayout } from "@/components/layouts/ManagerLayout";
 import { PageHeader } from "@/components/PageHeader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3, Split, Merge, Copy } from "lucide-react";
+import { ArrowLeft, Droplets, Sprout, Move, History, Thermometer, Wind, Camera, CheckCircle2, Printer, Clock, Leaf, Edit3, Split, Merge, Copy, MapPin } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Dialog,
@@ -24,6 +25,9 @@ import { MergeBatchDialog } from "@/components/inventory/MergeBatchDialog";
 import { DuplicateBatchDialog } from "@/components/inventory/DuplicateBatchDialog";
 import { MoveLocationDialog } from "@/components/inventory/MoveLocationDialog";
 import { getTypeIcon } from "@/lib/taskUtils";
+import { getBatchLocationSummary } from "@/lib/batchLocationUtils";
+import { getBatchCostSummary, addCustomCost } from "@/data/batchCosts";
+import { CostCategory, BatchStage } from "@/types/cost";
 
 export default function ManagerBatchDetail() {
   const { batchId } = useParams();
@@ -36,9 +40,16 @@ export default function ManagerBatchDetail() {
   const [showSplitDialog, setShowSplitDialog] = useState(false);
   const [showMergeDialog, setShowMergeDialog] = useState(false);
   const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
+  const [costUpdateTrigger, setCostUpdateTrigger] = useState(0);
 
   const mockBatch = getBatchById(batchId || "");
   const relatedTasks = getTasksByBatch(batchId || "");
+  const locationSummary = mockBatch ? getBatchLocationSummary(batchId || "") : null;
+  
+  // Get cost summary - recalculate when costUpdateTrigger changes to reflect newly added costs
+  const costSummary = useMemo(() => {
+    return batchId ? getBatchCostSummary(batchId) : null;
+  }, [batchId, costUpdateTrigger]);
 
   if (!mockBatch) {
     return (
@@ -94,12 +105,78 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
     setShowAddCost(true);
   };
 
+  const [costFormData, setCostFormData] = useState({
+    costName: "",
+    category: "" as CostCategory | "",
+    amount: "",
+    reason: "",
+  });
+
   const handleSaveCustomCost = () => {
-    toast({
-      title: "Cost added successfully",
-      description: "Custom cost has been added to this batch",
-    });
-    setShowAddCost(false);
+    if (!batchId || !mockBatch) {
+      toast({
+        title: "Error",
+        description: "Batch information not found",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!costFormData.costName || !costFormData.category || !costFormData.amount) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const amount = parseFloat(costFormData.amount);
+    if (isNaN(amount) || amount <= 0) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter a valid amount",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      addCustomCost(
+        batchId,
+        costFormData.costName,
+        costFormData.category as CostCategory,
+        amount,
+        mockBatch.stage as BatchStage,
+        mockBatch.quantity,
+        "USER",
+        costFormData.reason || undefined
+      );
+
+      // Trigger re-render by updating state
+      setCostUpdateTrigger(prev => prev + 1);
+      
+      toast({
+        title: "Cost added successfully",
+        description: "Custom cost has been added to this batch",
+      });
+      
+      // Reset form
+      setCostFormData({
+        costName: "",
+        category: "" as CostCategory | "",
+        amount: "",
+        reason: "",
+      });
+      
+      setShowAddCost(false);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to add cost. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   // Calculate lifecycle progress
@@ -135,77 +212,85 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             {/* Quick Actions */}
             <Card>
               <h3 className="text-base font-semibold mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Watering")}
                 >
-                  <Droplets className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Record Watering</span>
+                  <Droplets className="w-3 h-3" />
+                  <span className="text-xs">Record Watering</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Treatment")}
                 >
-                  <Sprout className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Add Treatment</span>
+                  <Sprout className="w-3 h-3" />
+                  <span className="text-xs">Add Treatment</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => handleAction("Photo")}
                 >
-                  <Camera className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Add Photo</span>
+                  <Camera className="w-3 h-3" />
+                  <span className="text-xs">Add Photo</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => toast({ title: "Label sent to printer 🖨️" })}
                 >
-                  <Printer className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Print Label</span>
+                  <Printer className="w-3 h-3" />
+                  <span className="text-xs">Print Label</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowMoveDialog(true)}
                 >
-                  <Move className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Move Batch</span>
+                  <Move className="w-3 h-3" />
+                  <span className="text-xs">Move Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowSplitDialog(true)}
                 >
-                  <Split className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Split Batch</span>
+                  <Split className="w-3 h-3" />
+                  <span className="text-xs">Split Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowMergeDialog(true)}
                 >
-                  <Merge className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Merge Batch</span>
+                  <Merge className="w-3 h-3" />
+                  <span className="text-xs">Merge Batch</span>
                 </Button>
 
                 <Button 
-                  variant="tertiary"
-                  className="h-auto flex flex-col items-center gap-2 p-4"
+                  variant="outline"
+                  size="sm"
+                  className="h-auto flex flex-col items-center gap-1.5 py-2"
                   onClick={() => setShowDuplicateDialog(true)}
                 >
-                  <Copy className="w-3 h-3 text-primary" />
-                  <span className="text-sm">Duplicate</span>
+                  <Copy className="w-3 h-3" />
+                  <span className="text-xs">Duplicate</span>
                 </Button>
               </div>
             </Card>
@@ -285,18 +370,59 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
             <Card>
               <h3 className="text-base font-semibold mb-4">Batch Information</h3>
               <div className="grid grid-cols-2 gap-4 mb-4">
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Current Location</p>
-                  <p className="text-sm font-semibold">📍 {mockBatch.location}</p>
+                <div className={locationSummary?.isSplit ? "col-span-2" : ""}>
+                  <p className="text-xs text-muted-foreground mb-1">Current Location{locationSummary?.isSplit ? "s" : ""}</p>
+                  {locationSummary && locationSummary.locations.length > 0 ? (
+                    <div className="space-y-2">
+                      {locationSummary.locations.map((loc, idx) => (
+                        <div key={loc.locationId} className="flex items-start gap-2">
+                          <MapPin className="w-3 h-3 mt-0.5 text-muted-foreground flex-shrink-0" />
+                          <div className="flex-1">
+                            <Link 
+                              to={`/managers/locations/${loc.locationId}`}
+                              className="text-sm font-semibold hover:underline flex items-center gap-1"
+                            >
+                              {loc.locationPath}
+                              {loc.isPrimary && (
+                                <Badge variant="outline" className="text-xs ml-1">Primary</Badge>
+                              )}
+                            </Link>
+                            {locationSummary.isSplit && (
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                {loc.quantity} plants at {loc.locationName}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      {locationSummary.isSplit && (
+                        <p className="text-xs text-muted-foreground mt-1 pt-2 border-t">
+                          Total: {locationSummary.totalQuantity} plants across {locationSummary.locations.length} locations
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm font-semibold">📍 {mockBatch.location}</p>
+                  )}
                 </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Current Stage</p>
-                  <p className="text-sm font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Quantity</p>
-                  <p className="text-sm font-semibold">{mockBatch.quantity} plants</p>
-                </div>
+                {!locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Current Stage</p>
+                    <p className="text-sm font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
+                  </div>
+                )}
+                {!locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Quantity</p>
+                    <p className="text-sm font-semibold">{locationSummary?.totalQuantity || mockBatch.quantity} plants</p>
+                  </div>
+                )}
+                {locationSummary?.isSplit && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1">Current Stage</p>
+                    <p className="text-sm font-semibold">{mockBatch.stage.charAt(0).toUpperCase() + mockBatch.stage.slice(1)}</p>
+                  </div>
+                )}
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">Health Status</p>
                   <span className="inline-block px-2 py-1 bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs rounded-full font-medium">
@@ -413,8 +539,9 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
 
         {/* Cost of Production Tab */}
         <TabsContent value="costs" className="space-y-6">
-          {mockBatch.totalCost ? (
+          {costSummary ? (
             <CostBreakdownCard 
+              key={costUpdateTrigger}
               batchId={mockBatch.id}
               onViewHistory={() => setShowCostHistory(true)}
               onAddCost={handleAddCost}
@@ -479,7 +606,21 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
       />
       
       {/* Add Cost Dialog */}
-      <Dialog open={showAddCost} onOpenChange={setShowAddCost}>
+      <Dialog 
+        open={showAddCost} 
+        onOpenChange={(open) => {
+          setShowAddCost(open);
+          if (!open) {
+            // Reset form when dialog closes
+            setCostFormData({
+              costName: "",
+              category: "" as CostCategory | "",
+              amount: "",
+              reason: "",
+            });
+          }
+        }}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Add Custom Cost</DialogTitle>
@@ -491,11 +632,17 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
                 type="text" 
                 className="w-full px-3 py-2 border rounded-md bg-background"
                 placeholder="e.g., Special Treatment"
+                value={costFormData.costName}
+                onChange={(e) => setCostFormData(prev => ({ ...prev, costName: e.target.value }))}
               />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Category</label>
-              <select className="w-full px-3 py-2 border rounded-md bg-background">
+              <select 
+                className="w-full px-3 py-2 border rounded-md bg-background"
+                value={costFormData.category}
+                onChange={(e) => setCostFormData(prev => ({ ...prev, category: e.target.value as CostCategory | "" }))}
+              >
                 <option value="">Select category</option>
                 <option value="seed">Seeds & Seedlings</option>
                 <option value="soil">Growing Media</option>
@@ -515,6 +662,8 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
                 step="0.01"
                 className="w-full px-3 py-2 border rounded-md bg-background"
                 placeholder="0.00"
+                value={costFormData.amount}
+                onChange={(e) => setCostFormData(prev => ({ ...prev, amount: e.target.value }))}
               />
             </div>
             <div className="space-y-2">
@@ -523,10 +672,23 @@ const MOCK_ACTIVITY_LOG: ActivityLogEntry[] = [
                 className="w-full px-3 py-2 border rounded-md bg-background resize-none"
                 rows={3}
                 placeholder="Why is this cost being added?"
+                value={costFormData.reason}
+                onChange={(e) => setCostFormData(prev => ({ ...prev, reason: e.target.value }))}
               />
             </div>
             <div className="flex gap-2 justify-end pt-4">
-              <Button variant="tertiary" onClick={() => setShowAddCost(false)}>
+              <Button 
+                variant="tertiary" 
+                onClick={() => {
+                  setShowAddCost(false);
+                  setCostFormData({
+                    costName: "",
+                    category: "" as CostCategory | "",
+                    amount: "",
+                    reason: "",
+                  });
+                }}
+              >
                 Cancel
               </Button>
               <Button onClick={handleSaveCustomCost}>
